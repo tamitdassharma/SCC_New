@@ -1,0 +1,39 @@
+projection implementation in class /ESRCC/BP_C_COSCEN_S unique;
+strict;
+use draft;
+
+define behavior for /ESRCC/C_CosCen_S alias CostCenterAll
+
+{
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+//  use action SelectCustomizingTransptReq;
+
+  use association _CostCenter { create ( augment ); with draft; }
+}
+
+define behavior for /ESRCC/C_CosCen alias CostCenter
+{
+  field ( modify )
+   Description;
+
+
+  use update( augment );
+  use delete;
+
+  use association _CostCenterAll { with draft; }
+  use association _CostCenterText { create; with draft; }
+}
+
+define behavior for /ESRCC/C_CosCenText alias CostCenterText
+
+{
+  use update;
+  use delete;
+
+  use association _CostCenterAll { with draft; }
+  use association _CostCenter { with draft; }
+}

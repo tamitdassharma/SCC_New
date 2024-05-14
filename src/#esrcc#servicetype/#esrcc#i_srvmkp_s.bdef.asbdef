@@ -1,0 +1,73 @@
+managed with additional save implementation in class /ESRCC/BP_I_SRVMKP_S unique;
+strict;
+with draft;
+
+define behavior for /ESRCC/I_SrvMkp_S alias ServiceMarkupAll
+draft table /esrcc/d_srvmk_s
+with unmanaged save
+lock master total etag LastChangedAtMax
+authorization master ( global )
+
+{
+  update;
+  internal create;
+  internal delete;
+
+  draft action ( features : instance ) Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare
+  {
+    validation ServiceMarkup~ValidateData;
+  }
+//  action ( features : instance ) SelectCustomizingTransptReq parameter D_SelectCustomizingTransptReqP result [1] $self;
+
+  association _ServiceMarkup { create ( features : instance, precheck ); with draft; }
+}
+
+define behavior for /ESRCC/I_SrvMkp alias ServiceMarkup
+persistent table /esrcc/srvmkp
+draft table /esrcc/d_srvmkp
+etag master LocalLastChangedAt
+lock dependent by _ServiceMarkupAll
+authorization dependent by _ServiceMarkupAll
+
+{
+  field ( mandatory : create )
+  Serviceproduct,
+  Validfrom;
+
+  field ( mandatory )
+  Validto;
+
+  field ( readonly )
+  SingletonID, CreatedBy, CreatedAt, LastChangedBy, LastChangedAt;
+
+  field ( readonly : update )
+  Serviceproduct,
+  Validfrom;
+
+
+  update ( features : global, precheck );
+  delete ( features : global );
+
+  mapping for /ESRCC/SRVMKP
+  {
+    Serviceproduct = SERVICEPRODUCT;
+    Validfrom = VALIDFROM;
+    Origcost = ORIGCOST;
+    Passcost = PASSCOST;
+    Validto = VALIDTO;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _ServiceMarkupAll { with draft; }
+
+//  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+  validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
+}

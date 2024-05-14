@@ -1,0 +1,84 @@
+managed with additional save implementation in class /ESRCC/BP_I_SRVCELEM unique;
+strict;
+with draft;
+
+define behavior for /ESRCC/I_SrvCeleM_S alias CostElementToLeAll
+draft table /esrcc/d_srvce_s
+with unmanaged save
+lock master total etag LastChangedAtMax
+authorization master ( global )
+
+{
+  update;
+  internal create;
+  internal delete;
+
+  draft action ( features : instance ) Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare
+  {
+    validation CostElementToLe~ValidateData;
+  }
+//  action ( features : instance ) SelectCustomizingTransptReq parameter D_SelectCustomizingTransptReqP result [1] $self;
+
+  association _CostElementToLe { create ( features : instance, precheck ); with draft; }
+}
+
+define behavior for /ESRCC/I_SrvCeleM alias CostElementToLe
+persistent table /esrcc/srvcelem
+draft table /esrcc/d_srvcele
+etag master LocalLastChangedAt
+lock dependent by _CostElementToLeAll
+authorization dependent by _CostElementToLeAll
+
+{
+  field ( mandatory : create )
+  Legalentity,
+  Sysid,
+  Ccode,
+  Costelement,
+  ValidFrom;
+
+  field ( mandatory )
+  Costind,
+  ValidTo;
+
+  field ( readonly )
+  SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+
+  field ( readonly : update )
+  Legalentity,
+  Sysid,
+  Ccode,
+  Costelement,
+  ValidFrom;
+
+  update ( features : global, precheck );
+  delete ( features : global );
+
+  mapping for /ESRCC/SRVCELEM
+  {
+    Legalentity = LEGALENTITY;
+    Sysid = SYSID;
+    Ccode = CCODE;
+    Costelement = COSTELEMENT;
+    ValidFrom = VALID_FROM;
+    Costtype = COSTTYPE;
+    Postingtype = POSTINGTYPE;
+    Costind = COSTIND;
+    Usagetype = USAGETYPE;
+    ValidTo = VALID_TO;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _CostElementToLeAll { with draft; }
+
+//  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+  validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
+}

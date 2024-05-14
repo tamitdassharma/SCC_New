@@ -1,0 +1,15 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Description',
+    typeNamePlural: 'Descriptions'
+  }
+}
+annotate view /ESRCC/C_PfcText with
+{
+  @UI.lineItem: [ { position: 1 } ]
+  Spras;
+
+  @UI.lineItem: [ { position: 2 } ]
+  Description;
+}

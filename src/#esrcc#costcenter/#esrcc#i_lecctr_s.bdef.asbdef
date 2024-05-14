@@ -1,0 +1,196 @@
+managed with additional save implementation in class /ESRCC/BP_I_LECCTR unique;
+strict;
+with draft;
+
+define behavior for /ESRCC/I_LeCctr_S alias LeToCostCenterAll
+draft table /esrcc/d_le_cc_s
+with unmanaged save
+lock master total etag LastChangedAtMax
+authorization master ( global )
+
+{
+  update;
+  internal create;
+  internal delete;
+
+  draft action ( features : instance ) Edit with additional implementation;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare
+  {
+    validation LeToCostCenter~ValidateData;
+    validation ServiceParameter~ValidateData;
+  }
+
+  association _LeToCostCenter { create ( features : instance, precheck ); with draft; }
+}
+
+define behavior for /ESRCC/I_LeCctr alias LeToCostCenter
+persistent table /esrcc/le_cctr
+draft table /esrcc/d_le_cctr query /ESRCC/I_LeCctr_D
+etag master LocalLastChangedAt
+lock dependent by _LeToCostCenterAll
+authorization dependent by _LeToCostCenterAll
+
+{
+
+  field ( mandatory : create )
+  Sysid,
+  Legalentity,
+  Ccode,
+  Costobject,
+  Costcenter,
+  Validfrom;
+
+  field ( readonly )
+  SingletonID, CreatedBy, CreatedAt, LastChangedBy, LastChangedAt;
+
+  field ( mandatory )
+  Validto, Stewardship;
+
+  field ( readonly : update )
+  Sysid,
+  Legalentity,
+  Ccode,
+  Costobject,
+  Costcenter,
+  Validfrom;
+
+
+  update ( features : instance, precheck );
+  delete ( features : instance );
+
+  mapping for /ESRCC/LE_CCTR
+  {
+    Sysid = SYSID;
+    Legalentity = LEGALENTITY;
+    Ccode = CCODE;
+    Costobject = COSTOBJECT;
+    Costcenter = COSTCENTER;
+    Validfrom = VALIDFROM;
+    Validto = VALIDTO;
+    Profitcenter = PROFITCENTER;
+    Businessdivision = BUSINESSDIVISION;
+    Stewardship = STEWARDSHIP;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _LeToCostCenterAll { with draft; }
+  association _ServiceParameter { create ( features : instance, precheck ); with draft; }
+  association _ServiceReceiver { create ( features : instance ); with draft; }
+
+  //  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+  validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
+}
+
+define behavior for /ESRCC/I_ServiceParameter alias ServiceParameter
+persistent table /esrcc/srvprrec
+draft table /esrcc/d_srvprre
+etag master LocalLastChangedAt
+lock dependent by _LeToCostcenterAll
+authorization dependent by _LeToCostcenterAll
+{
+
+  field ( mandatory : create )
+  Serviceproduct,
+  Validfrom;
+
+  field ( mandatory )
+  Costshare, Validto;
+
+  field ( readonly )
+  SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+
+  field ( readonly : update )
+  Legalentity,
+  Sysid,
+  Ccode,
+  Costobject,
+  Costcenter,
+  Serviceproduct,
+  CostcenterVf,
+  Validfrom;
+
+  update ( features : instance, precheck );
+  delete ( features : instance );
+
+  mapping for /ESRCC/SRVPRREC
+  {
+    Legalentity = LEGALENTITY;
+    Sysid = SYSID;
+    Ccode = CCODE;
+    Costobject = COSTOBJECT;
+    Costcenter = COSTCENTER;
+    Serviceproduct = SERVICEPRODUCT;
+    CostcenterVf = COSTCENTER_VF;
+    Validfrom = VALIDFROM;
+    Validto = VALIDTO;
+    Costshare = COSTSHARE;
+    Erpsalesorder = ERPSALESORDER;
+    Contractid = CONTRACTID;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _LeToCostcenterAll { with draft; }
+  association _LeToCostcenter { with draft; }
+
+  //  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+  validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
+}
+
+define behavior for /ESRCC/I_ServiceAllocReceiver alias ServiceReceiver
+persistent table /esrcc/srv_pr_le
+draft table /esrcc/d_srvprle
+etag master LocallastChangedAt
+lock dependent by _LeToCostCenterAll
+authorization dependent by _LeToCostCenterAll
+{
+  field ( mandatory : create )
+  Serviceproduct, Receivingentity;
+
+  field ( readonly )
+  SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+
+  field ( readonly : update )
+  Sysid,
+  ccode,
+  Legalentity,
+  Costobject,
+  Costcenter,
+  Serviceproduct,
+  CcValidfrom,
+  Receivingentity;
+
+  update ( features : instance );
+  delete ( features : instance );
+
+  mapping for /esrcc/srv_pr_le
+  {
+    Sysid = SYSID;
+    Ccode = CCODE;
+    Legalentity = LEGALENTITY;
+    Costobject = COSTOBJECT;
+    Costcenter = COSTCENTER;
+    Serviceproduct = SERVICEPRODUCT;
+    CcValidfrom = CC_VALIDFROM;
+    Receivingentity = RECEIVINGENTITY;
+    Active = ACTIVE;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _LeToCostCenterAll { with draft; }
+  association _LeToCostcenter { with draft; }
+}

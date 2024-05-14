@@ -1,0 +1,90 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Source Cost Object and Number',
+    typeNamePlural: 'Data List',
+    title: {
+      type: #STANDARD,
+      value: 'Costcenter'
+    },
+    description: { value: 'Description' }
+  }
+}
+annotate view /ESRCC/C_CosCen with
+{
+  @UI.facet: [ {
+    id: 'CE',
+    type: #COLLECTION,
+    position: 1
+  },
+  {
+    id: '/ESRCC/I_CosCen',
+    purpose: #STANDARD,
+    type: #IDENTIFICATION_REFERENCE,
+    parentId: 'CE',
+    label: 'General Information',
+    position: 1
+  },
+  {
+    id: 'Admin',
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'CE',
+    targetQualifier: 'AdminGroup',
+    label: 'Admin Information',
+    position: 2
+  },
+  {
+    id: '/ESRCC/I_CosCenText',
+    type: #LINEITEM_REFERENCE,
+    parentId: 'CE',
+    position: 3,
+    targetElement: '_CostCenterText'
+  } ]
+
+  @UI.lineItem: [ { position: 3 } ]
+  Costcenter;
+
+  @UI.identification: [ { position: 1 } ]
+  @UI.lineItem: [ { position: 1 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' }, useForValidation: true }]
+  Sysid;
+
+  @UI.identification: [ { position: 2 } ]
+  @UI.lineItem: [ { position: 2, cssDefault.width: '11.5rem'} ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTOBJECTS', element: 'Costobject' } }]
+  Costobject;
+
+  @UI.identification: [ { position: 5 } ]
+  @UI.lineItem: [ { position: 5, cssDefault.width: '8.5rem' } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BILLINGFREQ', element: 'Billingfreq' } }]
+  @UI.textArrangement: #TEXT_LAST
+  Billfrequency;
+
+  @UI.lineItem: [ { position: 6 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 1 }]
+  CreatedBy;
+
+  @UI.lineItem: [ { position: 7, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 2 }]
+  CreatedAt;
+
+  @UI.lineItem: [ { position: 8 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 3 }]
+  LastChangedBy;
+
+  @UI.lineItem: [ { position: 9, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 4 }]
+  LastChangedAt;
+
+  @UI.lineItem: [ { position: 4 } ]
+  Description;
+
+  @UI.hidden: true
+  SysidDescription;
+  @UI.hidden: true
+  CostobjectDescription;
+  @UI.hidden: true
+  BillfrequencyDesc;
+}

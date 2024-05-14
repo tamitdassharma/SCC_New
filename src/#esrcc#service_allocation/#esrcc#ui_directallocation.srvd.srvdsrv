@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service definition for/ESRCC/C_DIRECTALLOCATION'
+define service /ESRCC/UI_DIRECTALLOCATION {
+  expose /ESRCC/C_DIRECTALLOCATION as DirectAllocation;
+}

@@ -1,0 +1,46 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Maintain Source Cost Objects and Numbers",
+    "originalLanguage": "en"
+  },
+  "serviceConfiguration": {
+    "serviceBinding": "/ESRCC/UI_COSCEN_O4",
+    "serviceName": "/ESRCC/UI_COSCEN_O4",
+    "serviceVersion": "0001",
+    "rootEntitySet": "CostCenterAll",
+    "name": "Maintain Source Cost Objects",
+    "configurationGroup": "",
+    "skipRootEntity": true
+  },
+  "appConfiguration": {
+    "listReport": {},
+    "objectPages": [
+      {
+        "entitySet": "CostCenter"
+      },
+      {
+        "entitySet": "CostCenterText"
+      }
+    ],
+    "tableSettings": [
+      {
+        "entitySet": "CostCenter",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true,
+        "rowCountMode": "auto"
+      },
+      {
+        "entitySet": "CostCenterAll",
+        "tableType": "gridTable"
+      },
+      {
+        "entitySet": "CostCenterText",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true
+      }
+    ]
+  }
+}

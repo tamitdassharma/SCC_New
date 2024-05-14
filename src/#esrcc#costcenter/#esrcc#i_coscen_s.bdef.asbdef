@@ -1,0 +1,110 @@
+managed with additional save implementation in class /ESRCC/BP_I_COSCEN_S unique;
+strict;
+with draft;
+
+define behavior for /ESRCC/I_CosCen_S alias CostCenterAll
+draft table /esrcc/d_cosce_s
+with unmanaged save
+lock master total etag LastChangedAtMax
+authorization master ( global )
+
+{
+  update;
+  internal create;
+  internal delete;
+
+  draft action ( features : instance ) Edit with additional implementation;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare
+  {
+    validation CostCenter~ValidateData;
+  }
+
+  association _CostCenter { create ( features : instance, precheck ); with draft; }
+}
+
+define behavior for /ESRCC/I_CosCen alias CostCenter
+persistent table /esrcc/coscen
+draft table /esrcc/d_coscen query /ESRCC/I_CosCen_D
+etag master LocalLastChangedAt
+lock dependent by _CostCenterAll
+authorization dependent by _CostCenterAll
+
+{
+  field ( mandatory : create )
+  Sysid,
+  Costcenter,
+  Costobject;
+
+  field ( readonly )
+  SingletonID, CreatedBy, CreatedAt, LastChangedBy, LastChangedAt;
+
+  field ( readonly : update )
+  Sysid,
+  Costcenter,
+  Costobject;
+
+  field ( mandatory )
+  Billfrequency;
+
+  update ( features : instance, precheck );
+  delete ( features : instance );
+
+  mapping for /ESRCC/COSCEN
+  {
+    Sysid = SYSID;
+    Costcenter = COSTCENTER;
+    Costobject = COSTOBJECT;
+    Billfrequency = BILLFREQUENCY;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _CostCenterAll { with draft; }
+  association _CostCenterText { create ( features : instance ); with draft; }
+
+  validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
+}
+
+define behavior for /ESRCC/I_CosCenText alias CostCenterText
+persistent table /esrcc/coscent
+draft table /esrcc/d_coscent
+etag master LocalLastChangedAt
+lock dependent by _CostCenterAll
+authorization dependent by _CostCenterAll
+
+{
+  field ( mandatory : create )
+  Spras;
+
+  field ( readonly )
+  SingletonID,
+  Sysid,
+  Costcenter,
+  Costobject;
+
+  field ( readonly : update )
+  Spras;
+
+
+  update ( features : instance );
+  delete ( features : instance );
+
+  mapping for /ESRCC/COSCENT
+  {
+    Spras = SPRAS;
+    Sysid = SYSID;
+    Costcenter = COSTCENTER;
+    Costobject = COSTOBJECT;
+    Description = DESCRIPTION;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _CostCenterAll { with draft; }
+  association _CostCenter { with draft; }
+}

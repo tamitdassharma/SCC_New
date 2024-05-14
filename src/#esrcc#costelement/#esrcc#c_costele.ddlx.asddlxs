@@ -1,0 +1,77 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Cost Element',
+    typeNamePlural: 'Data List',
+    title: {
+      type: #STANDARD,
+      label: 'Cost Element',
+      value: 'Costelement'
+    },
+    description: { value: 'Description' }
+  }
+}
+annotate view /ESRCC/C_CostEle with
+{
+  @UI.facet: [ {
+    id: 'CE',
+    type: #COLLECTION,
+    purpose: #STANDARD,
+    position: 1
+  },
+  {
+    id: '/ESRCC/I_CostElement',
+    purpose: #STANDARD,
+    type: #IDENTIFICATION_REFERENCE,
+    parentId: 'CE',
+    label: 'General Information',
+    position: 1
+  },
+  {
+    id: 'Admin',
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'CE',
+    targetQualifier: 'AdminGroup',
+    label: 'Admin Information',
+    position: 2
+  },
+  {
+    id: '/ESRCC/I_CostElementText',
+    type: #LINEITEM_REFERENCE,
+    targetElement: '_CostElementText',
+    parentId: 'CE',
+    position: 3
+  } ]
+
+  @UI.identification: [ { position: 1 } ]
+  @UI.lineItem: [ { position: 1 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' },
+                                       useForValidation: true }]
+  Sysid;
+
+  @UI.lineItem: [ { position: 2 } ]
+  Costelement;
+
+  @UI.lineItem: [ { position: 4 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 1 }]
+  CreatedBy;
+
+  @UI.lineItem: [ { position: 5, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 2 }]
+  CreatedAt;
+
+  @UI.lineItem: [ { position: 6 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 3 }]
+  LastChangedBy;
+
+  @UI.lineItem: [ { position: 7, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 4 }]
+  LastChangedAt;
+
+  @UI.lineItem: [ { position: 3 } ]
+  Description;
+
+  @UI.hidden: true
+  SysidDescription;
+}

@@ -1,0 +1,84 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Service Product Mark-up',
+    typeNamePlural: 'Data List',
+    title: {
+      type: #STANDARD,
+      value: 'Serviceproduct'
+    }
+  }
+}
+annotate view /ESRCC/C_SrvMkp with
+{
+  @UI.facet: [ {
+  id: 'CE',
+    type: #COLLECTION,
+    position: 1
+  },
+  {
+    id: '/ESRCC/I_SrvMkp',
+    purpose: #STANDARD,
+    type: #IDENTIFICATION_REFERENCE,
+    parentId: 'CE',
+    label: 'General Information',
+    position: 1
+  },
+  {
+    id: 'Validity',
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'CE',
+    targetQualifier: 'ValidityGroup',
+    label: 'Validity',
+    position: 2
+  },
+  {
+    id: 'Admin',
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'CE',
+    targetQualifier: 'AdminGroup',
+    label: 'Admin Information',
+    position: 3
+  } ]
+
+  @UI.lineItem: [ { position: 2 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
+                                       useForValidation: true }]
+  Serviceproduct;
+
+  @UI.lineItem: [ { position: 7 } ]
+  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 1 }]
+  Validfrom;
+
+  @UI.identification: [ { position: 5 } ]
+  @UI.lineItem: [ { position: 5, cssDefault.width: '11rem' } ]
+  Origcost;
+
+  @UI.identification: [ { position: 6 } ]
+  @UI.lineItem: [ { position: 6, cssDefault.width: '15rem' } ]
+  Passcost;
+
+  @UI.lineItem: [ { position: 8 } ]
+  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 2 }]
+  Validto;
+
+  @UI.lineItem: [ { position: 9 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 1 }]
+  CreatedBy;
+
+  @UI.lineItem: [ { position: 10, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 2 }]
+  CreatedAt;
+
+  @UI.lineItem: [ { position: 11 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 3 }]
+  LastChangedBy;
+
+  @UI.lineItem: [ { position: 12, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 4 }]
+  LastChangedAt;
+
+  @UI.hidden: true
+  ProductDescription;
+}

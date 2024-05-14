@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service definition for/ESRCC/C_DIRECTPLANNNING'
+define service /ESRCC/UI_DIRECTPLANNING {
+  expose /ESRCC/C_DIRECTPLANNNING as DirectPlanning;
+}

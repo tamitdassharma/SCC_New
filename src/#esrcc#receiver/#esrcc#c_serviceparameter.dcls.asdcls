@@ -1,0 +1,7 @@
+@EndUserText.label: 'Acces Control for Service Parameters'
+@MappingRole: true
+define role /ESRCC/C_SERVICEPARAMETER {
+    grant select on /ESRCC/C_SERVICEPARAMETER
+     where inheriting conditions from entity /ESRCC/I_SERVICEPARAMETER; 
+                        
+}

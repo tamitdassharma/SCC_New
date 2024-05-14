@@ -1,0 +1,151 @@
+@Metadata.layer: #CORE
+
+@UI: {
+  headerInfo: {
+    typeName: 'Cost Center',
+    typeNamePlural: 'Cost Centers',
+    title: {
+      type: #STANDARD,
+      label: 'Cost Number',
+      value: 'Costcenter'
+    },
+    description.value: 'costobjectdescription'
+  }
+}
+
+annotate view /ESRCC/C_INDRECMKUP_COST with
+{
+  @UI.facet: [
+    {
+     id: 'general',
+     type: #IDENTIFICATION_REFERENCE,
+     label: 'Charge-Out Received Details',
+     purpose: #STANDARD,
+     position: 10
+    }]
+  
+  @UI.lineItem: [ {
+  position: 10 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 10 ,
+    label: ''
+  } ]
+  @UI.textArrangement: #TEXT_ONLY
+  Costobject;
+  @UI.lineItem: [ {
+  position: 20 ,
+  importance: #MEDIUM,
+  label: '',
+  cssDefault:{width: '15rem'}
+  } ]
+  @UI.identification: [ {
+    position: 20 ,
+    label: ''
+  } ]
+  @UI.textArrangement: #TEXT_LAST
+  Costcenter;
+
+  @UI.lineItem: [ {
+  position: 90,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 90,
+    label: ''
+  } ]
+  @EndUserText.label: 'Total Charge-Out Received'
+  chargeoutforservice;
+  
+  @UI.lineItem: [ {
+  position: 95 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 95 ,
+    label: ''
+  } ]
+  @EndUserText.label: 'Total Markup'
+  totaludmarkupabs;
+  
+  @UI.lineItem: [ {
+  position: 100 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 100 ,
+    label: ''
+  } ]
+  @EndUserText.label: 'Total Cost (Initial)'
+  totalcostbaseabs;
+
+  @UI.lineItem: [ {
+  position: 110 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 110 ,
+    label: ''
+  } ]
+  @EndUserText.label: 'Thereof Value-Add'
+  valuaddabs;
+
+  @UI.lineItem: [ {
+  position: 120 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 120 ,
+    label: ''
+  } ]
+  @EndUserText.label: 'Thereof Pass-Through'
+  passthruabs;
+  
+// hidden fields
+    @UI.hidden: true
+    Currency;
+    @UI.hidden: true   
+    legalentitydescription;
+    @UI.hidden: true
+    ccodedescription;
+    @UI.hidden: true
+    costobjectdescription;
+    @UI.hidden: true
+    costcenterdescription;
+    @UI.hidden: true
+    Serviceproductdescription;
+    @UI.hidden: true
+    Servicetypedescription;
+    @UI.hidden: true
+    receivingentitydescription;
+    @UI.hidden: true
+    Billingfrequqncy;
+    @UI.hidden: true
+    Billingperiod;
+    @UI.hidden: true
+    Ccode;
+    @UI.hidden: true
+    Legalentity;
+    @UI.hidden: true
+    Fplv;
+    @UI.hidden: true
+    Currencytype;
+    @UI.hidden: true
+    Poper;
+    @UI.hidden: true
+    Receivingentity;
+    @UI.hidden: true
+    Serviceproduct;
+    @UI.hidden: true
+    Sysid;
+    @UI.hidden: true
+    Ryear;
+
+}

@@ -1,0 +1,145 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Cost Element Character Detail',
+    typeNamePlural: 'Data List',
+    title: {
+      type: #STANDARD,
+      value: 'Legalentity'
+    }
+  },
+  presentationVariant: [{ sortOrder: [{ by: 'Costelement', direction: #ASC }] }]
+}
+annotate view /ESRCC/C_SrvCeleM with
+{
+  @UI.facet: [ {
+    id: 'CE',
+    type: #COLLECTION,
+    position: 1
+  },
+  {
+    id: '/ESRCC/I_SrvCeleM',
+    purpose: #STANDARD,
+    type: #IDENTIFICATION_REFERENCE,
+    parentId: 'CE',
+    label: 'General Information',
+    position: 1
+  },
+  {
+    id: 'Validity',
+    purpose: #STANDARD,
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'CE',
+    targetQualifier: 'ValidityGroup',
+    label: 'Validity',
+    position: 2
+  },
+  {
+    id: 'Admin',
+    purpose: #STANDARD,
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'CE',
+    targetQualifier: 'AdminGroup',
+    label: 'Admin Information',
+    position: 3
+  } ]
+
+  @UI.lineItem: [ { position: 2 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Legalentity' },
+                                       additionalBinding: [{ element: 'Ccode', localElement: 'Ccode' },
+                                                           { element: 'Sysid', localElement: 'Sysid' }],
+                                       useForValidation: true }]
+  Legalentity;
+
+  @UI.identification: [ { position: 1 } ]
+  @UI.lineItem: [ { position: 1 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Sysid' },
+                                       additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity' },
+                                                           { element: 'Ccode', localElement: 'Ccode' }],
+                                       useForValidation: true }]
+  Sysid;
+
+  @UI.identification: [ { position: 3 } ]
+  @UI.lineItem: [ { position: 3 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Ccode' },
+                                       additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity' },
+                                                           { element: 'Sysid', localElement: 'Sysid' }],
+                                       useForValidation: true }]
+  Ccode;
+
+  @UI.identification: [ { position: 4 } ]
+  @UI.lineItem: [ { position: 4 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTELEMENT_F4', element: 'Costelement' },
+                                       additionalBinding: [{ element: 'Sysid', localElement: 'Sysid' }],
+                                       useForValidation: true }]
+  Costelement;
+
+  @UI.identification: [ { position: 5 } ]
+  @UI.lineItem: [ { position: 5, cssDefault.width: '12rem' } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTTYPE', element: 'Costtype' }}]
+  Costtype;
+
+  @UI.identification: [ { position: 6 } ]
+  @UI.lineItem: [ { position: 6, cssDefault.width: '12rem' } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_POSTINGTYPE', element: 'Postingtype' }}]
+  Postingtype;
+
+  @UI.identification: [ { position: 7 } ]
+  @UI.lineItem: [ { position: 7 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTIND', element: 'costind' }}]
+  Costind;
+
+  @UI.identification: [ { position: 8 } ]
+  @UI.lineItem: [ { position: 8, cssDefault.width: '9rem' } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_USAGECALCULATION', element: 'usagecal' }}]
+  Usagetype;
+
+  @UI.lineItem: [ { position: 9 } ]
+  @UI.fieldGroup: [{ position: 1, qualifier: 'ValidityGroup' }]
+  ValidFrom;
+
+  @UI.lineItem: [ { position: 10 } ]
+  @UI.fieldGroup: [{ position: 2, qualifier: 'ValidityGroup' }]
+  ValidTo;
+
+  @UI.lineItem: [ { position: 11 } ]
+  @UI.fieldGroup: [{ position: 1, qualifier: 'AdminGroup' }]
+  CreatedBy;
+
+  @UI.lineItem: [ { position: 12, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ position: 2, qualifier: 'AdminGroup' }]
+  CreatedAt;
+
+  @UI.lineItem: [ { position: 13 } ]
+  @UI.fieldGroup: [{ position: 3, qualifier: 'AdminGroup' }]
+  LastChangedBy;
+
+  @UI.lineItem: [ { position: 14, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ position: 4, qualifier: 'AdminGroup' }]
+  LastChangedAt;
+
+  @UI.hidden: true
+  SysidDescription;
+  @UI.hidden: true
+  LegalEntityDesc;
+  @UI.hidden: true
+  CcodeDesc;
+  @UI.hidden: true
+  CostElementDesc;
+  @UI.hidden: true
+  CostTypeDesc;
+  @UI.hidden: true
+  PostingTypeDesc;
+  @UI.hidden: true
+  CostIndDesc;
+  @UI.hidden: true
+  UsageTypeDesc;
+}

@@ -1,0 +1,6 @@
+@EndUserText.label: 'Acces Control for Receiver'
+@MappingRole: true
+define role /ESRCC/C_REC_COST {
+    grant select on /ESRCC/C_REC_COST
+     where inheriting conditions from entity /ESRCC/I_REC_COST;                       
+}

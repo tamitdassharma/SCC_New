@@ -1,0 +1,37 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Description', 
+    typeNamePlural: 'Descriptions', 
+    title: {
+      type: #STANDARD, 
+//      label: 'Allocation Key Text', 
+      value: 'Spras'
+    }
+  }
+}
+annotate view /ESRCC/C_AllocationKeyText with
+{
+//  @UI.facet: [ {
+//    id: '/ESRCC/I_AllocationKeyText', 
+//    purpose: #STANDARD, 
+//    type: #IDENTIFICATION_REFERENCE, 
+//    label: 'Allocation Key Text', 
+//    position: 1 
+//  } ]
+//  @UI.identification: [ {
+//    position: 1 
+//  } ]
+  @UI.lineItem: [ {
+    position: 1 
+  } ]
+  Spras;
+  
+//  @UI.identification: [ {
+//    position: 2 
+//  } ]
+  @UI.lineItem: [ {
+    position: 2 
+  } ]
+  Description;
+}

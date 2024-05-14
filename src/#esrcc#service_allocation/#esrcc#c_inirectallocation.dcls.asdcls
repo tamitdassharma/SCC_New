@@ -1,0 +1,7 @@
+@EndUserText.label: 'Acces Control for Indirect Allocation'
+@MappingRole: true
+define role /ESRCC/C_INIRECTALLOCATION {
+    grant select on /ESRCC/C_INIRECTALLOCATION
+     where inheriting conditions from entity /ESRCC/I_INDIRECTALLOCATION;  
+                        
+}

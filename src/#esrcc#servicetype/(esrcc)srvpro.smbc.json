@@ -1,0 +1,46 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Maintain Service Products",
+    "originalLanguage": "en"
+  },
+  "serviceConfiguration": {
+    "serviceBinding": "/ESRCC/UI_SRVPRO_O4",
+    "serviceName": "/ESRCC/UI_SRVPRO_O4",
+    "serviceVersion": "0001",
+    "rootEntitySet": "ServiceProductAll",
+    "name": "Maintain Service Product",
+    "configurationGroup": "",
+    "skipRootEntity": true
+  },
+  "appConfiguration": {
+    "listReport": {},
+    "objectPages": [
+      {
+        "entitySet": "ServiceProduct"
+      },
+      {
+        "entitySet": "ServiceProductText"
+      }
+    ],
+    "tableSettings": [
+      {
+        "entitySet": "ServiceProduct",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true,
+        "rowCountMode": "auto"
+      },
+      {
+        "entitySet": "ServiceProductAll",
+        "tableType": "gridTable"
+      },
+      {
+        "entitySet": "ServiceProductText",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true
+      }
+    ]
+  }
+}

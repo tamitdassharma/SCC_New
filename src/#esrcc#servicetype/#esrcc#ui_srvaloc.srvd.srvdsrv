@@ -1,0 +1,5 @@
+define service /ESRCC/UI_SRVALOC {
+  expose /ESRCC/C_SrvAloc_S as ServiceAllocatioAll;
+  expose /ESRCC/C_SrvAloc as ServiceAllocation;
+  expose /ESRCC/C_AllocationWeightage as Weightage;
+}

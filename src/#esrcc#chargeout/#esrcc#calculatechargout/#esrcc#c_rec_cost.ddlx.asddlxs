@@ -1,0 +1,195 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Charge-Out to Receiver',
+    typeNamePlural: 'Charge-Out to Receivers',
+    title: {
+      type: #STANDARD,
+      label: 'Receiving Entity', 
+      value: 'Receivingentity'  
+    },
+    description.value: 'receivingentitydescription'
+  }
+}
+annotate view /ESRCC/C_REC_COST with
+{
+ 
+  @UI.facet: [{
+  id: 'general',
+  type: #IDENTIFICATION_REFERENCE,
+  label: 'General Information',
+  purpose: #STANDARD,
+  position: 10
+  }]
+  @UI.lineItem: [ {
+  position:  999,
+  importance: #MEDIUM,
+  label: 'Country',
+   cssDefault:{width: '4.5rem'}
+  } ]
+  @UI.textArrangement: #TEXT_LAST
+  Country;
+  @UI.lineItem: [ 
+  {type: #FOR_INTENT_BASED_NAVIGATION, label: 'View Allocation', position: 10, semanticObject: 'sccIndirectKPI', 
+          semanticObjectAction: 'display'},
+  {position: 10 ,
+  importance: #HIGH,
+  label: '',
+  cssDefault:{width: '15rem'}
+  } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.semanticObject: ''
+  Receivingentity;
+  @UI.lineItem: [ {
+  position: 20 ,
+  importance: #HIGH,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 20 ,
+    label: ''
+  } ]
+  @UI.textArrangement: #TEXT_ONLY
+  ConsumptionVersion;
+  
+  @UI.lineItem: [ {
+  position: 50 ,
+  importance: #HIGH,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 50 ,
+    label: ''
+  } ]
+  @EndUserText.label: 'Actual Consumption'
+  Reckpi;
+  @UI.lineItem: [ {
+  position: 55 ,
+  importance: #HIGH,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 55 ,
+    label: ''
+  } ]
+  @EndUserText.label: 'UoM'
+  @UI.textArrangement: #TEXT_LAST
+  Uom;
+  @UI.lineItem: [ {
+  position: 56 ,
+  importance: #HIGH,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 56 ,
+    label: ''
+  } ]
+  @UI.textArrangement: #TEXT_ONLY
+  KeyVersion;
+  @UI.lineItem: [ {
+  position: 60 ,
+  importance: #HIGH,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 60 ,
+    label: ''
+  } ]
+  @EndUserText.label: 'Key Share (%)'
+  Reckpishare;
+  @UI.lineItem: [ {
+  position: 70 ,
+  importance: #HIGH,
+  label: '',
+  cssDefault:{width: '10rem'}
+  } ]
+  @UI.identification: [ {
+    position: 70 ,
+    label: ''
+  } ]
+  @EndUserText.label: 'Charge Out Amount'
+  chargeoutforservice;
+  @UI.lineItem: [ {
+  position: 80 ,
+  importance: #MEDIUM,
+  label: '',
+  cssDefault:{width: '8rem'}
+  } ]
+  @UI.identification: [ {
+    position: 80 ,
+    label: ''
+  } ]
+  @UI.textArrangement: #TEXT_ONLY
+  Status;
+  @UI.lineItem: [ {
+  position: 90 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 90 ,
+    label: ''
+  } ]
+  Workflowid;
+  @UI.lineItem: [ {
+    position: 250 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 10 ,
+    qualifier: 'AdminData'
+  } ]
+  CreatedBy;
+  @UI.lineItem: [ {
+    position: 260 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 20 ,
+    qualifier: 'AdminData'
+  } ]
+  CreatedAt;
+  @UI.lineItem: [ {
+    position: 270 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 30 ,
+    qualifier: 'AdminData'
+  } ]
+  LastChangedBy;
+  @UI.lineItem: [ {
+    position: 280 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 40 ,
+    qualifier: 'AdminData'
+  } ]
+  LastChangedAt;
+
+  // hidden fields
+    @UI.hidden: true
+    receivingentitydescription;
+    @UI.hidden: true
+    statusdescription;
+    @UI.hidden: true
+    receivingcountryname;
+    @UI.hidden: true
+    unitname;
+    @UI.hidden: true
+    consumptionversiontext;
+
+}

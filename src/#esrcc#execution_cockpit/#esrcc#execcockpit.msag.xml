@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>Execution Cockpit</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>000</MSGNR>
+     <TEXT>Stewardship not maintained or configured as 0.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Service Markup&apos;s not maintained or configured as 0.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Charge Out Method (Direct/Indirect) for Service not maintained</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Allocation Keys for Service not maintained</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Receivers for Service not maintained</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Data already exist with a different billing frequency &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>No Authorization to Calculate Cost Base &amp; Stewardship</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>No Authorization to Calculate Service Cost Share &amp; Markup</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>No Authorization to Calculate Chargeout to Receivers</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

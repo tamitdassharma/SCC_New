@@ -1,0 +1,37 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Maintain Cost Element Character Details",
+    "originalLanguage": "en"
+  },
+  "serviceConfiguration": {
+    "serviceBinding": "/ESRCC/UI_SRVCELEM",
+    "serviceName": "/ESRCC/UI_SRVCELEM",
+    "serviceVersion": "0001",
+    "rootEntitySet": "CostElementToLeAll",
+    "name": "Maintain Cost Element Character Details",
+    "configurationGroup": "",
+    "skipRootEntity": true
+  },
+  "appConfiguration": {
+    "listReport": {},
+    "objectPages": [
+      {
+        "entitySet": "CostElementToLe"
+      }
+    ],
+    "tableSettings": [
+      {
+        "entitySet": "CostElementToLe",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true,
+        "rowCountMode": "auto"
+      },
+      {
+        "entitySet": "CostElementToLeAll",
+        "tableType": "gridTable"
+      }
+    ]
+  }
+}

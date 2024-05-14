@@ -1,0 +1,45 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Maintain Company Code & Assign to Legal Entity",
+    "originalLanguage": "en"
+  },
+  "serviceConfiguration": {
+    "serviceBinding": "/ESRCC/UI_LECCODE_O4",
+    "serviceName": "/ESRCC/UI_LECCODE_O4",
+    "serviceVersion": "0001",
+    "rootEntitySet": "LeToCompanyCodeAll",
+    "name": "Maintain and Assign Company Code",
+    "configurationGroup": "",
+    "skipRootEntity": true
+  },
+  "appConfiguration": {
+    "listReport": {},
+    "objectPages": [
+      {
+        "entitySet": "CompanyCodeText"
+      },
+      {
+        "entitySet": "LeToCompanyCode"
+      }
+    ],
+    "tableSettings": [
+      {
+        "entitySet": "CompanyCodeText",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true
+      },
+      {
+        "entitySet": "LeToCompanyCode",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true,
+        "rowCountMode": "auto"
+      },
+      {
+        "entitySet": "LeToCompanyCodeAll"
+      }
+    ]
+  }
+}

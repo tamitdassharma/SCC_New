@@ -1,0 +1,5 @@
+define service /ESRCC/UI_COSTELE {
+  expose /ESRCC/C_COSTELE_S as CostElementAll;
+  expose /ESRCC/C_COSTELE as CostElement;
+  expose /ESRCC/C_COSTELETEXT as CostElementText;
+}

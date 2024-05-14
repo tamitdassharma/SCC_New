@@ -1,0 +1,61 @@
+managed implementation in class /ESRCC/BP_I_DIRECTALLOCATION unique;
+strict ( 2 );
+//with draft;
+
+define behavior for /ESRCC/I_DIRECTALLOCATION alias DirectAllocation
+persistent table /esrcc/diralloc
+//draft table /ESRCC/D_DIRAL
+//etag master LocalLastChangedAt
+lock master
+//total etag LastChangedAt
+authorization master( global )
+
+{
+  field ( mandatory : create )
+   Serviceproduct,
+   Ryear,
+   Poper,
+   Receivingentity,
+   Fplv;
+
+  field ( readonly )
+   CreatedAt,
+   CreatedBy,
+   LastChangedAt,
+   LastChangedBy,
+   LocalLastChangedAt;
+
+  field ( readonly : update )
+   Serviceproduct,
+   Ryear,
+   Poper,
+   Receivingentity,
+   Fplv;
+
+
+  create;
+  update;
+  delete;
+
+//  draft action Edit;
+//  draft action Activate;
+//  draft action Discard;
+//  draft action Resume;
+//  draft determine action Prepare;
+
+  mapping for /ESRCC/DIRALLOC
+  {
+    Serviceproduct = SERVICEPRODUCT;
+    Ryear = RYEAR;
+    Poper = POPER;
+    Receivingentity = RECEIVINGENTITY;
+    Fplv = FPLV;
+    Consumption = CONSUMPTION;
+    Uom = UOM;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+}

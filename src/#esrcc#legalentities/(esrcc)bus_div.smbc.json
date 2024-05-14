@@ -1,0 +1,45 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Maintain Business Divisions",
+    "originalLanguage": "en"
+  },
+  "serviceConfiguration": {
+    "serviceBinding": "/ESRCC/UI_BUSDIV_O4",
+    "serviceName": "/ESRCC/UI_BUSDIV_O4",
+    "serviceVersion": "0001",
+    "rootEntitySet": "BusinessDivisionAll",
+    "name": "Maintain Business Division",
+    "configurationGroup": "",
+    "skipRootEntity": true
+  },
+  "appConfiguration": {
+    "listReport": {},
+    "objectPages": [
+      {
+        "entitySet": "BusinessDivisioText"
+      },
+      {
+        "entitySet": "BusinessDivision"
+      }
+    ],
+    "tableSettings": [
+      {
+        "entitySet": "BusinessDivisioText",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true
+      },
+      {
+        "entitySet": "BusinessDivision",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true,
+        "rowCountMode": "auto"
+      },
+      {
+        "entitySet": "BusinessDivisionAll"
+      }
+    ]
+  }
+}

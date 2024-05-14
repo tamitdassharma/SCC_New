@@ -1,0 +1,20 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Description', 
+    typeNamePlural: 'Descriptions', 
+    title: {
+      type: #STANDARD, 
+      label: 'Service Product Text', 
+      value: 'Spras'
+    }
+  }
+}
+annotate view /ESRCC/C_SrvProText with
+{
+  @UI.lineItem: [ { position: 1 } ]
+  Spras;
+  
+  @UI.lineItem: [ { position: 2 } ]
+  Description;
+}

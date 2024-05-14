@@ -1,0 +1,29 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Description', 
+    typeNamePlural: 'Descriptions'
+//    title: {
+//      type: #STANDARD, 
+//      label: 'Cost Center Text', 
+//      value: 'Spras'
+//    }
+  }
+}
+annotate view /ESRCC/C_CosCenText with
+{
+//  @UI.facet: [ {
+//    id: '/ESRCC/I_CosCenText', 
+//    purpose: #STANDARD, 
+//    type: #IDENTIFICATION_REFERENCE, 
+//    label: 'Cost Center Text', 
+//    position: 1 
+//  } ]
+//  @UI.identification: [ { position: 1 } ]
+  @UI.lineItem: [ { position: 1 } ]
+  Spras;
+  
+//  @UI.identification: [ { position: 2 } ]
+  @UI.lineItem: [ { position: 2 } ]
+  Description;
+}

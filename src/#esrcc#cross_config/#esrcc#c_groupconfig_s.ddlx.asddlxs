@@ -1,0 +1,71 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Group Configuration'
+  }
+}
+annotate view /ESRCC/C_GroupConfig_S with
+{
+  @UI.facet: [ {
+    id: 'CE',
+    purpose: #STANDARD,
+    type: #COLLECTION,
+    label: 'Group Configuration'
+  },
+  //  {
+  //    id: 'Transport',
+  //    purpose: #STANDARD,
+  //    type: #IDENTIFICATION_REFERENCE,
+  //    label: 'Transport',
+  //    parentId: 'CE',
+  //    position: 1
+  //    hidden: #(HideTransport)
+  //    },
+  //    {
+  //      id: '/ESRCC/I_GroupConfig',
+  //      purpose: #STANDARD,
+  //      type: #LINEITEM_REFERENCE,
+  //    //    label: 'Group Configuration',
+  //      parentId: 'CE',
+  //      position: 2 ,
+  //      targetElement: '_GroupConfig'
+  //  },
+  {
+    id: 'Group',
+    purpose: #STANDARD,
+    type: #FIELDGROUP_REFERENCE,
+    label: 'General Information',
+    targetElement: '_GroupConfig',
+    targetQualifier: 'ToParent',
+    parentId: 'CE',
+    position: 1
+  },
+  {
+    id: 'Admin',
+    purpose: #STANDARD,
+    type: #FIELDGROUP_REFERENCE,
+    label: 'Admin Information',
+    targetElement: '_GroupConfig',
+    targetQualifier: 'AdminGroup',
+    parentId: 'CE',
+    position: 2
+  } ]
+  @UI.lineItem: [ {
+    position: 1
+  } ]
+  SingletonID;
+
+  @UI.hidden: true
+  HideTransport;
+
+  //  @UI.identification: [ {
+  //  //    position: 4 ,
+  //  //    importance: #HIGH
+  //  //  },
+  //  //  {
+  //    type: #FOR_ACTION,
+  //    dataAction: 'SelectCustomizingTransptReq',
+  //    label: 'Select Transport'
+  //  } ]
+  //  TransportRequestID;
+}

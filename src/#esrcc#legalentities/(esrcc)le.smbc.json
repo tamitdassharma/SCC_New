@@ -1,0 +1,45 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Maintain Legal Entities",
+    "originalLanguage": "en"
+  },
+  "serviceConfiguration": {
+    "serviceBinding": "/ESRCC/UI_LE_O4",
+    "serviceName": "/ESRCC/UI_LE_O4",
+    "serviceVersion": "0001",
+    "rootEntitySet": "LegalEntityAll",
+    "name": "Maintain Legal Entity",
+    "configurationGroup": "",
+    "skipRootEntity": true
+  },
+  "appConfiguration": {
+    "listReport": {},
+    "objectPages": [
+      {
+        "entitySet": "LegalEntity"
+      },
+      {
+        "entitySet": "LegalEntityText"
+      }
+    ],
+    "tableSettings": [
+      {
+        "entitySet": "LegalEntity",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true,
+        "rowCountMode": "auto"
+      },
+      {
+        "entitySet": "LegalEntityAll"
+      },
+      {
+        "entitySet": "LegalEntityText",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true
+      }
+    ]
+  }
+}

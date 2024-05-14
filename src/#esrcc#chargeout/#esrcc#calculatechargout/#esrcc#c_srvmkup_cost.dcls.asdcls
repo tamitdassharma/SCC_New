@@ -1,0 +1,6 @@
+@EndUserText.label: 'Acces Control for Service Chargeout'
+@MappingRole: true
+define role /ESRCC/C_SRVMKUP_COST {
+    grant select on /ESRCC/C_SRVMKUP_COST
+     where inheriting conditions from entity /ESRCC/I_SRVMKUP_COST;                       
+}

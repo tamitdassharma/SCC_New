@@ -1,0 +1,42 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Description',
+    typeNamePlural: 'Descriptions'
+//    title: {
+//      type: #STANDARD,
+//      label: 'Cost Element Text',
+//      value: 'Spras'
+//    }
+  }
+}
+annotate view /ESRCC/C_CostEleText with
+{
+  //  @UI.facet: [ {
+  //    id: '/EXAOTP/I_CostElementText',
+  //    purpose: #STANDARD,
+  //    type: #IDENTIFICATION_REFERENCE,
+  //    label: 'Cost Element Text',
+  //    position: 1
+  //  } ]
+  //  @UI.identification: [ {
+  //    position: 1
+  //  } ]
+  @UI.lineItem: [ { position: 1 } ]
+  Spras;
+
+  //  @UI.identification: [ {
+  //    position: 2
+  //  } ]
+  @UI.lineItem: [ { position: 2 } ]
+  Description;
+
+  @UI.hidden
+  sysid;
+
+  @UI.hidden
+  Costelement;
+
+  @UI.hidden
+  LanguageName;
+}

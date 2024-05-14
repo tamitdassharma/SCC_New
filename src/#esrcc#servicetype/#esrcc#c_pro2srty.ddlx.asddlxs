@@ -1,0 +1,77 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Assign Service Product',
+    typeNamePlural: 'Data List',
+    title: {
+      type: #STANDARD,
+      value: 'Serviceproduct'
+    },
+    description:{ value: 'ServiceProductDescription' }
+  }
+}
+annotate view /ESRCC/C_Pro2SrTy with
+{
+  @UI.facet: [ {
+    id: '/ESRCC/I_Pro2SrTy',
+    purpose: #STANDARD,
+    type: #COLLECTION,
+    position: 1
+  },
+  {
+   parentId: '/ESRCC/I_Pro2SrTy',
+   type: #IDENTIFICATION_REFERENCE,
+   purpose: #STANDARD,
+   label: 'General Information' ,
+   position: 10
+  },
+  {
+   parentId: '/ESRCC/I_Pro2SrTy',
+   type: #FIELDGROUP_REFERENCE,
+   purpose: #STANDARD,
+   label: 'Admin Information',
+   targetQualifier: 'AdminGroup',
+   position: 20
+  } ]
+
+  @UI.lineItem: [ { position: 2  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
+                                       useForValidation: true }]
+  @UI.textArrangement: #TEXT_LAST
+  Serviceproduct;
+
+  @UI.identification: [ {  position: 3  } ]
+  @UI.lineItem: [ {  position: 3  } ]
+  @Consumption.valueHelpDefinition: [{entity: {name: '/ESRCC/I_SERVICETYPE_F4', element: 'ServiceType' }, useForValidation: true }]
+  @UI.textArrangement: #TEXT_LAST
+  Servicetype;
+
+  @UI.identification: [ {  position: 4  } ]
+  @UI.lineItem: [ {  position: 4  } ]
+  @Consumption.valueHelpDefinition: [{entity: { name: '/ESRCC/I_TRANSACTIONGROUP_F4', element: 'Transactiongroup'}, useForValidation: true }]
+  @UI.textArrangement: #TEXT_LAST
+  Transactiongroup;
+
+  @UI.lineItem: [ { position: 5 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 10 }]
+  CreatedBy;
+
+  @UI.lineItem: [ { position: 6, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 20 }]
+  CreatedAt;
+
+  @UI.lineItem: [ { position: 7 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 30 }]
+  LastChangedBy;
+
+  @UI.lineItem: [ { position: 8, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 40 }]
+  LastChangedAt;
+
+  @UI.hidden: true
+  ServiceProductDescription;
+  @UI.hidden: true
+  ServiceTypeDescription;
+  @UI.hidden: true
+  TransGroupDescription;
+}

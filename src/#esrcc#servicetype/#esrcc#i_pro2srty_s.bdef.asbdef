@@ -1,0 +1,69 @@
+managed with additional save implementation in class /ESRCC/BP_I_PRO2SRTY unique;
+strict;
+with draft;
+
+define behavior for /ESRCC/I_Pro2SrTy_S alias ServiceProductAll
+draft table /ESRCC/D_PRO2S_S
+with unmanaged save
+lock master total etag LastChangedAtMax
+authorization master( global )
+
+{
+  update;
+  internal create;
+  internal delete;
+
+  draft action ( features : instance ) Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare
+  {
+    validation ServiceProduct~ValidateData;
+  }
+//  action ( features : instance ) SelectCustomizingTransptReq parameter D_SelectCustomizingTransptReqP result [1] $self;
+
+  association _ServiceProduct { create ( features : instance, precheck ); with draft; }
+}
+
+define behavior for /ESRCC/I_Pro2SrTy alias ServiceProduct
+persistent table /ESRCC/PRO2SRTY
+draft table /ESRCC/D_PRO2SRT
+etag master LocalLastChangedAt
+lock dependent by _ServiceProductAll
+authorization dependent by _ServiceProductAll
+
+{
+  field ( mandatory : create )
+   Serviceproduct;
+
+   field( mandatory )
+   Servicetype;
+
+  field ( readonly )
+   SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+
+  field ( readonly : update )
+   Serviceproduct;
+
+
+  update( features : global, precheck );
+  delete( features : global );
+
+  mapping for /ESRCC/PRO2SRTY
+  {
+    Serviceproduct = SERVICEPRODUCT;
+    Servicetype = SERVICETYPE;
+    Transactiongroup = TRANSACTIONGROUP;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _ServiceProductAll { with draft; }
+
+//  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+  validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
+}

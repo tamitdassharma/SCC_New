@@ -1,0 +1,128 @@
+managed with additional save implementation in class /ESRCC/BP_I_SRVALOC unique;
+strict;
+with draft;
+
+define behavior for /ESRCC/I_SrvAloc_S alias ServiceAllocatioAll
+draft table /esrcc/d_srval_s
+with unmanaged save
+lock master total etag LastChangedAtMax
+authorization master ( global )
+
+{
+  update;
+  internal create;
+  internal delete;
+
+  draft action ( features : instance ) Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare
+  {
+    validation ServiceAllocation~ValidateData;
+    validation Weightage~ValidateData;
+  }
+
+  association _ServiceAllocation { create ( features : instance, precheck ); with draft; }
+}
+
+define behavior for /ESRCC/I_SrvAloc alias ServiceAllocation
+persistent table /esrcc/srvaloc
+draft table /esrcc/d_srvaloc
+etag master LocalLastChangedAt
+lock dependent by _ServiceAllocatioAll
+authorization dependent by _ServiceAllocatioAll
+{
+  field ( mandatory : create )
+  Serviceproduct,
+  CostVersion,
+  Validfrom,
+  Chargeout;
+
+  field ( readonly )
+  SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, HideVersion, HideWeightage;
+
+  field ( mandatory )
+  KeyVersion, ValidTo;
+
+  field ( readonly : update )
+  Serviceproduct,
+  CostVersion,
+  Validfrom;
+
+  update ( features : global, precheck );
+  delete ( features : global );
+
+  mapping for /ESRCC/SRVALOC
+  {
+    Serviceproduct = SERVICEPRODUCT;
+    CostVersion = COST_VERSION;
+    Validfrom = VALIDFROM;
+    Chargeout = CHARGEOUT;
+    Uom = UOM;
+    CapacityVersion = CAPACITY_VERSION;
+    ConsumptionVersion = CONSUMPTION_VERSION;
+    KeyVersion = KEY_VERSION;
+    Validto = validto;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _ServiceAllocatioAll { with draft; }
+  association _Weightage { create ( features : global ); with draft; }
+
+//  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+  validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
+}
+
+define behavior for /ESRCC/I_AllocationWeightage alias Weightage
+persistent table /esrcc/alloc_wgt
+draft table /esrcc/d_allocwg
+etag master LocallastChangedAt
+lock dependent by _ServiceAllocationAll
+authorization dependent by _ServiceAllocationAll
+{
+  field ( mandatory : create )
+  Allockey, AllocType;
+
+  field ( mandatory )
+  AllocationPeriod, Weightage;
+
+  field ( readonly )
+  SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+
+  field ( readonly : update )
+  Serviceproduct,
+  CostVersion,
+  ValidfromAlloc,
+  Allockey,
+  AllocType;
+
+  update ( features : global, precheck );
+  delete ( features : global );
+
+  mapping for /esrcc/alloc_wgt
+  {
+    Serviceproduct = SERVICEPRODUCT;
+    CostVersion = COST_VERSION;
+    ValidfromAlloc = VALIDFROM_ALLOC;
+    Allockey = ALLOCKEY;
+    AllocType = ALLOCKEYTYPE;
+    AllocationPeriod = allocation_period;
+    RefPeriod = REF_PERIOD;
+    Weightage = WEIGHTAGE;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _ServiceAllocationAll { with draft; }
+  association _ServiceAllocation { with draft; }
+
+  validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
+}

@@ -1,0 +1,35 @@
+projection;
+strict;
+use draft;
+
+define behavior for /ESRCC/C_SrvAloc_S alias ServiceAllocatioAll
+
+{
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+//  use action SelectCustomizingTransptReq;
+
+  use association _ServiceAllocation { create; with draft; }
+}
+
+define behavior for /ESRCC/C_SrvAloc alias ServiceAllocation
+
+{
+  use update;
+  use delete;
+
+  use association _ServiceAllocatioAll { with draft; }
+  use association _Weightage { create; with draft; }
+}
+
+define behavior for /ESRCC/C_AllocationWeightage alias Weightage
+{
+  use update;
+  use delete;
+
+  use association _ServiceAllocationAll { with draft; }
+  use association _ServiceAllocation { with draft; }
+}

@@ -1,0 +1,40 @@
+projection implementation in class /ESRCC/BP_C_COSTELE_S unique;
+strict;
+use draft;
+
+define behavior for /ESRCC/C_CostEle_S alias CostElementAll
+
+{
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+//  use action SelectCustomizingTransptReq;
+
+  use association _CostElement { create ( augment ); with draft; }
+}
+
+define behavior for /ESRCC/C_CostEle alias CostElement
+
+{
+  field ( modify )
+   Description;
+
+
+  use update( augment );
+  use delete;
+
+  use association _CostElementAll { with draft; }
+  use association _CostElementText { create; with draft; }
+}
+
+define behavior for /ESRCC/C_CostEleText alias CostElementText
+
+{
+  use update;
+  use delete;
+
+  use association _CostElementAll { with draft; }
+  use association _CostElement { with draft; }
+}

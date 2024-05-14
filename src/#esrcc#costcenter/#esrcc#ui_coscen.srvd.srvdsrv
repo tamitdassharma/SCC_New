@@ -1,0 +1,5 @@
+define service /ESRCC/UI_COSCEN {
+  expose /ESRCC/C_COSCEN_S as CostCenterAll;
+  expose /ESRCC/C_COSCEN as CostCenter;
+  expose /ESRCC/C_COSCENTEXT as CostCenterText;
+}

@@ -1,0 +1,6 @@
+@EndUserText.label: 'Acces Control for Direct Allocation'
+@MappingRole: true
+define role /ESRCC/I_DIRECTALLOCATION {
+    grant select on /ESRCC/I_DIRECTALLOCATION
+      where (Receivingentity) = aspect pfcg_auth('/ESRCC/LE',  ACTVT = '03', /ESRCC/LE);            
+}

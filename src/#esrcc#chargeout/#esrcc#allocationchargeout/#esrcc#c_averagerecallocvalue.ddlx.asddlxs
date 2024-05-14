@@ -1,0 +1,76 @@
+@Metadata.layer: #CORE
+
+@UI: {
+  headerInfo: {
+    typeName: 'Allocation Value',
+    typeNamePlural: 'Allocation Values'
+  }
+}
+
+annotate view /ESRCC/C_AVERAGERECALLOCVALUE with
+{
+  @UI.facet: [
+    {
+     id: 'general',
+     type: #IDENTIFICATION_REFERENCE,
+     label: '',
+     purpose: #STANDARD,
+     position: 10
+    }]
+
+  @UI.lineItem: [
+   {  position: 10,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  ryear;
+  @UI.lineItem: [
+  {  position: 20,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @EndUserText.label: 'Period'
+  refpoper;
+   @UI.lineItem: [
+  {  position: 30,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  allockey;
+  @UI.lineItem: [
+  {  position: 40,
+  importance: #HIGH,
+  label: ''
+  } ]
+  @EndUserText.label: 'Base Key Value'
+  avgvalue;
+  
+//hidden fields
+  @UI.hidden: true
+  fplv;
+  @UI.hidden: true
+  poper;
+  @UI.hidden: true
+  sysid;
+  @UI.hidden: true
+  ccode;
+  @UI.hidden: true
+  legalentity;
+  @UI.hidden: true
+  costobject;
+  @UI.hidden: true
+  costcenter;
+  @UI.hidden: true
+  serviceproduct;
+  @UI.hidden: true
+  receivingentity;
+  @UI.hidden: true
+  keyversion;
+  @UI.hidden: true
+  alloctype;
+  @UI.hidden: true
+  allocationperiod;
+  @UI.hidden: true
+  refperiod;
+
+}

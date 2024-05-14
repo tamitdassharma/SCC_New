@@ -1,0 +1,128 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Service Cost Share',
+    typeNamePlural: 'Service Cost Shares',
+    title: {
+      type: #STANDARD,
+      value: 'Serviceproduct'
+    }
+  }
+}
+
+annotate entity /ESRCC/C_ServiceParameter with
+{
+  @UI.facet: [ {
+     id: 'CE',
+     type: #COLLECTION,
+     position: 1
+   },
+   {
+     id: '/ESRCC/I_ServiceProductRecei',
+     purpose: #STANDARD,
+     type: #IDENTIFICATION_REFERENCE,
+     parentId: 'CE',
+     label: 'General Information',
+     position: 10
+   },
+   {
+     id: 'Validity',
+     purpose: #STANDARD,
+     type: #FIELDGROUP_REFERENCE,
+     parentId: 'CE',
+     targetQualifier: 'ValidityGroup',
+     label: 'Validity',
+     position: 20
+   },
+   {
+     id: 'Admin',
+     purpose: #STANDARD,
+     type: #FIELDGROUP_REFERENCE,
+     parentId: 'CE',
+     targetQualifier: 'AdminGroup',
+     label: 'Admin Information',
+     position: 30
+   } ]
+
+  @UI.identification: [ { position: 1 } ]
+  @UI.lineItem: [ { position: 1, hidden: true } ]
+  @UI.textArrangement: #TEXT_LAST
+  Legalentity;
+
+  @UI.identification: [ { position: 2 } ]
+  @UI.lineItem: [ { position: 2, hidden: true } ]
+  @UI.textArrangement: #TEXT_LAST
+  Sysid;
+
+  @UI.identification: [ { position: 2 } ]
+  @UI.lineItem: [ { position: 2, hidden: true } ]
+  @UI.textArrangement: #TEXT_LAST
+  Ccode;
+
+  @UI.identification: [ { position: 3 } ]
+  @UI.lineItem: [ { position: 3, cssDefault.width: '11.5rem', hidden: true } ]
+  @UI.textArrangement: #TEXT_LAST
+  Costobject;
+
+  @UI.identification: [ { position: 4 } ]
+  @UI.lineItem: [ { position: 4, hidden: true } ]
+  @UI.textArrangement: #TEXT_LAST
+  @EndUserText.label: 'Cost Center'
+  Costcenter;
+
+  @UI.lineItem: [ { position: 5 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' }, useForValidation: true }]
+  Serviceproduct;
+
+  @UI.lineItem: [ { position: 17 } ]
+  @UI.fieldGroup: [{ position: 1, qualifier: 'ValidityGroup' }]
+  Validfrom;
+
+  @UI.lineItem: [ { position: 18 } ]
+  @UI.fieldGroup: [{ position: 2, qualifier: 'ValidityGroup' }]
+  Validto;
+
+  @UI.identification: [ { position: 12 } ]
+  @UI.lineItem: [ { position: 12 } ]
+  Costshare;
+
+  @UI.identification: [ { position: 15 } ]
+  @UI.lineItem: [ { position: 15 } ]
+  Erpsalesorder;
+
+  @UI.identification: [ { position: 16 } ]
+  @UI.lineItem: [ { position: 16 } ]
+  Contractid;
+
+  @UI.lineItem: [ { position: 19 } ]
+  @UI.fieldGroup: [{ position: 1, qualifier: 'AdminGroup' }]
+  CreatedBy;
+
+  @UI.lineItem: [ { position: 20, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ position: 2, qualifier: 'AdminGroup' }]
+  CreatedAt;
+
+  @UI.lineItem: [ { position: 21 } ]
+  @UI.fieldGroup: [{ position: 3, qualifier: 'AdminGroup' }]
+  LastChangedBy;
+
+  @UI.lineItem: [ { position: 22, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ position: 4, qualifier: 'AdminGroup' }]
+  LastChangedAt;
+
+  @UI.hidden: true
+  SysidDescription;
+  @UI.hidden: true
+  LegalentityDesc;
+  @UI.hidden: true
+  CcodeDesc;
+  @UI.hidden: true
+  CostobjectDesc;
+  @UI.hidden: true
+  CostcenterDesc;
+  @UI.hidden: true
+  ServiceproductDesc;
+  @UI.hidden: true
+  CostcenterVf;
+}

@@ -1,0 +1,4 @@
+define service /ESRCC/UI_SRVCELEM {
+  expose /ESRCC/C_SRVCELEM_S as CostElementToLeAll;
+  expose /ESRCC/C_SRVCELEM as CostElementToLe;
+}

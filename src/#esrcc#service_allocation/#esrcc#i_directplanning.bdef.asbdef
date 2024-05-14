@@ -1,0 +1,58 @@
+managed implementation in class /ESRCC/BP_I_DIRECTPLANNING unique;
+strict ( 2 );
+//with draft;
+
+define behavior for /ESRCC/I_DIRECTPLANNING alias DirectPlanning
+persistent table /esrcc/dirplan
+//draft table /ESRCC/D_DPLAN
+//etag master LocalLastChangedAt
+lock master
+//total etag LastChangedAt
+authorization master( global )
+
+{
+  field ( mandatory : create )
+   Serviceproduct,
+   Ryear,
+   Poper,
+   Fplv;
+
+  field ( readonly )
+   CreatedAt,
+   CreatedBy,
+   LastChangedAt,
+   LastChangedBy,
+   LocalLastChangedAt;
+
+  field ( readonly : update )
+   Serviceproduct,
+   Ryear,
+   Poper,
+   Fplv;
+
+
+  create;
+  update;
+  delete;
+
+//  draft action Edit;
+//  draft action Activate;
+//  draft action Discard;
+//  draft action Resume;
+//  draft determine action Prepare;
+
+  mapping for /ESRCC/DIRPLAN
+  {
+    Serviceproduct = SERVICEPRODUCT;
+    Ryear = RYEAR;
+    Poper = POPER;
+    Fplv = FPLV;
+    Uom = UOM;
+    Planning = PLANNING;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+}

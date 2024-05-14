@@ -1,0 +1,4 @@
+define service /ESRCC/UI_PRO2SRTY {
+  expose /ESRCC/C_PRO2SRTY_S as ServiceProductAll;
+  expose /ESRCC/C_PRO2SRTY as ServiceProduct;
+}

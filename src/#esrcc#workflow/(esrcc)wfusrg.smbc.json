@@ -1,0 +1,45 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Maintain and assign Users to Workflow User Groups",
+    "originalLanguage": "en"
+  },
+  "serviceConfiguration": {
+    "serviceBinding": "/ESRCC/UI_WFUSRG",
+    "serviceName": "/ESRCC/UI_WFUSRG",
+    "serviceVersion": "0001",
+    "rootEntitySet": "UserGroupAll",
+    "name": "Workflow: User Group",
+    "configurationGroup": "",
+    "skipRootEntity": true
+  },
+  "appConfiguration": {
+    "listReport": {},
+    "objectPages": [
+      {
+        "entitySet": "UserGroup"
+      },
+      {
+        "entitySet": "UserMapping"
+      }
+    ],
+    "tableSettings": [
+      {
+        "entitySet": "UserGroup",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true,
+        "rowCountMode": "auto"
+      },
+      {
+        "entitySet": "UserGroupAll"
+      },
+      {
+        "entitySet": "UserMapping",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true
+      }
+    ]
+  }
+}

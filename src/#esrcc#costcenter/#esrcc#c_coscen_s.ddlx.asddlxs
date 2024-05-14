@@ -1,0 +1,30 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Cost Object and Number'
+  }
+}
+annotate view /ESRCC/C_CosCen_S with
+{
+  @UI.facet: [ {
+    id: '/ESRCC/I_CosCen',
+    purpose: #STANDARD,
+    type: #LINEITEM_REFERENCE,
+    label: 'Source Cost Objects and Numbers',
+    position: 2 ,
+    targetElement: '_CostCenter'
+  } ]
+  @UI.lineItem: [ { position: 1 } ]
+  SingletonID;
+
+  @UI.hidden: true
+  HideTransport;
+
+  @UI.identification: [ { position: 2, importance: #HIGH }
+  //  {
+  //    type: #FOR_ACTION,
+  //    dataAction: 'SelectCustomizingTransptReq',
+  //    label: 'Select Transport'
+  ]
+  TransportRequestID;
+}

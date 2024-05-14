@@ -1,0 +1,163 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Stewardship Share for Cost Object',
+    typeNamePlural: 'Data List',
+    title: {
+      type: #STANDARD,
+      value: 'Legalentity'
+    }
+  }
+}
+annotate view /ESRCC/C_LeCctr with
+{
+  @UI.facet: [ {
+    id: 'CE',
+    type: #COLLECTION,
+    position: 1
+  },
+  {
+    id: '/ESRCC/I_LeCctr',
+    purpose: #STANDARD,
+    type: #IDENTIFICATION_REFERENCE,
+    parentId: 'CE',
+    label: 'General Information',
+    position: 1
+  },
+  {
+    id: 'Validity',
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'CE',
+    targetQualifier: 'ValidityGroup',
+    label: 'Validity',
+    position: 2
+  },
+  {
+    id: 'Admin',
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'CE',
+    targetQualifier: 'AdminGroup',
+    label: 'Admin Information',
+    position: 3
+  },
+  {
+    id: 'ServiceParameter',
+    type: #LINEITEM_REFERENCE,
+    targetElement: '_ServiceParameter',
+    parentId: 'CE',
+    position: 4
+  },
+  {
+     id: 'Receiver',
+     purpose: #STANDARD,
+     type: #LINEITEM_REFERENCE,
+     parentId: 'CE',
+     targetElement: '_ServiceReceiver',
+     position: 5
+   } ]
+
+  @UI.identification: [ { position: 1 } ]
+  @UI.lineItem: [ { position: 1 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Sysid' },
+                                       additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity' },
+                                                           { element: 'Ccode', localElement: 'Ccode' }],
+                                       useForValidation: true }]
+  Sysid;
+
+  @UI.lineItem: [ { position: 2 } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Legalentity' },
+                                       additionalBinding: [{ element: 'Ccode', localElement: 'Ccode' },
+                                                           { element: 'Sysid', localElement: 'Sysid' }],
+                                       useForValidation: true }]
+  @UI.textArrangement: #TEXT_LAST
+  Legalentity;
+
+  @UI.identification: [ { position: 3 } ]
+  @UI.lineItem: [ { position: 3 } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Ccode' },
+                                       additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity'},
+                                                           { element: 'Sysid', localElement: 'Sysid' }],
+                                       useForValidation: true }]
+  @UI.textArrangement: #TEXT_LAST
+  Ccode;
+
+  @UI.identification: [ { position: 4 } ]
+  @UI.lineItem: [ { position: 4, cssDefault.width: '11.5rem' } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_F4', element: 'Costobject' },
+                                       additionalBinding: [{ element: 'Sysid', localElement: 'Sysid', usage: #FILTER },
+                                                           { element: 'Costcenter', localElement: 'Costcenter' } ],
+                                       useForValidation: true }]
+  @UI.textArrangement: #TEXT_LAST
+  Costobject;
+
+  @UI.identification: [ { position: 5 } ]
+  @UI.lineItem: [ { position: 5 } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_F4', element: 'Costcenter' },
+                                       additionalBinding: [{ element: 'Sysid', localElement: 'Sysid', usage: #FILTER },
+                                                           { element: 'Costobject', localElement: 'Costobject' } ],
+                                       useForValidation: true }]
+  @UI.textArrangement: #TEXT_LAST
+  Costcenter;
+
+  @UI.identification: [ { position: 9 } ]
+  @UI.lineItem: [ { position: 9 } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_PROFITCENTER_F4', element: 'ProfitCenter' }, useForValidation: true }]
+  @UI.textArrangement: #TEXT_LAST
+  Profitcenter;
+
+  @UI.identification: [ { position: 10 } ]
+  @UI.lineItem: [ { position: 10 } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BUSINESSDIV_F4', element: 'BusinessDivision' }, useForValidation: true }]
+  @UI.textArrangement: #TEXT_LAST
+  Businessdivision;
+
+  @UI.identification: [ { position: 6 } ]
+  @UI.lineItem: [ { position: 6, cssDefault.width: '10rem' } ]
+  Stewardship;
+
+  @UI.lineItem: [ { position: 11 } ]
+  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 1 }]
+  Validfrom;
+
+  @UI.lineItem: [ { position: 12 } ]
+  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 2 }]
+  Validto;
+
+  @UI.lineItem: [ { position: 13 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 1 }]
+  CreatedBy;
+
+  @UI.lineItem: [ { position: 14, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 2 }]
+  CreatedAt;
+
+  @UI.lineItem: [ { position: 15 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 3 }]
+  LastChangedBy;
+
+  @UI.lineItem: [ { position: 16, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 4 }]
+  LastChangedAt;
+
+  @UI.hidden: true
+  SysidDesc;
+
+  @UI.hidden: true
+  LegalEntityDesc;
+
+  @UI.hidden: true
+  CcodeDesc;
+
+  @UI.hidden: true
+  CostobjectDesc;
+
+  @UI.hidden: true
+  CostcenterDesc;
+
+  @UI.hidden: true
+  ProfitcenterDesc;
+
+  @UI.hidden: true
+  BusinessdivisionDesc;
+}

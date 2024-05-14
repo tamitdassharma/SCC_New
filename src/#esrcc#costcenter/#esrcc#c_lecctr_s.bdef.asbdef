@@ -1,0 +1,44 @@
+projection;
+strict;
+use draft;
+
+define behavior for /ESRCC/C_LeCctr_S alias LeToCostCenterAll
+
+{
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
+  use association _LeToCostCenter { create; with draft; }
+}
+
+define behavior for /ESRCC/C_LeCctr alias LeToCostCenter
+
+{
+  use update;
+  use delete;
+
+  use association _LeToCostCenterAll { with draft; }
+  use association _ServiceParameter { create; with draft; }
+  use association _ServiceReceiver { create; with draft; }
+}
+
+define behavior for /ESRCC/C_ServiceParameter alias ServiceParameter
+{
+  use update;
+  use delete;
+
+  use association _LeToCostCenterAll { with draft; }
+  use association _LeToCostCenter { with draft; }
+}
+
+define behavior for /ESRCC/C_ServiceAllocReceiver alias Receiver
+{
+  use update;
+  use delete;
+
+  use association _LeToCostCenterAll { with draft; }
+  use association _LeToCostCenter { with draft; }
+}

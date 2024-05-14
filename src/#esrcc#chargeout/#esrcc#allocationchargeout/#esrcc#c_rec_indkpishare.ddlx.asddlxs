@@ -1,0 +1,371 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Allocation Share',
+    typeNamePlural: 'Allocation Shares',
+    title: {
+      type: #STANDARD,
+      value: 'receivingentity'
+    },
+    description : {type: #STANDARD, value: 'receivingentitydescription' }
+  }
+}
+
+annotate view /ESRCC/C_REC_INDKPISHARE with
+{
+  @UI.facet: [{
+  id: 'general',
+  type: #COLLECTION,
+  label: 'Allocation Details',
+  purpose: #STANDARD,
+  position: 10
+  },
+  {
+    label: 'Service Provider Details',
+    targetQualifier: 'OrgData',
+    type: #FIELDGROUP_REFERENCE,
+    purpose: #STANDARD,
+    parentId: 'general'
+  },
+  {
+    targetQualifier: 'keyversion',
+    type: #DATAPOINT_REFERENCE,
+    purpose: #HEADER
+  },
+  {
+    targetQualifier: 'Allockey',
+    type: #DATAPOINT_REFERENCE,
+    purpose: #HEADER
+  },
+   {
+    targetQualifier: 'Alloctype',
+    type: #DATAPOINT_REFERENCE,
+    purpose: #HEADER
+  },
+  {
+    targetQualifier: 'Allocperiod',
+    type: #DATAPOINT_REFERENCE,
+    purpose: #HEADER
+  },
+  {
+    targetQualifier: 'refperiod',
+    type: #DATAPOINT_REFERENCE,
+    purpose: #HEADER
+  },
+  {
+    targetQualifier: 'weightage',
+    type: #DATAPOINT_REFERENCE,
+    purpose: #HEADER
+  },
+  {
+    targetQualifier: 'kpivalue',
+    type: #DATAPOINT_REFERENCE,
+    purpose: #HEADER
+  },
+  {
+   id: '/ESRCC/I_AVGRECALLOCVALUE',
+   type: #LINEITEM_REFERENCE,
+   position: 20,
+   targetElement: '_AverageReceiverAllocation',
+   hidden: #( hideaverage )
+  },
+  {
+   id: '/ESRCC/I_RECALLOCVALUE',
+   type: #LINEITEM_REFERENCE,
+   position: 20,
+   targetElement: '_ReceiverAllocation',
+   hidden: #( hidecumulative )
+  }
+  ]
+
+  @UI.lineItem: [
+   {  position: 10,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '10rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 10 ,
+    qualifier: 'OrgData'
+  } ]
+  @UI.selectionField: [{ position: 10 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTDATASET', element: 'costdataset' }}]
+  @UI.textArrangement: #TEXT_ONLY
+  fplv;
+
+  @UI.lineItem: [
+   {  position: 20 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 20 ,
+    qualifier: 'OrgData'
+  } ]
+  @UI.selectionField: [{ position: 20 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RYEAR', element: 'ryear' }}]
+  ryear;
+  @UI.lineItem: [ {
+    position: 30 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 30 ,
+    qualifier: 'OrgData'
+  } ]
+  @UI.selectionField: [{ position: 30 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_POPER', element: 'Poper' }}]
+  poper;
+  @UI.lineItem: [ {
+    position: 40 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 40 ,
+    qualifier: 'OrgData'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' } }]
+  sysid;
+  @UI.lineItem: [ {
+    position: 50 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '20rem'}
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LegalEntity_F4', element: 'Legalentity' } }]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 50 ,
+    qualifier: 'OrgData'
+  } ]
+  @UI.selectionField: [{ position: 50 }]
+  @UI.textArrangement: #TEXT_LAST
+  legalentity;
+  @UI.lineItem: [ {
+    position: 60 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '15rem'}
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CompanyCodes_F4', element: 'Ccode' },
+                                       additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity' }]}]
+  @UI.selectionField: [{ position: 60 }]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 60 ,
+    qualifier: 'OrgData'
+  } ]
+  @UI.textArrangement: #TEXT_LAST
+  ccode;
+  @UI.lineItem: [ {
+    position: 70 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '10rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 70 ,
+    qualifier: 'OrgData'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTOBJECTS', element: 'Costobject' }}]
+  @UI.selectionField: [{ position: 70 }]
+  @UI.textArrangement: #TEXT_ONLY
+  costobject;
+  @UI.lineItem: [ {
+    position: 80 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '15rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 80 ,
+    qualifier: 'OrgData'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_F4', element: 'Costcenter' },
+                                       additionalBinding: [{ element: 'Costobject', localElement: 'costobject'}]}]
+  @UI.selectionField: [{ position: 80 }]
+  @UI.textArrangement: #TEXT_LAST
+  costcenter;
+  @UI.lineItem: [ {
+  position: 90 ,
+  importance: #MEDIUM,
+  label: '',
+  cssDefault:{width: '15rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 90 ,
+    qualifier: 'OrgData'
+  } ]
+  @UI.selectionField: [{ position: 90 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
+                                        additionalBinding: [{ element: 'Sysid', localElement: 'sysid'}]}]
+  @UI.textArrangement: #TEXT_LAST
+  serviceproduct;
+  @UI.lineItem: [ {
+  position: 100 ,
+  importance: #HIGH,
+  label: '',
+  cssDefault:{width: '20rem'}
+  } ]
+  @UI.selectionField: [{ position: 100 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RECEIVINGENTITY_F4', element: 'Receivingentity' }}]
+  @UI.textArrangement: #TEXT_LAST
+  receivingentity;
+
+  @UI.lineItem: [ {
+    position: 110 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '10rem'}
+  } ]
+  @UI.textArrangement: #TEXT_ONLY
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_KEY_VERSION', element: 'KeyVersion' } }]
+  @UI.dataPoint: { qualifier: 'keyversion', title: 'Base Value Version for Allocation Keys' }
+  keyversion;
+
+  @UI.lineItem: [ {
+    position: 120 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '10rem'}
+  } ]
+  @UI.textArrangement: #TEXT_ONLY
+  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATION_KEY_F4', element: 'Allocationkey' },
+                                        additionalBinding: [{ element: 'AllocType', localElement: 'AllocType' }],
+                                        useForValidation: true } ]
+  @UI.dataPoint: { qualifier: 'Allockey', title: 'Allocation Key' }
+  allockey;
+  @UI.lineItem: [ { position: 130 } ]
+  @UI.textArrangement: #TEXT_ONLY
+//  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATION_KEY_F4', element: 'AllocType' },
+//                                        additionalBinding: [{ element: 'Allocationkey', localElement: 'Allockey' }],
+//                                        useForValidation: true } ]
+  @UI.dataPoint: { qualifier: 'Alloctype', title: 'Allocation Type' }
+  alloctype;
+  @UI.textArrangement: #TEXT_ONLY
+  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATIONPERIOD', element: 'AllocationPeriod' },
+                                        useForValidation: true } ]
+  @UI.lineItem: [ {
+    position: 140 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '10rem'}
+  } ]
+  @UI.dataPoint: { qualifier: 'Allocperiod', title: 'Allocation Period' }
+  allocationperiod;
+  @UI.lineItem: [ {
+    position: 150 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.dataPoint: { qualifier: 'refperiod', title: 'Ref. Period (Months)' }
+  refperiod;  
+  @UI.lineItem: [ {
+    position: 170 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.dataPoint: { qualifier: 'kpivalue', title: 'KPI Value' }
+  @EndUserText.label: 'KPI Value'
+  reckpivalue;
+  
+  @UI.lineItem: [ {
+    position: 180 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @EndUserText.label: 'KPI Share (%)'
+  totalreckpishare;
+  @UI.lineItem: [ {
+    position: 190 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.dataPoint: { qualifier: 'weightage', title: 'Weightage (%)' }
+  weightage;
+  @UI.lineItem: [ {
+    position: 200 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @EndUserText.label: 'Final KPI Share (%)'
+  reckpishare;
+  
+// hidden fields
+   @UI.hidden: true
+   legalentitydescription;
+   @UI.hidden: true
+   costobjectdescription;
+   @UI.hidden: true
+   costcenterdescription;
+   @UI.hidden: true
+   receivingentitydescription;
+   @UI.hidden: true
+   serviceproductdescription;
+//   @UI.hidden: true
+    
+   @UI.lineItem: [ {
+    position: 999 ,
+    importance: #LOW,
+    label: ''
+  } ]
+   @EndUserText.label: 'Legal Entity Country'
+   @EndUserText.quickInfo: 'Legal Entity Country'
+   @UI.textArrangement: #TEXT_LAST
+   legalentitycountry;
+  @UI.lineItem: [ {
+    position: 999 ,
+    importance: #LOW,
+    label: ''
+  } ]
+   @EndUserText.label: 'Receiving Country'
+   @EndUserText.quickInfo: 'Receiving Country'
+   @UI.textArrangement: #TEXT_LAST
+   receivingentitycountry;
+   @UI.hidden: true
+   legalentitycurrecy;
+   @UI.hidden: true
+   receivingentitycurrency;
+   @UI.hidden: true
+   legalentityregion;
+   @UI.hidden: true
+   receivingentityregion;
+   @UI.hidden: true
+   CostVersionDescription;
+   @UI.hidden: true
+   KeyVersionDescription;
+   @UI.hidden: true
+   AllocationTypeDescription;
+   @UI.hidden: true
+   AllocationPeriodDescription;
+   @UI.hidden: true
+   hideaverage;
+   @UI.hidden: true
+   hidecumulative;
+   @UI.hidden: true
+   AllocationKeyDescription;
+   @UI.hidden: true
+   ccodedescription;
+   @UI.hidden: true
+   legalcountryname;
+   @UI.hidden: true
+   receivingcountryname;
+}

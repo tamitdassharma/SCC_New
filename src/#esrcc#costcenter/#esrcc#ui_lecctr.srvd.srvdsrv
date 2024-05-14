@@ -1,0 +1,6 @@
+define service /ESRCC/UI_LECCTR {
+  expose /ESRCC/C_LeCctr_S as LeToCostCenterAll;
+  expose /ESRCC/C_LeCctr as LeToCostCenter;
+  expose /ESRCC/C_ServiceParameter as ServiceParameter;
+  expose /ESRCC/C_ServiceAllocReceiver as ServiceReceiver;
+}

@@ -1,0 +1,100 @@
+managed with additional save implementation in class /ESRCC/BP_I_COSTELE_S unique;
+strict;
+with draft;
+
+define behavior for /ESRCC/I_CostEle_S alias CostElementAll
+draft table /ESRCC/D_COSTE_S
+with unmanaged save
+lock master total etag LastChangedAtMax
+authorization master( global )
+
+{
+  update;
+  internal create;
+  internal delete;
+
+  draft action ( features : instance ) Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+//  action ( features : instance ) SelectCustomizingTransptReq parameter D_SelectCustomizingTransptReqP result [1] $self;
+
+  association _CostElement { create ( features : instance, precheck ); with draft; }
+}
+
+define behavior for /ESRCC/I_CostEle alias CostElement
+persistent table /ESRCC/COSTELE
+draft table /ESRCC/D_COSTELE
+etag master LocalLastChangedAt
+lock dependent by _CostElementAll
+authorization dependent by _CostElementAll
+
+{
+  field ( mandatory : create )
+   Sysid, Costelement;
+
+  field ( readonly )
+   SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+
+  field ( readonly : update )
+   Sysid, Costelement;
+
+
+  update( features : global );
+  delete( features : global );
+
+  mapping for /ESRCC/COSTELE
+  {
+    Sysid = SYSID;
+    Costelement = COSTELEMENT;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _CostElementAll { with draft; }
+  association _CostElementText { create ( features : global ); with draft; }
+
+//  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+}
+
+define behavior for /ESRCC/I_CostEleText alias CostElementText
+persistent table /ESRCC/COSTELET
+draft table /ESRCC/D_COSTELT
+etag master LocalLastChangedAt
+lock dependent by _CostElementAll
+authorization dependent by _CostElementAll
+
+{
+  field ( mandatory : create )
+   Spras;
+
+  field ( readonly )
+   SingletonID,
+   Sysid,
+   Costelement;
+
+  field ( readonly : update )
+   Spras;
+
+
+  update( features : global );
+  delete( features : global );
+
+  mapping for /ESRCC/COSTELET
+  {
+    Spras = SPRAS;
+    Sysid = SYSID;
+    Costelement = COSTELEMENT;
+    Description = DESCRIPTION;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  association _CostElementAll { with draft; }
+  association _CostElement { with draft; }
+
+//  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+}

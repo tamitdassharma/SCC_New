@@ -1,0 +1,30 @@
+managed implementation in class /esrcc/bp_i_managecostbase unique;
+strict ( 1 );
+
+define behavior for /ESRCC/I_MANAGECOSTBASE alias managecostbase
+persistent table /esrcc/cb_li
+lock master
+authorization master ( instance )
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+
+  field ( mandatory )
+   Comments;
+
+  action ( features : instance, precheck, authorization : update ) changevalueadd parameter /ESRCC/C_COSTIND result [1] $self;
+  action ( features : instance, precheck, authorization : update ) changeitems parameter /ESRCC/C_USAGECALCULATION result [1] $self;
+  action ( features : instance, precheck, authorization : update ) discardall result [1] $self;
+  action ( features : instance, precheck, authorization : update ) submit parameter /ESRCC/C_COMMENT result [1] $self;
+
+  mapping for /ESRCC/CB_LI corresponding
+  {
+    CreatedBy     = created_by;
+    CreatedAt     = created_at;
+    LastChangedBy = last_changed_by;
+    LastChangedAt = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}
