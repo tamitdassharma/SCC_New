@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'System Information',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'System Information',
     title: {
       type: #STANDARD,
       value: 'SystemId'
@@ -46,13 +46,11 @@ annotate view /ESRCC/C_SysInfo with
 
   @UI.identification: [ { position: 3 } ]
   @UI.lineItem: [ { position: 3 } ]
-//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RFC_DESTINATION_F4', element: 'Rfcdest' } }]
-  @EndUserText.label: 'Source RFC Destination'
+  //  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RFC_DESTINATION_F4', element: 'Rfcdest' } }]
   SourceRfcDestination;
 
   @UI.identification: [ { position: 4 } ]
   @UI.lineItem: [ { position: 4 } ]
-  @EndUserText.label: 'Host RFC Destination'
   HostRfcDestination;
 
   @UI.identification: [ { position: 5 } ]
@@ -95,4 +93,11 @@ annotate view /ESRCC/C_SysInfo with
 
   @UI.lineItem: [ { position: 2 } ]
   Description;
+
+  @UI.hidden: true
+  SignForSalesDescription;
+  @UI.hidden: true
+  SignForCogsDescription;
+  @UI.hidden: true
+  SystemTypeDescription;
 }

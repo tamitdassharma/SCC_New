@@ -10,7 +10,7 @@
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Work item ID</DDTEXT>
+    <DDTEXT>Work Item ID</DDTEXT>
     <REPTEXT>Work Item ID</REPTEXT>
     <SCRTEXT_S>ID</SCRTEXT_S>
     <SCRTEXT_M>Work Item ID</SCRTEXT_M>
@@ -25,6 +25,7 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Workitem ID</DDTEXT>
      <REPTEXT>Workitem ID</REPTEXT>
      <SCRTEXT_S>ID</SCRTEXT_S>
      <SCRTEXT_M>Workitem ID</SCRTEXT_M>

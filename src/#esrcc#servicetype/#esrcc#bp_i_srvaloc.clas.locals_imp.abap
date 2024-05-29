@@ -190,11 +190,12 @@ CLASS lhc_weightage IMPLEMENTATION.
 
     DATA(lo_weightage) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ServiceAllocatioAll' )
+        paths              = VALUE #( ( path = 'ServiceAllocatioAll' )
                                    ( path = 'ServiceAllocation' ) )
+        source_entity_name = '/ESRCC/C_ALLOCATIONWEIGHTAGE'
       CHANGING
-        reported_entity = reported-weightage
-        failed_entity   = failed-weightage ).
+        reported_entity    = reported-weightage
+        failed_entity      = failed-weightage ).
 
     DATA(lo_validation) = lcl_custom_validation=>create( config_util_ref = lo_weightage ).
 
@@ -214,7 +215,7 @@ CLASS lhc_weightage IMPLEMENTATION.
       IF line_exists( weightages[ serviceproduct = entity-serviceproduct costversion = entity-costversion validfromalloc = entity-validfromalloc ] ).
         lo_weightage->set_state_message(
           entity     = entity
-          msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg number = '009' severity = if_abap_behv_message=>severity-error v1 = lo_weightage->get_field_text( 'WEIGHTAGE' ) )
+          msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg number = '009' severity = if_abap_behv_message=>severity-error v1 = lo_weightage->get_field_text( fieldname = 'WEIGHTAGE' data_element = '/ESRCC/WEIGHTAGE' ) )
           state_area = CONV #( /esrcc/cl_config_util=>percentage )
         ).
       ENDIF.
@@ -240,11 +241,12 @@ CLASS lhc_weightage IMPLEMENTATION.
 
     DATA(lo_validation) = lcl_custom_validation=>create( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ServiceAllocatioAll' )
-                                   ( path = 'ServiceAllocation' ) )
+        paths              = VALUE #( ( path = 'ServiceAllocatioAll' )
+                                      ( path = 'ServiceAllocation' ) )
+        source_entity_name = '/ESRCC/C_ALLOCATIONWEIGHTAGE'
       CHANGING
-        reported_entity = reported-weightage
-        failed_entity   = failed-weightage ) ).
+        reported_entity    = reported-weightage
+        failed_entity      = failed-weightage ) ).
 
     SELECT serviceproduct, costversion, validfromalloc, allockey, alloctype, allocationperiod
         FROM /esrcc/d_allocwg
@@ -500,10 +502,11 @@ CLASS lhc_/esrcc/i_srvaloc IMPLEMENTATION.
 
     DATA(lo_service_allocation) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ServiceAllocatioAll' ) )
+        paths              = VALUE #( ( path = 'ServiceAllocatioAll' ) )
+        source_entity_name = '/ESRCC/C_SRVALOC'
       CHANGING
-        reported_entity = reported-serviceallocation
-        failed_entity   = failed-serviceallocation ).
+        reported_entity    = reported-serviceallocation
+        failed_entity      = failed-serviceallocation ).
 
     DATA(lo_validation) = lcl_custom_validation=>create( config_util_ref = lo_service_allocation ).
 
@@ -533,7 +536,7 @@ CLASS lhc_/esrcc/i_srvaloc IMPLEMENTATION.
         ELSEIF weightage-weightage <> 100.
           lo_service_allocation->set_state_message(
             entity     = entity
-            msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg number = '009' severity = if_abap_behv_message=>severity-error v1 = lo_service_allocation->get_field_text( fieldname = 'WEIGHTAGE' ) )
+            msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg number = '009' severity = if_abap_behv_message=>severity-error v1 = lo_service_allocation->get_field_text( fieldname = 'WEIGHTAGE' data_element = '/ESRCC/WEIGHTAGE' ) )
             state_area = CONV #( /esrcc/cl_config_util=>percentage )
           ).
         ENDIF.
@@ -558,10 +561,11 @@ CLASS lhc_/esrcc/i_srvaloc IMPLEMENTATION.
   METHOD precheck_update.
     DATA(lo_validation) = lcl_custom_validation=>create( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ServiceAllocatioAll' ) )
+        paths              = VALUE #( ( path = 'ServiceAllocatioAll' ) )
+        source_entity_name = '/ESRCC/C_SRVALOC'
       CHANGING
-        reported_entity = reported-serviceallocation
-        failed_entity   = failed-serviceallocation ) ).
+        reported_entity    = reported-serviceallocation
+        failed_entity      = failed-serviceallocation ) ).
 
     SELECT serviceproduct, validfrom, costversion, chargeout
       FROM /esrcc/d_srvaloc

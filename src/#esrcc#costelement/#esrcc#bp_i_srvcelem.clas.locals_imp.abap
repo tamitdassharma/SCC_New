@@ -163,11 +163,12 @@ CLASS lhc_/esrcc/i_srvcelem_s IMPLEMENTATION.
 
     DATA(lo_config_util) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'CostElementToLeAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'CostElementToLeAll' ) )
+        source_entity_name = '/ESRCC/C_SRVCELEM'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-costelementtole
-        failed_entity   = failed-costelementtole ).
+        reported_entity    = reported-costelementtole
+        failed_entity      = failed-costelementtole ).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_config_util ).
 
@@ -183,7 +184,7 @@ CLASS lhc_/esrcc/i_srvcelem_s IMPLEMENTATION.
           msg        = new_message( id       = /esrcc/cl_config_util=>c_config_msg
                                     number   = '008'
                                     severity = cl_abap_behv=>ms-error
-                                    v1       = lo_config_util->get_field_text( fieldname = 'COSTELEMENT' )
+                                    v1       = lo_config_util->get_field_text( fieldname = 'COSTELEMENT' data_element = '/ESRCC/COSTELEMENT' )
                                     v2       = entity-costelement
                                     v3       = entity-sysid )
           state_area = CONV #( /esrcc/cl_config_util=>invalid_data )
@@ -275,10 +276,11 @@ CLASS lhc_/esrcc/i_srvcelem IMPLEMENTATION.
 
     DATA(lo_cost_element) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'CostElementToLeAll' ) )
+        paths              = VALUE #( ( path = 'CostElementToLeAll' ) )
+        source_entity_name = '/ESRCC/C_SRVCELEM'
       CHANGING
-        reported_entity = reported-costelementtole
-        failed_entity   = failed-costelementtole ).
+        reported_entity    = reported-costelementtole
+        failed_entity      = failed-costelementtole ).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_cost_element ).
 
@@ -309,10 +311,11 @@ CLASS lhc_/esrcc/i_srvcelem IMPLEMENTATION.
   METHOD precheck_update.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'CostElementToLeAll' ) )
+        paths              = VALUE #( ( path = 'CostElementToLeAll' ) )
+        source_entity_name = '/ESRCC/C_SRVCELEM'
       CHANGING
-        reported_entity = reported-costelementtole
-        failed_entity   = failed-costelementtole ) ).
+        reported_entity    = reported-costelementtole
+        failed_entity      = failed-costelementtole ) ).
 
     LOOP AT entities INTO DATA(entity) WHERE %control-costind = if_abap_behv=>mk-on
                                           OR %control-validto = if_abap_behv=>mk-on.

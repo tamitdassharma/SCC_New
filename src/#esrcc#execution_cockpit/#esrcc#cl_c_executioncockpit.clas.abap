@@ -215,6 +215,10 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                /esrcc/c_coscen AS coscen
             ON coscen~costobject = srv~costobject
            AND coscen~costcenter = srv~costcenter
+              INNER JOIN /ESRCC/C_LeCcode AS leccode
+              ON leccode~Active = @abap_true
+              AND leccode~Legalentity = srv~Legalentity
+              AND leccode~Ccode = srv~Ccode
          WHERE srv~legalentity IN @_legalentity
            AND srv~sysid IN @_sysid
            AND srv~ccode IN @_ccode
@@ -231,6 +235,10 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                  /esrcc/c_coscen AS coscen
               ON coscen~costobject = lecctr~costobject
              AND coscen~costcenter = lecctr~costcenter
+                 INNER JOIN /ESRCC/C_LeCcode AS leccode
+              ON leccode~Active = @abap_true
+              AND leccode~Legalentity = lecctr~Legalentity
+              AND leccode~Ccode = lecctr~Ccode
            FOR ALL ENTRIES IN @lt_service_share
            WHERE lecctr~legalentity = @lt_service_share-legalentity
              AND lecctr~sysid = @lt_service_share-sysid
@@ -240,14 +248,6 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
              AND coscen~billfrequency = @_billingfreq
              AND lecctr~validfrom <= @_validon
              AND lecctr~validto >= @_validon
-*           WHERE lecctr~legalentity IN @_legalentity
-*             AND lecctr~sysid IN @_sysid
-*             AND lecctr~ccode IN @_ccode
-*             AND lecctr~costobject IN @_costobject
-*             AND lecctr~costcenter IN @_costcenter
-*             AND coscen~billfrequency = @_billingfreq
-*             AND lecctr~validfrom <= @_validon
-*             AND lecctr~validto >= @_validon
              APPENDING CORRESPONDING FIELDS OF TABLE @lt_service_share.
 
 
@@ -292,6 +292,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                           AND costobject = @lt_service_share-costobject
                                           AND costcenter = @lt_service_share-costcenter
                                           AND serviceproduct = @lt_service_share-serviceproduct
+                                          AND active = @abap_true
                                           APPENDING TABLE @DATA(lt_srv_receivers).
 
 
@@ -543,7 +544,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
             IF sy-subrc = 0.
               <ls_result>-costbase_status = <ls_procctrl>-status.   "Cost Base Finalized.
 
-              IF <ls_result>-costbase_status = '05'.  " Approval pending
+              IF <ls_result>-costbase_status = '05' OR <ls_result>-costbase_status = '06'.  " In Process or In Approval Pending
 *        Read from tables and check if workflow is updated.
                 READ TABLE lt_cc_cost ASSIGNING FIELD-SYMBOL(<ls_cc_cost>) WITH KEY sysid       = <ls_result>-sysid
                                                                                     ryear       = <ls_result>-ryear
@@ -555,10 +556,12 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                                     billfrequency = _billingfreq  BINARY SEARCH.
 
                 IF sy-subrc = 0.
-                  IF <ls_cc_cost>-status = 'A'.
-                    <ls_result>-costbase_status = '14'.   " Approved
+                  IF <ls_cc_cost>-status = 'W'.
+                    <ls_result>-costbase_status = '06'.   "Approval pending
+                  ELSEIF <ls_cc_cost>-status = 'A'.
+                    <ls_result>-costbase_status = '07'.   "Approved
                   ELSEIF <ls_cc_cost>-status = 'R'.
-                    <ls_result>-costbase_status = '19'.   "Reject
+                    <ls_result>-costbase_status = '10'.   "Rejected
                   ENDIF.
                 ENDIF.
 
@@ -633,7 +636,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                                             ccode = <ls_result>-ccode
                                                                                             process = 'CBS'.
             IF sy-subrc = 0.
-              IF <ls_result>-costbase_status = '17'. "cost base finalized
+              IF <ls_result>-costbase_status = '08'. "cost base finalized
 
                 <ls_legal_status>-finalizedcount = <ls_legal_status>-finalizedcount + 1.
                 <ls_legal_status>-totalcount = <ls_legal_status>-totalcount + 1.
@@ -641,7 +644,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                 <ls_legal_status>-totalcount = <ls_legal_status>-totalcount + 1.
               ENDIF.
             ELSE.
-              IF <ls_result>-costbase_status = '17'. "cost base finalized
+              IF <ls_result>-costbase_status = '08'. "cost base finalized
                 APPEND VALUE #( sysid = <ls_result>-sysid fplv = <ls_result>-fplv ryear = <ls_result>-ryear legalentity = <ls_result>-legalentity
                                 ccode = <ls_result>-ccode finalizedcount = 1 totalcount = 1 process = 'CBS' ) TO lt_legal_status.
               ELSE.
@@ -651,7 +654,8 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
             ENDIF.
 
 *            map text description
-            READ TABLE lt_processstatus ASSIGNING FIELD-SYMBOL(<ls_processstatus>) WITH KEY status = <ls_result>-costbase_status.
+            READ TABLE lt_processstatus ASSIGNING FIELD-SYMBOL(<ls_processstatus>) WITH KEY  application = 'CBS'
+                                                                                             status = <ls_result>-costbase_status.
             IF sy-subrc = 0.
               <ls_result>-costbasestatusdescr = <ls_processstatus>-description.
               <ls_result>-costbasecriticallity = <ls_processstatus>-color.
@@ -668,12 +672,12 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                 IF _action = '01' AND  <ls_result>-costbase_status = '04'.
                   <ls_result>-selectionallowed = abap_true.
                 ENDIF.
-                IF ( _action = '02' OR _action = '01' ) AND <ls_result>-costbase_status = '14'.
+                IF ( _action = '02' OR _action = '01' ) AND <ls_result>-costbase_status = '07'.
                   <ls_result>-selectionallowed = abap_true.
-                ELSEIF _action = '03' AND <ls_result>-costbase_status = '17'.
+                ELSEIF _action = '03' AND <ls_result>-costbase_status = '08'.
                   <ls_result>-selectionallowed = abap_true.
                 ENDIF.
-                IF _action = '01' AND <ls_result>-costbase_status = '19'.
+                IF _action = '01' AND <ls_result>-costbase_status = '10'.
                   <ls_result>-selectionallowed = abap_true.
                 ENDIF.
               ELSE.
@@ -699,9 +703,9 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                     billingfreq   = <ls_result>-billingfreq
                                                                     billingperiod = <ls_result>-billingperiod
                                                                        process    = 'CBS'
-                                                                           status = '17'.    "Cost base Finalized
+                                                                           status = '08'.    "Cost base Finalized
             IF sy-subrc = 0.
-              <ls_result>-stewardship_status = '06'.  "Calculate Stewardship & Service Cost Share
+              <ls_result>-stewardship_status = '01'.  "Calculate Stewardship & Service Cost Share
 
               READ TABLE lt_procctrl ASSIGNING <ls_procctrl> WITH KEY sysid        = <ls_result>-sysid
                                                                      ryear         = <ls_result>-ryear
@@ -718,7 +722,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
               IF sy-subrc = 0.
                 <ls_result>-stewardship_status = <ls_procctrl>-status.     "Stewardship & Service Cost Share In Approval Pending, Stewardship & Service Cost Share Approved, Stewardship & Service Cost Share Finalized
 *        Read from tables and check if workflow is updated.
-                IF <ls_result>-stewardship_status = '07'.  "Approval Pending
+                IF <ls_result>-stewardship_status = '02' OR <ls_result>-stewardship_status = '03'.  "In process
                   READ TABLE lt_srv_cost TRANSPORTING NO FIELDS WITH KEY sysid       = <ls_result>-sysid
                                                                          ryear       = <ls_result>-ryear
                                                                          fplv        = <ls_result>-fplv
@@ -729,7 +733,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                           serviceproduct = <ls_result>-serviceproduct
                                                                               status = 'W' BINARY SEARCH.
                   IF sy-subrc = 0.
-                    <ls_result>-stewardship_status = '07'.   "Approval Pending
+                    <ls_result>-stewardship_status = '03'.   "Approval Pending
                   ELSE.
                     READ TABLE lt_srv_cost TRANSPORTING NO FIELDS WITH KEY sysid       = <ls_result>-sysid
                                                                            ryear       = <ls_result>-ryear
@@ -741,7 +745,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                             serviceproduct = <ls_result>-serviceproduct
                                                                                 status = 'R' BINARY SEARCH.
                     IF sy-subrc = 0.
-                      <ls_result>-stewardship_status = '15'.   "Reject
+                      <ls_result>-stewardship_status = '06'.   "Reject
                     ELSE.
 *        Read from tables and check if workflow is updated.
                       READ TABLE lt_srv_cost TRANSPORTING NO FIELDS WITH KEY sysid       = <ls_result>-sysid
@@ -754,7 +758,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                               serviceproduct = <ls_result>-serviceproduct
                                                                                   status = 'A' BINARY SEARCH.
                       IF sy-subrc = 0.
-                        <ls_result>-stewardship_status = '08'.   "Approved
+                        <ls_result>-stewardship_status = '04'.   "Approved
                       ENDIF.
                     ENDIF.
                   ENDIF.
@@ -765,7 +769,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
             ENDIF.
 
 *           Check if service cost share and markup are maintained
-            IF <ls_result>-stewardship_status = '06'.  "Calculate Stewardship & Service Cost Share
+            IF <ls_result>-stewardship_status = '01'.  "Calculate Stewardship & Service Cost Share
               READ TABLE lt_srv_alloc ASSIGNING FIELD-SYMBOL(<ls_srv_alloc>) WITH KEY serviceproduct = <ls_result>-serviceproduct
                                                                                         BINARY SEARCH.
               IF sy-subrc <> 0.
@@ -791,7 +795,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                                   ccode = <ls_result>-ccode
                                                                                   process = 'SCM'.
             IF sy-subrc = 0.
-              IF <ls_result>-stewardship_status = '09'. "cost base finalized
+              IF <ls_result>-stewardship_status = '05'. "Service cost share finalized
 
                 <ls_legal_status>-finalizedcount = <ls_legal_status>-finalizedcount + 1.
                 <ls_legal_status>-totalcount = <ls_legal_status>-totalcount + 1.
@@ -799,7 +803,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                 <ls_legal_status>-totalcount = <ls_legal_status>-totalcount + 1.
               ENDIF.
             ELSE.
-              IF <ls_result>-stewardship_status = '09'. "cost base finalized
+              IF <ls_result>-stewardship_status = '05'. "Service cost share finalized
                 APPEND VALUE #( sysid = <ls_result>-sysid fplv = <ls_result>-fplv ryear = <ls_result>-ryear legalentity = <ls_result>-legalentity
                                 ccode = <ls_result>-ccode finalizedcount = 1 totalcount = 1 process = 'SCM' ) TO lt_legal_status.
               ELSE.
@@ -818,7 +822,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                                                         costobject = <ls_result>-costobject
                                                                                                         process = 'SCM'.
             IF sy-subrc = 0.
-              IF <ls_result>-stewardship_status = '09'. "charge out finalized
+              IF <ls_result>-stewardship_status = '05'. "Service cost share finalized
 
                 <ls_costcenter_status>-finalizedcount = <ls_costcenter_status>-finalizedcount + 1.
                 <ls_costcenter_status>-totalcount = <ls_costcenter_status>-totalcount + 1.
@@ -826,7 +830,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                 <ls_costcenter_status>-totalcount = <ls_costcenter_status>-totalcount + 1.
               ENDIF.
             ELSE.
-              IF <ls_result>-stewardship_status = '09'. "charge out finalized
+              IF <ls_result>-stewardship_status = '05'. "Service cost share finalized
                 APPEND VALUE #( sysid = <ls_result>-sysid fplv = <ls_result>-fplv ryear = <ls_result>-ryear legalentity = <ls_result>-legalentity
                                 ccode = <ls_result>-ccode costcenter = <ls_result>-costcenter costobject = <ls_result>-costobject
                                 finalizedcount = 1 totalcount = 1 process = 'SCM' ) TO lt_costcenter_status.
@@ -839,7 +843,8 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
 
 
 *            map text description
-            READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY status = <ls_result>-stewardship_status.
+            READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY  application = 'SCM'
+                                                                               status = <ls_result>-stewardship_status.
             IF sy-subrc = 0.
               <ls_result>-stewardshipstatusdescr = <ls_processstatus>-description.
               <ls_result>-stewardshipcriticality = <ls_processstatus>-color.
@@ -855,15 +860,15 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                   ID 'ACTVT'  FIELD '01'.
               IF sy-subrc = 0.
 *            map status color
-                IF ( _action = '05' OR _action = '04' ) AND <ls_result>-stewardship_status = '08'.
+                IF ( _action = '05' OR _action = '04' ) AND <ls_result>-stewardship_status = '04'.
                   <ls_result>-selectionallowed = abap_true.
-                ELSEIF _action = '06' AND <ls_result>-stewardship_status = '09'.
+                ELSEIF _action = '06' AND <ls_result>-stewardship_status = '05'.
+                  <ls_result>-selectionallowed = abap_true.
+                ENDIF.
+                IF _action = '04' AND <ls_result>-stewardship_status = '01'.
                   <ls_result>-selectionallowed = abap_true.
                 ENDIF.
                 IF _action = '04' AND <ls_result>-stewardship_status = '06'.
-                  <ls_result>-selectionallowed = abap_true.
-                ENDIF.
-                IF _action = '04' AND <ls_result>-stewardship_status = '15'.
                   <ls_result>-selectionallowed = abap_true.
                 ENDIF.
               ELSE.
@@ -875,7 +880,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
               <ls_result>-messagetypeservice = 'E'.
             ENDIF.
 
-            IF <ls_result>-stewardship_status = '07'.  "Approval Pending
+            IF <ls_result>-stewardship_status = '03' or <ls_result>-stewardship_status = '02'.  "Approval Pending
               <ls_result>-selectionallowed = abap_false.
               READ TABLE lt_result ASSIGNING FIELD-SYMBOL(<ls_result_costobject>) WITH KEY sysid       = <ls_result>-sysid
                                                                     ryear       = <ls_result>-ryear
@@ -903,8 +908,8 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                        billingfreq = <ls_result>-billingfreq
                                                                        billingperiod = <ls_result>-billingperiod
                                                                        process    = 'SCM'.
-            IF sy-subrc = 0 AND <ls_procctrl>-status = '09'.  "Stewardship Finalized
-              <ls_result>-chargeout_status = '10'.  "Calculate Charge-Out
+            IF sy-subrc = 0 AND <ls_procctrl>-status = '05'.  "Stewardship Finalized
+              <ls_result>-chargeout_status = '01'.  "Calculate Charge-Out
 
               READ TABLE lt_procctrl ASSIGNING <ls_procctrl> WITH KEY  sysid       = <ls_result>-sysid
                                                                        ryear         = <ls_result>-ryear
@@ -920,7 +925,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
               IF sy-subrc = 0.
                 <ls_result>-chargeout_status = <ls_procctrl>-status.     "Charge-Out In Approval Pending, Charge-Out Approved, Charge-Out Finalized
 *        Read from tables and check if workflow is updated.
-                IF <ls_result>-chargeout_status = '11'.  " Approval Pending
+                IF <ls_result>-chargeout_status = '02' OR <ls_result>-chargeout_status = '03'.  " In Process
                   READ TABLE lt_rec_cost TRANSPORTING NO FIELDS WITH KEY sysid       = <ls_result>-sysid
                                                                          ryear         = <ls_result>-ryear
                                                                          fplv          = <ls_result>-fplv
@@ -931,7 +936,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                           serviceproduct = <ls_result>-serviceproduct
                                                                               status = 'R' BINARY SEARCH.
                   IF sy-subrc = 0.
-                    <ls_result>-chargeout_status = '16'.  " Reject
+                    <ls_result>-chargeout_status = '06'.  " Reject
                   ELSE.
                     READ TABLE lt_rec_cost TRANSPORTING NO FIELDS WITH KEY  sysid       = <ls_result>-sysid
                                                                             ryear         = <ls_result>-ryear
@@ -943,7 +948,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                             serviceproduct = <ls_result>-serviceproduct
                                                                                 status = 'W' BINARY SEARCH.
                     IF sy-subrc = 0.
-                      <ls_result>-chargeout_status = '11'.   "Approval Pending
+                      <ls_result>-chargeout_status = '03'.   "Approval Pending
                     ELSE.
 *        Read from tables and check if workflow is updated.
                       READ TABLE lt_rec_cost TRANSPORTING NO FIELDS WITH KEY sysid       = <ls_result>-sysid
@@ -956,7 +961,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                               serviceproduct = <ls_result>-serviceproduct
                                                                                   status = 'A' BINARY SEARCH.
                       IF sy-subrc = 0.
-                        <ls_result>-chargeout_status = '12'.   "Approved
+                        <ls_result>-chargeout_status = '04'.   "Approved
                       ENDIF.
                     ENDIF.
                   ENDIF.
@@ -967,7 +972,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
             ENDIF.
 
 *    perform validations to check if required data is maintained
-            IF <ls_result>-chargeout_status = '10'.  "Calculate Charge-Out
+            IF <ls_result>-chargeout_status = '01'.  "Calculate Charge-Out
               READ TABLE lt_srv_alloc ASSIGNING <ls_srv_alloc> WITH KEY serviceproduct = <ls_result>-serviceproduct
                                                                      BINARY SEARCH.
               IF sy-subrc <> 0.
@@ -1006,7 +1011,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                                   ccode = <ls_result>-ccode
                                                                                   process = 'CHR'.
             IF sy-subrc = 0.
-              IF <ls_result>-chargeout_status = '13'. "cost base finalized
+              IF <ls_result>-chargeout_status = '05'. "cost base finalized
 
                 <ls_legal_status>-finalizedcount = <ls_legal_status>-finalizedcount + 1.
                 <ls_legal_status>-totalcount = <ls_legal_status>-totalcount + 1.
@@ -1014,7 +1019,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                 <ls_legal_status>-totalcount = <ls_legal_status>-totalcount + 1.
               ENDIF.
             ELSE.
-              IF <ls_result>-chargeout_status = '13'. "cost base finalized
+              IF <ls_result>-chargeout_status = '05'. "cost base finalized
                 APPEND VALUE #( sysid = <ls_result>-sysid fplv = <ls_result>-fplv ryear = <ls_result>-ryear legalentity = <ls_result>-legalentity
                                 ccode = <ls_result>-ccode finalizedcount = 1 totalcount = 1 process = 'CHR' ) TO lt_legal_status.
               ELSE.
@@ -1033,7 +1038,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                                        costobject = <ls_result>-costobject
                                                                                           process = 'CHR'.
             IF sy-subrc = 0.
-              IF <ls_result>-chargeout_status = '13'. "charge out finalized
+              IF <ls_result>-chargeout_status = '05'. "charge out finalized
 
                 <ls_costcenter_status>-finalizedcount = <ls_costcenter_status>-finalizedcount + 1.
                 <ls_costcenter_status>-totalcount = <ls_costcenter_status>-totalcount + 1.
@@ -1041,7 +1046,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                 <ls_costcenter_status>-totalcount = <ls_costcenter_status>-totalcount + 1.
               ENDIF.
             ELSE.
-              IF <ls_result>-chargeout_status = '13'. "charge out finalized
+              IF <ls_result>-chargeout_status = '05'. "charge out finalized
                 APPEND VALUE #( sysid = <ls_result>-sysid fplv = <ls_result>-fplv ryear = <ls_result>-ryear legalentity = <ls_result>-legalentity
                                 ccode = <ls_result>-ccode costcenter = <ls_result>-costcenter costobject = <ls_result>-costobject
                                 finalizedcount = 1 totalcount = 1 process = 'CHR' ) TO lt_costcenter_status.
@@ -1053,7 +1058,8 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
             ENDIF.
 
 *            map text description
-            READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY status = <ls_result>-chargeout_status.
+            READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY  application = 'CHR'
+                                                                               status = <ls_result>-chargeout_status.
             IF sy-subrc = 0.
               <ls_result>-chargeoutstatusdescr = <ls_processstatus>-description.
               <ls_result>-chargeoutcriticality = <ls_processstatus>-color.
@@ -1069,12 +1075,12 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                   ID 'ACTVT'  FIELD '01'.
               IF sy-subrc = 0.
 *            map status color
-                IF ( _action = '08' OR _action = '07' ) AND <ls_result>-chargeout_status = '12'.
+                IF ( _action = '08' OR _action = '07' ) AND <ls_result>-chargeout_status = '04'.
                   <ls_result>-selectionallowed = abap_true.
-                ELSEIF _action = '09' AND <ls_result>-chargeout_status = '13'.
+                ELSEIF _action = '09' AND <ls_result>-chargeout_status = '05'.
                   <ls_result>-selectionallowed = abap_true.
                 ENDIF.
-                IF _action = '07' AND ( <ls_result>-chargeout_status = '10' OR <ls_result>-chargeout_status = '16' ).
+                IF _action = '07' AND ( <ls_result>-chargeout_status = '01' OR <ls_result>-chargeout_status = '06' ).
                   <ls_result>-selectionallowed = abap_true.
                 ENDIF.
               ELSE.
@@ -1086,7 +1092,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
               <ls_result>-messagetypechargeout = 'E'.
             ENDIF.
 
-            IF <ls_result>-chargeout_status = '11'.  " Approval Pending
+            IF <ls_result>-chargeout_status = '03' OR <ls_result>-chargeout_status = '02'.  " Approval Pending
               <ls_result>-selectionallowed = abap_false.
               READ TABLE lt_result ASSIGNING <ls_result_costobject> WITH KEY sysid       = <ls_result>-sysid
                                                                     ryear       = <ls_result>-ryear
@@ -1117,9 +1123,10 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                                   ccode = <ls_result>-ccode
                                                                                 process = 'CBS'.
             IF sy-subrc = 0.
-              <ls_result>-costbase_status = '17'.
+              <ls_result>-costbase_status = '08'.
 *            map text description
-              READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY status = '17'.
+              READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY  application = 'CBS'
+                                                                                 status = '08'.
               IF sy-subrc = 0.
                 CONCATENATE <ls_processstatus>-description ' (' <ls_legal_status>-finalizedcount '/' <ls_legal_status>-totalcount ')' INTO <ls_result>-costbasestatusdescr.
               ENDIF.
@@ -1151,9 +1158,10 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                                   ccode = <ls_result>-ccode
                                                                                 process = 'SCM'.
             IF sy-subrc = 0.
-              <ls_result>-stewardship_status = '09'.
+              <ls_result>-stewardship_status = '05'.
 *            map text description
-              READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY status = '09'.
+              READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY application = 'SCM'
+                                                                                status = '05'.
               IF sy-subrc = 0.
                 CONCATENATE <ls_processstatus>-description ' (' <ls_legal_status>-finalizedcount '/' <ls_legal_status>-totalcount ')' INTO <ls_result>-stewardshipstatusdescr.
               ENDIF.
@@ -1184,9 +1192,10 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                                   ccode = <ls_result>-ccode
                                                                                 process = 'CHR'.
             IF sy-subrc = 0.
-              <ls_result>-chargeout_status = '13'.
+              <ls_result>-chargeout_status = '05'.
 *            map text description
-              READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY status = '13'.
+              READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY application = 'CHR'
+                                                                                status = '05'.
               IF sy-subrc = 0.
                 CONCATENATE <ls_processstatus>-description ' (' <ls_legal_status>-finalizedcount '/' <ls_legal_status>-totalcount ')' INTO <ls_result>-chargeoutstatusdescr.
               ENDIF.
@@ -1221,9 +1230,10 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                                        costobject = <ls_result>-costobject
                                                                                           process = 'SCM'.
             IF sy-subrc = 0.
-              <ls_result>-chargeout_status = '09'.
+              <ls_result>-chargeout_status = '05'.
 *            map text description
-              READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY status = '09'.
+              READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY application = 'SCM'
+                                                                                status = '05'.
               IF sy-subrc = 0.
                 CONCATENATE <ls_processstatus>-description ' (' <ls_costcenter_status>-finalizedcount '/' <ls_costcenter_status>-totalcount ')' INTO <ls_result>-stewardshipstatusdescr.
               ENDIF.
@@ -1259,9 +1269,10 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                                                                        costobject = <ls_result>-costobject
                                                                                           process = 'CHR'.
             IF sy-subrc = 0.
-              <ls_result>-chargeout_status = '13'.
+              <ls_result>-chargeout_status = '05'.
 *            map text description
-              READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY status = '13'.
+              READ TABLE lt_processstatus ASSIGNING <ls_processstatus> WITH KEY application = 'CHR'
+                                                                                status = '05'.
               IF sy-subrc = 0.
                 CONCATENATE <ls_processstatus>-description ' (' <ls_costcenter_status>-finalizedcount '/' <ls_costcenter_status>-totalcount ')' INTO <ls_result>-chargeoutstatusdescr.
               ENDIF.

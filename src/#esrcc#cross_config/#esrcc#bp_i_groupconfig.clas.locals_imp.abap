@@ -102,14 +102,14 @@ CLASS lsc_/esrcc/i_groupconfig_s IMPLEMENTATION.
                                   create            = REF #( create )
                                   update            = REF #( update )
                                   delete            = REF #( delete ) ).
+    ENDIF.
 
-      IF update-groupconfig IS NOT INITIAL.
-        SELECT * FROM /esrcc/group WHERE id = '1' INTO TABLE @DATA(groups).
-        IF sy-subrc <> 0.
-          DATA(group) = update-groupconfig[ 1 ].
-          INSERT VALUE #( id = '1' created_by = group-lastchangedby created_at = group-lastchangedat ) INTO TABLE groups.
-          INSERT /esrcc/group FROM TABLE @groups.
-        ENDIF.
+    IF update-groupconfig IS NOT INITIAL.
+      SELECT * FROM /esrcc/group WHERE id = '1' INTO TABLE @DATA(groups).
+      IF sy-subrc <> 0.
+        DATA(group) = update-groupconfig[ 1 ].
+        INSERT VALUE #( id = '1' created_by = group-lastchangedby created_at = group-lastchangedat ) INTO TABLE groups.
+        INSERT /esrcc/group FROM TABLE @groups.
       ENDIF.
     ENDIF.
   ENDMETHOD.

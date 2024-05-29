@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Execution Cockpit Status',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Execution Cockpit Statuses',
     title: {
       type: #STANDARD,
       value: 'Application'

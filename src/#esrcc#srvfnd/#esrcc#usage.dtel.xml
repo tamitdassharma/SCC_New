@@ -7,10 +7,9 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <DOMNAME>/ESRCC/USAGECAL</DOMNAME>
     <HEADLEN>55</HEADLEN>
-    <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Usage In Calculation</DDTEXT>
+    <DDTEXT>Usage in Calculation</DDTEXT>
     <REPTEXT>Usage in Calculation</REPTEXT>
     <SCRTEXT_M>Usage in Calculation</SCRTEXT_M>
     <SCRTEXT_L>Usage in Calculation</SCRTEXT_L>
@@ -24,8 +23,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Verwendung in Berechnung</DDTEXT>
      <REPTEXT>Verwendung in Berechnung</REPTEXT>
-     <SCRTEXT_M>Verwendung in Berech</SCRTEXT_M>
+     <SCRTEXT_M>Verwendung in Berec.</SCRTEXT_M>
      <SCRTEXT_L>Verwendung in Berechnung</SCRTEXT_L>
     </item>
    </DD04_TEXTS>

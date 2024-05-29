@@ -18,7 +18,7 @@ annotate view /ESRCC/C_LeCcode_S with
     id: '/ESRCC/I_LeCcode', 
     purpose: #STANDARD, 
     type: #LINEITEM_REFERENCE, 
-    label: 'Maintain & Assign Company Codes', 
+    label: 'Maintain Company Code & Assign to Legal Entity', 
     position: 2 , 
     targetElement: '_LeToCompanyCode'
   } ]

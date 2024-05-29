@@ -26,10 +26,11 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <REPTEXT>Zeitraum</REPTEXT>
-     <SCRTEXT_S>Zeitraum</SCRTEXT_S>
-     <SCRTEXT_M>Zeitraum</SCRTEXT_M>
-     <SCRTEXT_L>Zeitraum</SCRTEXT_L>
+     <DDTEXT>Periode</DDTEXT>
+     <REPTEXT>Periode</REPTEXT>
+     <SCRTEXT_S>Periode</SCRTEXT_S>
+     <SCRTEXT_M>Periode</SCRTEXT_M>
+     <SCRTEXT_L>Periode</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

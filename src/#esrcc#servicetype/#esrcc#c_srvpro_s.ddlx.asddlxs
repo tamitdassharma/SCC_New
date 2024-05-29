@@ -1,7 +1,7 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Services Product'
+    typeName: 'Service Product'
   }
 }
 annotate view /ESRCC/C_SrvPro_S with
@@ -18,7 +18,7 @@ annotate view /ESRCC/C_SrvPro_S with
     id: '/ESRCC/I_SrvPro',
     purpose: #STANDARD,
     type: #LINEITEM_REFERENCE,
-    label: 'Service Products',
+    label: 'Maintain Service Products',
     position: 2 ,
     targetElement: '_ServiceProduct'
   } ]

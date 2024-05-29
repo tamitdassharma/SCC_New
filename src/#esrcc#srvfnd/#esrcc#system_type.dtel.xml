@@ -26,6 +26,7 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>SAP-Systemtyp</DDTEXT>
      <REPTEXT>SAP-Systemtyp</REPTEXT>
      <SCRTEXT_S>Sys. Typ</SCRTEXT_S>
      <SCRTEXT_M>SAP-Systemtyp</SCRTEXT_M>

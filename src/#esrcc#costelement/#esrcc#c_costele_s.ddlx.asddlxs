@@ -18,7 +18,7 @@ annotate view /ESRCC/C_CostEle_S with
     id: '/ESRCC/I_CostEle',
     purpose: #STANDARD,
     type: #LINEITEM_REFERENCE,
-    label: 'Cost Elements',
+    label: 'Maintain Cost Elements',
     position: 2 ,
     targetElement: '_CostElement'
   } ]

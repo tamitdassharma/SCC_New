@@ -109,9 +109,8 @@ CLASS /ESRCC/CL_APPLICATION_LOGS IMPLEMENTATION.
             EXPORTING
               long_text           = log_message_text
               length_of_each_line = 38
-            IMPORTING
+            TABLES
               table_of_texts      = texts.
-
           DATA(number_of_lines) = lines( texts ).
           LOOP AT texts ASSIGNING FIELD-SYMBOL(<text>).
             DATA(table_index) = sy-tabix.

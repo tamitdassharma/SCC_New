@@ -250,34 +250,6 @@ annotate view /ESRCC/C_RECEIVER_COST with
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CHGOUT', element: 'Chargeout' }}]
   @UI.textArrangement: #TEXT_ONLY
   Chargeout;
-//  @UI.lineItem: [ {
-//    position: 115 ,
-//    importance: #MEDIUM,
-//    label: ''
-//  } ]
-//  @UI.fieldGroup: [
-//  {
-//    importance: #HIGH,
-//    position: 115 ,
-//    qualifier: 'ChgData'
-//  } ]
-//  @Consumption.filter.hidden: true
-//  @EndUserText.label: 'Consumption'
-//  consumption;
-//  @UI.lineItem: [ {
-//    position: 116 ,
-//    importance: #MEDIUM,
-//    label: ''
-//  } ]
-//  @UI.fieldGroup: [
-//  {
-//    importance: #HIGH,
-//    position: 116 ,
-//    qualifier: 'ChgData'
-//  } ]
-//  @EndUserText.label: 'UoM'
-//  @UI.textArrangement: #TEXT_LAST
-//  Uom;
   @UI.lineItem: [ {
     position: 130 ,
     importance: #MEDIUM,
@@ -291,8 +263,8 @@ annotate view /ESRCC/C_RECEIVER_COST with
     importance: #MEDIUM,
     label: ''
   } ]
-  @UI.dataPoint: { qualifier: 'tp', title: 'Transfer Price per Unit' }
-  @EndUserText.label: 'Transfer Price per Unit'
+  @UI.dataPoint: { qualifier: 'tp', title: 'Transfer Price per unit' }
+  @EndUserText.label: 'Transfer Price per unit'
   Transferprice;
 
   @UI.lineItem: [ {
@@ -300,8 +272,8 @@ annotate view /ESRCC/C_RECEIVER_COST with
     importance: #MEDIUM,
     label: ''
   } ]
-  @UI.dataPoint: { qualifier: 'tpm', title: 'Total Markup per Unit' }
-  @EndUserText.label: 'Total Markup per Unit'
+  @UI.dataPoint: { qualifier: 'tpm', title: 'Total Mark-up per unit' }
+  @EndUserText.label: 'Total Mark-up per unit'
   totalmarkuptransferprice;
 
   @UI.lineItem: [ {
@@ -309,8 +281,8 @@ annotate view /ESRCC/C_RECEIVER_COST with
     importance: #MEDIUM,
     label: ''
   } ]
-  @UI.dataPoint: { qualifier: 'markup', title: 'Total Mark-Up' }
-  @EndUserText.label: 'Total Mark-Up'
+  @UI.dataPoint: { qualifier: 'markup', title: 'Total Mark-up' }
+  @EndUserText.label: 'Total Mark-up'
   totaludmarkupabs;
 
   @UI.lineItem: [ {
@@ -394,10 +366,6 @@ annotate view /ESRCC/C_RECEIVER_COST with
   @UI.hidden: true
   hideindirect;
   @UI.hidden: true
-  CapacityVersion;
-  @UI.hidden: true
-  ConsumptionVersion;
-  @UI.hidden: true
   Servicetype;
   @UI.hidden: true
   Transactiongroup;
@@ -409,8 +377,5 @@ annotate view /ESRCC/C_RECEIVER_COST with
   receivingcountryname;
   @UI.hidden: true
   currenytext;
-  @UI.hidden: true
-  unitname;
-
 
 }

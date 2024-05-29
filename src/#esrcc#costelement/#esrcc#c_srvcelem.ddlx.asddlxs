@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Cost Element Character Detail',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Cost Element Character Details',
     title: {
       type: #STANDARD,
       value: 'Legalentity'

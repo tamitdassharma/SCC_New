@@ -133,11 +133,12 @@ CLASS lhc_/esrcc/i_billingfrequency_ IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'BillingFrequencyAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'BillingFrequencyAll' ) )
+        source_entity_name = '/ESRCC/C_BILLINGFREQUENCY'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-billingfrequency
-        failed_entity   = failed-billingfrequency ) ).
+        reported_entity    = reported-billingfrequency
+        failed_entity      = failed-billingfrequency ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_billing_frequency(

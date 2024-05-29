@@ -88,8 +88,8 @@ annotate view /ESRCC/C_MANAGECOSTBASE with
 
 //  { type: #FOR_ACTION,  dataAction: 'changevalueadd' , label: 'Maintain Value-Add/Pass-Through' , position: 1, invocationGrouping: #CHANGE_SET },
 //  { type: #FOR_ACTION,  dataAction: 'changeitems' , label: 'Include/Exclude Items in Calculation' , position: 2, invocationGrouping: #CHANGE_SET },
-  { type: #FOR_ACTION,  dataAction: 'discardall' , label: 'Discard' , position: 4, invocationGrouping: #CHANGE_SET  },
-  { type: #FOR_ACTION,  dataAction: 'submit' , label: 'Submit' , position: 5, invocationGrouping: #CHANGE_SET  } ,
+//  { type: #FOR_ACTION,  dataAction: 'discardall' , label: 'Discard' , position: 4, invocationGrouping: #CHANGE_SET  },
+//  { type: #FOR_ACTION,  dataAction: 'submit' , label: 'Submit' , position: 5, invocationGrouping: #CHANGE_SET  } ,
   {
     position: 30 ,
     importance: #MEDIUM,

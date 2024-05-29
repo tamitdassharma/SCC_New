@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Maintain & Assign Company Code',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Maintain & Assign Company Codes',
     title: {
       type: #STANDARD,
       value: 'Ccode'

@@ -281,7 +281,7 @@
 
 {
     qualifier: 'KPI2IncludedCost',
-    text: 'Total Mark Up',
+    text: 'Total Mark-Up',
     visualizations: [{
         type: #AS_CHART,
         qualifier: 'KPI2IncludedCost'

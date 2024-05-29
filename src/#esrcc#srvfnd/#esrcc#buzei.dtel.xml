@@ -26,6 +26,7 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Nummer der Position im Buchhaltungsbeleg</DDTEXT>
      <REPTEXT>Positions-Nr</REPTEXT>
      <SCRTEXT_S>Pos.-Nr</SCRTEXT_S>
      <SCRTEXT_M>Positions-Nr</SCRTEXT_M>

@@ -134,6 +134,7 @@ CLASS lhc_/esrcc/i_srtype_s IMPLEMENTATION.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
         paths           = VALUE #( ( path = 'ServiceTypeAll' ) )
+        source_entity_name = '/ESRCC/C_SRTYPE'
         is_transition   = abap_true
       CHANGING
         reported_entity = reported-servicetype

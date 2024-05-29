@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Workflow User Group',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Workflow User Groups',
     title: {
       type: #STANDARD,
       value: 'Usergroup'

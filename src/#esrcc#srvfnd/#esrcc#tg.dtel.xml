@@ -6,10 +6,9 @@
     <ROLLNAME>/ESRCC/TG</ROLLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
     <HEADLEN>55</HEADLEN>
-    <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Transaction group</DDTEXT>
+    <DDTEXT>Transaction Group</DDTEXT>
     <REPTEXT>Transaction Group</REPTEXT>
     <SCRTEXT_M>Transaction Group</SCRTEXT_M>
     <SCRTEXT_L>Transaction Group</SCRTEXT_L>
@@ -25,6 +24,7 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Transaktionsgruppe</DDTEXT>
      <REPTEXT>Transaktionsgruppe</REPTEXT>
      <SCRTEXT_M>Transaktionsgruppe</SCRTEXT_M>
      <SCRTEXT_L>Transaktionsgruppe</SCRTEXT_L>

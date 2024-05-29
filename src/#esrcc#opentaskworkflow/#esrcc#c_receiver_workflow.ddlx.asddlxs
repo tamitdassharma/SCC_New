@@ -212,7 +212,7 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
     position: 95 ,
     label: ''
   } ]
-  @EndUserText.label: 'Total Markup'
+  @EndUserText.label: 'Total Mark-up'
   totaludmarkupabs;
 
   @UI.lineItem: [ {
@@ -262,7 +262,7 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
   @UI.selectionField: [{ position: 10 }]
   @Consumption.filter.mandatory: true
   @Consumption.filter.hidden: true
-  @EndUserText.label: 'Workflow Id'
+  @EndUserText.label: 'Workflow ID'
   Workflowid;
   @UI.lineItem: [ {
     position: 240 ,

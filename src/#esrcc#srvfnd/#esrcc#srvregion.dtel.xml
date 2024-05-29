@@ -10,7 +10,7 @@
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Service Regions</DDTEXT>
+    <DDTEXT>Service Region</DDTEXT>
     <REPTEXT>Region</REPTEXT>
     <SCRTEXT_S>Region</SCRTEXT_S>
     <SCRTEXT_M>Region</SCRTEXT_M>
@@ -25,6 +25,7 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Serviceregionen</DDTEXT>
      <REPTEXT>Region</REPTEXT>
      <SCRTEXT_S>Region</SCRTEXT_S>
      <SCRTEXT_M>Region</SCRTEXT_M>

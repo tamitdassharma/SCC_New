@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain and assign Users to Workflow User Groups",
+    "description": "Maintain & Assign Users to Workflow User Groups",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {

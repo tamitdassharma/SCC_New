@@ -35,19 +35,19 @@
     <DD07V>
      <VALPOS>0004</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
-     <DOMVALUE_L>FDA</DOMVALUE_L>
+     <DOMVALUE_L>FPD</DOMVALUE_L>
      <DDTEXT>Service Consumption Data</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0005</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
-     <DOMVALUE_L>FIA</DOMVALUE_L>
+     <DOMVALUE_L>FAB</DOMVALUE_L>
      <DDTEXT>Allocation Base Data</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0006</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
-     <DOMVALUE_L>FDP</DOMVALUE_L>
+     <DOMVALUE_L>FCD</DOMVALUE_L>
      <DDTEXT>Service Capacity Data</DDTEXT>
     </DD07V>
    </DD07V_TAB>
@@ -76,21 +76,25 @@
      <VALPOS>0003</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>FLI</DOMVALUE_L>
+     <DDTEXT>Kostenbasis Einzelbelege</DDTEXT>
     </item>
     <item>
      <VALPOS>0004</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DOMVALUE_L>FDA</DOMVALUE_L>
+     <DOMVALUE_L>FPD</DOMVALUE_L>
+     <DDTEXT>Serviceverbrauchsdaten</DDTEXT>
     </item>
     <item>
      <VALPOS>0005</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DOMVALUE_L>FIA</DOMVALUE_L>
+     <DOMVALUE_L>FAB</DOMVALUE_L>
+     <DDTEXT>Basisdaten für Allokationsschlüssel</DDTEXT>
     </item>
     <item>
      <VALPOS>0006</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DOMVALUE_L>FDP</DOMVALUE_L>
+     <DOMVALUE_L>FCD</DOMVALUE_L>
+     <DDTEXT>Servicekapazitätsdaten</DDTEXT>
     </item>
    </DD07_TEXTS>
   </asx:values>

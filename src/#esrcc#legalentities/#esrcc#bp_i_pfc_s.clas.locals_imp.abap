@@ -133,11 +133,12 @@ CLASS lhc_/esrcc/i_pfc_s IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ProfitCenterAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'ProfitCenterAll' ) )
+        source_entity_name = '/ESRCC/C_PFC'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-profitcenter
-        failed_entity   = failed-profitcenter ) ).
+        reported_entity    = reported-profitcenter
+        failed_entity      = failed-profitcenter ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_profit_center(

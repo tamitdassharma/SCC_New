@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Transaction Group',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Transaction Groups',
     title: {
       type: #STANDARD,
       label: 'Service Transaction Group',

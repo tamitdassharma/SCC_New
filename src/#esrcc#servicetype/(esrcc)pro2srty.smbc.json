@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Assign Service Product to Service Type and TGs",
+    "description": "Assign Service Product to Service Type & TGs",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,7 +9,7 @@
     "serviceName": "/ESRCC/UI_PRO2SRTY_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "ServiceProductAll",
-    "name": "Assign Service Product to Service Type and TG",
+    "name": "Assign Service Product to Service Type & TG",
     "configurationGroup": "",
     "skipRootEntity": true
   },

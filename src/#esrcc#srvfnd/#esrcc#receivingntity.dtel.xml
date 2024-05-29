@@ -24,8 +24,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Empfangende Gesellschaft</DDTEXT>
      <REPTEXT>Empfangende Gesellschaft</REPTEXT>
-     <SCRTEXT_M>Empfangende Gesellsc</SCRTEXT_M>
+     <SCRTEXT_M>Empfangende Ges.</SCRTEXT_M>
      <SCRTEXT_L>Empfangende Gesellschaft</SCRTEXT_L>
     </item>
    </DD04_TEXTS>

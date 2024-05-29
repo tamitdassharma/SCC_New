@@ -1,6 +1,6 @@
 @AbapCatalog.viewEnhancementCategory: [#NONE]
 @AccessControl.authorizationCheck: #CHECK
-@EndUserText.label: 'Cost Center'
+@EndUserText.label: 'Source Cost Object and Number'
 @Metadata.ignorePropagatedAnnotations: true
 
 @Search.searchable: true

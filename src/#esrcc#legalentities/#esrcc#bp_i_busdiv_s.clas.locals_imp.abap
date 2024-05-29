@@ -133,11 +133,12 @@ CLASS lhc_/esrcc/i_busdiv_s IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'BusinessDivisionAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'BusinessDivisionAll' ) )
+        source_entity_name = '/ESRCC/C_BUSDIV'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-businessdivision
-        failed_entity   = failed-businessdivision ) ).
+        reported_entity    = reported-businessdivision
+        failed_entity      = failed-businessdivision ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_business_division(

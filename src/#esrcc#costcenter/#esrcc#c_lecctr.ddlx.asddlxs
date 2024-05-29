@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Stewardship Share for Cost Object',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Stewardship Share for Cost Objects',
     title: {
       type: #STANDARD,
       value: 'Legalentity'

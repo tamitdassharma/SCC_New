@@ -1,8 +1,8 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Assign User to Role',
-    typeNamePlural: 'Data List',
+    typeName: 'Workflow Agent',
+    typeNamePlural: 'Workflow Agents',
     title: {
       type: #STANDARD,
       value: 'Application'
@@ -49,7 +49,7 @@ annotate view /ESRCC/C_WfCust with
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LegalEntityAll_F4', element: 'Legalentity'}, useForValidation: true }]
   Legalentity;
-  
+
   @UI.identification: [ { position: 4 } ]
   @UI.lineItem: [ { position: 4 } ]
   @UI.textArrangement: #TEXT_LAST
@@ -102,4 +102,17 @@ annotate view /ESRCC/C_WfCust with
   @UI.lineItem: [ { position: 12, cssDefault.width: '9.5rem' } ]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 4 }]
   LastChangedAt;
+
+  @UI.hidden: true
+  ApplicationTypeDescription;
+  @UI.hidden: true
+  ApprovalLevelDescription;
+  @UI.hidden: true
+  LegalentityDescription;
+  @UI.hidden: true
+  SysidDescription;
+  @UI.hidden: true
+  CostobjectDescription;
+  @UI.hidden: true
+  CostcenterDescription;
 }

@@ -18,7 +18,7 @@ annotate view /ESRCC/C_SrvTg_S with
     id: '/ESRCC/I_SrvTg',
     purpose: #STANDARD,
     type: #LINEITEM_REFERENCE,
-    label: 'Transaction Groups',
+    label: 'Maintain Transaction Groups',
     position: 2 ,
     targetElement: '_TransactionGrp'
   } ]

@@ -18,7 +18,7 @@ annotate view /ESRCC/C_SrvCeleM_S with
     id: '/ESRCC/I_SrvCeleM',
     purpose: #STANDARD,
     type: #LINEITEM_REFERENCE,
-    label: 'Cost Element Character Details',
+    label: 'Maintain Cost Element Character Details',
     position: 2 ,
     targetElement: '_CostElementToLe'
   } ]

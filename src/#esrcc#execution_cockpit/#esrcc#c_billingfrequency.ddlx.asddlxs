@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Billing Frequency',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Billing Frequencies',
     title: {
       type: #STANDARD,
       value: 'Billingfreq'
@@ -68,4 +68,6 @@ annotate view /ESRCC/C_BillingFrequency with
   
   @UI.hidden: true
   BillingFrequencyDescription;
+  @UI.hidden: true
+  BillingPeriodDesc;
 }

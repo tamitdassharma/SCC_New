@@ -19,7 +19,7 @@ annotate view /ESRCC/C_SysInfo_S with
     id: '/ESRCC/I_SysInfo',
     purpose: #STANDARD,
     type: #LINEITEM_REFERENCE,
-    label: 'System Information',
+    label: 'Maintain System Information',
     position: 2 ,
     targetElement: '_SystemInfo'
   //    parentId: 'CE'

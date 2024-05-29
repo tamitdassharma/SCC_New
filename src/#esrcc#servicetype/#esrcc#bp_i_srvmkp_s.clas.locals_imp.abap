@@ -161,11 +161,12 @@ CLASS lhc_/esrcc/i_srvmkp_s IMPLEMENTATION.
   METHOD precheck_cba_servicemarkup.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ServiceMarkupAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'ServiceMarkupAll' ) )
+        source_entity_name = '/ESRCC/C_SRVMKP'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-servicemarkup
-        failed_entity   = failed-servicemarkup ) ).
+        reported_entity    = reported-servicemarkup
+        failed_entity      = failed-servicemarkup ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_service_markup(
@@ -255,10 +256,11 @@ CLASS lhc_/esrcc/i_srvmkp IMPLEMENTATION.
 
     DATA(lo_service_markup) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ServiceMarkupAll' ) )
+        paths              = VALUE #( ( path = 'ServiceMarkupAll' ) )
+        source_entity_name = '/ESRCC/C_SRVMKP'
       CHANGING
-        reported_entity = reported-servicemarkup
-        failed_entity   = failed-servicemarkup ).
+        reported_entity    = reported-servicemarkup
+        failed_entity      = failed-servicemarkup ).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_service_markup ).
 
@@ -289,10 +291,11 @@ CLASS lhc_/esrcc/i_srvmkp IMPLEMENTATION.
   METHOD precheck_update.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ServiceMarkupAll' ) )
+        paths              = VALUE #( ( path = 'ServiceMarkupAll' ) )
+        source_entity_name = '/ESRCC/C_SRVMKP'
       CHANGING
-        reported_entity = reported-servicemarkup
-        failed_entity   = failed-servicemarkup ) ).
+        reported_entity    = reported-servicemarkup
+        failed_entity      = failed-servicemarkup ) ).
 
     LOOP AT entities INTO DATA(entity) WHERE %control-origcost  = if_abap_behv=>mk-on
                                           OR %control-passcost  = if_abap_behv=>mk-on

@@ -3,6 +3,7 @@ CLASS lcl_custom_validation DEFINITION.
     TYPES:
       ts_le_cctr           TYPE STRUCTURE FOR READ RESULT /esrcc/i_lecctr_s\\letocostcenter,
       ts_service_parameter TYPE STRUCTURE FOR READ RESULT /esrcc/i_lecctr_s\\serviceparameter,
+      tt_sharecost         TYPE STANDARD TABLE OF /esrcc/srvprrec WITH EMPTY KEY,
 
       BEGIN OF ts_control_lecctr,
         validfrom   TYPE if_abap_behv=>t_xflag,
@@ -16,7 +17,9 @@ CLASS lcl_custom_validation DEFINITION.
       END OF ts_control_service_parameter.
 
     METHODS:
-      constructor IMPORTING config_util_ref TYPE REF TO /esrcc/cl_config_util,
+      constructor
+        IMPORTING
+          config_util_ref TYPE REF TO /esrcc/cl_config_util,
       validate_le_cctr
         IMPORTING
           entity  TYPE ts_le_cctr
@@ -24,10 +27,16 @@ CLASS lcl_custom_validation DEFINITION.
       validate_service_parameter
         IMPORTING
           entity  TYPE ts_service_parameter
-          control TYPE ts_control_service_parameter.
+          control TYPE ts_control_service_parameter,
+      calculate_costshare_sum
+        IMPORTING
+          sharecost     TYPE tt_sharecost
+        EXPORTING
+          sharecost_sum TYPE tt_sharecost.
 
   PRIVATE SECTION.
-    DATA: config_util_ref TYPE REF TO /esrcc/cl_config_util.
+    DATA:
+      config_util_ref TYPE REF TO /esrcc/cl_config_util.
 ENDCLASS.
 
 CLASS lcl_custom_validation IMPLEMENTATION.
@@ -116,6 +125,52 @@ CLASS lcl_custom_validation IMPLEMENTATION.
       ENDIF.
     ENDIF.
   ENDMETHOD.
+
+  METHOD calculate_costshare_sum.
+    SELECT sysid, legalentity, ccode, costobject, costcenter, costcenter_vf, validfrom AS date
+      FROM @sharecost AS share
+      WHERE share~validto <> '00000000'
+      INTO TABLE @DATA(dates).
+
+    SELECT sysid, legalentity, ccode, costobject, costcenter, costcenter_vf,
+           CASE WHEN share~validto <> '99991231' THEN dats_add_days(  share~validto , 1 ) ELSE share~validto END AS date
+      FROM @sharecost AS share
+      WHERE share~validto <> '00000000'
+      APPENDING TABLE @dates.
+
+    SORT dates BY sysid legalentity ccode costobject costcenter costcenter_vf date.
+    DELETE ADJACENT DUPLICATES FROM dates COMPARING sysid legalentity ccode costobject costcenter costcenter_vf date.
+    DATA(count) = lines( dates ).
+
+    DATA curr LIKE LINE OF dates.
+    LOOP AT dates INTO DATA(date).
+      IF curr-sysid         <> date-sysid OR
+         curr-legalentity   <> date-legalentity OR
+         curr-ccode         <> date-ccode OR
+         curr-costobject    <> date-costobject OR
+         curr-costcenter    <> date-costcenter OR
+         curr-costcenter_vf <> date-costcenter_vf.
+        curr = CORRESPONDING #( date ).
+        APPEND CORRESPONDING #( date MAPPING validfrom = date ) TO sharecost_sum ASSIGNING FIELD-SYMBOL(<sum>).
+      ELSE.
+        <sum>-validto = COND #( WHEN date-date <> '99991231' THEN date-date - 1 ELSE date-date ).
+        LOOP AT sharecost INTO DATA(share) WHERE sysid         = date-sysid
+                                             AND legalentity   = date-legalentity
+                                             AND ccode         = date-ccode
+                                             AND costobject    = date-costobject
+                                             AND costcenter    = date-costcenter
+                                             AND costcenter_vf = date-costcenter_vf.
+          IF <sum>-validfrom BETWEEN share-validfrom AND share-validto OR
+             <sum>-validto BETWEEN share-validfrom AND share-validto.
+            <sum>-costshare = <sum>-costshare + share-costshare.
+          ENDIF.
+        ENDLOOP.
+        IF count <> sy-tabix.
+          APPEND CORRESPONDING #( date MAPPING validfrom = date ) TO sharecost_sum ASSIGNING <sum>.
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
 ENDCLASS.
 
 CLASS lhc_receiver DEFINITION INHERITING FROM cl_abap_behavior_handler.
@@ -184,19 +239,42 @@ CLASS lhc_serviceparameter IMPLEMENTATION.
 
     DATA(lo_service_parameter) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LeToCostCenterAll' )
-                                   ( path = 'LeToCostCenter' ) )
+        paths              = VALUE #( ( path = 'LeToCostCenterAll' )
+                                      ( path = 'LeToCostCenter' ) )
+        source_entity_name = '/ESRCC/C_SERVICEPARAMETER'
       CHANGING
-        reported_entity = reported-serviceparameter
-        failed_entity   = failed-serviceparameter ).
+        reported_entity    = reported-serviceparameter
+        failed_entity      = failed-serviceparameter ).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_service_parameter ).
+    lo_validation->calculate_costshare_sum(
+      EXPORTING
+        sharecost     = CORRESPONDING #( entities MAPPING costcenter_vf = costcentervf )
+      IMPORTING
+        sharecost_sum = DATA(sharecost_sum)
+    ).
 
-    LOOP AT entities INTO DATA(entity)."gs_service_parameter.
+    LOOP AT entities INTO DATA(entity).
       lo_validation->validate_service_parameter(
         entity  = entity
         control = VALUE #( validto = if_abap_behv=>mk-on costshare = if_abap_behv=>mk-on )
       ).
+
+      LOOP AT sharecost_sum TRANSPORTING NO FIELDS WHERE sysid         = entity-sysid
+                                                     AND legalentity   = entity-legalentity
+                                                     AND ccode         = entity-ccode
+                                                     AND costobject    = entity-costobject
+                                                     AND costcenter    = entity-costcenter
+                                                     AND costcenter_vf = entity-costcentervf
+                                                     AND validfrom     = entity-validfrom
+                                                     AND costshare     <> 100.
+        lo_service_parameter->set_state_message(
+          entity     = entity
+          msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg number = '009' severity = if_abap_behv_message=>severity-error v1 = lo_service_parameter->get_field_text( fieldname = 'COSTSHARE' data_element = '/ESRCC/COSTSHARE' ) )
+          state_area = CONV #( /esrcc/cl_config_util=>percentage )
+        ).
+        EXIT.
+      ENDLOOP.
 
       LOOP AT draft_entities ASSIGNING FIELD-SYMBOL(<draft>)
            WHERE     sysid           = entity-sysid
@@ -241,11 +319,12 @@ CLASS lhc_serviceparameter IMPLEMENTATION.
   METHOD precheck_update.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LeToCostCenterAll' )
-                                   ( path = 'LeToCostCenter' ) )
+        paths              = VALUE #( ( path = 'LeToCostCenterAll' )
+                                      ( path = 'LeToCostCenter' ) )
+        source_entity_name = '/ESRCC/C_SERVICEPARAMETER'
       CHANGING
-        reported_entity = reported-serviceparameter
-        failed_entity   = failed-serviceparameter ) ).
+        reported_entity    = reported-serviceparameter
+        failed_entity      = failed-serviceparameter ) ).
 
     LOOP AT entities INTO DATA(entity) WHERE %control-costshare = if_abap_behv=>mk-on
                                           OR %control-validfrom = if_abap_behv=>mk-on
@@ -356,23 +435,45 @@ CLASS lhc_/esrcc/i_lecctr IMPLEMENTATION.
 
     DATA(lo_le_cctr) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LeToCostCenterAll' ) )
+        paths              = VALUE #( ( path = 'LeToCostCenterAll' ) )
+        source_entity_name = '/ESRCC/C_LECCTR'
       CHANGING
-        reported_entity = reported-letocostcenter
-        failed_entity   = failed-letocostcenter ).
+        reported_entity    = reported-letocostcenter
+        failed_entity      = failed-letocostcenter ).
 
     DATA(lo_service_parameter) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LeToCostCenterAll' )
-                                   ( path = 'LeToCostCenter' ) )
+        paths              = VALUE #( ( path = 'LeToCostCenterAll' )
+                                      ( path = 'LeToCostCenter' ) )
+        source_entity_name = '/ESRCC/C_SERVICEPARAMETER'
       CHANGING
-        reported_entity = reported-serviceparameter
-        failed_entity   = failed-serviceparameter ).
+        reported_entity    = reported-serviceparameter
+        failed_entity      = failed-serviceparameter ).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_le_cctr ).
+    lo_validation->calculate_costshare_sum(
+      EXPORTING
+        sharecost     = CORRESPONDING #( shares MAPPING costcenter_vf = costcentervf )
+      IMPORTING
+        sharecost_sum = DATA(sharecost_sum) ).
 
     LOOP AT entities INTO DATA(entity).
       lo_validation->validate_le_cctr( entity = entity control = VALUE #( validto = if_abap_behv=>mk-on stewardship = if_abap_behv=>mk-on ) ).
+
+      LOOP AT sharecost_sum TRANSPORTING NO FIELDS WHERE sysid         = entity-sysid
+                                                     AND legalentity   = entity-legalentity
+                                                     AND ccode         = entity-ccode
+                                                     AND costobject    = entity-costobject
+                                                     AND costcenter    = entity-costcenter
+                                                     AND costcenter_vf = entity-validfrom
+                                                     AND costshare     <> 100.
+        lo_le_cctr->set_state_message(
+          entity     = entity
+          msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg number = '009' severity = if_abap_behv_message=>severity-error v1 = lo_le_cctr->get_field_text( fieldname = 'COSTSHARE' data_element = '/ESRCC/COSTSHARE' ) )
+          state_area = CONV #( /esrcc/cl_config_util=>percentage )
+        ).
+        EXIT.
+      ENDLOOP.
 
       " Validate overlapping date
       LOOP AT draft_entries ASSIGNING FIELD-SYMBOL(<draft>)
@@ -419,10 +520,11 @@ CLASS lhc_/esrcc/i_lecctr IMPLEMENTATION.
   METHOD precheck_update.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LeToCostCenterAll' ) )
+        paths              = VALUE #( ( path = 'LeToCostCenterAll' ) )
+        source_entity_name = '/ESRCC/C_LECCTR'
       CHANGING
-        reported_entity = reported-letocostcenter
-        failed_entity   = failed-letocostcenter ) ).
+        reported_entity    = reported-letocostcenter
+        failed_entity      = failed-letocostcenter ) ).
 
     LOOP AT entities INTO DATA(entity) WHERE %control-stewardship = if_abap_behv=>mk-on
                                           OR %control-validto     = if_abap_behv=>mk-on.
@@ -454,12 +556,13 @@ CLASS lhc_/esrcc/i_lecctr IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LeToCostCenterAll' )
-                                   ( path = 'LeToCostCenter' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'LeToCostCenterAll' )
+                                      ( path = 'LeToCostCenter' ) )
+        source_entity_name = '/ESRCC/C_SERVICEPARAMETER'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-serviceparameter
-        failed_entity   = failed-serviceparameter ) ).
+        reported_entity    = reported-serviceparameter
+        failed_entity      = failed-serviceparameter ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_service_parameter(
@@ -531,11 +634,12 @@ CLASS lhc_/esrcc/i_lecctr_s IMPLEMENTATION.
 
     DATA(lo_le_cctr) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LeToCostCenterAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'LeToCostCenterAll' ) )
+        source_entity_name = '/ESRCC/C_LECCTR'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-letocostcenter
-        failed_entity   = failed-letocostcenter
+        reported_entity    = reported-letocostcenter
+        failed_entity      = failed-letocostcenter
     ).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_le_cctr ).
@@ -569,7 +673,12 @@ CLASS lhc_/esrcc/i_lecctr_s IMPLEMENTATION.
                                         costcenter = entity-costcenter ] ).
         lo_le_cctr->set_state_message(
           entity     = CORRESPONDING ts_le_cctr( entity )
-          msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg number = '008' severity = cl_abap_behv=>ms-error v1 = lo_le_cctr->get_field_text( fieldname = 'COSTCENTER' ) v2 = entity-costcenter v3 = entity-sysid )
+          msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg
+                                    number = '008'
+                                    severity = cl_abap_behv=>ms-error
+                                    v1 = lo_le_cctr->get_field_text( fieldname = 'COSTCENTER' data_element = '/ESRCC/COSTCENTER' )
+                                    v2 = entity-costcenter
+                                    v3 = entity-sysid )
           state_area = CONV #( /esrcc/cl_config_util=>invalid_data )
         ).
       ENDIF.

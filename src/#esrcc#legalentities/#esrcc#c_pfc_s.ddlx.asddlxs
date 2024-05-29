@@ -18,7 +18,7 @@ annotate view /ESRCC/C_Pfc_S with
     id: '/ESRCC/I_Pfc', 
     purpose: #STANDARD, 
     type: #LINEITEM_REFERENCE, 
-    label: 'Profit Centers', 
+    label: 'Maintain Profit Centers', 
     position: 2 , 
     targetElement: '_ProfitCenter'
   } ]

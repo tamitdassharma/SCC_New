@@ -5,7 +5,7 @@
    <DDLS>
     <DDLNAME>/ESRCC/I_RECEIVINGENTITY_F4</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <DDTEXT>Legal Entity</DDTEXT>
+    <DDTEXT>Receiving Entity</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
    </DDLS>
   </asx:values>

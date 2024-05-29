@@ -94,10 +94,11 @@ CLASS lhc_/esrcc/i_leccode IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LeToCompanyCodeAll' ) )
+        paths              = VALUE #( ( path = 'LeToCompanyCodeAll' ) )
+        source_entity_name = '/ESRCC/C_LECCODE'
       CHANGING
-        reported_entity = reported-letocompanycode
-        failed_entity   = failed-letocompanycode ) ).
+        reported_entity    = reported-letocompanycode
+        failed_entity      = failed-letocompanycode ) ).
 
     LOOP AT entities INTO DATA(entity) WHERE legalentity IS INITIAL.
       lo_validation->validate_le_ccode( EXPORTING entity = entity control = VALUE #( legalentity = if_abap_behv=>mk-on ) ).
@@ -107,10 +108,11 @@ CLASS lhc_/esrcc/i_leccode IMPLEMENTATION.
   METHOD precheck_update.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LeToCompanyCodeAll' ) )
+        paths              = VALUE #( ( path = 'LeToCompanyCodeAll' ) )
+        source_entity_name = '/ESRCC/C_LECCODE'
       CHANGING
-        reported_entity = reported-letocompanycode
-        failed_entity   = failed-letocompanycode ) ).
+        reported_entity    = reported-letocompanycode
+        failed_entity      = failed-letocompanycode ) ).
 
     LOOP AT entities INTO DATA(entity) WHERE %control-legalentity = if_abap_behv=>mk-on.
       lo_validation->validate_le_ccode(
@@ -290,11 +292,12 @@ CLASS lhc_/esrcc/i_leccode_s IMPLEMENTATION.
 
     DATA(lo_cost_center) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LeToCompanyCodeAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'LeToCompanyCodeAll' ) )
+        source_entity_name = '/ESRCC/C_LECCODE'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-letocompanycode
-        failed_entity   = failed-letocompanycode
+        reported_entity    = reported-letocompanycode
+        failed_entity      = failed-letocompanycode
     ).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_cost_center ).

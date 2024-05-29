@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Legal Entity',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Legal Entities',
     title: {
       type: #STANDARD,
       label: 'Legal Entity',

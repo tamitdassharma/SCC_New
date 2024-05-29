@@ -67,7 +67,6 @@ annotate entity /ESRCC/C_ServiceParameter with
   @UI.identification: [ { position: 4 } ]
   @UI.lineItem: [ { position: 4, hidden: true } ]
   @UI.textArrangement: #TEXT_LAST
-  @EndUserText.label: 'Cost Center'
   Costcenter;
 
   @UI.lineItem: [ { position: 5 } ]

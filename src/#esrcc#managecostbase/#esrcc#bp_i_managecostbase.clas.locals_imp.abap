@@ -101,7 +101,7 @@ CLASS lhc_managecostbase IMPLEMENTATION.
     MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
         ENTITY managecostbase
          UPDATE FIELDS ( oldusagecal usagecal status )
-              WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'D' OR status = '' OR status = 'A' OR status = 'R' )
+              WITH VALUE #( FOR costbase IN costbases WHERE ( status <> 'F' AND status <> 'W' )
                               (
                                  %key = costbase-%key
                                  oldusagecal = costbase-usagecal
@@ -135,7 +135,7 @@ CLASS lhc_managecostbase IMPLEMENTATION.
     MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
         ENTITY managecostbase
          UPDATE FIELDS ( oldcostind costind status )
-              WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'D' OR status = '' OR status = 'A' OR status = 'R' )
+              WITH VALUE #( FOR costbase IN costbases WHERE ( status <> 'F' AND status <> 'W' )
                               (
                                  %key = costbase-%key
                                  oldcostind = costbase-costind
@@ -167,9 +167,9 @@ CLASS lhc_managecostbase IMPLEMENTATION.
               WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'D' )
                               (
                                  %key = costbase-%key
-                                 costind = costbase-oldcostind
-                                 usagecal = costbase-oldusagecal
-                                 status = ''
+                                 costind = COND #( when costbase-oldcostind is INITIAL then costbase-costind else costbase-oldcostind )
+                                 usagecal = COND #( when costbase-oldusagecal is INITIAL then costbase-usagecal else costbase-oldusagecal )
+                                 status = 'U'
                                  oldcostind = ''
                                  oldcostdataset = ''
                                  oldusagecal = ''

@@ -200,7 +200,7 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
    position: 73 ,
    qualifier: 'ChgData'
  } ]
-  @EndUserText.label: 'Cost Base per Unit'
+  @EndUserText.label: 'Cost Base per unit'
   Servicecostperunit;
   @UI.lineItem: [ {
   position: 130 ,
@@ -213,7 +213,7 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
    position: 74,
    qualifier: 'ChgData'
  } ]
-  @EndUserText.label: 'Thereof Value Add per Unit'
+  @EndUserText.label: 'Thereof Value Add per unit'
   Valueaddcostperunit;
   @UI.lineItem: [ {
   position: 140 ,
@@ -226,7 +226,7 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
    position: 75 ,
    qualifier: 'ChgData'
  } ]
-  @EndUserText.label: 'Thereof Pass Through per Unit'
+  @EndUserText.label: 'Thereof Pass Through per unit'
   Passthrucostperunit;
   @UI.lineItem: [ {
   position: 150 ,
@@ -239,7 +239,7 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
    position: 80,
    qualifier: 'ChgData'
  } ]
-  @EndUserText.label: 'Markup on Value-Add (%)'
+  @EndUserText.label: 'Mark-up on Value-Add (%)'
   Valueaddmarkup;
   @UI.lineItem: [ {
   position: 160 ,
@@ -252,7 +252,7 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
    position: 90 ,
    qualifier: 'ChgData'
  } ]
-  @EndUserText.label: 'Markup on Pass-Through (%)'
+  @EndUserText.label: 'Mark-up on Pass-Through (%)'
   Passthroughmarkup;
   @UI.lineItem: [ {
   position: 170 ,
@@ -265,7 +265,7 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
    position: 95 ,
    qualifier: 'ChgData'
  } ]
-  @EndUserText.label: 'Transfer Price per Unit'
+  @EndUserText.label: 'Transfer Price per unit'
   transferprice;
   @UI.lineItem: [ {
   position: 180 ,
@@ -298,8 +298,8 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
   importance: #MEDIUM,
   label: ''
   } ]
-  @UI.dataPoint: { qualifier: 'markup', title: 'Total Markup' }
-  @EndUserText.label: 'Total Markup'
+  @UI.dataPoint: { qualifier: 'markup', title: 'Total Mark-up' }
+  @EndUserText.label: 'Total Mark-up'
   totalsrvmarkupabs;
   @UI.lineItem: [ {
   position: 210 ,

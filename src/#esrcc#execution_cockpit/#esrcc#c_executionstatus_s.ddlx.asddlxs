@@ -18,7 +18,7 @@ annotate view /ESRCC/C_ExecutionStatus_S with
     id: '/ESRCC/I_ExecutionStatus',
     purpose: #STANDARD,
     type: #LINEITEM_REFERENCE,
-    label: 'Execution Cockpit Statuses',
+    label: 'Maintain Execution Cockpit Status',
     position: 2 ,
     targetElement: '_ExecutionStatus'
   } ]

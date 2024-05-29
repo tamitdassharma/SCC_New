@@ -136,10 +136,11 @@ CLASS lhc_/esrcc/i_executionstatus_s IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ExecutionStatusAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'ExecutionStatusAll' ) )
+        source_entity_name = '/ESRCC/C_EXECUTIONSTATUS'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-executionstatus
+        reported_entity    = reported-executionstatus
         failed_entity   = failed-executionstatus ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
@@ -219,10 +220,11 @@ CLASS lhc_/esrcc/i_executionstatus IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ExecutionStatusAll' ) )
+        paths              = VALUE #( ( path = 'ExecutionStatusAll' ) )
+        source_entity_name = '/ESRCC/C_EXECUTIONSTATUS'
       CHANGING
-        reported_entity = reported-executionstatus
-        failed_entity   = failed-executionstatus ) ).
+        reported_entity    = reported-executionstatus
+        failed_entity      = failed-executionstatus ) ).
 
     LOOP AT entities INTO DATA(entity) WHERE color IS INITIAL.
       lo_validation->validate_execution_status(
@@ -235,10 +237,11 @@ CLASS lhc_/esrcc/i_executionstatus IMPLEMENTATION.
   METHOD precheck_update.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ExecutionStatusAll' ) )
+        paths              = VALUE #( ( path = 'ExecutionStatusAll' ) )
+        source_entity_name = '/ESRCC/C_EXECUTIONSTATUS'
       CHANGING
-        reported_entity = reported-executionstatus
-        failed_entity   = failed-executionstatus ) ).
+        reported_entity    = reported-executionstatus
+        failed_entity      = failed-executionstatus ) ).
 
     LOOP AT entities INTO DATA(entity) WHERE %control-color = if_abap_behv=>mk-on.
       lo_validation->validate_execution_status(

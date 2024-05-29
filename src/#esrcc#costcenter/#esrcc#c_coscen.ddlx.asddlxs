@@ -1,8 +1,8 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Source Cost Object and Number',
-    typeNamePlural: 'Data List',
+    typeName: 'Source Cost Object & Number',
+    typeNamePlural: 'Source Cost Objects & Numbers',
     title: {
       type: #STANDARD,
       value: 'Costcenter'

@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Service Product',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Service Products',
     title: {
       type: #STANDARD,
       label: 'Service Product',

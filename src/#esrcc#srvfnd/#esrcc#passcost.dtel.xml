@@ -6,10 +6,8 @@
     <ROLLNAME>/ESRCC/PASSCOST</ROLLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
     <HEADLEN>55</HEADLEN>
-    <SCRLEN1>10</SCRLEN1>
-    <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Markup on Pass Cost (%)</DDTEXT>
+    <DDTEXT>Mark-up on Pass Through Cost (%)</DDTEXT>
     <REPTEXT>Mark-up on Pass Through Cost (%)</REPTEXT>
     <SCRTEXT_L>Mark-up on Pass Through Cost (%)</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
@@ -25,6 +23,7 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Aufschlag auf Durchlaufkosten (%)</DDTEXT>
      <REPTEXT>Aufschlag auf Durchlaufkosten (%)</REPTEXT>
      <SCRTEXT_L>Aufschlag auf Durchlaufkosten (%)</SCRTEXT_L>
     </item>

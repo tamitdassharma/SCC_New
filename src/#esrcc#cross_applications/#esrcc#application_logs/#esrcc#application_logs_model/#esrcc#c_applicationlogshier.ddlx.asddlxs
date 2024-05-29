@@ -1,4 +1,15 @@
 @Metadata.layer: #CORE
+@UI.presentationVariant: [
+  {
+    qualifier: 'Default',
+    sortOrder: [
+                {by: 'Application', direction: #ASC },
+                {by: 'SubApplication', direction: #ASC },
+                {by: 'RunNumber', direction: #DESC }
+//                {by: 'CreatedAt', direction: #DESC }
+              ]
+  }
+ ]
 annotate view /ESRCC/C_ApplicationLogsHier with
 {
   @UI.lineItem: [{ hidden: true }]
@@ -25,6 +36,10 @@ annotate view /ESRCC/C_ApplicationLogsHier with
   SubApplication;
   @UI.selectionField: [{ position: 30 }]
   @UI.lineItem: [{ position: 30 }]
+  @EndUserText: {
+      label: 'Run Number',
+      quickInfo: 'Run Number'
+  }
   RunNumber;
   @UI.selectionField: [{ position: 40 }]
   @UI.lineItem: [{ position: 40 }]

@@ -25,7 +25,7 @@ CLASS /ESRCC/CL_VE_MESSAGE_TEXT IMPLEMENTATION.
         MESSAGE ID <original_data>-messageid TYPE <original_data>-messagetype NUMBER <original_data>-messagenumber
           INTO <original_data>-messagetext WITH <original_data>-messagev1 <original_data>-messagev2 <original_data>-messagev3 <original_data>-messagev4.
       ELSEIF <original_data>-hierarchylevel = 0.
-        MESSAGE ID '/ESRCC/FILE_UPLOAD' TYPE 'I' NUMBER 018 INTO <original_data>-messagetext WITH <original_data>-applicationdescription <original_data>-subapplicationdescription.
+        MESSAGE ID '/ESRCC/APPL_LOGS' TYPE 'I' NUMBER 001 INTO <original_data>-messagetext WITH <original_data>-applicationdescription <original_data>-subapplicationdescription.
       ENDIF.
     ENDLOOP.
 

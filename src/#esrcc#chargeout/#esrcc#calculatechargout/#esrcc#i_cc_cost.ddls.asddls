@@ -1,7 +1,8 @@
 @AccessControl.authorizationCheck: #CHECK
 @EndUserText.label: 'Cost Center Cost'
 @Metadata.ignorePropagatedAnnotations: true
-@Analytics.dataCategory: #CUBE
+@Analytics.query: true
+
 define root view entity /ESRCC/I_CC_COST
 as select from /ESRCC/I_CC_COST_UNION as cc_cost   
   

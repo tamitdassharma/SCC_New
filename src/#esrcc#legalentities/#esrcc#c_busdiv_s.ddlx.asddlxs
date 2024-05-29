@@ -18,7 +18,7 @@ annotate view /ESRCC/C_BusDiv_S with
     id: '/ESRCC/I_BusDiv',
     purpose: #STANDARD,
     type: #LINEITEM_REFERENCE,
-    label: 'Business Divisions',
+    label: 'Maintain Business Divisions',
     position: 2 ,
     targetElement: '_BusinessDivision'
   } ]

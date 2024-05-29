@@ -130,11 +130,12 @@ CLASS lhc_/esrcc/i_pro2srty_s IMPLEMENTATION.
   METHOD precheck_cba_serviceproduct.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ServiceProductAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'ServiceProductAll' ) )
+        source_entity_name = '/ESRCC/C_PRO2SRTY'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-serviceproduct
-        failed_entity   = failed-serviceproduct ) ).
+        reported_entity    = reported-serviceproduct
+        failed_entity      = failed-serviceproduct ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_service_product(
@@ -222,10 +223,11 @@ CLASS lhc_/esrcc/i_pro2srty IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ServiceProductAll' ) )
+        paths              = VALUE #( ( path = 'ServiceProductAll' ) )
+        source_entity_name = '/ESRCC/C_PRO2SRTY'
       CHANGING
-        reported_entity = reported-serviceproduct
-        failed_entity   = failed-serviceproduct ) ).
+        reported_entity    = reported-serviceproduct
+        failed_entity      = failed-serviceproduct ) ).
 
     LOOP AT entities INTO DATA(entity).
       lo_validation->validate_service_product(
@@ -238,10 +240,11 @@ CLASS lhc_/esrcc/i_pro2srty IMPLEMENTATION.
   METHOD precheck_update.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ServiceProductAll' ) )
+        paths              = VALUE #( ( path = 'ServiceProductAll' ) )
+        source_entity_name = '/ESRCC/C_PRO2SRTY'
       CHANGING
-        reported_entity = reported-serviceproduct
-        failed_entity   = failed-serviceproduct ) ).
+        reported_entity    = reported-serviceproduct
+        failed_entity      = failed-serviceproduct ) ).
 
     LOOP AT entities INTO DATA(entity) WHERE %control-servicetype = if_abap_behv=>mk-on.
       lo_validation->validate_service_product(

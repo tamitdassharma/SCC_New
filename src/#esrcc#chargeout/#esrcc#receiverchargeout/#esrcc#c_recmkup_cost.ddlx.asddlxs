@@ -79,7 +79,7 @@ annotate view /ESRCC/C_RECMKUP_COST with
     position: 06 ,
     label: ''
   } ]
-  @EndUserText.label: 'Cost base per Unit'
+  @EndUserText.label: 'Cost base per unit'
   Servicecostperunit;
   @UI.lineItem: [ {
   position: 70 ,
@@ -90,7 +90,7 @@ annotate view /ESRCC/C_RECMKUP_COST with
     position: 70 ,
     label: ''
   } ]
-  @EndUserText.label: 'Thereof Value-Add per Unit'
+  @EndUserText.label: 'Thereof Value-Add per unit'
   Valueaddcostperunit;
   @UI.lineItem: [ {
   position: 80 ,
@@ -101,7 +101,7 @@ annotate view /ESRCC/C_RECMKUP_COST with
     position: 80 ,
     label: ''
   } ]
-  @EndUserText.label: 'Thereof Pass-Through per Unit'
+  @EndUserText.label: 'Thereof Pass-Through per unit'
   Passthrucostperunit;  
   @UI.lineItem: [ {
   position: 82 ,
@@ -112,7 +112,7 @@ annotate view /ESRCC/C_RECMKUP_COST with
     position: 82 ,
     label: ''
   } ]
-  @EndUserText.label: 'Total Markup per Unit'
+  @EndUserText.label: 'Total Mark-up per unit'
   tp_totalsrvmarkupabs;  
   @UI.lineItem: [ {
   position: 84 ,
@@ -123,7 +123,7 @@ annotate view /ESRCC/C_RECMKUP_COST with
     position: 84 ,
     label: ''
   } ]
-  @EndUserText.label: 'Thereof Value-Add Markup per Unit'
+  @EndUserText.label: 'Thereof Value-Add Mark-up per unit'
   tp_valueaddmarkupabs;
  
   @UI.lineItem: [ {
@@ -135,7 +135,7 @@ annotate view /ESRCC/C_RECMKUP_COST with
     position: 86 ,
     label: ''
   } ]
-  @EndUserText.label: 'Thereof Pass-Through Markup per Unit'
+  @EndUserText.label: 'Thereof Pass-Through Mark-up per unit'
   tp_passthrumarkupabs;
   
   @UI.lineItem: [ {
@@ -147,7 +147,7 @@ annotate view /ESRCC/C_RECMKUP_COST with
     position: 88 ,
     label: ''
   } ]
-  @EndUserText.label: 'Transfer Price per Unit'
+  @EndUserText.label: 'Transfer Price per unit'
   transferprice;
 
   @UI.lineItem: [ {
@@ -171,7 +171,7 @@ annotate view /ESRCC/C_RECMKUP_COST with
     position: 95 ,
     label: ''
   } ]
-  @EndUserText.label: 'Total Markup'
+  @EndUserText.label: 'Total Mark-up'
   totaludmarkupabs;
   
   @UI.lineItem: [ {

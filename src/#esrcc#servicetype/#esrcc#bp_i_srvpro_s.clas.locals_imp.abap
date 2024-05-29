@@ -134,11 +134,12 @@ CLASS lhc_/esrcc/i_srvpro_s IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'ServiceProductAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'ServiceProductAll' ) )
+        source_entity_name = '/ESRCC/C_SRVPRO'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-serviceproduct
-        failed_entity   = failed-serviceproduct ) ).
+        reported_entity    = reported-serviceproduct
+        failed_entity      = failed-serviceproduct ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_product(

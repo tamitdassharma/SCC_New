@@ -9,7 +9,7 @@
 }
 define view entity /ESRCC/I_ApplicationLogsHier
   as select from /esrcc/log_hdr
-  composition  [1..*] of /ESRCC/I_AppLogItemsHeaderHier as _log_items
+  composition [1..*] of /ESRCC/I_AppLogItemsHeaderHier as _log_items
 {
   key log_header_uuid                as hid,
       ''                             as parent_hid,
@@ -17,7 +17,7 @@ define view entity /ESRCC/I_ApplicationLogsHier
       cast('expand' as abap.char(8)) as drilldown_state,
       application                    as Application,
       sub_application                as SubApplication,
-      run_number                     as RunNumber,
+      ltrim( run_number, ' ')        as RunNumber,
       reporting_year                 as ReportingYear,
       period_from                    as PeriodFrom,
       period_to                      as PeriodTo,

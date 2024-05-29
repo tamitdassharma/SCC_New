@@ -143,11 +143,12 @@ CLASS lhc_/esrcc/i_coscen_s IMPLEMENTATION.
 
     DATA(lo_cost_center) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'CostCenterAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'CostCenterAll' ) )
+        source_entity_name = '/ESRCC/C_COSCEN'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-costcenter
-        failed_entity   = failed-costcenter
+        reported_entity    = reported-costcenter
+        failed_entity      = failed-costcenter
     ).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_cost_center ).
@@ -250,10 +251,11 @@ CLASS lhc_/esrcc/i_coscen IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'CostCenterAll' ) )
+        paths              = VALUE #( ( path = 'CostCenterAll' ) )
+        source_entity_name = '/ESRCC/C_COSCEN'
       CHANGING
-        reported_entity = reported-costcenter
-        failed_entity   = failed-costcenter ) ).
+        reported_entity    = reported-costcenter
+        failed_entity      = failed-costcenter ) ).
 
     LOOP AT entities ASSIGNING FIELD-SYMBOL(<entity>) WHERE billfrequency IS INITIAL.
       lo_validation->validate_costcenter(
@@ -266,10 +268,11 @@ CLASS lhc_/esrcc/i_coscen IMPLEMENTATION.
   METHOD precheck_update.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
           EXPORTING
-            paths           = VALUE #( ( path = 'CostCenterAll' ) )
+            paths              = VALUE #( ( path = 'CostCenterAll' ) )
+            source_entity_name = '/ESRCC/C_COSCEN'
           CHANGING
-            reported_entity = reported-costcenter
-            failed_entity   = failed-costcenter ) ).
+            reported_entity    = reported-costcenter
+            failed_entity      = failed-costcenter ) ).
 
     LOOP AT entities INTO DATA(entity) WHERE %control-billfrequency = if_abap_behv=>mk-on.
       lo_validation->validate_costcenter(

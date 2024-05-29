@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Business Division',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Business Divisions',
     title: {
       type: #STANDARD,
       label: 'Business Division',

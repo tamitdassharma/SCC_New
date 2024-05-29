@@ -5,7 +5,7 @@
    <DDLS>
     <DDLNAME>/ESRCC/I_PROFITCENTER_F4</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <DDTEXT>Company Codes List</DDTEXT>
+    <DDTEXT>Profit Center List</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
    </DDLS>
   </asx:values>

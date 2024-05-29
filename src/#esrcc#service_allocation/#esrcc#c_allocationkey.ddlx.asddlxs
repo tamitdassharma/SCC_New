@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Allocation Key',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Allocation Keys',
     title: {
       type: #STANDARD,
       value: 'Allocationkey'

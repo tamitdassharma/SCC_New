@@ -26,9 +26,10 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Vorzeichen für Erträge</DDTEXT>
      <REPTEXT>Vorzeichen für Erträge</REPTEXT>
      <SCRTEXT_S>Vorzeichen</SCRTEXT_S>
-     <SCRTEXT_M>Vorzeichen für Erträ</SCRTEXT_M>
+     <SCRTEXT_M>Vorzeichen für Ertr.</SCRTEXT_M>
      <SCRTEXT_L>Vorzeichen für Erträge</SCRTEXT_L>
     </item>
    </DD04_TEXTS>

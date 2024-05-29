@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Assign roles to users for workflow approval",
+    "description": "Maintain Agents for Workflow Approval",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,7 +9,7 @@
     "serviceName": "/ESRCC/UI_WFCUST_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "RoleAssignmentAll",
-    "name": "Workflow: Assign Users to Roles",
+    "name": "Workflow: Maintain Agents",
     "configurationGroup": "",
     "skipRootEntity": true
   },

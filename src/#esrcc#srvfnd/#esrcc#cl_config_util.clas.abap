@@ -51,11 +51,12 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
 
     CLASS-METHODS
       create
-        IMPORTING paths           TYPE /esrcc/cl_config_util=>tt_path
-                  is_transition   TYPE abap_boolean OPTIONAL
-        CHANGING  reported_entity TYPE STANDARD TABLE
-                  failed_entity   TYPE STANDARD TABLE
-        RETURNING VALUE(instance) TYPE REF TO /esrcc/cl_config_util.
+        IMPORTING paths              TYPE /esrcc/cl_config_util=>tt_path
+                  source_entity_name TYPE sxco_cds_object_name
+                  is_transition      TYPE abap_boolean OPTIONAL
+        CHANGING  reported_entity    TYPE STANDARD TABLE
+                  failed_entity      TYPE STANDARD TABLE
+        RETURNING VALUE(instance)    TYPE REF TO /esrcc/cl_config_util.
     CLASS-METHODS
       create_for_authorization
         RETURNING VALUE(instance) TYPE REF TO /esrcc/cl_config_util.
@@ -104,9 +105,10 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
         state_area TYPE string.
     METHODS get_field_text
       IMPORTING
-        fieldname   TYPE abp_field_name OPTIONAL
+        fieldname    TYPE abp_field_name OPTIONAL
+        data_element TYPE sxco_ad_object_name OPTIONAL
       RETURNING
-        VALUE(text) TYPE string.
+        VALUE(text)  TYPE string.
     METHODS check_authorization
       IMPORTING
         entity               TYPE any
@@ -155,15 +157,18 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
       END OF ts_authorized_list.
 
     DATA:
-      gv_state_area      TYPE string,
-      gv_is_transition   TYPE abap_boolean,
-      gv_first           TYPE abap_boolean,
-      gs_active_field    TYPE ts_field,
-      gt_paths           TYPE tt_path,
-      gt_fields          TYPE SORTED TABLE OF ts_field WITH NON-UNIQUE DEFAULT KEY,
-      gt_authorized_list TYPE SORTED TABLE OF ts_authorized_list WITH NON-UNIQUE DEFAULT KEY.
+      gv_state_area         TYPE string,
+      gv_source_entity_name TYPE sxco_cds_object_name,
+      gv_data_element       TYPE sxco_ad_object_name,
+      gv_is_transition      TYPE abap_boolean,
+      gv_first              TYPE abap_boolean,
+      gs_active_field       TYPE ts_field,
+      gt_paths              TYPE tt_path,
+      gt_fields             TYPE SORTED TABLE OF ts_field WITH NON-UNIQUE DEFAULT KEY,
+      gt_authorized_list    TYPE SORTED TABLE OF ts_authorized_list WITH NON-UNIQUE DEFAULT KEY,
+      go_abap_dictionary    TYPE REF TO /esrcc/cl_abap_dictionary.
 
-    CLASS-DATA:
+    DATA:
       gr_reported TYPE REF TO data,
       gr_failed   TYPE REF TO data.
 
@@ -174,7 +179,11 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
     METHODS set_element_field_error
       CHANGING
         !reported TYPE any.
-    METHODS extract_field_label.
+    METHODS extract_field_label
+      IMPORTING
+                fieldname    TYPE abp_field_name
+                data_element TYPE sxco_ad_object_name
+      RETURNING VALUE(text)  TYPE string.
     METHODS check_auth_legal_entity
       IMPORTING
         legal_entity         TYPE /esrcc/legalentity
@@ -213,42 +222,27 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
 
 
   METHOD extract_field_label.
-    gt_fields = VALUE #( ( fieldname = 'UOM'                fieldtext = 'Unit of Measure' )
-                         ( fieldname = 'COSTCENTER'         fieldtext = 'Cost Number' )
-                         ( fieldname = 'BILLFREQUENCY'      fieldtext = 'Billing Frequency' )
-                         ( fieldname = 'COSTSHARE'          fieldtext = 'Share of Cost (%)' )
-                         ( fieldname = 'VALIDFROM'          fieldtext = 'Valid From' )
-                         ( fieldname = 'VALIDTO'            fieldtext = 'Valid To' )
-                         ( fieldname = 'COSTOBJECT'         fieldtext = 'Cost Object' )
-                         ( fieldname = 'STEWARDSHIP'        fieldtext = 'Stewardship (%)' )
-                         ( fieldname = 'COSTELEMENT'        fieldtext = 'Cost Element' )
-                         ( fieldname = 'COSTIND'            fieldtext = 'Cost Indicator' )
-                         ( fieldname = 'SYSTEMID'           fieldtext = 'System ID' )
-                         ( fieldname = 'POPER'              fieldtext = 'Posting Period' )
-                         ( fieldname = 'STATUS'             fieldtext = 'Process Status' )
-                         ( fieldname = 'COLOR'              fieldtext = 'Color Code' )
-                         ( fieldname = 'BUSINESSDIVISON'    fieldtext = 'Business Division' )
-                         ( fieldname = 'CCODE'              fieldtext = 'Company Code' )
-                         ( fieldname = 'LEGALENTITY'        fieldtext = 'Legal Entity' )
-                         ( fieldname = 'ENTITYTYPE'         fieldtext = 'Entity Type' )
-                         ( fieldname = 'ROLE'               fieldtext = 'Role' )
-                         ( fieldname = 'LOCALCURR'          fieldtext = 'Currency' )
-                         ( fieldname = 'REGION'             fieldtext = 'Region' )
-                         ( fieldname = 'PROFITCENTER'       fieldtext = 'Profit Center' )
-                         ( fieldname = 'SERVICETYPE'        fieldtext = 'Service Type' )
-                         ( fieldname = 'SRVTYPE'            fieldtext = 'Service Type' )
-                         ( fieldname = 'WEIGHTAGE'          fieldtext = 'Weightage (%)' )
-                         ( fieldname = 'KEYVERSION'         fieldtext = 'Key Version' )
-                         ( fieldname = 'ALLOCATIONPERIOD'   fieldtext = 'Allocation Period' )
-                         ( fieldname = 'REFPERIOD'          fieldtext = 'Reference Period' )
-                         ( fieldname = 'CHARGEOUT'          fieldtext = 'Charge Out Method' )
-                         ( fieldname = 'CAPACITYVERSION'    fieldtext = 'Capacity Dataset' )
-                         ( fieldname = 'CONSUMPTIONVERSION' fieldtext = 'Consumption Dataset' )
-                         ( fieldname = 'ORIGCOST'           fieldtext = 'Mark-up on Orig Cost (%)' )
-                         ( fieldname = 'PASSCOST'           fieldtext = 'Mark-up on Pass Through Cost (%)' )
-                         ( fieldname = 'SERVICEPRODUCT'     fieldtext = 'Service Product' )
-                         ( fieldname = 'TRANSACTIONGROUP'   fieldtext = 'Transaction Group' )
-                         ( fieldname = 'ALLOCATIONKEY'      fieldtext = 'Allocation Key' ) ).
+*    DATA(field) = VALUE ts_field( fieldname = gs_active_field-fieldname ).
+*
+*    field-fieldname = gs_active_field-fieldname.
+*    field-fieldtext = go_abap_dictionary->derive_field_label(
+*      EXPORTING
+*        iv_entity_name  = gv_source_entity_name
+*        iv_data_element = gv_data_element
+*        iv_field_name   = gs_active_field-fieldname
+*    ).
+
+    DATA(field) = VALUE ts_field( fieldname = fieldname
+                                  fieldtext = go_abap_dictionary->derive_field_label(
+                                                EXPORTING
+                                                  iv_entity_name  = gv_source_entity_name
+                                                  iv_data_element = data_element
+                                                  iv_field_name   = fieldname
+                                              ) ).
+
+    text = field-fieldtext.
+
+    INSERT field INTO TABLE gt_fields.
   ENDMETHOD.
 
 
@@ -256,10 +250,11 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
     instance = NEW /esrcc/cl_config_util( ).
 
     instance->gt_paths = paths.
+    instance->gv_source_entity_name = source_entity_name.
     instance->gv_is_transition = is_transition.
     instance->gr_failed = REF #( failed_entity ).
     instance->gr_reported = REF #( reported_entity ).
-    instance->extract_field_label( ).
+    instance->go_abap_dictionary = NEW /esrcc/cl_abap_dictionary( ).
   ENDMETHOD.
 
 
@@ -274,6 +269,7 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
       ENDIF.
 
       IF <value> NOT BETWEEN 0 AND 100.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
         set_message(
           EXPORTING
             entity = entity
@@ -291,6 +287,8 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
       gs_active_field-fieldname = 'VALIDFROM'.
       start_date+6(2) = '01'.
 
+      gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = start_date ).
+
       set_message(
         EXPORTING
           entity = entity
@@ -302,6 +300,7 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
       IF end_date <> lv_date.
         gs_active_field-fieldname = 'VALIDTO'.
         end_date = lv_date.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = end_date ).
 
         set_message(
           EXPORTING
@@ -333,7 +332,6 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
 
     IF from IS NOT INITIAL AND to IS NOT INITIAL AND from > to.
       gs_active_field-fieldname = 'VALIDTO'.
-
       set_message(
         EXPORTING
           entity = entity
@@ -451,7 +449,7 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
       is_authorized = COND #( WHEN list IS INITIAL THEN check_auth_legal_entity( legal_entity = legal_entity activity = activity )
                                                    ELSE SWITCH #( authorized_status WHEN if_abap_behv=>auth-allowed THEN abap_true ELSE abap_false ) ).
       IF is_authorized = abap_false.
-        DATA(v1) = |{ get_field_text( fieldname = 'LEGALENTITY' ) }: { legal_entity }|.
+        DATA(v1) = |{ get_field_text( fieldname = 'LEGALENTITY' data_element = CONV #( /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = legal_entity ) ) ) }: { legal_entity }|.
       ENDIF.
     ELSE.
       is_authorized = abap_true.
@@ -464,13 +462,14 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
         is_authorized = COND #( WHEN list IS INITIAL THEN check_auth_cost_number( cost_object = cost_object cost_number = cost_number activity = activity )
                                                      ELSE SWITCH #( authorized_status WHEN if_abap_behv=>auth-allowed THEN abap_true ELSE abap_false ) ).
         IF is_authorized = abap_false.
-          v1 = |{ get_field_text( fieldname = 'COSTOBJECT' ) }: { cost_object_desc }, { get_field_text( fieldname = 'COSTCENTER' ) }: { cost_number }|.
+          v1 = |{ get_field_text( fieldname = 'COSTOBJECT' data_element = CONV #( /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = cost_object ) ) ) }: { cost_object_desc }, { get_field_text( fieldname = 'COSTCENTER'
+                    data_element = CONV #( /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = cost_number ) ) ) }: { cost_number }|.
         ENDIF.
       ELSE.
         is_authorized = COND #( WHEN list IS INITIAL THEN check_auth_cost_object( cost_object = cost_object activity = activity )
                                                      ELSE SWITCH #( authorized_status WHEN if_abap_behv=>auth-allowed THEN abap_true ELSE abap_false ) ).
         IF is_authorized = abap_false.
-          v1 = |{ get_field_text( fieldname = 'COSTOBJECT' ) }: { cost_object_desc }|.
+          v1 = |{ get_field_text( fieldname = 'COSTOBJECT' data_element = CONV #( /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = cost_object ) ) ) }: { cost_object_desc }|.
         ENDIF.
       ENDIF.
     ENDIF.
@@ -526,8 +525,14 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
 
 
   METHOD get_field_text.
+    DATA(lv_fieldname) = COND #( WHEN fieldname IS NOT INITIAL THEN fieldname ELSE gs_active_field-fieldname ).
+
     text = COND #( WHEN gs_active_field-fieldtext IS NOT INITIAL THEN gs_active_field-fieldtext
-                   ELSE VALUE #( gt_fields[ fieldname = COND #( WHEN fieldname IS NOT INITIAL THEN fieldname ELSE gs_active_field-fieldname ) ]-fieldtext OPTIONAL ) ).
+                   ELSE VALUE #( gt_fields[ fieldname = lv_fieldname ]-fieldtext OPTIONAL ) ).
+
+    IF text IS INITIAL.
+      text = extract_field_label( fieldname = lv_fieldname data_element = COND #( WHEN data_element IS NOT INITIAL THEN data_element ELSE gv_data_element ) ).
+    ENDIF.
   ENDMETHOD.
 
 
@@ -681,7 +686,7 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
               legal_entity      = legal_entity
               cost_object       = cost_object
               cost_number       = cost_number
-              activity          = c_authorization_activity-change ).
+              activity          = c_authorization_activity-delete ).
         ENDIF.
 
         IF <res> IS ASSIGNED.
@@ -714,6 +719,7 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
       ENDIF.
 
       IF <value> IS INITIAL.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
         set_message(
           EXPORTING
             entity = entity
@@ -734,6 +740,7 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
       ENDIF.
 
       IF <value> IS NOT INITIAL.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
         set_message(
           EXPORTING
             entity = entity
@@ -777,6 +784,7 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
       ENDIF.
 
       IF <value> NOT BETWEEN '001' AND '012'.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
         set_message(
           EXPORTING
             entity = entity

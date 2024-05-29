@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Service Product Charge-out Configuration',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Service Product Charge-out Configuration',
     title: {
       type: #STANDARD,
       value: 'Serviceproduct'

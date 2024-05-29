@@ -8,7 +8,6 @@
     dataClass: #MIXED
 }
 define view entity /ESRCC/I_TOTALCB_LI 
-//   as select from /ESRCC/I_CB_LI as cb_li
    as select from /esrcc/cc_cost as cb_li
 
     association [0..*] to /esrcc/le_cctr as ccsrv
@@ -56,41 +55,7 @@ define view entity /ESRCC/I_TOTALCB_LI
     validon,
     localcurr,
     groupcurr,   
-//    @Semantics.amount.currencyCode: 'Localcurr'
-//    sum(excludedcost_l) as excludedtotalcost_l,
-//    @Semantics.amount.currencyCode: 'Localcurr'
-//    sum(origcost_l) as origtotalcost_l,
-//    @Semantics.amount.currencyCode: 'Localcurr'
-//    sum(passcost_l) as passtotalcost_l,
-//    @Semantics.amount.currencyCode: 'Groupcurr'
-//    sum(excludedcost_g) as excludedtotalcost_g,
-//    @Semantics.amount.currencyCode: 'Groupcurr'
-//    sum(origcost_g) as origtotalcost_g,
-//    @Semantics.amount.currencyCode: 'Groupcurr'
-//    sum(passcost_g) as passtotalcost_g,
-// 
-//// Stewardship    
-//    @Semantics.amount.currencyCode: 'Localcurr' 
-//    sum(origcost_l - ( ( ccsrv.stewardship / 100 ) * origcost_l )) as remainingorigcostbase_l,
-//    @Semantics.amount.currencyCode: 'Localcurr' 
-//    sum(passcost_l - ( ( ccsrv.stewardship / 100 ) * passcost_l )) as remainingpasscostbase_l,
-//    
-//    @Semantics.amount.currencyCode: 'Localcurr' 
-//    sum(origcost_g - ( ( ccsrv.stewardship / 100 ) * origcost_g )) as remainingorigcostbase_g,
-//    @Semantics.amount.currencyCode: 'Localcurr' 
-//    sum(passcost_g - ( ( ccsrv.stewardship / 100 ) * passcost_g )) as remainingpasscostbase_g,
-// 
-// //Share of Cost
-//    cast(sum(( srvprm.costshare / 100 ) * (origcost_l - ( ( ccsrv.stewardship / 100 ) * origcost_l )) +
-//        ( srvprm.costshare / 100 ) * (passcost_l - ( ( ccsrv.stewardship / 100 ) * passcost_l ))) as abap.dec(23,2)) as srvcostshareL,
-//    cast(sum(( srvprm.costshare / 100 ) * (origcost_l - ( ( ccsrv.stewardship / 100 ) * origcost_l ))) as abap.dec(23,2)) as valueaddshareL,
-//    cast(sum(( srvprm.costshare / 100 ) * (passcost_l - ( ( ccsrv.stewardship / 100 ) * passcost_l ))) as abap.dec(23,2)) as passthroughshareL,
-//
-//    cast(sum(( srvprm.costshare / 100 ) * (origcost_g - ( ( ccsrv.stewardship / 100 ) * origcost_g )) +
-//        ( srvprm.costshare / 100 ) * (passcost_g - ( ( ccsrv.stewardship / 100 ) * passcost_g ))) as abap.dec(23,2)) as srvcostshareG,
-//    cast(sum(( srvprm.costshare / 100 ) * (origcost_g - ( ( ccsrv.stewardship / 100 ) * origcost_g ))) as abap.dec(23,2)) as valueaddshareG,
-//    cast( sum(( srvprm.costshare / 100 ) * (passcost_g - ( ( ccsrv.stewardship / 100 ) * passcost_g ))) as abap.dec(23,2)) as passthroughshareG
-//   
+  
     @Semantics.amount.currencyCode: 'Localcurr'
     excludedtotalcost_l,
     @Semantics.amount.currencyCode: 'Localcurr'
@@ -117,7 +82,7 @@ define view entity /ESRCC/I_TOTALCB_LI
  
  //Share of Cost
     cast(( srvprm.costshare / 100 ) * (origtotalcost_l - ( ( ccsrv.stewardship / 100 ) * origtotalcost_l )) +
-        ( srvprm.costshare / 100 ) * (passtotalcost_l - ( ( ccsrv.stewardship / 100 ) * passtotalcost_l )) as abap.dec(23,2)) as srvcostshareL,
+        ( srvprm.costshare / 100 ) * (passtotalcost_l - ( ( ccsrv.stewardship / 100 ) * passtotalcost_l )) as abap.dec(23,2) ) as srvcostshareL,
     cast(( srvprm.costshare / 100 ) * (origtotalcost_l - ( ( ccsrv.stewardship / 100 ) * origtotalcost_l )) as abap.dec(23,2)) as valueaddshareL,
     cast(( srvprm.costshare / 100 ) * (passtotalcost_l - ( ( ccsrv.stewardship / 100 ) * passtotalcost_l )) as abap.dec(23,2)) as passthroughshareL,
 

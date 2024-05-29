@@ -141,11 +141,12 @@ CLASS lhc_/esrcc/i_le_s IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LegalEntityAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'LegalEntityAll' ) )
+        source_entity_name = '/ESRCC/C_LE'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-legalentity
-        failed_entity   = failed-legalentity ) ).
+        reported_entity    = reported-legalentity
+        failed_entity      = failed-legalentity ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_legal_entity(
@@ -225,11 +226,12 @@ CLASS lhc_/esrcc/i_le IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LegalEntityAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'LegalEntityAll' ) )
+        source_entity_name = '/ESRCC/C_LE'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-legalentity
-        failed_entity   = failed-legalentity ) ).
+        reported_entity    = reported-legalentity
+        failed_entity      = failed-legalentity ) ).
 
     LOOP AT entities INTO DATA(entity)
       WHERE localcurr IS INITIAL
@@ -247,10 +249,11 @@ CLASS lhc_/esrcc/i_le IMPLEMENTATION.
   METHOD precheck_update.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'LegalEntityAll' ) )
+        paths              = VALUE #( ( path = 'LegalEntityAll' ) )
+        source_entity_name = '/ESRCC/C_LE'
       CHANGING
-        reported_entity = reported-legalentity
-        failed_entity   = failed-legalentity ) ).
+        reported_entity    = reported-legalentity
+        failed_entity      = failed-legalentity ) ).
 
     LOOP AT entities INTO DATA(entity) WHERE %control-entitytype  = if_abap_behv=>mk-on
                                           OR %control-role        = if_abap_behv=>mk-on

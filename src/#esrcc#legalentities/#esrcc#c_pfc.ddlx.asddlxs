@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Profit Center',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Profit Centers',
     title: {
       type: #STANDARD,
       label: 'Profit Center',

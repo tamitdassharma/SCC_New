@@ -9,7 +9,7 @@
     "serviceName": "/ESRCC/UI_LECCODE_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "LeToCompanyCodeAll",
-    "name": "Maintain and Assign Company Code",
+    "name": "Maintain & Assign Company Code",
     "configurationGroup": "",
     "skipRootEntity": true
   },

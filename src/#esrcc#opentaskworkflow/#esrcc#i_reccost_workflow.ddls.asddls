@@ -70,6 +70,8 @@ define root view entity /ESRCC/I_RECCOST_WORKFLOW
     Servicetypedescription,
     statusdescription,
     receivingentitydescription,
+    billingfrequencydescription,
+    billingperioddescription,
     Country as receivingentitycountry,
     legalentitycountry,
     //association

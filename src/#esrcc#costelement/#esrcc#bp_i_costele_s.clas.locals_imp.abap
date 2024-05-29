@@ -133,11 +133,12 @@ CLASS lhc_/esrcc/i_costele_s IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'CostElementAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'CostElementAll' ) )
+        source_entity_name = '/ESRCC/C_COSTELE'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-costelement
-        failed_entity   = failed-costelement ) ).
+        reported_entity    = reported-costelement
+        failed_entity      = failed-costelement ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_costcenter(

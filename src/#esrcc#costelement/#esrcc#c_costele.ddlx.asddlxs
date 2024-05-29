@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Cost Element',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Cost Elements',
     title: {
       type: #STANDARD,
       label: 'Cost Element',

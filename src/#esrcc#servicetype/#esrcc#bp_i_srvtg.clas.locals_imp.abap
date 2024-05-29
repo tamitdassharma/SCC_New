@@ -134,11 +134,12 @@ CLASS lhc_/esrcc/i_srvtg_s IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'TransactionGrpAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'TransactionGrpAll' ) )
+        source_entity_name = '/ESRCC/C_SRVTG'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-transactiongrp
-        failed_entity   = failed-transactiongrp ) ).
+        reported_entity    = reported-transactiongrp
+        failed_entity      = failed-transactiongrp ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_transaction_group(

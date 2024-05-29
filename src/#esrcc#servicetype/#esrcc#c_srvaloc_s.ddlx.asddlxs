@@ -18,7 +18,7 @@ annotate view /ESRCC/C_SrvAloc_S with
     id: '/ESRCC/I_SrvAloc',
     purpose: #STANDARD,
     type: #LINEITEM_REFERENCE,
-    label: 'Service Product Charge-out Configuration',
+    label: 'Service Product Charge-out / Dataset Configuration',
     position: 2 ,
     targetElement: '_ServiceAllocation'
   } ]

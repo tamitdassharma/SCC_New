@@ -133,11 +133,12 @@ CLASS lhc_/esrcc/i_sysinfo_s IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'SystemInfoAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'SystemInfoAll' ) )
+        source_entity_name = '/ESRCC/C_SYSINFO'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-systeminfo
-        failed_entity   = failed-systeminfo ) ).
+        reported_entity    = reported-systeminfo
+        failed_entity      = failed-systeminfo ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_system_info(

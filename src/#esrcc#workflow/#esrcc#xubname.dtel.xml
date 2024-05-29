@@ -6,12 +6,12 @@
     <ROLLNAME>/ESRCC/XUBNAME</ROLLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
     <DOMNAME>/ESRCC/XUBNAME</DOMNAME>
-    <HEADLEN>12</HEADLEN>
+    <HEADLEN>55</HEADLEN>
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>User Name in User Master Record</DDTEXT>
-    <REPTEXT>User Name</REPTEXT>
+    <DDTEXT>Username in User Master Record</DDTEXT>
+    <REPTEXT>Username</REPTEXT>
     <SCRTEXT_S>User</SCRTEXT_S>
     <SCRTEXT_M>User</SCRTEXT_M>
     <SCRTEXT_L>User</SCRTEXT_L>
@@ -25,6 +25,7 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Benutzername im Benutzerstammsatz</DDTEXT>
      <REPTEXT>Benutzername</REPTEXT>
      <SCRTEXT_S>Benutzer</SCRTEXT_S>
      <SCRTEXT_M>Benutzer</SCRTEXT_M>

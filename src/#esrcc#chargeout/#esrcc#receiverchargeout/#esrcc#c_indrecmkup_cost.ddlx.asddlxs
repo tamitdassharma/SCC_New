@@ -69,7 +69,7 @@ annotate view /ESRCC/C_INDRECMKUP_COST with
     position: 95 ,
     label: ''
   } ]
-  @EndUserText.label: 'Total Markup'
+  @EndUserText.label: 'Total Mark-up'
   totaludmarkupabs;
   
   @UI.lineItem: [ {

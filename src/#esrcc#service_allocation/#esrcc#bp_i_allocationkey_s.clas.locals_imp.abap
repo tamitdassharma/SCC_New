@@ -134,11 +134,12 @@ CLASS lhc_/esrcc/i_allocationkey_s IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths           = VALUE #( ( path = 'AllocationKeyAll' ) )
-        is_transition   = abap_true
+        paths              = VALUE #( ( path = 'AllocationKeyAll' ) )
+        source_entity_name = '/ESRCC/C_ALLOCATIONKEY'
+        is_transition      = abap_true
       CHANGING
-        reported_entity = reported-allocationkey
-        failed_entity   = failed-allocationkey ) ).
+        reported_entity    = reported-allocationkey
+        failed_entity      = failed-allocationkey ) ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       lo_validation->validate_allocation_key(

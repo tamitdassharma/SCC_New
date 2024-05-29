@@ -10,25 +10,29 @@ public section.
       !IT_LEADING_DATA type /ESRCC/TT_WF_LEADINGOBJECT
       !IV_WI_ID type /ESRCC/WORKFLOWID
       !IV_STATUS type /ESRCC/STATUS_DE
-      !IV_USER type SYST-UNAME .
+      !IV_USER type SYST-UNAME optional
+      !IV_COMMENT type /ESRCC/COMMENT optional .
   class-methods UPDATE_CC_COST
     importing
       !IT_LEADING_DATA type /ESRCC/TT_WF_LEADINGOBJECT
       !IV_WI_ID type /ESRCC/WORKFLOWID
       !IV_STATUS type /ESRCC/STATUS_DE
-      !IV_USER type SYST-UNAME .
+      !IV_USER type SYST-UNAME optional
+      !IV_COMMENT type /ESRCC/COMMENT optional .
   class-methods UPDATE_REC_COST
     importing
       !IT_LEADING_DATA type /ESRCC/TT_WF_LEADINGOBJECT
       !IV_WI_ID type /ESRCC/WORKFLOWID
       !IV_STATUS type /ESRCC/STATUS_DE
-      !IV_USER type SYST-UNAME .
+      !IV_USER type SYST-UNAME optional
+      !IV_COMMENT type /ESRCC/COMMENT optional .
   class-methods UPDATE_SRV_COST
     importing
       !IT_LEADING_DATA type /ESRCC/TT_WF_LEADINGOBJECT
       !IV_WI_ID type /ESRCC/WORKFLOWID
       !IV_STATUS type /ESRCC/STATUS_DE
-      !IV_USER type SYST-UNAME .
+      !IV_USER type SYST-UNAME optional
+      !IV_COMMENT type /ESRCC/COMMENT optional .
 protected section.
 private section.
 ENDCLASS.
@@ -56,7 +60,13 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
     IF sy-subrc EQ 0.
       LOOP AT lt_cb_li ASSIGNING FIELD-SYMBOL(<fs_cb_li>).
         <fs_cb_li>-status = iv_status.
-        <fs_cb_li>-last_changed_by = iv_user.
+        IF iv_user IS SUPPLIED.
+          <fs_cb_li>-last_changed_by = iv_user.
+        ENDIF.
+        IF iv_comment IS NOT INITIAL.
+          <fs_cb_li>-comments = iv_comment.
+        ENDIF.
+
         <fs_cb_li>-workflowid = iv_wi_id.
       ENDLOOP.
       UPDATE /esrcc/cb_li FROM TABLE @lt_cb_li.
@@ -83,8 +93,13 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
     IF sy-subrc EQ 0.
       LOOP AT lt_cc_cost ASSIGNING FIELD-SYMBOL(<fs_cc_cost>).
         <fs_cc_cost>-status = iv_status.
-        <fs_cc_cost>-last_changed_by = iv_user.
+        IF iv_user IS SUPPLIED.
+          <fs_cc_cost>-last_changed_by = iv_user.
+        ENDIF.
         <fs_cc_cost>-workflowid = iv_wi_id.
+        IF iv_comment IS NOT INITIAL.
+          <fs_cc_cost>-comments = iv_comment.
+        ENDIF.
       ENDLOOP.
       UPDATE /esrcc/cc_cost FROM TABLE @lt_cc_cost.
     ENDIF.
@@ -104,7 +119,7 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
                 ccode = @it_leading_data-ccode AND
                 costobject = @it_leading_data-costobject  AND
                 costcenter = @it_leading_data-costcenter AND
-                serviceproduct = @it_leading_data-serviceproduct and
+                serviceproduct = @it_leading_data-serviceproduct AND
                 receivingentity = @it_leading_data-receivingentity
                 INTO TABLE @DATA(lt_rec_cost).
 
@@ -112,8 +127,13 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
     IF sy-subrc EQ 0.
       LOOP AT lt_rec_cost ASSIGNING FIELD-SYMBOL(<fs_rec_cost>).
         <fs_rec_cost>-status = iv_status.
- "       <fs_rec_cost>-last_changed_by = iv_user.
+        IF iv_user IS SUPPLIED.
+          <fs_rec_cost>-last_changed_by = iv_user.
+        ENDIF.
         <fs_rec_cost>-workflowid = iv_wi_id.
+        IF iv_comment IS NOT INITIAL.
+          <fs_rec_cost>-comments = iv_comment.
+        ENDIF.
       ENDLOOP.
       UPDATE /esrcc/rec_cost FROM TABLE @lt_rec_cost.
     ENDIF.
@@ -121,7 +141,7 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD UPDATE_SRV_COST.
+  METHOD update_srv_cost.
 
     SELECT * FROM /esrcc/srv_cost   FOR ALL ENTRIES IN @it_leading_data
           WHERE
@@ -141,8 +161,14 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
     IF sy-subrc EQ 0.
       LOOP AT lt_srv_cost ASSIGNING FIELD-SYMBOL(<fs_srv_cost>).
         <fs_srv_cost>-status = iv_status.
- "       <fs_srv_cost>-last_changed_by = iv_user.
+        IF iv_user IS SUPPLIED.
+          <fs_srv_cost>-last_changed_by = iv_user.
+        ENDIF.
         <fs_srv_cost>-workflowid = iv_wi_id.
+        IF iv_comment IS NOT INITIAL.
+          <fs_srv_cost>-comments = iv_comment.
+        ENDIF.
+
       ENDLOOP.
       UPDATE /esrcc/srv_cost FROM TABLE @lt_srv_cost.
     ENDIF.

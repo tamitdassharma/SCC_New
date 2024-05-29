@@ -25,8 +25,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Verrechnung gültig ab</DDTEXT>
      <REPTEXT>Verrechnung gültig ab</REPTEXT>
-     <SCRTEXT_M>Verrechnung gültig a</SCRTEXT_M>
+     <SCRTEXT_M>Verrechnung gültigab</SCRTEXT_M>
      <SCRTEXT_L>Verrechnung gültig ab</SCRTEXT_L>
     </item>
    </DD04_TEXTS>

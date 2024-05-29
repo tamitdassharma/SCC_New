@@ -80,7 +80,7 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
     LOOP AT keys ASSIGNING <key> WHERE costcenter IS NOT INITIAL AND serviceproduct IS NOT INITIAL.
       ls_procctrl = CORRESPONDING #( <key> ).
       ls_procctrl-process = 'CHR'.    "Charge-Out
-      ls_procctrl-status = '13'.     "Charge Out finalized
+      ls_procctrl-status = '05'.     "Charge Out finalized
 
 * Admin data
       ls_procctrl-last_changed_by = sy-uname.
@@ -234,7 +234,7 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
     LOOP AT keys ASSIGNING <key> WHERE costcenter IS NOT INITIAL AND serviceproduct IS INITIAL.
       ls_procctrl = CORRESPONDING #( <key> ).
       ls_procctrl-process = 'CBS'.    "Costbase
-      ls_procctrl-status = '17'.     "Cost base finalized
+      ls_procctrl-status = '08'.     "Cost base finalized
 
 * Admin data
       ls_procctrl-last_changed_by = sy-uname.
@@ -325,7 +325,7 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
     LOOP AT keys ASSIGNING <key> WHERE costcenter IS NOT INITIAL AND serviceproduct IS NOT INITIAL.
       ls_procctrl = CORRESPONDING #( <key> ).
       ls_procctrl-process = 'SCM'.    "Stewardship
-      ls_procctrl-status = '09'.     "Stewardship Finalized
+      ls_procctrl-status = '05'.     "Stewardship Finalized
 
 * Admin data
       ls_procctrl-last_changed_by = sy-uname.
@@ -467,7 +467,7 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
         CLEAR ls_wf_leadobj.
         MOVE-CORRESPONDING <ls_rec_cost> TO ls_wf_leadobj.
         APPEND ls_wf_leadobj TO lt_wf_leadobj.
-        <ls_rec_cost>-status = 'W'.   "In Approval
+*        <ls_rec_cost>-status = 'W'.   "In Approval
       ELSE.
         <ls_rec_cost>-status = 'A'.   "Approved
       ENDIF.
@@ -506,9 +506,9 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
       ls_procctrl = CORRESPONDING #( <key> ).
       ls_procctrl-process = 'CHR'.    "Charge-out
       IF wf_active EQ abap_false.
-        ls_procctrl-status = '12'.     "Charge-out approved
+        ls_procctrl-status = '04'.     "Charge-out approved
       ELSE.
-        ls_procctrl-status = '11'.     "Charge-out In Approval
+        ls_procctrl-status = '02'.     "Charge-out In Process
       ENDIF.
 
 * Admin data
@@ -588,7 +588,7 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
         CLEAR ls_wf_leadobj.
         MOVE-CORRESPONDING <ls_srv_cost> TO ls_wf_leadobj.
         APPEND ls_wf_leadobj TO lt_wf_leadobj.
-        <ls_srv_cost>-status = 'W'.   "In Approval
+*        <ls_srv_cost>-status = 'W'.   "In Approval
       ELSE.
         <ls_srv_cost>-status = 'A'.   "Approved
       ENDIF.
@@ -620,9 +620,9 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
       ls_procctrl = CORRESPONDING #( <key> ).
       ls_procctrl-process = 'SCM'.    "Stewardship
       IF wf_active =  abap_false.
-        ls_procctrl-status = '08'.     "Stewardship Approved
+        ls_procctrl-status = '04'.     "Stewardship Approved
       ELSE.
-        ls_procctrl-status = '07'.     "Charge-out In Approval
+        ls_procctrl-status = '02'.     "Stewardship In Process
       ENDIF.
 
 * Admin data
@@ -976,7 +976,7 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
         CLEAR ls_wf_leadobj.
         MOVE-CORRESPONDING <ls_cc_cost> TO ls_wf_leadobj.
         APPEND ls_wf_leadobj TO lt_wf_leadobj.
-        <ls_cc_cost>-status = 'W'.   "In Approval
+*        <ls_cc_cost>-status = 'W'.   "In Approval
       ELSE.
         <ls_cc_cost>-status = 'A'.   "Approval
       ENDIF.
@@ -995,9 +995,9 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
       ls_procctrl = CORRESPONDING #( <key> ).
       ls_procctrl-process = 'CBS'.    "Cost Base
       IF wf_active = abap_false.
-        ls_procctrl-status = '14'.     "Cost Base Approved
+        ls_procctrl-status = '07'.     "Cost Base Approved
       ELSE.
-        ls_procctrl-status = '05'.     "Cost Base In Approval
+        ls_procctrl-status = '05'.     "Cost Base In Process
       ENDIF.
 
 * Admin data

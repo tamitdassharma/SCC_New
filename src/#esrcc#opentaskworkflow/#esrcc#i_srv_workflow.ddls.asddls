@@ -63,6 +63,8 @@ define root view entity /ESRCC/I_SRV_WORKFLOW
       Origtotalcost,
       Passtotalcost,
       costdatasetdescription,
+      billingfrequencydescription,
+      billingperioddescription,
       legalentitydescription,
       ccodedescription,
       costobjectdescription,

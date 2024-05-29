@@ -1,6 +1,6 @@
 @AbapCatalog.viewEnhancementCategory: [#NONE]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Profit Center Value Help'
+@EndUserText.label: 'Profit Center'
 @Metadata.ignorePropagatedAnnotations: true
 
 @Search.searchable: true

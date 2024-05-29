@@ -2,7 +2,7 @@
 @UI: {
   headerInfo: {
     typeName: 'Workflow Switch',
-    typeNamePlural: 'Data List',
+    typeNamePlural: 'Workflow Switch',
     title: {
       type: #STANDARD,
       label: 'Workflow Switch',
