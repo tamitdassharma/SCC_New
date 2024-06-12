@@ -13,8 +13,8 @@ define view entity /ESRCC/C_AllocationWeightage
   key ValidfromAlloc,
       @ObjectModel.text.element: ['AllocationKeyDescription']
   key Allockey,
-      @ObjectModel.text.element: ['AllocationTypeDescription']
-  key AllocType,
+//      @ObjectModel.text.element: ['AllocationTypeDescription']
+//  key AllocType,
       @ObjectModel.text.element: ['AllocationPeriodDescription']
       AllocationPeriod,
       RefPeriod,
@@ -35,8 +35,8 @@ define view entity /ESRCC/C_AllocationWeightage
       _CostVersionText.text       as CostVersionDescription,
       @Semantics.text: true
       _AllocKeyText.AllocationKeyDescription,
-      @Semantics.text: true
-      _AllocTypeText.text         as AllocationTypeDescription,
+//      @Semantics.text: true
+//      _AllocTypeText.text         as AllocationTypeDescription,
       @Semantics.text: true
       _AllocPeriodText.text       as AllocationPeriodDescription,
       /* Associations */

@@ -12,52 +12,53 @@ define view entity /ESRCC/I_INDALLOC
 as select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
   association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
-                                                          and indwght.Ryear           = periodindalloc.ryear
+                                                          and indwght.ryear           = periodindalloc.ryear
                                                           and indwght.Allockey        = periodindalloc.allocationkey
                                                           and indwght.KeyVersion      = periodindalloc.fplv
-                                                          and indwght.Poper           >= periodindalloc.poper
+                                                          and indwght.poper           >= periodindalloc.poper
 
                                                                                          
 
 {
-  key Fplv,
-  key Ryear,
-  key Poper,
-  key Sysid,
-  key Ccode,
-  key Legalentity,
-  key Costobject,
-  key Costcenter,
+  key fplv,
+  key ryear,
+  key poper,
+  key sysid,
+  key ccode,
+  key legalentity,
+  key costobject,
+  key costcenter,
   key serviceproduct,
   key receivingentity,
   key KeyVersion,
   key Allockey,
-  key AllocType,
+//  key AllocType,
   key AllocationPeriod,
   key RefPeriod,
-      case AllocType
-        when 'A' then   /*average*/ 
-         case when cast(Poper as abap.int1) > 0 then
-         sum(cast( periodindalloc.value / cast(Poper as abap.int1) as abap.dec(23,5))) else 0 end
-        when 'C' then   /*cumulative*/
-        sum(periodindalloc.value)
-        else 0 end as reckpivalue
+      sum(periodindalloc.value) as reckpivalue
+//      case AllocType
+//        when 'A' then   /*average*/ 
+//         case when cast(Poper as abap.int1) > 0 then
+//         sum(cast( periodindalloc.value / cast(Poper as abap.int1) as abap.dec(23,5))) else 0 end
+//        when 'C' then   /*cumulative*/
+//        sum(periodindalloc.value)
+//        else 0 end as reckpivalue
 
 } where AllocationPeriod = '01'  /*YTD*/
 group by
-Fplv,
-Ryear,
-Poper,
-Sysid,
-Ccode,
-Legalentity,
-Costobject,
-Costcenter,
+fplv,
+ryear,
+poper,
+sysid,
+ccode,
+legalentity,
+costobject,
+costcenter,
 serviceproduct,
 receivingentity,
 KeyVersion,
 Allockey,
-AllocType,
+//AllocType,
 AllocationPeriod,
 RefPeriod
   
@@ -66,99 +67,101 @@ union
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
   association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
-                                                          and indwght.Ryear           = periodindalloc.ryear
+                                                          and indwght.ryear           = periodindalloc.ryear
                                                           and indwght.Allockey        = periodindalloc.allocationkey
                                                           and indwght.KeyVersion      = periodindalloc.fplv
-                                                          and indwght.Poper           = periodindalloc.poper
+                                                          and indwght.poper           = periodindalloc.poper
+                                                         
                                                           
                                                                                          
 
 {
-  key Fplv,
-  key Ryear,
-  key Poper,
-  key Sysid,
-  key Ccode,
-  key Legalentity,
-  key Costobject,
-  key Costcenter,
+  key fplv,
+  key ryear,
+  key poper,
+  key sysid,
+  key ccode,
+  key legalentity,
+  key costobject,
+  key costcenter,
   key serviceproduct,
   key receivingentity,
   key KeyVersion,
   key Allockey,
-  key AllocType,
+//  key AllocType,
   key AllocationPeriod,
   key RefPeriod,
-      sum(periodindalloc.value) as reckpivalue
+      periodindalloc.value as reckpivalue
 
-} where AllocationPeriod = '02'   /*Recent Month*/
-group by
-Fplv,
-Ryear,
-Poper,
-Sysid,
-Ccode,
-Legalentity,
-Costobject,
-Costcenter,
-serviceproduct,
-receivingentity,
-KeyVersion,
-Allockey,
-AllocType,
-AllocationPeriod,
-RefPeriod
+} where AllocationPeriod = '02'   /*current Month*/
+//group by
+//fplv,
+//ryear,
+//poper,
+//sysid,
+//ccode,
+//legalentity,
+//costobject,
+//costcenter,
+//serviceproduct,
+//receivingentity,
+//KeyVersion,
+//Allockey,
+////AllocType,
+//AllocationPeriod,
+//RefPeriod
 
 union
 
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
   association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
-                                                          and indwght.Ryear           = periodindalloc.ryear
+                                                          and indwght.ryear           = periodindalloc.ryear
                                                           and indwght.Allockey        = periodindalloc.allocationkey
                                                           and indwght.KeyVersion      = periodindalloc.fplv                                                          
                                                           and indwght.RefPeriod      >= periodindalloc.poper
                                                                                          
 
 {
-  key Fplv,
-  key Ryear,
-  key Poper,
-  key Sysid,
-  key Ccode,
-  key Legalentity,
-  key Costobject,
-  key Costcenter,
+  key fplv,
+  key ryear,
+  key poper,
+  key sysid,
+  key ccode,
+  key legalentity,
+  key costobject,
+  key costcenter,
   key serviceproduct,
   key receivingentity,
   key KeyVersion,
   key Allockey,
-  key AllocType,
+//  key AllocType,
   key AllocationPeriod,
   key RefPeriod,
-       case AllocType
-        when 'A' then   /*average*/ 
-         case when cast(RefPeriod as abap.int1) <> 0 then
-         sum(cast( periodindalloc.value / cast(RefPeriod as abap.int1) as abap.dec(23,5)))  else 0  end
-        when 'C' then   /*cumulative*/
-        sum(periodindalloc.value)
-        else 0 end as reckpivalue
+      sum(periodindalloc.value) as reckpivalue
+//       case AllocType
+//        when 'A' then   /*average*/ 
+//         case when cast(RefPeriod as abap.int1) <> 0 then
+//         sum(cast( periodindalloc.value / cast(RefPeriod as abap.int1) as abap.dec(23,5)))  else 0  end
+//        when 'C' then   /*cumulative*/
+//        sum(periodindalloc.value)
+//        else 0 end as reckpivalue
 
 } where AllocationPeriod = '03'  /*No. Of months*/
 group by
-Fplv,
-Ryear,
-Poper,
-Sysid,
-Ccode,
-Legalentity,
-Costobject,
-Costcenter,
+fplv,
+ryear,
+poper,
+sysid,
+ccode,
+legalentity,
+costobject,
+costcenter,
 serviceproduct,
 receivingentity,
 KeyVersion,
 Allockey,
-AllocType,
+//AllocType,
 AllocationPeriod,
 RefPeriod
 
@@ -167,51 +170,151 @@ union
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
   association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
-                                                          and indwght.Ryear           = periodindalloc.ryear
+                                                          and indwght.ryear           = periodindalloc.ryear
                                                           and indwght.Allockey        = periodindalloc.allocationkey
                                                           and indwght.KeyVersion      = periodindalloc.fplv                                                                                                                                                                   
-                                                          and indwght.Poper          >= periodindalloc.poper  
+                                                          and indwght.poper          >= periodindalloc.poper  
                                                           and periodindalloc.poper    > indwght.fromRefperiod                           
 {
-  key Fplv,
-  key Ryear,
-  key Poper,
-  key Sysid,
-  key Ccode,
-  key Legalentity,
-  key Costobject,
-  key Costcenter,
+  key fplv,
+  key ryear,
+  key poper,
+  key sysid,
+  key ccode,
+  key legalentity,
+  key costobject,
+  key costcenter,
   key serviceproduct,
   key receivingentity,
   key KeyVersion,
   key Allockey,
-  key AllocType,
+//  key AllocType,
   key AllocationPeriod,
   key RefPeriod,
-       case AllocType
-        when 'A' then   /*average*/ 
-         case when cast(Poper as abap.int1) - cast(RefPeriod as abap.int1) > 0   then  
-         sum(cast( periodindalloc.value / cast(RefPeriod as abap.int1) as abap.dec(23,5))) else 0 end
-        when 'C' then   /*cumulative*/
-        case when cast(Poper as abap.int1) - cast(RefPeriod as abap.int1) > 0   then
-        sum(periodindalloc.value) else 0 end
-        else 0 end as reckpivalue
+      sum(periodindalloc.value) as reckpivalue
+//       case AllocType
+//        when 'A' then   /*average*/ 
+//         case when cast(Poper as abap.int1) - cast(RefPeriod as abap.int1) > 0   then  
+//         sum(cast( periodindalloc.value / cast(RefPeriod as abap.int1) as abap.dec(23,5))) else 0 end
+//        when 'C' then   /*cumulative*/
+//        case when cast(Poper as abap.int1) - cast(RefPeriod as abap.int1) > 0   then
+//        sum(periodindalloc.value) else 0 end
+//        else 0 end as reckpivalue
 
 } where AllocationPeriod = '04' /*Last months*/
 group by
-Fplv,
-Ryear,
-Poper,
-Sysid,
-Ccode,
-Legalentity,
-Costobject,
-Costcenter,
+fplv,
+ryear,
+poper,
+sysid,
+ccode,
+legalentity,
+costobject,
+costcenter,
 serviceproduct,
 receivingentity,
 KeyVersion,
 Allockey,
-AllocType,
+//AllocType,
 AllocationPeriod,
 RefPeriod
+
+union
+
+select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
+
+  association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
+                                                          and indwght.ryear           = periodindalloc.ryear
+                                                          and indwght.Allockey        = periodindalloc.allocationkey
+                                                          and indwght.KeyVersion      = periodindalloc.fplv
+                                                          and indwght.poper           > periodindalloc.poper  
+                                                          and periodindalloc.poper    >= indwght.fromRefperiod    
+                                                          
+                                                                                         
+
+{
+  key fplv,
+  key ryear,
+  key poper,
+  key sysid,
+  key ccode,
+  key legalentity,
+  key costobject,
+  key costcenter,
+  key serviceproduct,
+  key receivingentity,
+  key KeyVersion,
+  key Allockey,
+//  key AllocType,
+  key AllocationPeriod,
+  key RefPeriod,
+      periodindalloc.value as reckpivalue
+
+} where AllocationPeriod = '05'   /*previous Month*/
+//group by
+//fplv,
+//ryear,
+//poper,
+//sysid,
+//ccode,
+//legalentity,
+//costobject,
+//costcenter,
+//serviceproduct,
+//receivingentity,
+//KeyVersion,
+//Allockey,
+////AllocType,
+//AllocationPeriod,
+//RefPeriod 
+
+union
+
+select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
+
+  association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
+                                                          and indwght.ryear           = periodindalloc.ryear
+                                                          and indwght.Allockey        = periodindalloc.allocationkey
+                                                          and indwght.KeyVersion      = periodindalloc.fplv
+                                                          and indwght.RefPeriod       = periodindalloc.poper
+                                                          
+                                                                                         
+
+{
+  key fplv,
+  key ryear,
+  key poper,
+  key sysid,
+  key ccode,
+  key legalentity,
+  key costobject,
+  key costcenter,
+  key serviceproduct,
+  key receivingentity,
+  key KeyVersion,
+  key Allockey,
+//  key AllocType,
+  key AllocationPeriod,
+  key RefPeriod,
+      periodindalloc.value as reckpivalue
+
+} where AllocationPeriod = '06'   /*Reference Month*/
+//group by
+//fplv,
+//ryear,
+//poper,
+//sysid,
+//ccode,
+//legalentity,
+//costobject,
+//costcenter,
+//serviceproduct,
+//receivingentity,
+//KeyVersion,
+//Allockey,
+////AllocType,
+//AllocationPeriod,
+//RefPeriod
+
+
 

@@ -12,7 +12,7 @@ define view entity /ESRCC/I_TRANSACTIONGROUP_F4
       @ObjectModel.text: { element: ['Description'] }
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
       @UI.textArrangement: #TEXT_SEPARATE
-  key srvtgt.transactiongroup as Transactiongroup,
+  key srvtg.transactiongroup as Transactiongroup,
       
       @Semantics.text: true
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }

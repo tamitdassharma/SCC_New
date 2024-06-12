@@ -70,7 +70,7 @@ annotate view /ESRCC/C_LeCcode with
   Controllingarea;
 
   @UI.identification: [ { position: 6 } ]
-  @UI.lineItem: [ { position: 6, cssDefault.width: '3.5rem' } ]
+  @UI.lineItem: [ { position: 6, cssDefault.width: '4rem' } ]
   Active;
 
   @UI.lineItem: [ { position: 7, cssDefault.width: '14rem' } ]

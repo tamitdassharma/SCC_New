@@ -38,7 +38,8 @@ define view entity /ESRCC/I_LegalEntityAll_F4
       @ObjectModel.text.element: ['RegionDesc']
       @UI.textArrangement: #TEXT_LAST
       region            as Region,
-
+      
+      @Consumption.valueHelpDefinition: [ { entity: { name: 'I_Country', element: 'Country' }, useForValidation: true } ]
       @ObjectModel.text.association: '_CountryText'
       @EndUserText.label: 'Country'
       @UI.textArrangement: #TEXT_LAST

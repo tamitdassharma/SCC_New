@@ -1,8 +1,8 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Workflow Agent',
-    typeNamePlural: 'Workflow Agents',
+    typeName: 'Workflow Approval Configuration',
+    typeNamePlural: 'Workflow Approval Configuration',
     title: {
       type: #STANDARD,
       value: 'Application'

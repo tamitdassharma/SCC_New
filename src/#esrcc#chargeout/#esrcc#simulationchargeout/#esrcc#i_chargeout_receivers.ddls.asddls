@@ -8,7 +8,6 @@
     dataClass: #MIXED
 }
 define view entity /ESRCC/I_CHARGEOUT_RECEIVERS 
-//as select from /ESRCC/I_CHARGEOUT_UNITCOST as chargeoutcost
 as select from /esrcc/srv_cost as chargeoutcost
 
 association [0..1] to /esrcc/cc_cost  as _CostCenterCost 
@@ -46,7 +45,8 @@ association [0..*] to /ESRCC/I_ServiceAllocReceiver as srvallocreceivers
     _CostCenterCost.profitcenter,
     _CostCenterCost.businessdivision,
     _CostCenterCost.controllingarea,
-    billfrequency,   
+    billfrequency,
+    _CostCenterCost.billingperiod,   
     servicetype,
     transactiongroup,   
     capacity_version,
@@ -70,10 +70,6 @@ association [0..*] to /ESRCC/I_ServiceAllocReceiver as srvallocreceivers
     _CostCenterCost.totalcost_l - _CostCenterCost.excludedtotalcost_l as includetotalcost_g,    
     _CostCenterCost.origtotalcost_g,
     _CostCenterCost.passtotalcost_g,
-//    _CostCenterCost.origtotalcost_l - ( ( _CostCenterCost.stewardship / 100 ) * _CostCenterCost.origtotalcost_l ) as remainingorigcostbase_l,
-//    _CostCenterCost.passtotalcost_l - ( ( _CostCenterCost.stewardship / 100 ) * _CostCenterCost.passtotalcost_l ) as remainingpasscostbase_l,
-//    _CostCenterCost.origtotalcost_g - ( ( _CostCenterCost.stewardship / 100 ) * _CostCenterCost.origtotalcost_g ) as remainingorigcostbase_g,
-//    _CostCenterCost.passtotalcost_g - ( ( _CostCenterCost.stewardship / 100 ) * _CostCenterCost.passtotalcost_g ) as remainingpasscostbase_g,
     _CostCenterCost.origtotalcost_l - ( ( _CostCenterCost.stewardship / 100 ) * _CostCenterCost.origtotalcost_l ) +
     _CostCenterCost.passtotalcost_l - ( ( _CostCenterCost.stewardship / 100 ) * _CostCenterCost.passtotalcost_l ) as remainingcostbase_l,
     _CostCenterCost.origtotalcost_g - ( ( _CostCenterCost.stewardship / 100 ) * _CostCenterCost.origtotalcost_g ) +
@@ -83,16 +79,21 @@ association [0..*] to /ESRCC/I_ServiceAllocReceiver as srvallocreceivers
     valueaddsharel,
     passthroughsharel,
     (valueaddmarkupabsl + passthrumarkupabsl ) as srvtotalmarkupabsL,
-    cast((srvcostsharel + valueaddmarkupabsl + passthrumarkupabsl) as abap.dec(23,2)) as totalchargeoutamountL,       
+    cast(case when chargeout = 'D' then
+    ( servicecostperunitl + tp_valueaddmarkupcostperunitl + tp_passthrumarkupcostperunitl ) * planning
+    else
+    (srvcostsharel + valueaddmarkupabsl + passthrumarkupabsl) end as abap.dec(23,5)) as totalchargeoutamountL,       
     srvcostshareg,
     valueaddshareg,
     passthroughshareg,
     (valueaddmarkupabsg + passthrumarkupabsg ) as srvtotalmarkupabsG,
-    cast((srvcostshareg + valueaddmarkupabsg + passthrumarkupabsg) as abap.dec(23,2)) as totalchargeoutamountG,
+    cast(case when chargeout = 'D' then
+    ( servicecostperunitg + tp_valueaddmarkupcostperunitg + tp_passthrumarkupcostperunitg ) * planning
+    else
+    (srvcostshareg + valueaddmarkupabsg + passthrumarkupabsg) end as abap.dec(23,5)) as totalchargeoutamountG,
     servicecostperunitl,
     valueaddcostperunitl,
     passthrucostperunitl,
-//    overallcostperunitG,
     servicecostperunitg,
     valueaddcostperunitg,
     passthrucostperunitg,
@@ -107,9 +108,9 @@ association [0..*] to /ESRCC/I_ServiceAllocReceiver as srvallocreceivers
     passthrumarkupabsl,
     passthrumarkupabsg,
     case when chargeout = 'D' then
-    cast(( servicecostperunitl + tp_valueaddmarkupcostperunitl + tp_passthrumarkupcostperunitl ) as abap.dec(10,2))
+    ( servicecostperunitl + tp_valueaddmarkupcostperunitl + tp_passthrumarkupcostperunitl ) 
     else 0 end as transferpriceL,
     case when chargeout = 'D' then
-    cast(( servicecostperunitg + tp_valueaddmarkupcostperunitg + tp_passthrumarkupcostperunitg ) as abap.dec(10,2))
+    ( servicecostperunitg + tp_valueaddmarkupcostperunitg + tp_passthrumarkupcostperunitg )
     else 0 end as transferpriceG
 }

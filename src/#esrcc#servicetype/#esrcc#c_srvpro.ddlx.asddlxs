@@ -18,20 +18,13 @@ annotate view /ESRCC/C_SrvPro with
     position: 1,
     type: #COLLECTION
   },
-   {
-   parentId: '/ESRCC/I_SrvPro',
-   type: #IDENTIFICATION_REFERENCE,
-   purpose: #STANDARD,
-   label: 'General Information',
-   position : 10
-   },
   {
    parentId: '/ESRCC/I_SrvPro',
    type: #FIELDGROUP_REFERENCE,
    purpose: #STANDARD,
    label: 'Admin Information',
    targetQualifier: 'AdminGroup',
-   position: 20
+   position: 10
    },
   {
     id: '/ESRCC/I_SrvProText',

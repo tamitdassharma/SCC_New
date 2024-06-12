@@ -341,6 +341,7 @@ annotate view /ESRCC/C_CC_COST with
     position: 220,
     qualifier: 'ChgData'
   } ]
+  @Consumption.filter.hidden: true
   Stewardship;
 
   @UI.lineItem: [ {

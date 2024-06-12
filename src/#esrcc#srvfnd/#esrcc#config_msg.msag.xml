@@ -66,7 +66,7 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
      <MSGNR>010</MSGNR>
-     <TEXT>Reference Period is not applicable for Allocation Period &apos;&amp;1&apos;</TEXT>
+     <TEXT>Reference Period(s) is not applicable for Key Base Data Computation &apos;&amp;1&apos;</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
@@ -121,6 +121,12 @@
      <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
      <MSGNR>019</MSGNR>
      <TEXT>This table has restricted authorization to create, update and delete</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
+     <MSGNR>020</MSGNR>
+     <TEXT>&apos;&amp;1&apos; is mandatory for Indirect Charge Out</TEXT>
     </T100>
    </T100>
   </asx:values>

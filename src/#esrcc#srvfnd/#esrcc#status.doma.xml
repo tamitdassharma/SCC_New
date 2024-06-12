@@ -56,6 +56,12 @@
      <DOMVALUE_L>E</DOMVALUE_L>
      <DDTEXT>Extracted</DDTEXT>
     </DD07V>
+    <DD07V>
+     <VALPOS>0008</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>P</DOMVALUE_L>
+     <DDTEXT>In Process</DDTEXT>
+    </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>
     <LANGU>D</LANGU>
@@ -107,6 +113,11 @@
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>E</DOMVALUE_L>
      <DDTEXT>Extrahiert</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0008</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>P</DOMVALUE_L>
     </item>
    </DD07_TEXTS>
   </asx:values>

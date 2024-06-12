@@ -81,15 +81,25 @@ define view entity /ESRCC/I_TOTALCB_LI
     passtotalcost_g - ( ( ccsrv.stewardship / 100 ) * passtotalcost_g ) as remainingpasscostbase_g,
  
  //Share of Cost
-    cast(( srvprm.costshare / 100 ) * (origtotalcost_l - ( ( ccsrv.stewardship / 100 ) * origtotalcost_l )) +
-        ( srvprm.costshare / 100 ) * (passtotalcost_l - ( ( ccsrv.stewardship / 100 ) * passtotalcost_l )) as abap.dec(23,2) ) as srvcostshareL,
-    cast(( srvprm.costshare / 100 ) * (origtotalcost_l - ( ( ccsrv.stewardship / 100 ) * origtotalcost_l )) as abap.dec(23,2)) as valueaddshareL,
-    cast(( srvprm.costshare / 100 ) * (passtotalcost_l - ( ( ccsrv.stewardship / 100 ) * passtotalcost_l )) as abap.dec(23,2)) as passthroughshareL,
+//    cast(( srvprm.costshare / 100 ) * (origtotalcost_l - ( ( ccsrv.stewardship / 100 ) * origtotalcost_l )) +
+//        ( srvprm.costshare / 100 ) * (passtotalcost_l - ( ( ccsrv.stewardship / 100 ) * passtotalcost_l )) as abap.dec(23,2) ) as srvcostshareL,
+//    cast(( srvprm.costshare / 100 ) * (origtotalcost_l - ( ( ccsrv.stewardship / 100 ) * origtotalcost_l )) as abap.dec(23,2)) as valueaddshareL,
+//    cast(( srvprm.costshare / 100 ) * (passtotalcost_l - ( ( ccsrv.stewardship / 100 ) * passtotalcost_l )) as abap.dec(23,2)) as passthroughshareL,
+//
+//    cast(( srvprm.costshare / 100 ) * (origtotalcost_g - ( ( ccsrv.stewardship / 100 ) * origtotalcost_g )) +
+//        ( srvprm.costshare / 100 ) * (passtotalcost_g - ( ( ccsrv.stewardship / 100 ) * passtotalcost_g )) as abap.dec(23,2)) as srvcostshareG,
+//    cast(( srvprm.costshare / 100 ) * (origtotalcost_g - ( ( ccsrv.stewardship / 100 ) * origtotalcost_g )) as abap.dec(23,2)) as valueaddshareG,
+//    cast(( srvprm.costshare / 100 ) * (passtotalcost_g - ( ( ccsrv.stewardship / 100 ) * passtotalcost_g )) as abap.dec(23,2)) as passthroughshareG
+    
+    ( srvprm.costshare / 100 ) * (origtotalcost_l - ( ( ccsrv.stewardship / 100 ) * origtotalcost_l )) +
+        ( srvprm.costshare / 100 ) * (passtotalcost_l - ( ( ccsrv.stewardship / 100 ) * passtotalcost_l )) as srvcostshareL,
+    ( srvprm.costshare / 100 ) * (origtotalcost_l - ( ( ccsrv.stewardship / 100 ) * origtotalcost_l )) as valueaddshareL,
+    ( srvprm.costshare / 100 ) * (passtotalcost_l - ( ( ccsrv.stewardship / 100 ) * passtotalcost_l )) as passthroughshareL,
 
-    cast(( srvprm.costshare / 100 ) * (origtotalcost_g - ( ( ccsrv.stewardship / 100 ) * origtotalcost_g )) +
-        ( srvprm.costshare / 100 ) * (passtotalcost_g - ( ( ccsrv.stewardship / 100 ) * passtotalcost_g )) as abap.dec(23,2)) as srvcostshareG,
-    cast(( srvprm.costshare / 100 ) * (origtotalcost_g - ( ( ccsrv.stewardship / 100 ) * origtotalcost_g )) as abap.dec(23,2)) as valueaddshareG,
-    cast(( srvprm.costshare / 100 ) * (passtotalcost_g - ( ( ccsrv.stewardship / 100 ) * passtotalcost_g )) as abap.dec(23,2)) as passthroughshareG
+    ( srvprm.costshare / 100 ) * (origtotalcost_g - ( ( ccsrv.stewardship / 100 ) * origtotalcost_g )) +
+        ( srvprm.costshare / 100 ) * (passtotalcost_g - ( ( ccsrv.stewardship / 100 ) * passtotalcost_g )) as srvcostshareG,
+    ( srvprm.costshare / 100 ) * (origtotalcost_g - ( ( ccsrv.stewardship / 100 ) * origtotalcost_g )) as valueaddshareG,
+    ( srvprm.costshare / 100 ) * (passtotalcost_g - ( ( ccsrv.stewardship / 100 ) * passtotalcost_g )) as passthroughshareG
    
 }
 //group by

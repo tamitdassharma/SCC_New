@@ -55,21 +55,21 @@ annotate entity /ESRCC/C_AllocationWeightage with
                                         useForValidation: true } ]
   Allockey;
 
-  @UI.identification: [ { position: 6 } ]
-  @UI.lineItem: [ { position: 6 } ]
-  @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATIONTYPE', element: 'AllocType' }}]
-  AllocType;
+//  @UI.identification: [ { position: 6 } ]
+//  @UI.lineItem: [ { position: 6 } ]
+//  @UI.textArrangement: #TEXT_LAST
+//  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATIONTYPE', element: 'AllocType' }}]
+//  AllocType;
 
   @UI.identification: [ { position: 8 } ]
-  @UI.lineItem: [ { position: 8, cssDefault.width: '11rem' } ]
+  @UI.lineItem: [ { position: 8, cssDefault.width: '13rem' } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATIONPERIOD', element: 'AllocationPeriod' },
                                         useForValidation: true } ]
   AllocationPeriod;
 
   @UI.identification: [ { position: 9 } ]
-  @UI.lineItem: [ { position: 9, cssDefault.width: '8rem' } ]
+  @UI.lineItem: [ { position: 9, cssDefault.width: '9.5rem' } ]
   RefPeriod;
 
   @UI.identification: [ { position: 10 } ]
@@ -99,7 +99,7 @@ annotate entity /ESRCC/C_AllocationWeightage with
   @UI.hidden: true
   AllocationKeyDescription;
   @UI.hidden: true
-  AllocationTypeDescription;
+  allocationtypedescription;
   @UI.hidden: true
   keyversiondescription;
   @UI.hidden: true

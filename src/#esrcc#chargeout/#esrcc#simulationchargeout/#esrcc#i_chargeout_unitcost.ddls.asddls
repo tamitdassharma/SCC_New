@@ -77,22 +77,22 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     ( origtotalcost_g + passtotalcost_g) as includetotalcost_g,    
     origtotalcost_g,
     passtotalcost_g,
-    remainingorigcostbase_l,
-    remainingpasscostbase_l,
-    remainingorigcostbase_g,
-    remainingpasscostbase_g,
-    (remainingorigcostbase_l + remainingpasscostbase_l ) as remainingcostbase_l,
-    (remainingorigcostbase_g + remainingpasscostbase_g ) as remainingcostbase_g, 
+    cast( remainingorigcostbase_l as abap.dec(23,5) ) as remainingorigcostbase_l,
+    cast( remainingpasscostbase_l as abap.dec(23,5) ) as remainingpasscostbase_l,
+    cast( remainingorigcostbase_g as abap.dec(23,5) ) as remainingorigcostbase_g,
+    cast( remainingpasscostbase_g as abap.dec(23,5) ) as remainingpasscostbase_g,
+    cast((remainingorigcostbase_l + remainingpasscostbase_l ) as abap.dec(23,5) ) as remainingcostbase_l,
+    cast((remainingorigcostbase_g + remainingpasscostbase_g ) as abap.dec(23,5) ) as remainingcostbase_g, 
     cc2le.stewardship,   
     srvprec.costshare,
     
 //  Indirect Allocation& Service calculation
-    srvcostshareL,
-    valueaddshareL,
-    passthroughshareL,
-    srvcostshareG,
-    valueaddshareG,
-    passthroughshareG,
+    cast( srvcostshareL as abap.dec(23,5) ) as srvcostshareL,
+    cast( valueaddshareL as abap.dec(23,5) ) as valueaddshareL,
+    cast( passthroughshareL as abap.dec(23,5) ) as passthroughshareL,
+    cast( srvcostshareG as abap.dec(23,5) ) as srvcostshareG,
+    cast( valueaddshareG as abap.dec(23,5) ) as valueaddshareG,
+    cast( passthroughshareG as abap.dec(23,5) ) as passthroughshareG,
     
 //  Direct allocation unit cost
     @Semantics.quantity.unitOfMeasure: 'uom'
@@ -112,7 +112,7 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
                                                      error_handling => 'SET_TO_NULL' ) 
                                     else dirplan.planning end   
     else
-    0 end as abap.dec(10,2)) as servicecostperunitL,
+    0 end as abap.dec(10,5)) as servicecostperunitL,
     
     cast(case when chargeout = 'D' and  dirplan.planning <> 0  then
     ( valueaddshareL / case when chargeout = 'D' and dirplan.uom <> uom then
@@ -122,7 +122,7 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
                                                      error_handling => 'SET_TO_NULL' ) 
                                     else dirplan.planning end ) 
     else
-    0 end as abap.dec(10,2)) as valueaddcostperunitL,
+    0 end as abap.dec(10,5)) as valueaddcostperunitL,
     
     cast(case when chargeout = 'D' and  dirplan.planning <> 0 then
     (passthroughshareL / case when chargeout = 'D' and dirplan.uom <> uom then
@@ -132,7 +132,7 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
                                                      error_handling => 'SET_TO_NULL' ) 
                                     else dirplan.planning end ) 
     else
-    0 end as abap.dec(10,2)) as passthrucostperunitL,
+    0 end as abap.dec(10,5)) as passthrucostperunitL,
     
 //    0  as overallcostperunitG,   
     
@@ -144,7 +144,7 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
                                                      error_handling => 'SET_TO_NULL' ) 
                                     else dirplan.planning end ) 
     else
-    0 end as abap.dec(10,2)) as servicecostperunitG,
+    0 end as abap.dec(10,5)) as servicecostperunitG,
     
     cast(case when chargeout = 'D' and  dirplan.planning <> 0 then
     (valueaddshareG / case when chargeout = 'D' and dirplan.uom <> uom then
@@ -154,7 +154,7 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
                                                      error_handling => 'SET_TO_NULL' ) 
                                     else dirplan.planning end )  
     else
-    0 end as abap.dec(10,2)) as valueaddcostperunitG,
+    0 end as abap.dec(10,5)) as valueaddcostperunitG,
     
     cast(case when chargeout = 'D' and  dirplan.planning <> 0  then
     (passthroughshareG / case when chargeout = 'D' and dirplan.uom <> uom then
@@ -164,7 +164,7 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
                                                      error_handling => 'SET_TO_NULL' ) 
                                     else dirplan.planning end ) 
     else
-    0 end as abap.dec(10,2)) as passthrucostperunitG,
+    0 end as abap.dec(10,5)) as passthrucostperunitG,
     
 // Markup calulation
     srvmkp.origcost as valueaddmarkup,
@@ -177,7 +177,7 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
                                     else dirplan.planning end ) * (srvmkp.origcost / 100) 
-    else 0 end as abap.dec(10,2)) as tp_valueaddmarkupcostperunitL,
+    else 0 end as abap.dec(10,5)) as tp_valueaddmarkupcostperunitL,
     
     cast(case when chargeout = 'D' and dirplan.planning <> 0 then
     (valueaddshareG / case when chargeout = 'D' and dirplan.uom <> uom then
@@ -186,7 +186,7 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
                                     else dirplan.planning end ) * (srvmkp.origcost / 100) 
-    else 0 end as abap.dec(10,2)) as tp_valueaddmarkupcostperunitG,
+    else 0 end as abap.dec(10,5)) as tp_valueaddmarkupcostperunitG,
     
     cast(case when chargeout = 'D' and dirplan.planning <> 0 then
     (passthroughshareL / case when chargeout = 'D' and dirplan.uom <> uom then
@@ -195,7 +195,7 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
                                     else dirplan.planning end ) * (srvmkp.passcost / 100) 
-    else 0 end as abap.dec(10,2)) as tp_passthrumarkupcostperunitL,
+    else 0 end as abap.dec(10,5)) as tp_passthrumarkupcostperunitL,
     
     cast(case when chargeout = 'D' and dirplan.planning <> 0 then
     (passthroughshareG / case when chargeout = 'D' and dirplan.uom <> uom then
@@ -204,14 +204,14 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
                                     else dirplan.planning end ) * (srvmkp.passcost / 100) 
-    else 0 end as abap.dec(10,2)) as tp_passthrumarkupcostperunitG,
+    else 0 end as abap.dec(10,5)) as tp_passthrumarkupcostperunitG,
     
-    cast(valueaddshareL * ( srvmkp.origcost / 100 ) as abap.dec(23,2)) as valueaddmarkupabsL,
+    cast(valueaddshareL * ( srvmkp.origcost / 100 ) as abap.dec(23,5)) as valueaddmarkupabsL,
     
-    cast(passthroughshareL * ( srvmkp.passcost / 100 ) as abap.dec(23,2)) as passthrumarkupabsL,
+    cast(passthroughshareL * ( srvmkp.passcost / 100 ) as abap.dec(23,5)) as passthrumarkupabsL,
 
-    cast(valueaddshareG * ( srvmkp.origcost / 100 ) as abap.dec(23,2)) as valueaddmarkupabsG,
+    cast(valueaddshareG * ( srvmkp.origcost / 100 ) as abap.dec(23,5)) as valueaddmarkupabsG,
 
-    cast(passthroughshareG * ( srvmkp.passcost / 100 ) as abap.dec(23,2)) as passthrumarkupabsG    
+    cast(passthroughshareG * ( srvmkp.passcost / 100 ) as abap.dec(23,5)) as passthrumarkupabsG    
 
 }

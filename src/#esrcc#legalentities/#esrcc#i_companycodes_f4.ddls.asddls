@@ -26,6 +26,7 @@ define view entity /ESRCC/I_COMPANYCODES_F4
       @ObjectModel.text.element: ['LegalentityDescription']
       @UI.textArrangement: #TEXT_LAST
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+      @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LegalEntityAll_F4', element: 'Legalentity' } }]
       legalentity        as Legalentity,
 
       @Consumption.filter.hidden: true

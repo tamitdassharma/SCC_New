@@ -87,7 +87,10 @@ define view entity /ESRCC/I_SRVMKUP_COST
  //Totals
     Valueaddmarkupabs + Passthrumarkupabs as totalsrvmarkupabs,
     Servicecostperunit + Tp_valueaddmarkupcostperunit + Tp_passthrumarkupcostperunit as transferprice,
-      Srvcostshare + Valueaddmarkupabs + Passthrumarkupabs as totalchargeoutamount,
+    cast(case when Chargeout = 'D' then
+    ( Servicecostperunit + Tp_valueaddmarkupcostperunit + Tp_passthrumarkupcostperunit ) * Planning
+    else
+    Srvcostshare + Valueaddmarkupabs + Passthrumarkupabs end as abap.dec(23,2)) as totalchargeoutamount,
      
       srvcost.Status,
       Workflowid,

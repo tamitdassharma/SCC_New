@@ -7,12 +7,10 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <DOMNAME>/ESRCC/ALLOCATIONPERIOD</DOMNAME>
     <HEADLEN>55</HEADLEN>
-    <SCRLEN1>10</SCRLEN1>
-    <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Allocation Period</DDTEXT>
-    <REPTEXT>Allocation Period</REPTEXT>
-    <SCRTEXT_L>Allocation Period</SCRTEXT_L>
+    <DDTEXT>Key Base Data Computation</DDTEXT>
+    <REPTEXT>Key Base Data Computation</REPTEXT>
+    <SCRTEXT_L>Key Base Data Computation</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
@@ -23,9 +21,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Allokationszeitraum</DDTEXT>
-     <REPTEXT>Allokationszeitraum</REPTEXT>
-     <SCRTEXT_L>Allokationszeitraum</SCRTEXT_L>
+     <DDTEXT>Schlüsselbasisdatenberechnung</DDTEXT>
+     <REPTEXT>Schlüsselbasisdatenberechnung</REPTEXT>
+     <SCRTEXT_L>Schlüsselbasisdatenberechnung</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

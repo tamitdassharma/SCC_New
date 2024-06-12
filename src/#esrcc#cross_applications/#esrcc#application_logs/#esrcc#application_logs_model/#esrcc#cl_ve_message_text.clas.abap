@@ -21,7 +21,8 @@ CLASS /ESRCC/CL_VE_MESSAGE_TEXT IMPLEMENTATION.
 
     LOOP AT original_data ASSIGNING FIELD-SYMBOL(<original_data>).
       " TODO: variable is assigned but never used; add pragma ##NEEDED (ABAP cleaner)
-      IF <original_data>-messageid IS NOT INITIAL AND <original_data>-messagenumber IS NOT INITIAL.
+      IF <original_data>-messageid IS NOT INITIAL AND <original_data>-messagenumber IS NOT INITIAL AND <original_data>-MessageType IS NOT INITIAL
+        AND ( <original_data>-MessageType = 'Error' OR <original_data>-MessageType = 'Information' OR <original_data>-MessageType = 'Warning' OR <original_data>-MessageType = 'Success' ).
         MESSAGE ID <original_data>-messageid TYPE <original_data>-messagetype NUMBER <original_data>-messagenumber
           INTO <original_data>-messagetext WITH <original_data>-messagev1 <original_data>-messagev2 <original_data>-messagev3 <original_data>-messagev4.
       ELSEIF <original_data>-hierarchylevel = 0.

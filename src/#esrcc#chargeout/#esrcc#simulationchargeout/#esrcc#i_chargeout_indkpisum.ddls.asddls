@@ -21,7 +21,7 @@ as select from /ESRCC/I_INDALLOC
     key serviceproduct,
     key KeyVersion,
     key Allockey,
-    key AllocType,
+//    key AllocType,
     key AllocationPeriod,
     key RefPeriod,
     sum( reckpivalue )  as totalreckpi
@@ -38,6 +38,6 @@ group by
   serviceproduct,
   KeyVersion,
   Allockey,
-  AllocType,
+//  AllocType,
   AllocationPeriod,
   RefPeriod

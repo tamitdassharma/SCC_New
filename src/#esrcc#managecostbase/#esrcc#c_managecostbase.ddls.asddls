@@ -51,8 +51,6 @@ define root view entity /ESRCC/C_MANAGECOSTBASE
   @ObjectModel.text.element: [ 'statusdescription' ]
   Status,
   WorkflowId,
-  @ObjectModel.filter.enabled: false
-  Comments,
   @Semantics.user.createdBy: true
   CreatedBy,
   @ObjectModel.filter.enabled: false

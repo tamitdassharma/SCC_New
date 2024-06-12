@@ -205,7 +205,9 @@ CLASS /ESRCC/CL_APPLICATION_LOGS IMPLEMENTATION.
 
 
   METHOD /esrcc/if_application_logs~set_log_header_info.
-    _logs-header = VALUE #( BASE CORRESPONDING #( BASE ( _logs-header ) log_header EXCEPT log_header_uuid run_number ) created_by = sy-uname ).
+    /esrcc/cl_utility_core=>get_utc_date_time_ts( IMPORTING time_stamp = FINAL(timestamp) ).
+    _logs-header = VALUE #( BASE CORRESPONDING #( BASE ( _logs-header ) log_header EXCEPT log_header_uuid run_number )
+            created_by = sy-uname created_at = timestamp ).
 *    _logs-header = VALUE #( BASE CORRESPONDING #( log_header EXCEPT log_header_uuid run_number ) created_by = sy-uname ).
     IF _logs-header-run_number IS INITIAL.
       SELECT run_number FROM /esrcc/log_hdr WHERE application = @_logs-header-application
@@ -217,6 +219,7 @@ CLASS /ESRCC/CL_APPLICATION_LOGS IMPLEMENTATION.
       " Generate run number
       _logs-header-run_number = COND #( WHEN sy-subrc = 0 THEN VALUE #( run_numbers[ 1 ]-run_number OPTIONAL ) + 1 ELSE 1 ).
     ENDIF.
+    /esrcc/if_application_logs~save_header( ).
   ENDMETHOD.
 
 

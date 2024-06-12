@@ -115,6 +115,7 @@ define root view entity /ESRCC/I_MANAGECOSTBASE
   
    case ManageCostBase.status 
      when 'D' then 2
+     when 'P' then 2
      when 'W' then 2
      when 'U' then 3
      when 'E' then 3

@@ -42,6 +42,7 @@ as projection on /ESRCC/I_SRVMKUP_COST
     Chargeout,
     @ObjectModel.text.element: [ 'capacityversiontext' ]
     CapacityVersion,
+    @Semantics.quantity.unitOfMeasure: 'Uom'
     Planning,
     @ObjectModel.text.element: [ 'unitname' ]
     Uom,

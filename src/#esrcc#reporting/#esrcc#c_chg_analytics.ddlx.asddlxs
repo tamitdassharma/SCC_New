@@ -394,5 +394,7 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   profitcenterdescription;
   @UI.hidden: true
   costdatasetdescription;
+  @UI.hidden: true
+  statusdescription;
 
 }

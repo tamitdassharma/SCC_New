@@ -379,14 +379,14 @@ annotate view /ESRCC/C_MANAGECOSTBASE with
   } ]
   WorkflowId;
 
-  @UI.lineItem: [ {
-    position: 236
-  } ]
-  @UI.identification: [ {
-  position: 236
-  } ]
-  @EndUserText.label: 'Comments'
-  Comments;
+//  @UI.lineItem: [ {
+//    position: 236
+//  } ]
+//  @UI.identification: [ {
+//  position: 236
+//  } ]
+//  @EndUserText.label: 'Comments'
+//  Comments;
 
   @UI.lineItem: [ {
     position: 240 ,

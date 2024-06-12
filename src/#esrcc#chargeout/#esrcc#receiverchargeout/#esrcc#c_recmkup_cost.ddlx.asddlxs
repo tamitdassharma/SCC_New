@@ -59,13 +59,9 @@ annotate view /ESRCC/C_RECMKUP_COST with
   @EndUserText.label: 'Consumption'
   Reckpi;  
   @UI.lineItem: [ {
-  position: 35 ,
+  position: 999 ,
   importance: #MEDIUM,
   label: ''
-  } ]
-  @UI.identification: [ {
-    position: 35 ,
-    label: ''
   } ]
   @EndUserText.label: 'UoM'
   @UI.textArrangement: #TEXT_LAST

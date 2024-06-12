@@ -370,6 +370,7 @@ annotate view /ESRCC/C_RECEIVER_COST with
   @UI.hidden: true
   Transactiongroup;
   @Consumption.valueHelpDefinition: [ { entity: { name: 'I_Currency', element: 'Currency' }} ]
+  @EndUserText.label: 'Currency'
   Currency;
   @UI.hidden: true
   legalentitycountryname;

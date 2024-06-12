@@ -19,6 +19,8 @@ etag master LocalLastChangedAt
   action ( features : instance, precheck, authorization : update ) discardall result [1] $self;
   action ( features : instance, precheck, authorization : update ) submit parameter /ESRCC/C_COMMENT result [1] $self;
 
+  determination triggerWorkflow on save { field Status; }
+
   mapping for /ESRCC/CB_LI corresponding
   {
     CreatedBy     = created_by;

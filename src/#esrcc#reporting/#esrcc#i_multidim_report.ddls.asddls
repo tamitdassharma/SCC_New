@@ -1,6 +1,6 @@
 @AbapCatalog.viewEnhancementCategory: [#NONE]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Multi Dimension Report'
+@EndUserText.label: 'Flexible Reporting Utility'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,
@@ -63,7 +63,6 @@ define view entity /ESRCC/I_MULTIDIM_REPORT
   key serviceproduct,
       @AnalyticsDetails.query.display: #KEY_TEXT
       @AnalyticsDetails.query.axis: #FREE
-      @EndUserText.label: 'Receiving Entity'
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
       @AnalyticsDetails.query.variableSequence: 9
   key receivingentity,

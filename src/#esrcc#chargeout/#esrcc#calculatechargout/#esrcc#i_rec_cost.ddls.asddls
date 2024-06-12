@@ -52,7 +52,7 @@ define view entity /ESRCC/I_REC_COST
   key Currencytype,
       Reckpi                as Reckpi,
       Uom,
-      Reckpishare           as Reckpishare,
+      Reckpishare,
       _ServiceCost.Billingfrequqncy,
       _ServiceCost.Billingperiod,
       _ServiceCost.Chargeout,

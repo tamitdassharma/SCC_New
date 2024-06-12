@@ -71,7 +71,7 @@ annotate entity /ESRCC/C_ServiceAllocReceiver with
   Receivingentity;
 
   @UI.identification: [ { position: 10 } ]
-  @UI.lineItem: [ { position: 10, cssDefault.width: '3.5rem' } ]
+  @UI.lineItem: [ { position: 10, cssDefault.width: '4rem' } ]
   Active;
 
   @UI.lineItem: [ { position: 11 } ]

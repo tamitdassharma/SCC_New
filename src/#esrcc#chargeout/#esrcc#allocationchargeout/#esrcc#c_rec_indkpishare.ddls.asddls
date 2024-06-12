@@ -27,9 +27,9 @@ define root view entity /ESRCC/C_REC_INDKPISHARE
   key keyversion,
       @ObjectModel.text.element: [ 'AllocationKeyDescription' ]
   key allockey,
-      @ObjectModel.filter.enabled: false
-      @ObjectModel.text.element: [ 'AllocationTypeDescription' ]
-  key alloctype,
+//      @ObjectModel.filter.enabled: false
+//      @ObjectModel.text.element: [ 'AllocationTypeDescription' ]
+//  key alloctype,
       @ObjectModel.filter.enabled: false
       @ObjectModel.text.element: [ 'AllocationPeriodDescription' ]
   key allocationperiod,
@@ -44,8 +44,8 @@ define root view entity /ESRCC/C_REC_INDKPISHARE
       totalreckpishare,
       @DefaultAggregation: #SUM
       reckpishare,
-      hideaverage,
-      hidecumulative,
+//      hideaverage,
+//      hidecumulative,
       //    Description,country & regions
       //   Descriptions, Country & regions
       @Semantics.text: true
@@ -75,8 +75,8 @@ define root view entity /ESRCC/C_REC_INDKPISHARE
       _KeyVersionText.text         as KeyVersionDescription,
       @Semantics.text: true
       _AllocKeyText.AllocationKeyDescription,
-      @Semantics.text: true
-      _AllocTypeText.text          as AllocationTypeDescription,
+//      @Semantics.text: true
+//      _AllocTypeText.text          as AllocationTypeDescription,
       @Semantics.text: true
       _AllocPeriodText.text        as AllocationPeriodDescription,
       @Semantics.text: true
@@ -85,6 +85,6 @@ define root view entity /ESRCC/C_REC_INDKPISHARE
       _RecCountryText.CountryName as receivingcountryname,
 
       /* Associations */
-      _ReceiverAllocation : redirected to composition child /ESRCC/C_RECALLOCVALUE,
-      _AverageReceiverAllocation : redirected to composition child /ESRCC/C_AVERAGERECALLOCVALUE
+      _ReceiverAllocation : redirected to composition child /ESRCC/C_RECALLOCVALUE
+//      _AverageReceiverAllocation : redirected to composition child /ESRCC/C_AVERAGERECALLOCVALUE
 }

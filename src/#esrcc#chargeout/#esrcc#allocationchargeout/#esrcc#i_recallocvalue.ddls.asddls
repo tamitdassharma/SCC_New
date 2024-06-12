@@ -9,23 +9,24 @@
 }
 @Metadata.allowExtensions: true
 define view entity /ESRCC/I_RECALLOCVALUE
-as select from /esrcc/srvvalues as srvallocvalues
+  as select from /esrcc/srvvalues as srvallocvalues
 
-  association to parent /ESRCC/I_REC_INDKPISHARE as _indkpishare on _indkpishare.fplv = $projection.fplv
-                                                                and _indkpishare.ryear = $projection.ryear 
-                                                                and _indkpishare.poper = $projection.poper
-                                                                and _indkpishare.sysid = $projection.sysid
-                                                                and _indkpishare.ccode = $projection.ccode
-                                                                and _indkpishare.legalentity = $projection.legalentity
-                                                                and _indkpishare.costobject = $projection.costobject
-                                                                and _indkpishare.costcenter = $projection.costcenter
-                                                                and _indkpishare.serviceproduct = $projection.serviceproduct
-                                                                and _indkpishare.receivingentity = $projection.receivingentity
-                                                                and _indkpishare.keyversion = $projection.keyversion                             
-                                                                and _indkpishare.allockey = $projection.allockey
-                                                                and _indkpishare.alloctype = $projection.alloctype
-                                                                and _indkpishare.allocationperiod = $projection.allocationperiod
-                                                                and _indkpishare.refperiod = $projection.refperiod                                                                                        
+  association        to parent /ESRCC/I_REC_INDKPISHARE as _indkpishare       on  _indkpishare.fplv             = $projection.fplv
+                                                                              and _indkpishare.ryear            = $projection.ryear
+                                                                              and _indkpishare.poper            = $projection.poper
+                                                                              and _indkpishare.sysid            = $projection.sysid
+                                                                              and _indkpishare.ccode            = $projection.ccode
+                                                                              and _indkpishare.legalentity      = $projection.legalentity
+                                                                              and _indkpishare.costobject       = $projection.costobject
+                                                                              and _indkpishare.costcenter       = $projection.costcenter
+                                                                              and _indkpishare.serviceproduct   = $projection.serviceproduct
+                                                                              and _indkpishare.receivingentity  = $projection.receivingentity
+                                                                              and _indkpishare.keyversion       = $projection.keyversion
+                                                                              and _indkpishare.allockey         = $projection.allockey
+  //                                                                and _indkpishare.alloctype = $projection.alloctype
+                                                                              and _indkpishare.allocationperiod = $projection.allocationperiod
+                                                                              and _indkpishare.refperiod        = $projection.refperiod
+  association [0..1] to /ESRCC/I_ALLOCATION_KEY_F4      as _AllocationKeyText on  _AllocationKeyText.Allocationkey = $projection.allockey
 
 {
   key srvallocvalues.fplv,
@@ -40,13 +41,13 @@ as select from /esrcc/srvvalues as srvallocvalues
   key srvallocvalues.receivingentity,
   key srvallocvalues.keyversion,
   key srvallocvalues.allockey,
-  key srvallocvalues.alloctype,
+      //  key srvallocvalues.alloctype,
   key srvallocvalues.allocationperiod,
   key srvallocvalues.refperiod,
   key srvallocvalues.refpoper,
-  srvallocvalues.reckpivalue as cumvalue,
-  
-  /*Association*/
-  _indkpishare
-}where alloctype = 'C'
+      srvallocvalues.reckpivalue,
 
+      /*Association*/
+      _indkpishare,
+      _AllocationKeyText
+}

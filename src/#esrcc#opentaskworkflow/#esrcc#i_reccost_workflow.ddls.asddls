@@ -61,7 +61,8 @@ define root view entity /ESRCC/I_RECCOST_WORKFLOW
     
     Currency,
     Costshare,
-    Stewardship,    
+    Stewardship,
+    costdatasetdescription,   
     legalentitydescription,
     ccodedescription,
     costobjectdescription,

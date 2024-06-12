@@ -12,7 +12,7 @@ define root view entity /ESRCC/I_REC_INDKPISHARE
   as select from /esrcc/recshare as weightage
 
   composition [0..*] of /ESRCC/I_RECALLOCVALUE      as _ReceiverAllocation
-  composition [0..*] of /ESRCC/I_AVGRECALLOCVALUE   as _AverageReceiverAllocation
+//  composition [0..*] of /ESRCC/I_AVGRECALLOCVALUE   as _AverageReceiverAllocation
 
   association [0..1] to /ESRCC/I_LEGALENTITY_F4     as _legalentity     on  _legalentity.Legalentity = weightage.legalentity
 
@@ -33,7 +33,7 @@ define root view entity /ESRCC/I_REC_INDKPISHARE
   association [0..1] to /ESRCC/I_KEY_VERSION        as _KeyVersionText  on  _KeyVersionText.KeyVersion = $projection.keyversion
   association [0..1] to /ESRCC/I_ALLOCATION_KEY_F4  as _AllocKeyText    on  _AllocKeyText.Allocationkey = $projection.allockey
 
-  association [0..1] to /ESRCC/I_ALLOCATIONTYPE     as _AllocTypeText   on  _AllocTypeText.AllocType = $projection.alloctype
+//  association [0..1] to /ESRCC/I_ALLOCATIONTYPE     as _AllocTypeText   on  _AllocTypeText.AllocType = $projection.alloctype
   association [0..1] to /ESRCC/I_ALLOCATIONPERIOD   as _AllocPeriodText on  _AllocPeriodText.AllocationPeriod = $projection.allocationperiod
 
   association [0..1] to I_CountryText as _legalCountryText
@@ -57,7 +57,7 @@ define root view entity /ESRCC/I_REC_INDKPISHARE
   key receivingentity,
   key keyversion,
   key allockey,
-  key alloctype,
+//  key alloctype,
   key allocationperiod,
   key refperiod,
       weightage,
@@ -66,20 +66,20 @@ define root view entity /ESRCC/I_REC_INDKPISHARE
       cast(reckpishare * 100 as abap.dec(15,2)) as reckpishare,
       _legalentity.Country as legalentitycountry,
       _receivingentity.Country as receivingcountry,
-      cast(case alloctype
-      when 'A' then /*avergae*/
-      'X'
-      else '' end as abap_boolean preserving type ) as hidecumulative,
-
-      cast(case alloctype
-      when 'C' then /*cumulated*/
-      'X'
-      else '' end as abap_boolean preserving type ) as hideaverage,
+//      cast(case alloctype
+//      when 'A' then /*avergae*/
+//      'X'
+//      else '' end as abap_boolean preserving type ) as hidecumulative,
+//
+//      cast(case alloctype
+//      when 'C' then /*cumulated*/
+//      'X'
+//      else '' end as abap_boolean preserving type ) as hideaverage,
       
       
       /* Associations */
       _ReceiverAllocation,
-      _AverageReceiverAllocation,
+//      _AverageReceiverAllocation,
       //Associations//
       _costcenter,
       _ccode,
@@ -90,7 +90,7 @@ define root view entity /ESRCC/I_REC_INDKPISHARE
       _CostVersionText,
       _KeyVersionText,
       _AllocKeyText,
-      _AllocTypeText,
+//      _AllocTypeText,
       _AllocPeriodText,
       _legalCountryText,
       _RecCountryText

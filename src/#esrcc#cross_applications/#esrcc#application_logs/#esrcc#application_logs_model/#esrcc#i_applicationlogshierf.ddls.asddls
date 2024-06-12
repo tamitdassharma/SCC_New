@@ -43,7 +43,8 @@ define root view entity /ESRCC/I_ApplicationLogsHierF
       cast('' as symsgv)                       as MessageV2,
       cast('' as symsgv)                       as MessageV3,
       cast('' as symsgv)                       as MessageV4,
-      cast(0  as abp_creation_tstmpl)          as CreatedAt,
+      CreatedAt,
+//      cast(0  as abp_creation_tstmpl)          as CreatedAt,
       //      //      cast('' as abap_boolean)        as IsParent
       //      /* Application Log Invalid Records */
       cast('' as sysuuid_c32)                  as LogHeaderUuid,

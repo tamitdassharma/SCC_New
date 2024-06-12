@@ -125,6 +125,7 @@ annotate view /ESRCC/C_INIRECTALLOCATION with
     position: 70 ,
     label: ''
   } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'I_CURRENCY', element: 'Currency' } }]
   Currency;
 
   @UI.lineItem: [ { position: 80 } ]

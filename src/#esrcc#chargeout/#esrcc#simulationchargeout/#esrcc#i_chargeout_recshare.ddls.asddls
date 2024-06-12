@@ -142,7 +142,7 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       transferpriceL,
       transferpriceG,
       case when chargeout = 'I' then
-      cast( _chargeoutreckpisum.totalreckpishare * 100 as abap.dec(5,2))
+      _chargeoutreckpisum.totalreckpishare * 100
       else
        0
       end                             as reckpishare,

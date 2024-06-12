@@ -27,6 +27,7 @@ as projection on /ESRCC/I_RECMKUP_COST
 //    Chargeout,
 //    Receivergroup,
 //    Allockey,
+    @Semantics.quantity.unitOfMeasure: 'UoM'
     Reckpi,
     @ObjectModel.text.element: [ 'unitname' ]
     UoM,

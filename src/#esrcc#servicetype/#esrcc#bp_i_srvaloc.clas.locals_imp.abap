@@ -62,18 +62,27 @@ CLASS lcl_custom_validation IMPLEMENTATION.
     IF control-chargeout = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'CHARGEOUT' ) TO fields. ENDIF.
     IF control-validto   = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'VALIDTO' ) TO fields. ENDIF.
 
+    config_util_ref->validate_initial(
+      fields     = fields
+      entity     = entity
+    ).
+
+    CLEAR fields.
+
     IF entity-chargeout = 'D'.
       IF control-uom                = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'UOM' ) TO fields. ENDIF.
       IF control-capacityversion    = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'CAPACITYVERSION' ) TO fields. ENDIF.
       IF control-consumptionversion = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'CONSUMPTIONVERSION' ) TO fields. ENDIF.
+      DATA(message_no) = CONV symsgno( '015' ).
     ELSEIF entity-chargeout = 'I'.
       IF control-keyversion         = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'KEYVERSION' ) TO fields. ENDIF.
+      message_no = '020'.
     ENDIF.
 
     config_util_ref->validate_initial(
       fields     = fields
       entity     = entity
-      message_no = '015'
+      message_no = message_no
     ).
 
     IF control-validfrom = if_abap_behv=>mk-on OR control-validto = if_abap_behv=>mk-on.
@@ -111,7 +120,7 @@ CLASS lcl_custom_validation IMPLEMENTATION.
     IF control-allocationperiod = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'ALLOCATIONPERIOD' ) TO fields. ENDIF.
 
     IF control-refperiod = if_abap_behv=>mk-on.
-      IF entity-allocationperiod <> '01' AND entity-allocationperiod <> '02'.
+      IF entity-allocationperiod = '03' OR entity-allocationperiod = '04' OR entity-allocationperiod = '06'.
         APPEND VALUE #( fieldname = 'REFPERIOD' ) TO fields.
       ELSEIF entity-refperiod IS NOT INITIAL.
         config_util_ref->set_state_message(
@@ -248,14 +257,14 @@ CLASS lhc_weightage IMPLEMENTATION.
         reported_entity    = reported-weightage
         failed_entity      = failed-weightage ) ).
 
-    SELECT serviceproduct, costversion, validfromalloc, allockey, alloctype, allocationperiod
+    SELECT serviceproduct, costversion, validfromalloc, allockey, allocationperiod ", alloctype
         FROM /esrcc/d_allocwg
         FOR ALL ENTRIES IN @entities
         WHERE serviceproduct = @entities-serviceproduct
           AND costversion    = @entities-costversion
           AND validfromalloc = @entities-validfromalloc
           AND allockey       = @entities-allockey
-          AND alloctype      = @entities-alloctype
+*          AND alloctype      = @entities-alloctype
           AND draftentityoperationcode NOT IN ( 'D', 'L' )
         INTO TABLE @DATA(draft).
 
@@ -263,14 +272,14 @@ CLASS lhc_weightage IMPLEMENTATION.
                                           OR %control-refperiod = if_abap_behv=>mk-on
                                           OR %control-weightage = if_abap_behv=>mk-on.
       weightage = CORRESPONDING #( entity ).
-      weightage-singletonid = '1'.
+*      weightage-singletonid = '1'.     " Commented to avoid dump, that occurs when removing the value of mandatory field and hitting enter without tab out.
 
       IF entity-%control-allocationperiod = if_abap_behv=>mk-off.
         weightage-allocationperiod = VALUE #( draft[ serviceproduct = entity-serviceproduct
                                                      costversion    = entity-costversion
                                                      validfromalloc = entity-validfromalloc
-                                                     allockey       = entity-allockey
-                                                     alloctype      = entity-alloctype ]-allocationperiod OPTIONAL ).
+*                                                     alloctype      = entity-alloctype
+                                                     allockey       = entity-allockey ]-allocationperiod OPTIONAL ).
       ENDIF.
 
       lo_validation->validate_weightage(
@@ -279,10 +288,6 @@ CLASS lhc_weightage IMPLEMENTATION.
                            refperiod        = entity-%control-refperiod
                            weightage        = entity-%control-weightage )
       ).
-
-      LOOP AT reported-weightage ASSIGNING FIELD-SYMBOL(<fs_reported>) WHERE %tky = entity-%tky AND %path IS NOT INITIAL.
-        <fs_reported>-%path-serviceallocation-validfrom = entity-validfromalloc.
-      ENDLOOP.
     ENDLOOP.
   ENDMETHOD.
 

@@ -215,10 +215,10 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                /esrcc/c_coscen AS coscen
             ON coscen~costobject = srv~costobject
            AND coscen~costcenter = srv~costcenter
-              INNER JOIN /ESRCC/C_LeCcode AS leccode
-              ON leccode~Active = @abap_true
-              AND leccode~Legalentity = srv~Legalentity
-              AND leccode~Ccode = srv~Ccode
+              INNER JOIN /esrcc/c_leccode AS leccode
+              ON leccode~active = @abap_true
+              AND leccode~legalentity = srv~legalentity
+              AND leccode~ccode = srv~ccode
          WHERE srv~legalentity IN @_legalentity
            AND srv~sysid IN @_sysid
            AND srv~ccode IN @_ccode
@@ -230,15 +230,23 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
            AND validto >= @_validon
            APPENDING CORRESPONDING FIELDS OF TABLE @lt_service_share.
 
+          "  TK01+
+          " lt_service_share is used as for all entries in all the below selects
+          " therefore an initial check is required.
+          IF lines( lt_service_share ) = 0.
+            CONTINUE.
+          ENDIF.
+          "  TK01+
+
           SELECT *
             FROM /esrcc/c_lecctr AS lecctr INNER JOIN
                  /esrcc/c_coscen AS coscen
               ON coscen~costobject = lecctr~costobject
              AND coscen~costcenter = lecctr~costcenter
-                 INNER JOIN /ESRCC/C_LeCcode AS leccode
-              ON leccode~Active = @abap_true
-              AND leccode~Legalentity = lecctr~Legalentity
-              AND leccode~Ccode = lecctr~Ccode
+                 INNER JOIN /esrcc/c_leccode AS leccode
+              ON leccode~active = @abap_true
+              AND leccode~legalentity = lecctr~legalentity
+              AND leccode~ccode = lecctr~ccode
            FOR ALL ENTRIES IN @lt_service_share
            WHERE lecctr~legalentity = @lt_service_share-legalentity
              AND lecctr~sysid = @lt_service_share-sysid
@@ -279,25 +287,33 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
         SORT lt_srv_alloc BY serviceproduct.
         DELETE ADJACENT DUPLICATES FROM lt_srv_alloc COMPARING serviceproduct.
 
-        SELECT * FROM  /esrcc/alloc_wgt FOR ALL ENTRIES IN @lt_srv_alloc
-                                        WHERE serviceproduct = @lt_srv_alloc-serviceproduct
-                                         AND cost_version = @lt_srv_alloc-cost_version
-                                         AND validfrom_alloc = @lt_srv_alloc-validfrom
-                                         APPENDING TABLE @DATA(lt_srv_allocwght).
+        IF lt_srv_alloc IS NOT INITIAL.
 
-        SELECT * FROM  /esrcc/srv_pr_le FOR ALL ENTRIES IN @lt_service_share
-                                         WHERE sysid = @lt_service_share-sysid
-                                          AND legalentity = @lt_service_share-legalentity
-                                          AND ccode = @lt_service_share-ccode
-                                          AND costobject = @lt_service_share-costobject
-                                          AND costcenter = @lt_service_share-costcenter
-                                          AND serviceproduct = @lt_service_share-serviceproduct
-                                          AND active = @abap_true
-                                          APPENDING TABLE @DATA(lt_srv_receivers).
+          SELECT * FROM  /esrcc/alloc_wgt FOR ALL ENTRIES IN @lt_srv_alloc
+                                          WHERE serviceproduct = @lt_srv_alloc-serviceproduct
+                                           AND cost_version = @lt_srv_alloc-cost_version
+                                           AND validfrom_alloc = @lt_srv_alloc-validfrom
+                                           APPENDING TABLE @DATA(lt_srv_allocwght).
+        ENDIF.
+
+        IF lt_service_share IS NOT INITIAL.
+
+          SELECT * FROM  /esrcc/srv_pr_le FOR ALL ENTRIES IN @lt_service_share
+                                           WHERE sysid = @lt_service_share-sysid
+                                            AND legalentity = @lt_service_share-legalentity
+                                            AND ccode = @lt_service_share-ccode
+                                            AND costobject = @lt_service_share-costobject
+                                            AND costcenter = @lt_service_share-costcenter
+                                            AND serviceproduct = @lt_service_share-serviceproduct
+                                            AND active = @abap_true
+                                            APPENDING TABLE @DATA(lt_srv_receivers).
 
 
-        SELECT * FROM /esrcc/le FOR ALL ENTRIES IN @lt_service_share
-                                   WHERE legalentity = @lt_service_share-legalentity INTO TABLE @DATA(lt_legalentity).
+
+          SELECT * FROM /esrcc/le FOR ALL ENTRIES IN @lt_service_share
+                                     WHERE legalentity = @lt_service_share-legalentity INTO TABLE @DATA(lt_legalentity).
+
+        ENDIF.
 
         CLEAR: _legalentity, _ccode, _costobject, _costcenter, _serviceproduct.
 
@@ -382,11 +398,11 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
             APPEND ls_result TO lt_result.
           ENDIF.
 
-          APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_service_share>-legalentity high = '' ) TO _legalentity.
-          APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_service_share>-ccode high = '' ) TO _ccode.
-          APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_service_share>-costobject high = '' ) TO _costobject.
-          APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_service_share>-costcenter high = '' ) TO _costcenter.
-          APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_service_share>-serviceproduct high = '' ) TO _serviceproduct.
+          APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_service_share>-legalentity ) TO _legalentity.
+          APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_service_share>-ccode ) TO _ccode.
+          APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_service_share>-costobject ) TO _costobject.
+          APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_service_share>-costcenter ) TO _costcenter.
+          APPEND VALUE #( sign = 'I' option = 'EQ' low = <ls_service_share>-serviceproduct ) TO _serviceproduct.
           CLEAR: lv_country.
 
         ENDLOOP.
@@ -459,61 +475,62 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                INTO TABLE @DATA(lt_cc_cost).
 
 *   Read service cost share & markup status
-        SELECT  ryear,
-                fplv,
-                sysid,
-                poper,
-                legalentity,
-                ccode,
-                costobject,
-                costcenter,
-                serviceproduct,
-                status
-                FROM /esrcc/srv_cost
-                FOR ALL ENTRIES IN @lt_cc_cost
-                WHERE ryear = @lt_cc_cost-ryear
-                  AND fplv  = @lt_cc_cost-fplv
-                  AND sysid = @lt_cc_cost-sysid
-                  AND poper = @lt_cc_cost-poper
-                  AND sysid = @lt_cc_cost-sysid
-                  AND legalentity = @lt_cc_cost-legalentity
-                  AND ccode = @lt_cc_cost-ccode
-                  AND costobject = @lt_cc_cost-costobject
-                  AND costcenter = @lt_cc_cost-costcenter
-                  AND serviceproduct IN @_serviceproduct
-               INTO TABLE @DATA(lt_srv_cost).
+        IF lt_cc_cost IS NOT INITIAL.
+          SELECT  ryear,
+                  fplv,
+                  sysid,
+                  poper,
+                  legalentity,
+                  ccode,
+                  costobject,
+                  costcenter,
+                  serviceproduct,
+                  status
+                  FROM /esrcc/srv_cost
+                  FOR ALL ENTRIES IN @lt_cc_cost
+                  WHERE ryear = @lt_cc_cost-ryear
+                    AND fplv  = @lt_cc_cost-fplv
+                    AND sysid = @lt_cc_cost-sysid
+                    AND poper = @lt_cc_cost-poper
+                    AND sysid = @lt_cc_cost-sysid
+                    AND legalentity = @lt_cc_cost-legalentity
+                    AND ccode = @lt_cc_cost-ccode
+                    AND costobject = @lt_cc_cost-costobject
+                    AND costcenter = @lt_cc_cost-costcenter
+                    AND serviceproduct IN @_serviceproduct
+                 INTO TABLE @DATA(lt_srv_cost).
 
 *   Read receiver status
-        SELECT  ryear,
-                fplv,
-                sysid,
-                poper,
-                legalentity,
-                ccode,
-                costobject,
-                costcenter,
-                serviceproduct,
-                receivingentity,
-                status
-                FROM /esrcc/rec_cost
-                FOR ALL ENTRIES IN @lt_cc_cost
-                WHERE ryear = @lt_cc_cost-ryear
-                  AND fplv  = @lt_cc_cost-fplv
-                  AND sysid = @lt_cc_cost-sysid
-                  AND poper = @lt_cc_cost-poper
-                  AND sysid = @lt_cc_cost-sysid
-                  AND legalentity = @lt_cc_cost-legalentity
-                  AND ccode = @lt_cc_cost-ccode
-                  AND costobject = @lt_cc_cost-costobject
-                  AND costcenter = @lt_cc_cost-costcenter
-                  AND serviceproduct IN @_serviceproduct
-               INTO TABLE @DATA(lt_rec_cost).
+          SELECT  ryear,
+                  fplv,
+                  sysid,
+                  poper,
+                  legalentity,
+                  ccode,
+                  costobject,
+                  costcenter,
+                  serviceproduct,
+                  receivingentity,
+                  status
+                  FROM /esrcc/rec_cost
+                  FOR ALL ENTRIES IN @lt_cc_cost
+                  WHERE ryear = @lt_cc_cost-ryear
+                    AND fplv  = @lt_cc_cost-fplv
+                    AND sysid = @lt_cc_cost-sysid
+                    AND poper = @lt_cc_cost-poper
+                    AND sysid = @lt_cc_cost-sysid
+                    AND legalentity = @lt_cc_cost-legalentity
+                    AND ccode = @lt_cc_cost-ccode
+                    AND costobject = @lt_cc_cost-costobject
+                    AND costcenter = @lt_cc_cost-costcenter
+                    AND serviceproduct IN @_serviceproduct
+                 INTO TABLE @DATA(lt_rec_cost).
 
 
-        SORT lt_cc_cost BY legalentity ccode costobject costcenter status.
-        SORT lt_srv_cost BY legalentity ccode costobject costcenter serviceproduct status.
-        SORT lt_rec_cost BY legalentity ccode costobject costcenter serviceproduct status.
-
+          SORT lt_cc_cost BY legalentity ccode costobject costcenter status.
+          SORT lt_srv_cost BY legalentity ccode costobject costcenter serviceproduct status.
+          SORT lt_rec_cost BY legalentity ccode costobject costcenter serviceproduct status.
+        ENDIF.
 
 *  Read status text
         SELECT st~application, st~status, st~color, description
@@ -880,7 +897,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
               <ls_result>-messagetypeservice = 'E'.
             ENDIF.
 
-            IF <ls_result>-stewardship_status = '03' or <ls_result>-stewardship_status = '02'.  "Approval Pending
+            IF <ls_result>-stewardship_status = '03' OR <ls_result>-stewardship_status = '02'.  "Approval Pending
               <ls_result>-selectionallowed = abap_false.
               READ TABLE lt_result ASSIGNING FIELD-SYMBOL(<ls_result_costobject>) WITH KEY sysid       = <ls_result>-sysid
                                                                     ryear       = <ls_result>-ryear

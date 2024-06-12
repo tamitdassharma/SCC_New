@@ -72,11 +72,11 @@ define view entity /ESRCC/I_MultiDimension
       reckpishare,
 
       /** MEASURES **/
-      @EndUserText.label: 'Total Cost Base'
+      @EndUserText.label: 'Total Cost (Initial)'
       @DefaultAggregation: #SUM
       rectotalcostl,
       
-      @EndUserText.label: 'Total Cost Initial'
+      @EndUserText.label: 'Total Included Cost'
       @DefaultAggregation: #SUM
       recorigtotalcostl + recpasstotalcostl as Recincludedcostl,
 
@@ -84,39 +84,39 @@ define view entity /ESRCC/I_MultiDimension
       @DefaultAggregation: #SUM
       recexcludedcostl,
 
-      @EndUserText.label: 'Value-Add Cost (Origin of Cost)'
+      @EndUserText.label: 'Thereof Value-Add'
       @DefaultAggregation: #SUM
       recorigtotalcostl,
 
-      @EndUserText.label: 'Pass-Through Cost (no Value-Add)'
+      @EndUserText.label: 'Thereof Pass-Through'
       @DefaultAggregation: #SUM
       recpasstotalcostl,
       
-      @EndUserText.label: 'Stewardship'
+      @EndUserText.label: 'Total Stewardship'
       @DefaultAggregation: #SUM
       ( recorigtotalcostl + recpasstotalcostl ) - ( recvalueaddedl + recpassthroughl ) as Stewardshipl,      
 
-      @EndUserText.label: 'Service Cost Share'
+      @EndUserText.label: 'Total Service Cost'
       @DefaultAggregation: #SUM
       recvalueaddedl + recpassthroughl as Reccostsharel,
 
-      @EndUserText.label: 'Origin of Cost (Value-Add)'
+      @EndUserText.label: 'Thereof Value-Add Service Cost'
       @DefaultAggregation: #SUM
       recvalueaddedl,
 
-      @EndUserText.label: 'Pass-Through Cost (no Value-Add)'
+      @EndUserText.label: 'Thereof Pass-Through Service Cost'
       @DefaultAggregation: #SUM
       recpassthroughl,
       
-      @EndUserText.label: 'Total Markup'
+      @EndUserText.label: 'Total Mark-up'
       @DefaultAggregation: #SUM
       recvalueaddmarkupabsl + recpassthrumarkupabsl as Rectotalmarkupabsl,
       
-      @EndUserText.label: 'Value-Add Markup'
+      @EndUserText.label: 'Thereof Value-Add Mark-up'
       @DefaultAggregation: #SUM
       recvalueaddmarkupabsl,
 
-      @EndUserText.label: 'PassThrough Markup'
+      @EndUserText.label: 'Thereof Pass-Through Mark-up'
       @DefaultAggregation: #SUM
       recpassthrumarkupabsl,
       

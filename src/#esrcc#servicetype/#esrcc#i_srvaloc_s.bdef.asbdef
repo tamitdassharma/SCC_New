@@ -86,7 +86,7 @@ lock dependent by _ServiceAllocationAll
 authorization dependent by _ServiceAllocationAll
 {
   field ( mandatory : create )
-  Allockey, AllocType;
+  Allockey;//, AllocType;
 
   field ( mandatory )
   AllocationPeriod, Weightage;
@@ -98,8 +98,8 @@ authorization dependent by _ServiceAllocationAll
   Serviceproduct,
   CostVersion,
   ValidfromAlloc,
-  Allockey,
-  AllocType;
+  Allockey;
+//  AllocType;
 
   update ( features : global, precheck );
   delete ( features : global );
@@ -110,7 +110,7 @@ authorization dependent by _ServiceAllocationAll
     CostVersion = COST_VERSION;
     ValidfromAlloc = VALIDFROM_ALLOC;
     Allockey = ALLOCKEY;
-    AllocType = ALLOCKEYTYPE;
+//    AllocType = ALLOCKEYTYPE;
     AllocationPeriod = allocation_period;
     RefPeriod = REF_PERIOD;
     Weightage = WEIGHTAGE;

@@ -44,10 +44,10 @@ annotate view /ESRCC/C_SRVMKUP_COST with
    {
   id: '/ESRCC/I_REC_COST',
   type: #LINEITEM_REFERENCE,
-//  label: 'Charge-Out to Receiver',
-  position: 20, 
+  //  label: 'Charge-Out to Receiver',
+  position: 20,
   purpose: #STANDARD,
-  targetElement: '_ReceiverCost'  
+  targetElement: '_ReceiverCost'
   },
   {type: #DATAPOINT_REFERENCE,
   targetQualifier: 'shareofcostabs',
@@ -66,19 +66,19 @@ annotate view /ESRCC/C_SRVMKUP_COST with
     purpose: #HEADER
   }
   ]
-  
+
   @UI.lineItem: [{
   position: 1 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '8em'}
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 5 ,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 5 ,
+   qualifier: 'ChgData'
+ } ]
   @UI.textArrangement: #TEXT_ONLY
   Chargeout;
   @UI.lineItem: [ {
@@ -109,12 +109,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   label: '',
   cssDefault:{width: '15rem'}
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 90 ,
-    qualifier: 'OrgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 90 ,
+   qualifier: 'OrgData'
+ } ]
   @UI.textArrangement: #TEXT_LAST
   Transactiongroup;
   @UI.lineItem: [ {
@@ -143,12 +143,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 60 ,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 60 ,
+   qualifier: 'ChgData'
+ } ]
   @EndUserText.label: 'Thereof Value-Add'
   Valueaddshare;
   @UI.lineItem: [ {
@@ -156,12 +156,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 70 ,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 70 ,
+   qualifier: 'ChgData'
+ } ]
   @EndUserText.label: 'Thereof Pass-Through'
   Passthroughshare;
   @UI.lineItem: [ {
@@ -169,12 +169,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 71 ,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 71 ,
+   qualifier: 'ChgData'
+ } ]
   @UI.textArrangement: #TEXT_ONLY
   CapacityVersion;
   @UI.lineItem: [ {
@@ -182,24 +182,18 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 72 ,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 72 ,
+   qualifier: 'ChgData'
+ } ]
   @EndUserText.label: 'Consumption'
   Planning;
-   @UI.lineItem: [ {
-  position: 73 ,
+  @UI.lineItem: [ {
+  position: 599 ,
   importance: #MEDIUM,
   label: ''
-  } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 73 ,
-    qualifier: 'ChgData'
   } ]
   @EndUserText.label: 'UoM'
   @UI.textArrangement: #TEXT_LAST
@@ -209,12 +203,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 74 ,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 74 ,
+   qualifier: 'ChgData'
+ } ]
   @EndUserText.label: 'Cost Base per unit'
   Servicecostperunit;
   @UI.lineItem: [ {
@@ -222,12 +216,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 75,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 75,
+   qualifier: 'ChgData'
+ } ]
   @EndUserText.label: 'Thereof Value-Add per unit'
   Valueaddcostperunit;
   @UI.lineItem: [ {
@@ -235,12 +229,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 75 ,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 75 ,
+   qualifier: 'ChgData'
+ } ]
   @EndUserText.label: 'Thereof Pass-Through per unit'
   Passthrucostperunit;
   @UI.lineItem: [ {
@@ -248,12 +242,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 80,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 80,
+   qualifier: 'ChgData'
+ } ]
   @EndUserText.label: 'Mark-up on Value-Add (%)'
   Valueaddmarkup;
   @UI.lineItem: [ {
@@ -261,12 +255,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 90 ,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 90 ,
+   qualifier: 'ChgData'
+ } ]
   @EndUserText.label: 'Mark-up on Pass-Through (%)'
   Passthroughmarkup;
   @UI.lineItem: [ {
@@ -274,12 +268,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 95 ,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 95 ,
+   qualifier: 'ChgData'
+ } ]
   @EndUserText.label: 'Transfer Price per unit'
   transferprice;
   @UI.lineItem: [ {
@@ -287,12 +281,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 110 ,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 110 ,
+   qualifier: 'ChgData'
+ } ]
   @EndUserText.label: 'Total Mark-up on Value-Add'
   Valueaddmarkupabs;
   @UI.lineItem: [ {
@@ -300,12 +294,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 120 ,
-    qualifier: 'ChgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 120 ,
+   qualifier: 'ChgData'
+ } ]
   @EndUserText.label: 'Total Mark-up on Pass-Through'
   Passthrumarkupabs;
   @UI.lineItem: [ {
@@ -315,7 +309,7 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   } ]
   @UI.dataPoint: { qualifier: 'markup', title: 'Total Mark-up (abs)' }
   @EndUserText.label: 'Total Markup'
-  totalsrvmarkupabs; 
+  totalsrvmarkupabs;
   @UI.lineItem: [ {
   position: 150 ,
   importance: #MEDIUM,
@@ -338,12 +332,12 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 170 ,
-    qualifier: 'AdminData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 170 ,
+   qualifier: 'AdminData'
+ } ]
   Workflowid;
   @UI.lineItem: [ {
     position: 250 ,
@@ -393,18 +387,18 @@ annotate view /ESRCC/C_SRVMKUP_COST with
     qualifier: 'AdminData'
   } ]
   LastChangedAt;
-//  id mapping fields
+  //  id mapping fields
   @UI.lineItem: [
    {  position: 590,
     importance: #MEDIUM,
     label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 10 ,
-    qualifier: 'OrgData'
-  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 10 ,
+   qualifier: 'OrgData'
+ } ]
   @UI.textArrangement: #TEXT_ONLY
   Fplv;
 
@@ -413,13 +407,13 @@ annotate view /ESRCC/C_SRVMKUP_COST with
     importance: #MEDIUM,
     label: ''
   } ]
-   @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 20 ,
-    qualifier: 'OrgData'
-  } ]
-  Ryear;   
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 20 ,
+   qualifier: 'OrgData'
+ } ]
+  Ryear;
   @UI.lineItem: [
    {  position: 592 ,
     importance: #MEDIUM,
@@ -498,33 +492,33 @@ annotate view /ESRCC/C_SRVMKUP_COST with
   @EndUserText.label: 'Currency Type'
   @UI.textArrangement: #TEXT_LAST
   Currencytype;
-  
+
   // hidden fields
-    @UI.hidden: true
-    costdatasetdescription;
-    @UI.hidden: true
-    ccodedescription;
-    @UI.hidden: true
-    legalentitydescription;
-    @UI.hidden: true
-    costobjectdescription;
-    @UI.hidden: true 
-    costcenterdescription;
-    @UI.hidden: true 
-    Serviceproductdescription;
-    @UI.hidden: true 
-    Servicetypedescription;
-    @UI.hidden: true 
-    Transactiongroupdescription;
-    @UI.hidden: true 
-    statusdescription;
-    @UI.hidden: true 
-    chargeoutdescription;
-    @UI.hidden: true 
-    unitname;
-    @UI.hidden
-    currencytypetext;
-    @UI.hidden: true
-    capacityversiontext;
+  @UI.hidden: true
+  costdatasetdescription;
+  @UI.hidden: true
+  ccodedescription;
+  @UI.hidden: true
+  legalentitydescription;
+  @UI.hidden: true
+  costobjectdescription;
+  @UI.hidden: true
+  costcenterdescription;
+  @UI.hidden: true
+  Serviceproductdescription;
+  @UI.hidden: true
+  Servicetypedescription;
+  @UI.hidden: true
+  Transactiongroupdescription;
+  @UI.hidden: true
+  statusdescription;
+  @UI.hidden: true
+  chargeoutdescription;
+  @UI.hidden: true
+  unitname;
+  @UI.hidden
+  currencytypetext;
+  @UI.hidden: true
+  capacityversiontext;
 
 }

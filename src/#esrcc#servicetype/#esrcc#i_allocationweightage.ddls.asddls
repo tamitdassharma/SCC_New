@@ -11,7 +11,7 @@ define view entity /ESRCC/I_AllocationWeightage
   association [0..1] to /ESRCC/I_SERVICEPRODUCT_F4 as _ProductText          on  _ProductText.ServiceProduct = $projection.Serviceproduct
   association [0..1] to /ESRCC/I_COST_VERSION      as _CostVersionText      on  _CostVersionText.CostVersion = $projection.CostVersion
   association [0..1] to /ESRCC/I_ALLOCATION_KEY_F4 as _AllocKeyText         on  _AllocKeyText.Allocationkey = $projection.Allockey
-  association [0..1] to /ESRCC/I_ALLOCATIONTYPE    as _AllocTypeText        on  _AllocTypeText.AllocType = $projection.AllocType
+//  association [0..1] to /ESRCC/I_ALLOCATIONTYPE    as _AllocTypeText        on  _AllocTypeText.AllocType = $projection.alloctype
   association [0..1] to /ESRCC/I_ALLOCATIONPERIOD  as _AllocPeriodText      on  _AllocPeriodText.AllocationPeriod = $projection.AllocationPeriod
 
 {
@@ -19,7 +19,7 @@ define view entity /ESRCC/I_AllocationWeightage
   key cost_version               as CostVersion,
   key validfrom_alloc            as ValidfromAlloc,
   key allockey                   as Allockey,
-  key allockeytype               as AllocType,
+//  key allockeytype               as AllocType,
       allocation_period          as AllocationPeriod,
       ref_period                 as RefPeriod,
       weightage                  as Weightage,
@@ -40,6 +40,6 @@ define view entity /ESRCC/I_AllocationWeightage
       _ProductText,
       _CostVersionText,
       _AllocKeyText,
-      _AllocTypeText,
+//      _AllocTypeText,
       _AllocPeriodText
 }

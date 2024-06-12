@@ -167,7 +167,7 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
                                                                               serviceproduct = <ls_diragg>-serviceproduct.
 
       IF sy-subrc = 0 AND <ls_diragg>-totalreckpi <> <ls_chargeout>-planning.
-        READ TABLE lt_rec_cost into ls_chargeout WITH KEY fplv = <ls_diragg>-fplv
+        READ TABLE lt_rec_cost INTO ls_chargeout WITH KEY fplv = <ls_diragg>-fplv
                                                                               ryear = <ls_diragg>-ryear
                                                                               poper = <ls_diragg>-poper
                                                                               sysid = <ls_diragg>-sysid
@@ -177,30 +177,30 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
                                                                               costcenter = <ls_diragg>-costcenter
                                                                               serviceproduct = <ls_diragg>-serviceproduct.
 * add a dummy receiver
-        if sy-subrc = 0.
+        IF sy-subrc = 0.
 
-        ls_chargeout-receivingentity = 'DELTA'.
-        ls_chargeout-reckpishareabsl = ( <ls_chargeout>-srvcostsharel + <ls_chargeout>-valueaddmarkupabsl + <ls_chargeout>-passthrumarkupabsl ) - <ls_diragg>-totalchargeoutl.
-        ls_chargeout-reckpishareabsg = ( <ls_chargeout>-srvcostshareg + <ls_chargeout>-valueaddmarkupabsg + <ls_chargeout>-passthrumarkupabsg ) - <ls_diragg>-totalchargeoutg.
-        ls_chargeout-reckpi = <ls_chargeout>-planning - <ls_diragg>-totalreckpi.
-        ls_chargeout-recvalueaddmarkupabsl = ( ls_chargeout-recvalueaddmarkupabsl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recvalueaddmarkupabsg = ( ls_chargeout-recvalueaddmarkupabsg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recpassthrumarkupabsl = ( ls_chargeout-recpassthrumarkupabsl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recpassthrumarkupabsg = ( ls_chargeout-recpassthrumarkupabsg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recvalueaddedl = ( ls_chargeout-recvalueaddedl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recvalueaddedg = ( ls_chargeout-recvalueaddedg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recpassthroughl = ( ls_chargeout-recpassthroughl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recpassthroughg = ( ls_chargeout-recpassthroughg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recorigtotalcostl = ( ls_chargeout-recorigtotalcostl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recorigtotalcostg = ( ls_chargeout-recorigtotalcostg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recpasstotalcostl = ( ls_chargeout-recpasstotalcostl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recpasstotalcostg = ( ls_chargeout-recpasstotalcostg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recexcludedcostl = ( ls_chargeout-recexcludedcostl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-recexcludedcostg = ( ls_chargeout-recexcludedcostg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-rectotalcostl = ( ls_chargeout-rectotalcostl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-rectotalcostg = ( ls_chargeout-rectotalcostg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
-        ls_chargeout-billingperiod = keys[ 1 ]-billingperiod.
-        APPEND ls_chargeout TO lt_rec_cost.
+          ls_chargeout-receivingentity = 'DELTA'.
+          ls_chargeout-reckpishareabsl = ( <ls_chargeout>-srvcostsharel + <ls_chargeout>-valueaddmarkupabsl + <ls_chargeout>-passthrumarkupabsl ) - <ls_diragg>-totalchargeoutl.
+          ls_chargeout-reckpishareabsg = ( <ls_chargeout>-srvcostshareg + <ls_chargeout>-valueaddmarkupabsg + <ls_chargeout>-passthrumarkupabsg ) - <ls_diragg>-totalchargeoutg.
+          ls_chargeout-reckpi = <ls_chargeout>-planning - <ls_diragg>-totalreckpi.
+          ls_chargeout-recvalueaddmarkupabsl = ( ls_chargeout-recvalueaddmarkupabsl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recvalueaddmarkupabsg = ( ls_chargeout-recvalueaddmarkupabsg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recpassthrumarkupabsl = ( ls_chargeout-recpassthrumarkupabsl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recpassthrumarkupabsg = ( ls_chargeout-recpassthrumarkupabsg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recvalueaddedl = ( ls_chargeout-recvalueaddedl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recvalueaddedg = ( ls_chargeout-recvalueaddedg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recpassthroughl = ( ls_chargeout-recpassthroughl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recpassthroughg = ( ls_chargeout-recpassthroughg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recorigtotalcostl = ( ls_chargeout-recorigtotalcostl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recorigtotalcostg = ( ls_chargeout-recorigtotalcostg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recpasstotalcostl = ( ls_chargeout-recpasstotalcostl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recpasstotalcostg = ( ls_chargeout-recpasstotalcostg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recexcludedcostl = ( ls_chargeout-recexcludedcostl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-recexcludedcostg = ( ls_chargeout-recexcludedcostg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-rectotalcostl = ( ls_chargeout-rectotalcostl / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-rectotalcostg = ( ls_chargeout-rectotalcostg / <ls_chargeout>-planning ) * ls_chargeout-reckpi.
+          ls_chargeout-billingperiod = keys[ 1 ]-billingperiod.
+          APPEND ls_chargeout TO lt_rec_cost.
         ENDIF.
       ENDIF.
 
@@ -375,7 +375,7 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
     DATA _poper TYPE RANGE OF poper.
     DATA ls_wf_leadobj TYPE /esrcc/s_wf_leadingobject.
     DATA lt_wf_leadobj TYPE /esrcc/tt_wf_leadingobject.
-    DATA lv_valid_from type /esrcc/validfrom.
+    DATA lv_valid_from TYPE /esrcc/validfrom.
 
 *Derive poper from billing frequency customizing
     READ TABLE keys ASSIGNING FIELD-SYMBOL(<key>) INDEX 1.
@@ -434,16 +434,16 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
                                                                        AND  serviceproduct = @keys-serviceproduct
                                                                        INTO CORRESPONDING FIELDS OF TABLE @lt_rec_share.
 
-   SELECT * FROM /esrcc/srvvalues FOR ALL ENTRIES IN @keys WHERE  fplv = @keys-fplv
-                                                              AND ryear = @keys-ryear
-                                                              AND sysid = @keys-sysid
-                                                              AND  poper IN @_poper
-                                                              AND  legalentity = @keys-legalentity
-                                                              AND  ccode = @keys-ccode
-                                                              AND  costobject = @keys-costobject
-                                                              AND  costcenter = @keys-costcenter
-                                                              AND  serviceproduct = @keys-serviceproduct
-                                                              INTO TABLE @DATA(lt_srvvalues_del).
+    SELECT * FROM /esrcc/srvvalues FOR ALL ENTRIES IN @keys WHERE  fplv = @keys-fplv
+                                                               AND ryear = @keys-ryear
+                                                               AND sysid = @keys-sysid
+                                                               AND  poper IN @_poper
+                                                               AND  legalentity = @keys-legalentity
+                                                               AND  ccode = @keys-ccode
+                                                               AND  costobject = @keys-costobject
+                                                               AND  costcenter = @keys-costcenter
+                                                               AND  serviceproduct = @keys-serviceproduct
+                                                               INTO TABLE @DATA(lt_srvvalues_del).
 
     SELECT * FROM /esrcc/i_indallocvalues FOR ALL ENTRIES IN @keys WHERE  fplv = @keys-fplv
                                                                        AND ryear = @keys-ryear
@@ -466,6 +466,9 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
       IF wf_active EQ abap_true.
         CLEAR ls_wf_leadobj.
         MOVE-CORRESPONDING <ls_rec_cost> TO ls_wf_leadobj.
+        IF <key> IS ASSIGNED.
+          ls_wf_leadobj-billingperiod = <key>-billingperiod.
+        ENDIF.
         APPEND ls_wf_leadobj TO lt_wf_leadobj.
 *        <ls_rec_cost>-status = 'W'.   "In Approval
       ELSE.
@@ -485,13 +488,13 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
       ).
 
 * valid from = first day of the month.
-    CONCATENATE <ls_rec_cost>-ryear <ls_rec_cost>-poper+1(2) '01' INTO lv_valid_from.
+      CONCATENATE <ls_rec_cost>-ryear <ls_rec_cost>-poper+1(2) '01' INTO lv_valid_from.
 
       CALL FUNCTION '/ESRCC/FM_LAST_DAY_OF_MONTH'
         EXPORTING
-         day_in = lv_valid_from
+          day_in       = lv_valid_from
         IMPORTING
-         end_of_month = <ls_rec_cost>-exchdate.
+          end_of_month = <ls_rec_cost>-exchdate.
 
     ENDLOOP.
 
@@ -587,6 +590,9 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
       IF wf_active EQ abap_true.
         CLEAR ls_wf_leadobj.
         MOVE-CORRESPONDING <ls_srv_cost> TO ls_wf_leadobj.
+        IF <key> IS ASSIGNED.
+          ls_wf_leadobj-billingperiod = <key>-billingperiod.
+        ENDIF.
         APPEND ls_wf_leadobj TO lt_wf_leadobj.
 *        <ls_srv_cost>-status = 'W'.   "In Approval
       ELSE.

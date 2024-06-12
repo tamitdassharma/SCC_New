@@ -479,12 +479,12 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
 
   @UI.lineItem: [{ position: 190 }]
   @UI.dataPoint: { title: 'Thereof Value-Add Markup', valueFormat.numberOfFractionalDigits: 2 }
-  @EndUserText.label: 'Thereof Value-Add Markup'
+  @EndUserText.label: 'Thereof Value-Add Mark-up'
   ValueAddMarkup;
 
   @UI.lineItem: [{ position: 200 }]
   @UI.dataPoint: { title: 'Thereof Pass-Through Markup', valueFormat.numberOfFractionalDigits: 2 }
-  @EndUserText.label: 'Thereof Pass-Through Markup'
+  @EndUserText.label: 'Thereof Pass-Through Mark-up'
   PassThruMarkup;
 
   @UI.lineItem: [{ position: 180}]
@@ -538,6 +538,8 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   legalcountryname;
   @UI.hidden: true
   receivingcountryname;
+  @UI.hidden: true
+  statusdescription;
 
 
 }

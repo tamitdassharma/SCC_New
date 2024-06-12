@@ -31,11 +31,12 @@ annotate view /ESRCC/C_RECALLOCVALUE with
   } ]
   @EndUserText.label: 'Period'
   refpoper;
-   @UI.lineItem: [
+  @UI.lineItem: [
   {  position: 30,
   importance: #MEDIUM,
   label: ''
   } ]
+  @UI.textArrangement: #TEXT_LAST
   allockey;
   @UI.lineItem: [
   {  position: 40,
@@ -43,9 +44,9 @@ annotate view /ESRCC/C_RECALLOCVALUE with
   label: ''
   } ]
   @EndUserText.label: 'Base Key Value'
-  cumvalue;
-  
-//hidden fields
+  reckpivalue;
+
+  //hidden fields
   @UI.hidden: true
   fplv;
   @UI.hidden: true
@@ -67,10 +68,10 @@ annotate view /ESRCC/C_RECALLOCVALUE with
   @UI.hidden: true
   keyversion;
   @UI.hidden: true
-  alloctype;
-  @UI.hidden: true
   allocationperiod;
   @UI.hidden: true
   refperiod;
+  @UI.hidden: true
+  AllocationKeyDescription;
 
 }

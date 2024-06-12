@@ -81,7 +81,7 @@ annotate view /ESRCC/C_SrvAloc with
   KeyVersion;
 
   @UI.identification: [ { position: 4, hidden: true } ]
-  @UI.lineItem: [ { position: 4, cssDefault.width: '9rem' } ]
+  @UI.lineItem: [ { position: 4, cssDefault.width: '10rem' } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{entity: { name: '/ESRCC/I_CHGOUT', element: 'Chargeout' }, useForValidation: true }]
   Chargeout;

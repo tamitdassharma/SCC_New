@@ -36,19 +36,19 @@
      <VALPOS>0004</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>FPD</DOMVALUE_L>
-     <DDTEXT>Service Consumption Data</DDTEXT>
+     <DDTEXT>Service Capacity Data (for Direct Charging)</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0005</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>FAB</DOMVALUE_L>
-     <DDTEXT>Allocation Base Data</DDTEXT>
+     <DDTEXT>Allocation Base Key Data (for Indirect Charging)</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0006</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>FCD</DOMVALUE_L>
-     <DDTEXT>Service Capacity Data</DDTEXT>
+     <DDTEXT>Service Consumption Data (for Direct Charging)</DDTEXT>
     </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>

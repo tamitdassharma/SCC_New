@@ -37,7 +37,7 @@ as projection on /ESRCC/I_SRV_WORKFLOW
     
     @ObjectModel.text.element: [ 'Transactiongroupdescription' ]
     Transactiongroup,
-    @DefaultAggregation: #SUM
+//    @DefaultAggregation: #SUM
     Costshare,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'

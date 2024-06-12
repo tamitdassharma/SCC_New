@@ -46,7 +46,7 @@
      <VALPOS>0002</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>PASS</DOMVALUE_L>
-     <DDTEXT>Durchgeleitete Kosten (ohne Wertschöpfung)</DDTEXT>
+     <DDTEXT>Durchlaufende Kosten (ohne Wertschöpfung)</DDTEXT>
     </item>
    </DD07_TEXTS>
   </asx:values>

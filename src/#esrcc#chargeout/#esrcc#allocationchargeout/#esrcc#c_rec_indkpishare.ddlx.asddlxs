@@ -37,11 +37,6 @@ annotate view /ESRCC/C_REC_INDKPISHARE with
     type: #DATAPOINT_REFERENCE,
     purpose: #HEADER
   },
-   {
-    targetQualifier: 'Alloctype',
-    type: #DATAPOINT_REFERENCE,
-    purpose: #HEADER
-  },
   {
     targetQualifier: 'Allocperiod',
     type: #DATAPOINT_REFERENCE,
@@ -62,19 +57,19 @@ annotate view /ESRCC/C_REC_INDKPISHARE with
     type: #DATAPOINT_REFERENCE,
     purpose: #HEADER
   },
-  {
-   id: '/ESRCC/I_AVGRECALLOCVALUE',
-   type: #LINEITEM_REFERENCE,
-   position: 20,
-   targetElement: '_AverageReceiverAllocation',
-   hidden: #( hideaverage )
-  },
+//  {
+//   id: '/ESRCC/I_AVGRECALLOCVALUE',
+//   type: #LINEITEM_REFERENCE,
+//   position: 20,
+//   targetElement: '_AverageReceiverAllocation',
+//   hidden: #( hideaverage )
+//  },
   {
    id: '/ESRCC/I_RECALLOCVALUE',
    type: #LINEITEM_REFERENCE,
    position: 20,
-   targetElement: '_ReceiverAllocation',
-   hidden: #( hidecumulative )
+   targetElement: '_ReceiverAllocation'
+//   hidden: #( hidecumulative )
   }
   ]
 
@@ -249,17 +244,16 @@ annotate view /ESRCC/C_REC_INDKPISHARE with
   } ]
   @UI.textArrangement: #TEXT_ONLY
   @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATION_KEY_F4', element: 'Allocationkey' },
-                                        additionalBinding: [{ element: 'AllocType', localElement: 'AllocType' }],
                                         useForValidation: true } ]
   @UI.dataPoint: { qualifier: 'Allockey', title: 'Allocation Key' }
   allockey;
-  @UI.lineItem: [ { position: 130 } ]
-  @UI.textArrangement: #TEXT_ONLY
-//  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATION_KEY_F4', element: 'AllocType' },
-//                                        additionalBinding: [{ element: 'Allocationkey', localElement: 'Allockey' }],
-//                                        useForValidation: true } ]
-  @UI.dataPoint: { qualifier: 'Alloctype', title: 'Allocation Type' }
-  alloctype;
+//  @UI.lineItem: [ { position: 130 } ]
+//  @UI.textArrangement: #TEXT_ONLY
+////  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATION_KEY_F4', element: 'AllocType' },
+////                                        additionalBinding: [{ element: 'Allocationkey', localElement: 'Allockey' }],
+////                                        useForValidation: true } ]
+//  @UI.dataPoint: { qualifier: 'Alloctype', title: 'Allocation Type' }
+//  alloctype;
   @UI.textArrangement: #TEXT_ONLY
   @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATIONPERIOD', element: 'AllocationPeriod' },
                                         useForValidation: true } ]
@@ -293,6 +287,7 @@ annotate view /ESRCC/C_REC_INDKPISHARE with
     label: ''
   } ]
   @EndUserText.label: 'KPI Share (%)'
+  @Consumption.filter.hidden: true
   totalreckpishare;
   @UI.lineItem: [ {
     position: 190 ,
@@ -353,13 +348,7 @@ annotate view /ESRCC/C_REC_INDKPISHARE with
    @UI.hidden: true
    KeyVersionDescription;
    @UI.hidden: true
-   AllocationTypeDescription;
-   @UI.hidden: true
    AllocationPeriodDescription;
-   @UI.hidden: true
-   hideaverage;
-   @UI.hidden: true
-   hidecumulative;
    @UI.hidden: true
    AllocationKeyDescription;
    @UI.hidden: true

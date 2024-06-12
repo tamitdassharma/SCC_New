@@ -5,15 +5,15 @@
     typeNamePlural: 'Charge-Out to Receivers',
     title: {
       type: #STANDARD,
-      label: 'Receiving Entity', 
-      value: 'Receivingentity'  
+      label: 'Receiving Entity',
+      value: 'Receivingentity'
     },
     description.value: 'receivingentitydescription'
   }
 }
 annotate view /ESRCC/C_REC_COST with
 {
- 
+
   @UI.facet: [{
   id: 'general',
   type: #IDENTIFICATION_REFERENCE,
@@ -29,9 +29,7 @@ annotate view /ESRCC/C_REC_COST with
   } ]
   @UI.textArrangement: #TEXT_LAST
   Country;
-  @UI.lineItem: [ 
-  {type: #FOR_INTENT_BASED_NAVIGATION, label: 'View Allocation', position: 10, semanticObject: 'sccIndirectKPI', 
-          semanticObjectAction: 'display'},
+  @UI.lineItem: [
   {position: 10 ,
   importance: #HIGH,
   label: '',
@@ -51,7 +49,7 @@ annotate view /ESRCC/C_REC_COST with
   } ]
   @UI.textArrangement: #TEXT_ONLY
   ConsumptionVersion;
-  
+
   @UI.lineItem: [ {
   position: 50 ,
   importance: #HIGH,
@@ -64,13 +62,9 @@ annotate view /ESRCC/C_REC_COST with
   @EndUserText.label: 'Actual Consumption'
   Reckpi;
   @UI.lineItem: [ {
-  position: 55 ,
+  position: 599 ,
   importance: #HIGH,
   label: ''
-  } ]
-  @UI.identification: [ {
-    position: 55 ,
-    label: ''
   } ]
   @EndUserText.label: 'UoM'
   @UI.textArrangement: #TEXT_LAST
@@ -181,15 +175,37 @@ annotate view /ESRCC/C_REC_COST with
   LastChangedAt;
 
   // hidden fields
-    @UI.hidden: true
-    receivingentitydescription;
-    @UI.hidden: true
-    statusdescription;
-    @UI.hidden: true
-    receivingcountryname;
-    @UI.hidden: true
-    unitname;
-    @UI.hidden: true
-    consumptionversiontext;
+  @UI.hidden: true
+  receivingentitydescription;
+  @UI.hidden: true
+  statusdescription;
+  @UI.hidden: true
+  receivingcountryname;
+  @UI.hidden: true
+  unitname;
+  @UI.hidden: true
+  consumptionversiontext;
+  @UI.hidden: true
+  Fplv;
+  @UI.hidden: true
+  Ryear;
+  @UI.hidden: true
+  Poper;
+  @UI.hidden: true
+  Sysid;
+  @UI.hidden: true
+  Legalentity;
+  @UI.hidden: true
+  Ccode;
+  @UI.hidden: true
+  Costobject;
+  @UI.hidden: true
+  Costcenter;
+  @UI.hidden: true
+  Serviceproduct;
+  @UI.hidden: true
+  Currencytype;
+  @UI.hidden: true
+  keyversiontext;
 
 }
