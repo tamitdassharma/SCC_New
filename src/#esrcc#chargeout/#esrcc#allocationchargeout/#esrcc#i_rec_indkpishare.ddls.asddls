@@ -62,8 +62,8 @@ define root view entity /ESRCC/I_REC_INDKPISHARE
   key refperiod,
       weightage,
       weightage.reckpivalue,
-      cast(initialreckpishare * 100 as abap.dec(15,2)) as totalreckpishare,
-      cast(reckpishare * 100 as abap.dec(15,2)) as reckpishare,
+      cast(round(initialreckpishare * 100, 3) as abap.dec(15,3)) as totalreckpishare,
+      cast(round(reckpishare * 100,2) as abap.dec(15,3)) as reckpishare,
       _legalentity.Country as legalentitycountry,
       _receivingentity.Country as receivingcountry,
 //      cast(case alloctype
