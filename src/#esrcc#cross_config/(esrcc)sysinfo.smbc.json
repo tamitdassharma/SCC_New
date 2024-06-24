@@ -10,7 +10,7 @@
     "serviceVersion": "0001",
     "rootEntitySet": "SystemInfoAll",
     "name": "Maintain System Information",
-    "configurationGroup": "",
+    "configurationGroup": "/ESRCC/BC_GROUP1",
     "skipRootEntity": true
   },
   "appConfiguration": {

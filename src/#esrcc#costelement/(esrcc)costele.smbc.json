@@ -10,7 +10,7 @@
     "serviceVersion": "0001",
     "rootEntitySet": "CostElementAll",
     "name": "Maintain Cost Element",
-    "configurationGroup": "",
+    "configurationGroup": "/ESRCC/BC_GROUP3",
     "skipRootEntity": true
   },
   "appConfiguration": {

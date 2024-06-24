@@ -79,34 +79,34 @@ annotate view /ESRCC/C_SrvCeleM with
   Costelement;
 
   @UI.identification: [ { position: 5 } ]
-  @UI.lineItem: [ { position: 5, cssDefault.width: '12rem' } ]
+  @UI.lineItem: [ { position: 7, cssDefault.width: '12rem' } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTTYPE', element: 'Costtype' }}]
   Costtype;
 
   @UI.identification: [ { position: 6 } ]
-  @UI.lineItem: [ { position: 6, cssDefault.width: '12rem' } ]
+  @UI.lineItem: [ { position: 8, cssDefault.width: '12rem' } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_POSTINGTYPE', element: 'Postingtype' }}]
   Postingtype;
 
   @UI.identification: [ { position: 7 } ]
-  @UI.lineItem: [ { position: 7 } ]
+  @UI.lineItem: [ { position: 9 } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTIND', element: 'costind' }}]
   Costind;
 
   @UI.identification: [ { position: 8 } ]
-  @UI.lineItem: [ { position: 8, cssDefault.width: '9rem' } ]
+  @UI.lineItem: [ { position: 10, cssDefault.width: '9rem' } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_USAGECALCULATION', element: 'usagecal' }}]
   Usagetype;
 
-  @UI.lineItem: [ { position: 9 } ]
+  @UI.lineItem: [ { position: 5 } ]
   @UI.fieldGroup: [{ position: 1, qualifier: 'ValidityGroup' }]
   ValidFrom;
 
-  @UI.lineItem: [ { position: 10 } ]
+  @UI.lineItem: [ { position: 6 } ]
   @UI.fieldGroup: [{ position: 2, qualifier: 'ValidityGroup' }]
   ValidTo;
 

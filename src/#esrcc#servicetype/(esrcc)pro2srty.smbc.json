@@ -10,7 +10,7 @@
     "serviceVersion": "0001",
     "rootEntitySet": "ServiceProductAll",
     "name": "Assign Service Product to Service Type & TG",
-    "configurationGroup": "",
+    "configurationGroup": "/ESRCC/BC_GROUP4",
     "skipRootEntity": true
   },
   "appConfiguration": {

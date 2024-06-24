@@ -18,7 +18,7 @@
      <VALPOS>0001</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>ECS</DOMVALUE_L>
-     <DDTEXT>Extraction Cost Center</DDTEXT>
+     <DDTEXT>Extraction Cost Object</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0002</VALPOS>
@@ -64,7 +64,7 @@
      <VALPOS>0001</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>ECS</DOMVALUE_L>
-     <DDTEXT>Extraktion Kostenstelle</DDTEXT>
+     <DDTEXT>Extraktion Kostenträger</DDTEXT>
     </item>
     <item>
      <VALPOS>0002</VALPOS>
@@ -82,7 +82,7 @@
      <VALPOS>0004</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>FPD</DOMVALUE_L>
-     <DDTEXT>Serviceverbrauchsdaten</DDTEXT>
+     <DDTEXT>Upload von Servicekapazitätsdaten (für direkte Verrechnung)</DDTEXT>
     </item>
     <item>
      <VALPOS>0005</VALPOS>
@@ -94,7 +94,7 @@
      <VALPOS>0006</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>FCD</DOMVALUE_L>
-     <DDTEXT>Servicekapazitätsdaten</DDTEXT>
+     <DDTEXT>Upload von Serviceverbrauchsdaten (für direkte Verrechnung)</DDTEXT>
     </item>
    </DD07_TEXTS>
   </asx:values>

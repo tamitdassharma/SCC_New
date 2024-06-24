@@ -12,6 +12,7 @@ CLASS /esrcc/cl_comments_util DEFINITION
     CLASS-METHODS read_comments
       IMPORTING
         !workflowid TYPE /esrcc/sww_wiid
+        !taskid     TYPE string OPTIONAL
       EXPORTING
         !commentext TYPE string
         !comments   TYPE /esrcc/tt_comment.
@@ -33,9 +34,10 @@ CLASS /ESRCC/CL_COMMENTS_UTIL IMPLEMENTATION.
 
     _comments-created_by = sy-uname.
 
-    " Get timestamp value in the UTC format.
-    GET TIME STAMP FIELD _comments-created_at.
-    " Provide date and time interpreting the UTC timestamp for central use.
+    /esrcc/cl_utility_core=>get_utc_date_time_ts(
+      IMPORTING
+        time_stamp = _comments-created_at
+    ).
 
     _comments-wfcomment = xco_cp=>string( iv_comments
       )->as_xstring( xco_cp_character=>code_page->utf_8
@@ -58,8 +60,14 @@ CLASS /ESRCC/CL_COMMENTS_UTIL IMPLEMENTATION.
 
   METHOD read_comments.
 
-    SELECT * FROM /esrcc/comments WHERE worfklow_id = @workflowid
-                                  INTO CORRESPONDING FIELDS OF TABLE @comments.
+    IF taskid IS INITIAL.
+      SELECT * FROM /esrcc/comments WHERE worfklow_id = @workflowid
+                                    INTO CORRESPONDING FIELDS OF TABLE @comments.
+    ELSE.
+      SELECT * FROM /esrcc/comments WHERE worfklow_id = @workflowid
+                                      AND taskid = @taskid
+                                    INTO CORRESPONDING FIELDS OF TABLE @comments.
+    ENDIF.
 
     LOOP AT comments ASSIGNING FIELD-SYMBOL(<comment>).
 

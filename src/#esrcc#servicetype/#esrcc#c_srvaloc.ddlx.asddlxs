@@ -63,25 +63,25 @@ annotate view /ESRCC/C_SrvAloc with
   CostVersion;
 
   @UI.identification: [ { position: 5, hidden: #(HideVersion) } ]
-  @UI.lineItem: [ { position: 5, cssDefault.width: '13rem', hidden: true } ]
+  @UI.lineItem: [ { position: 7, cssDefault.width: '13rem', hidden: true } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_CAPACITY_VERSION', element: 'CapacityVersion' } } ]
   CapacityVersion;
 
   @UI.identification: [ { position: 6, hidden: #(HideVersion) } ]
-  @UI.lineItem: [ { position: 6, cssDefault.width: '11.5rem', hidden: true } ]
+  @UI.lineItem: [ { position: 8, cssDefault.width: '11.5rem', hidden: true } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_CONSUMPTION_VERSION', element: 'ConsumptionVersion' } } ]
   ConsumptionVersion;
   
   @UI.identification: [ { position: 7, hidden: #(HideWeightage) } ]
-  @UI.lineItem: [ { position: 7, cssDefault.width: '11.5rem', hidden: true } ]
+  @UI.lineItem: [ { position: 9, cssDefault.width: '11.5rem', hidden: true } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_KEY_VERSION', element: 'KeyVersion' } } ]
   KeyVersion;
 
   @UI.identification: [ { position: 4, hidden: true } ]
-  @UI.lineItem: [ { position: 4, cssDefault.width: '10rem' } ]
+  @UI.lineItem: [ { position: 6, cssDefault.width: '10rem' } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{entity: { name: '/ESRCC/I_CHGOUT', element: 'Chargeout' }, useForValidation: true }]
   Chargeout;
@@ -90,14 +90,14 @@ annotate view /ESRCC/C_SrvAloc with
   @UI.lineItem: [ { position: 10 } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [ { entity: { name: 'I_UnitOfMeasure', element: 'UnitOfMeasure' } } ]
-  @EndUserText.label: 'UoM'
+  @EndUserText.label: 'Unit of Measure'
   Uom;
 
-  @UI.lineItem: [ { position: 11 } ]
+  @UI.lineItem: [ { position: 4 } ]
   @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 10 }]
   Validfrom;
 
-  @UI.lineItem: [ { position: 12 } ]
+  @UI.lineItem: [ { position: 5 } ]
   @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 20 }]
   Validto;
 

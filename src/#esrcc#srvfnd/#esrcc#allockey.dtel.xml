@@ -7,12 +7,9 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <DOMNAME>/ESRCC/ALLOCKEYS</DOMNAME>
     <HEADLEN>55</HEADLEN>
-    <SCRLEN1>10</SCRLEN1>
-    <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
     <DDTEXT>Allocation Key</DDTEXT>
     <REPTEXT>Allocation Key</REPTEXT>
-    <SCRTEXT_M>Allocation Key</SCRTEXT_M>
     <SCRTEXT_L>Allocation Key</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <REFKIND>D</REFKIND>
@@ -26,7 +23,6 @@
      <DDLANGUAGE>D</DDLANGUAGE>
      <DDTEXT>Allokationssschlüssel</DDTEXT>
      <REPTEXT>Allokationssschlüssel</REPTEXT>
-     <SCRTEXT_M>Allokationssschlüsse</SCRTEXT_M>
      <SCRTEXT_L>Allokationssschlüssel</SCRTEXT_L>
     </item>
    </DD04_TEXTS>

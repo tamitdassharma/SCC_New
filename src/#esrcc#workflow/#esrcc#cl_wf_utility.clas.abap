@@ -19,9 +19,9 @@ ENDCLASS.
 CLASS /ESRCC/CL_WF_UTILITY IMPLEMENTATION.
 
 
-  METHOD IS_WF_ON.
+  METHOD is_wf_on.
     CLEAR ev_wf_active.
-    SELECT SINGLE * FROM /esrcc/wf_switch  WHERE application = @iv_apptype INTO @DATA(ls_switch).
+    SELECT SINGLE application , workflowactive FROM /esrcc/wf_switch  WHERE application = @iv_apptype INTO @DATA(ls_switch).
     IF sy-subrc EQ 0.
       ev_wf_active =  ls_switch-workflowactive.
     ENDIF.

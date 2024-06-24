@@ -114,7 +114,7 @@ CLASS lcl_custom_validation IMPLEMENTATION.
     IF gt_ref_period IS INITIAL.
       SELECT DISTINCT *
         FROM /esrcc/i_allocationperiod
-        INTO TABLE @gt_ref_period.
+        INTO TABLE @gt_ref_period.      "#EC CI_NOWHERE
     ENDIF.
 
     IF control-allocationperiod = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'ALLOCATIONPERIOD' ) TO fields. ENDIF.

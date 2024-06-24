@@ -10,7 +10,7 @@
     "serviceVersion": "0001",
     "rootEntitySet": "GroupConfigAll",
     "name": "Maintain Group Configuration",
-    "configurationGroup": "",
+    "configurationGroup": "/ESRCC/BC_GROUP1",
     "skipRootEntity": true
   },
   "appConfiguration": {

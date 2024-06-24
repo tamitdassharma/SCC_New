@@ -116,7 +116,7 @@ annotate view /ESRCC/C_DIRECTALLOCATION with
   Consumption;
   
   @Consumption.valueHelpDefinition: [ { entity: { name: 'I_UnitOfMeasure', element: 'UnitOfMeasure' } } ]
-  @EndUserText.label: 'UoM'
+  @EndUserText.label: 'Unit of Measure'
   @Consumption.filter.hidden: true
   uom;
 

@@ -212,7 +212,7 @@ CLASS lhc_managecostbase IMPLEMENTATION.
 
       MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
        ENTITY managecostbase
-        UPDATE FIELDS ( comments oldcostind oldcostdataset oldusagecal costind usagecal status )
+        UPDATE FIELDS ( comments oldcostind oldcostdataset oldusagecal costind usagecal status WorkflowId )
              WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'D' )
                              (
                                 %key = costbase-%key
@@ -222,6 +222,7 @@ CLASS lhc_managecostbase IMPLEMENTATION.
                                 costind = costbase-costind
                                 usagecal = costbase-usagecal
                                 status = 'P'
+                                WorkflowId = ''
                               ) )
                              FAILED failed
                              REPORTED reported
@@ -231,7 +232,7 @@ CLASS lhc_managecostbase IMPLEMENTATION.
 
       MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
        ENTITY managecostbase
-        UPDATE FIELDS ( comments oldcostind oldcostdataset oldusagecal costind usagecal status )
+        UPDATE FIELDS ( comments oldcostind oldcostdataset oldusagecal costind usagecal status WorkflowId )
              WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'D' )
                              (
                                 %key = costbase-%key
@@ -241,6 +242,7 @@ CLASS lhc_managecostbase IMPLEMENTATION.
                                 costind = costbase-costind
                                 usagecal = costbase-usagecal
                                 status = 'A'
+                                WorkflowId = ''
                               ) )
                              FAILED failed
                              REPORTED reported

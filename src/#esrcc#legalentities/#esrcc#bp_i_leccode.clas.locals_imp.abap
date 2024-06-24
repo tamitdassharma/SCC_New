@@ -322,7 +322,7 @@ CLASS lhc_/esrcc/i_leccode_s IMPLEMENTATION.
 
   METHOD edit.
     DATA(lo_util) = /esrcc/cl_config_util=>create_for_authorization( ).
-    SELECT DISTINCT legalentity FROM /esrcc/i_leccode INTO TABLE @DATA(legal_entities).
+    SELECT DISTINCT legalentity FROM /esrcc/i_leccode INTO TABLE @DATA(legal_entities).     "#EC CI_NOWHERE
 
     LOOP AT legal_entities INTO DATA(entity).
       DATA(is_unauthorized) = lo_util->is_unauthorized(

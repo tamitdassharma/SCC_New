@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain Stewardship Shares for Cost Objects",
+    "description": "Maintain Stewardship, Service Products & Receivers",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_LECCTR_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "LeToCostCenterAll",
-    "name": "Maintain Stewardship Shares for Cost Objects",
-    "configurationGroup": "",
+    "name": "Maintain Stewardship, Service Products & Receivers",
+    "configurationGroup": "/ESRCC/BC_GROUP5",
     "skipRootEntity": true
   },
   "appConfiguration": {

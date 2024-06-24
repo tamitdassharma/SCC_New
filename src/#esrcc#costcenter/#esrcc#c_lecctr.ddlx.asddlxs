@@ -14,7 +14,7 @@ annotate view /ESRCC/C_LeCctr with
   @UI.facet: [ {
     id: 'CE',
     type: #COLLECTION,
-    position: 1
+    position: 10
   },
   {
     id: '/ESRCC/I_LeCctr',
@@ -22,7 +22,7 @@ annotate view /ESRCC/C_LeCctr with
     type: #IDENTIFICATION_REFERENCE,
     parentId: 'CE',
     label: 'General Information',
-    position: 1
+    position: 10
   },
   {
     id: 'Validity',
@@ -30,7 +30,7 @@ annotate view /ESRCC/C_LeCctr with
     parentId: 'CE',
     targetQualifier: 'ValidityGroup',
     label: 'Validity',
-    position: 2
+    position: 20
   },
   {
     id: 'Admin',
@@ -38,14 +38,14 @@ annotate view /ESRCC/C_LeCctr with
     parentId: 'CE',
     targetQualifier: 'AdminGroup',
     label: 'Admin Information',
-    position: 3
+    position: 30
   },
   {
     id: 'ServiceParameter',
     type: #LINEITEM_REFERENCE,
     targetElement: '_ServiceParameter',
     parentId: 'CE',
-    position: 4
+    position: 40
   },
   {
      id: 'Receiver',
@@ -53,11 +53,11 @@ annotate view /ESRCC/C_LeCctr with
      type: #LINEITEM_REFERENCE,
      parentId: 'CE',
      targetElement: '_ServiceReceiver',
-     position: 5
+     position: 50
    } ]
 
-  @UI.identification: [ { position: 1 } ]
-  @UI.lineItem: [ { position: 1 } ]
+  @UI.identification: [ { position: 10 } ]
+  @UI.lineItem: [ { position: 10 } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Sysid' },
                                        additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity' },
@@ -65,7 +65,7 @@ annotate view /ESRCC/C_LeCctr with
                                        useForValidation: true }]
   Sysid;
 
-  @UI.lineItem: [ { position: 2 } ]
+  @UI.lineItem: [ { position: 20 } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Legalentity' },
                                        additionalBinding: [{ element: 'Ccode', localElement: 'Ccode' },
                                                            { element: 'Sysid', localElement: 'Sysid' }],
@@ -73,8 +73,8 @@ annotate view /ESRCC/C_LeCctr with
   @UI.textArrangement: #TEXT_LAST
   Legalentity;
 
-  @UI.identification: [ { position: 3 } ]
-  @UI.lineItem: [ { position: 3 } ]
+  @UI.identification: [ { position: 30 } ]
+  @UI.lineItem: [ { position: 30 } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Ccode' },
                                        additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity'},
                                                            { element: 'Sysid', localElement: 'Sysid' }],
@@ -82,8 +82,8 @@ annotate view /ESRCC/C_LeCctr with
   @UI.textArrangement: #TEXT_LAST
   Ccode;
 
-  @UI.identification: [ { position: 4 } ]
-  @UI.lineItem: [ { position: 4, cssDefault.width: '11.5rem' } ]
+  @UI.identification: [ { position: 40 } ]
+  @UI.lineItem: [ { position: 40, cssDefault.width: '11.5rem' } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_F4', element: 'Costobject' },
                                        additionalBinding: [{ element: 'Sysid', localElement: 'Sysid', usage: #FILTER },
                                                            { element: 'Costcenter', localElement: 'Costcenter' } ],
@@ -91,8 +91,8 @@ annotate view /ESRCC/C_LeCctr with
   @UI.textArrangement: #TEXT_LAST
   Costobject;
 
-  @UI.identification: [ { position: 5 } ]
-  @UI.lineItem: [ { position: 5 } ]
+  @UI.identification: [ { position: 50 } ]
+  @UI.lineItem: [ { position: 50 } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_F4', element: 'Costcenter' },
                                        additionalBinding: [{ element: 'Sysid', localElement: 'Sysid', usage: #FILTER },
                                                            { element: 'Costobject', localElement: 'Costobject' } ],
@@ -100,44 +100,44 @@ annotate view /ESRCC/C_LeCctr with
   @UI.textArrangement: #TEXT_LAST
   Costcenter;
 
-  @UI.identification: [ { position: 9 } ]
-  @UI.lineItem: [ { position: 9 } ]
+  @UI.identification: [ { position: 90 } ]
+  @UI.lineItem: [ { position: 90 } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_PROFITCENTER_F4', element: 'ProfitCenter' }, useForValidation: true }]
   @UI.textArrangement: #TEXT_LAST
   Profitcenter;
 
-  @UI.identification: [ { position: 10 } ]
-  @UI.lineItem: [ { position: 10 } ]
+  @UI.identification: [ { position: 100 } ]
+  @UI.lineItem: [ { position: 100 } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BUSINESSDIV_F4', element: 'BusinessDivision' }, useForValidation: true }]
   @UI.textArrangement: #TEXT_LAST
   Businessdivision;
 
-  @UI.identification: [ { position: 6 } ]
-  @UI.lineItem: [ { position: 6, cssDefault.width: '10rem' } ]
+  @UI.identification: [ { position: 80 } ]
+  @UI.lineItem: [ { position: 80, cssDefault.width: '12.5rem' } ]
   Stewardship;
 
-  @UI.lineItem: [ { position: 11 } ]
-  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 1 }]
+  @UI.lineItem: [ { position: 60 } ]
+  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 10 }]
   Validfrom;
 
-  @UI.lineItem: [ { position: 12 } ]
-  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 2 }]
+  @UI.lineItem: [ { position: 70 } ]
+  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 20 }]
   Validto;
 
-  @UI.lineItem: [ { position: 13 } ]
-  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 1 }]
+  @UI.lineItem: [ { position: 130 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 10 }]
   CreatedBy;
 
-  @UI.lineItem: [ { position: 14, cssDefault.width: '9.5rem' } ]
-  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 2 }]
+  @UI.lineItem: [ { position: 140, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 20 }]
   CreatedAt;
 
-  @UI.lineItem: [ { position: 15 } ]
-  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 3 }]
+  @UI.lineItem: [ { position: 150 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 30 }]
   LastChangedBy;
 
-  @UI.lineItem: [ { position: 16, cssDefault.width: '9.5rem' } ]
-  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 4 }]
+  @UI.lineItem: [ { position: 160, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 40 }]
   LastChangedAt;
 
   @UI.hidden: true

@@ -57,7 +57,7 @@ annotate view /ESRCC/C_CosCen with
   Costobject;
 
   @UI.identification: [ { position: 5 } ]
-  @UI.lineItem: [ { position: 5, cssDefault.width: '8.5rem' } ]
+  @UI.lineItem: [ { position: 5, cssDefault.width: '9.5rem' } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BILLINGFREQ', element: 'Billingfreq' } }]
   @UI.textArrangement: #TEXT_LAST
   Billfrequency;

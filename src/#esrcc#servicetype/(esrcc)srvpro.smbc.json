@@ -10,7 +10,7 @@
     "serviceVersion": "0001",
     "rootEntitySet": "ServiceProductAll",
     "name": "Maintain Service Product",
-    "configurationGroup": "",
+    "configurationGroup": "/ESRCC/BC_GROUP4",
     "skipRootEntity": true
   },
   "appConfiguration": {

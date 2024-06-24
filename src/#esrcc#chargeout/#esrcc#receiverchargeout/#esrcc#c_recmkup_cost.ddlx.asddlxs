@@ -63,7 +63,7 @@ annotate view /ESRCC/C_RECMKUP_COST with
   importance: #MEDIUM,
   label: ''
   } ]
-  @EndUserText.label: 'UoM'
+  @EndUserText.label: 'Unit of Measure'
   @UI.textArrangement: #TEXT_LAST
   UoM;  
   @UI.lineItem: [ {

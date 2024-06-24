@@ -10,7 +10,7 @@
     "serviceVersion": "0001",
     "rootEntitySet": "RoleAssignmentAll",
     "name": "Workflow: Approval Configuration",
-    "configurationGroup": "",
+    "configurationGroup": "/ESRCC/BC_GROUP7",
     "skipRootEntity": true
   },
   "appConfiguration": {

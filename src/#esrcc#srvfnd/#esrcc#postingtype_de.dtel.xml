@@ -23,10 +23,10 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Elementmerkmale</DDTEXT>
-     <REPTEXT>Elementmerkmale</REPTEXT>
-     <SCRTEXT_M>Elementmerkmale</SCRTEXT_M>
-     <SCRTEXT_L>Elementmerkmale</SCRTEXT_L>
+     <DDTEXT>Charakter</DDTEXT>
+     <REPTEXT>Charakter</REPTEXT>
+     <SCRTEXT_M>Charakter</SCRTEXT_M>
+     <SCRTEXT_L>Charakter</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

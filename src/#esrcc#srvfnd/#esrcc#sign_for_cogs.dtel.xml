@@ -10,10 +10,9 @@
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Sign for Expenses</DDTEXT>
-    <REPTEXT>Sign for Expenses</REPTEXT>
-    <SCRTEXT_M>Sign for Expenses</SCRTEXT_M>
-    <SCRTEXT_L>Sign for Expenses</SCRTEXT_L>
+    <DDTEXT>Sign for Expenses/Cost</DDTEXT>
+    <REPTEXT>Sign for Expenses/Cost</REPTEXT>
+    <SCRTEXT_L>Sign for Expenses/Cost</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <REFKIND>D</REFKIND>
     <NOHISTORY>X</NOHISTORY>
@@ -25,10 +24,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Vorzeichen für Aufwände</DDTEXT>
-     <REPTEXT>Vorzeichen für Aufwände</REPTEXT>
-     <SCRTEXT_M>Vorzeichen für Auf.</SCRTEXT_M>
-     <SCRTEXT_L>Vorzeichen für Aufwände</SCRTEXT_L>
+     <DDTEXT>Vorzeichen für Aufwand/Kosten</DDTEXT>
+     <REPTEXT>Vorzeichen für Aufwand/Kosten</REPTEXT>
+     <SCRTEXT_L>Vorzeichen für Aufwand/Kosten</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

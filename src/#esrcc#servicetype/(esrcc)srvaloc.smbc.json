@@ -10,7 +10,7 @@
     "serviceVersion": "0001",
     "rootEntitySet": "ServiceAllocatioAll",
     "name": "Service Product Charge-out Configuration",
-    "configurationGroup": "",
+    "configurationGroup": "/ESRCC/BC_GROUP6",
     "skipRootEntity": true
   },
   "appConfiguration": {

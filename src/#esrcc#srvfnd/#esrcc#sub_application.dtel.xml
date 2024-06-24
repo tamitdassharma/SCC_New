@@ -7,12 +7,10 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <DOMNAME>/ESRCC/SUB_APPLICATION</DOMNAME>
     <HEADLEN>55</HEADLEN>
-    <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
     <DDTEXT>Sub Application</DDTEXT>
     <REPTEXT>Sub Application</REPTEXT>
-    <SCRTEXT_S>Sub. App.</SCRTEXT_S>
     <SCRTEXT_M>Sub Application</SCRTEXT_M>
     <SCRTEXT_L>Sub Application</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
@@ -26,11 +24,10 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Unteranwendung</DDTEXT>
-     <REPTEXT>Unteranwendung</REPTEXT>
-     <SCRTEXT_S>Sub. Anw.</SCRTEXT_S>
-     <SCRTEXT_M>Unteranwendung</SCRTEXT_M>
-     <SCRTEXT_L>Unteranwendung</SCRTEXT_L>
+     <DDTEXT>Sub-Applikation</DDTEXT>
+     <REPTEXT>Sub-Applikation</REPTEXT>
+     <SCRTEXT_M>Sub-Applikation</SCRTEXT_M>
+     <SCRTEXT_L>Sub-Applikation</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

@@ -172,7 +172,7 @@ CLASS lhc_/esrcc/i_coscen_s IMPLEMENTATION.
 
   METHOD edit.
     DATA(lo_util) = /esrcc/cl_config_util=>create_for_authorization( ).
-    SELECT DISTINCT costobject FROM /esrcc/i_coscen INTO TABLE @DATA(cost_objects).
+    SELECT DISTINCT costobject FROM /esrcc/i_coscen INTO TABLE @DATA(cost_objects).     "#EC CI_NOWHERE
 
     LOOP AT cost_objects INTO DATA(cost_object).
       DATA(is_unauthorized) = lo_util->is_unauthorized(

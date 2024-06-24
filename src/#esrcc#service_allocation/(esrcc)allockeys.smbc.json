@@ -10,7 +10,7 @@
     "serviceVersion": "0001",
     "rootEntitySet": "AllocationKeyAll",
     "name": "Maintain Allocation Key for Indirect Charge",
-    "configurationGroup": "",
+    "configurationGroup": "/ESRCC/BC_GROUP6",
     "skipRootEntity": true
   },
   "appConfiguration": {

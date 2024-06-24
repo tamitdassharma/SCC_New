@@ -93,6 +93,7 @@
    <DD01_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Periode</DDTEXT>
     </item>
    </DD01_TEXTS>
    <DD07_TEXTS>
@@ -100,73 +101,73 @@
      <VALPOS>0001</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>001</DOMVALUE_L>
-     <DDTEXT>1</DDTEXT>
+     <DDTEXT>Jan</DDTEXT>
     </item>
     <item>
      <VALPOS>0002</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>002</DOMVALUE_L>
-     <DDTEXT>2</DDTEXT>
+     <DDTEXT>Feb</DDTEXT>
     </item>
     <item>
      <VALPOS>0003</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>003</DOMVALUE_L>
-     <DDTEXT>3</DDTEXT>
+     <DDTEXT>Mär</DDTEXT>
     </item>
     <item>
      <VALPOS>0004</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>004</DOMVALUE_L>
-     <DDTEXT>4</DDTEXT>
+     <DDTEXT>Apr</DDTEXT>
     </item>
     <item>
      <VALPOS>0005</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>005</DOMVALUE_L>
-     <DDTEXT>5</DDTEXT>
+     <DDTEXT>Mai</DDTEXT>
     </item>
     <item>
      <VALPOS>0006</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>006</DOMVALUE_L>
-     <DDTEXT>6</DDTEXT>
+     <DDTEXT>Jun</DDTEXT>
     </item>
     <item>
      <VALPOS>0007</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>007</DOMVALUE_L>
-     <DDTEXT>7</DDTEXT>
+     <DDTEXT>Jul</DDTEXT>
     </item>
     <item>
      <VALPOS>0008</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>008</DOMVALUE_L>
-     <DDTEXT>8</DDTEXT>
+     <DDTEXT>Aug</DDTEXT>
     </item>
     <item>
      <VALPOS>0009</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>009</DOMVALUE_L>
-     <DDTEXT>9</DDTEXT>
+     <DDTEXT>Sep</DDTEXT>
     </item>
     <item>
      <VALPOS>0010</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>010</DOMVALUE_L>
-     <DDTEXT>10</DDTEXT>
+     <DDTEXT>Okt</DDTEXT>
     </item>
     <item>
      <VALPOS>0011</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>011</DOMVALUE_L>
-     <DDTEXT>11</DDTEXT>
+     <DDTEXT>Nov</DDTEXT>
     </item>
     <item>
      <VALPOS>0012</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>012</DOMVALUE_L>
-     <DDTEXT>12</DDTEXT>
+     <DDTEXT>Dez</DDTEXT>
     </item>
    </DD07_TEXTS>
   </asx:values>

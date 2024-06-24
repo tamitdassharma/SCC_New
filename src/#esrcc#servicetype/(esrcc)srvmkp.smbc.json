@@ -10,7 +10,7 @@
     "serviceVersion": "0001",
     "rootEntitySet": "ServiceMarkupAll",
     "name": "Maintain Service Product Mark-ups",
-    "configurationGroup": "",
+    "configurationGroup": "/ESRCC/BC_GROUP5",
     "skipRootEntity": true
   },
   "appConfiguration": {

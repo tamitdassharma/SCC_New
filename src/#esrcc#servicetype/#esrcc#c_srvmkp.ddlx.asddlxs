@@ -47,19 +47,19 @@ annotate view /ESRCC/C_SrvMkp with
                                        useForValidation: true }]
   Serviceproduct;
 
-  @UI.lineItem: [ { position: 7 } ]
-  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 1 }]
-  Validfrom;
-
   @UI.identification: [ { position: 5 } ]
-  @UI.lineItem: [ { position: 5, cssDefault.width: '11rem' } ]
+  @UI.lineItem: [ { position: 5, cssDefault.width: '14.5rem' } ]
   Origcost;
 
   @UI.identification: [ { position: 6 } ]
-  @UI.lineItem: [ { position: 6, cssDefault.width: '15rem' } ]
+  @UI.lineItem: [ { position: 6, cssDefault.width: '16rem' } ]
   Passcost;
+  
+  @UI.lineItem: [ { position: 3 } ]
+  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 1 }]
+  Validfrom;
 
-  @UI.lineItem: [ { position: 8 } ]
+  @UI.lineItem: [ { position: 4 } ]
   @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 2 }]
   Validto;
 

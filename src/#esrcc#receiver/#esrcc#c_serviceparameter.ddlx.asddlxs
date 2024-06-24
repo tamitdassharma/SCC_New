@@ -1,8 +1,8 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Service Cost Share',
-    typeNamePlural: 'Service Cost Shares',
+    typeName: 'Service Product & Service Cost Share',
+    typeNamePlural: 'Service Products & Service Cost Share',
     title: {
       type: #STANDARD,
       value: 'Serviceproduct'
@@ -15,7 +15,7 @@ annotate entity /ESRCC/C_ServiceParameter with
   @UI.facet: [ {
      id: 'CE',
      type: #COLLECTION,
-     position: 1
+     position: 10
    },
    {
      id: '/ESRCC/I_ServiceProductRecei',
@@ -44,70 +44,70 @@ annotate entity /ESRCC/C_ServiceParameter with
      position: 30
    } ]
 
-  @UI.identification: [ { position: 1 } ]
-  @UI.lineItem: [ { position: 1, hidden: true } ]
+  @UI.identification: [ { position: 20 } ]
+  @UI.lineItem: [ { position: 20, hidden: true } ]
   @UI.textArrangement: #TEXT_LAST
   Legalentity;
 
-  @UI.identification: [ { position: 2 } ]
-  @UI.lineItem: [ { position: 2, hidden: true } ]
+  @UI.identification: [ { position: 10 } ]
+  @UI.lineItem: [ { position: 10, hidden: true } ]
   @UI.textArrangement: #TEXT_LAST
   Sysid;
 
-  @UI.identification: [ { position: 2 } ]
-  @UI.lineItem: [ { position: 2, hidden: true } ]
+  @UI.identification: [ { position: 30 } ]
+  @UI.lineItem: [ { position: 30, hidden: true } ]
   @UI.textArrangement: #TEXT_LAST
   Ccode;
 
-  @UI.identification: [ { position: 3 } ]
-  @UI.lineItem: [ { position: 3, cssDefault.width: '11.5rem', hidden: true } ]
+  @UI.identification: [ { position: 40 } ]
+  @UI.lineItem: [ { position: 40, cssDefault.width: '11.5rem', hidden: true } ]
   @UI.textArrangement: #TEXT_LAST
   Costobject;
 
-  @UI.identification: [ { position: 4 } ]
-  @UI.lineItem: [ { position: 4, hidden: true } ]
+  @UI.identification: [ { position: 50 } ]
+  @UI.lineItem: [ { position: 50, hidden: true } ]
   @UI.textArrangement: #TEXT_LAST
   Costcenter;
 
-  @UI.lineItem: [ { position: 5 } ]
+  @UI.lineItem: [ { position: 60 } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' }, useForValidation: true }]
   Serviceproduct;
 
-  @UI.lineItem: [ { position: 17 } ]
-  @UI.fieldGroup: [{ position: 1, qualifier: 'ValidityGroup' }]
+  @UI.lineItem: [ { position: 70 } ]
+  @UI.fieldGroup: [{ position: 10, qualifier: 'ValidityGroup' }]
   Validfrom;
 
-  @UI.lineItem: [ { position: 18 } ]
-  @UI.fieldGroup: [{ position: 2, qualifier: 'ValidityGroup' }]
+  @UI.lineItem: [ { position: 80 } ]
+  @UI.fieldGroup: [{ position: 20, qualifier: 'ValidityGroup' }]
   Validto;
 
-  @UI.identification: [ { position: 12 } ]
-  @UI.lineItem: [ { position: 12 } ]
+  @UI.identification: [ { position: 90 } ]
+  @UI.lineItem: [ { position: 90, cssDefault.width: '10rem' } ]
   Costshare;
 
-  @UI.identification: [ { position: 15 } ]
-  @UI.lineItem: [ { position: 15 } ]
+  @UI.identification: [ { position: 100 } ]
+  @UI.lineItem: [ { position: 100 } ]
   Erpsalesorder;
 
-  @UI.identification: [ { position: 16 } ]
-  @UI.lineItem: [ { position: 16 } ]
+  @UI.identification: [ { position: 110 } ]
+  @UI.lineItem: [ { position: 110 } ]
   Contractid;
 
-  @UI.lineItem: [ { position: 19 } ]
-  @UI.fieldGroup: [{ position: 1, qualifier: 'AdminGroup' }]
+  @UI.lineItem: [ { position: 120 } ]
+  @UI.fieldGroup: [{ position: 10, qualifier: 'AdminGroup' }]
   CreatedBy;
 
-  @UI.lineItem: [ { position: 20, cssDefault.width: '9.5rem' } ]
-  @UI.fieldGroup: [{ position: 2, qualifier: 'AdminGroup' }]
+  @UI.lineItem: [ { position: 130, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ position: 20, qualifier: 'AdminGroup' }]
   CreatedAt;
 
-  @UI.lineItem: [ { position: 21 } ]
-  @UI.fieldGroup: [{ position: 3, qualifier: 'AdminGroup' }]
+  @UI.lineItem: [ { position: 140 } ]
+  @UI.fieldGroup: [{ position: 30, qualifier: 'AdminGroup' }]
   LastChangedBy;
 
-  @UI.lineItem: [ { position: 22, cssDefault.width: '9.5rem' } ]
-  @UI.fieldGroup: [{ position: 4, qualifier: 'AdminGroup' }]
+  @UI.lineItem: [ { position: 150, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ position: 40, qualifier: 'AdminGroup' }]
   LastChangedAt;
 
   @UI.hidden: true

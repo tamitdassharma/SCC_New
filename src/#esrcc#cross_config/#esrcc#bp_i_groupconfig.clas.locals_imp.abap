@@ -85,6 +85,7 @@ CLASS lhc_/esrcc/i_groupconfig_s IMPLEMENTATION.
     result-%action-edit = is_authorized.
 *    result-%action-selectcustomizingtransptreq = is_authorized.
   ENDMETHOD.
+
 ENDCLASS.
 CLASS lsc_/esrcc/i_groupconfig_s DEFINITION INHERITING FROM cl_abap_behavior_saver.
   PROTECTED SECTION.

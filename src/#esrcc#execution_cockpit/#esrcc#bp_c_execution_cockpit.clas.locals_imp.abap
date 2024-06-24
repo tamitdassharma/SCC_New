@@ -179,7 +179,7 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
 * add a dummy receiver
         IF sy-subrc = 0.
 
-          ls_chargeout-receivingentity = 'DELTA'.
+          ls_chargeout-receivingentity = 'REST'.
           ls_chargeout-reckpishareabsl = ( <ls_chargeout>-srvcostsharel + <ls_chargeout>-valueaddmarkupabsl + <ls_chargeout>-passthrumarkupabsl ) - <ls_diragg>-totalchargeoutl.
           ls_chargeout-reckpishareabsg = ( <ls_chargeout>-srvcostshareg + <ls_chargeout>-valueaddmarkupabsg + <ls_chargeout>-passthrumarkupabsg ) - <ls_diragg>-totalchargeoutg.
           ls_chargeout-reckpi = <ls_chargeout>-planning - <ls_diragg>-totalreckpi.

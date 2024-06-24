@@ -7,8 +7,6 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <DOMNAME>/ESRCC/KEY_VERSION</DOMNAME>
     <HEADLEN>55</HEADLEN>
-    <SCRLEN1>10</SCRLEN1>
-    <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
     <DDTEXT>Base Value Version for Allocation Keys</DDTEXT>
     <REPTEXT>Base Value Version for Allocation Keys</REPTEXT>
@@ -25,7 +23,7 @@
      <DDLANGUAGE>D</DDLANGUAGE>
      <DDTEXT>Basiswertversion für Allokationsschlüssel</DDTEXT>
      <REPTEXT>Basiswertversion für Allokationsschlüssel</REPTEXT>
-     <SCRTEXT_L>Basiswertversion für Allokationsschlüsse</SCRTEXT_L>
+     <SCRTEXT_L>Basiswertversion f. Allokationsschlüssel</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

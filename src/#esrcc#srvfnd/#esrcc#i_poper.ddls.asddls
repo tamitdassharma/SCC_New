@@ -21,7 +21,7 @@ define view entity /ESRCC/I_POPER
   as select from DDCDS_CUSTOMER_DOMAIN_VALUE_T( p_domain_name: '/ESRCC/POPER')
 {
       @ObjectModel.text.element: ['text']
-      @UI.textArrangement: #TEXT_LAST
+      @UI.textArrangement: #TEXT_ONLY
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
   key value_low as Poper,
 

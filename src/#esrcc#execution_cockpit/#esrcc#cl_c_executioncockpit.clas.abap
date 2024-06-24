@@ -261,7 +261,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
 
 
 
-          SELECT * FROM  /esrcc/srvmkp FOR ALL ENTRIES IN @lt_service_share
+          SELECT serviceproduct FROM  /esrcc/srvmkp FOR ALL ENTRIES IN @lt_service_share
                                         WHERE serviceproduct = @lt_service_share-serviceproduct
                                          AND serviceproduct IS NOT INITIAL
                                          AND validfrom <= @_validon
@@ -289,7 +289,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
 
         IF lt_srv_alloc IS NOT INITIAL.
 
-          SELECT * FROM  /esrcc/alloc_wgt FOR ALL ENTRIES IN @lt_srv_alloc
+          SELECT serviceproduct FROM  /esrcc/alloc_wgt FOR ALL ENTRIES IN @lt_srv_alloc
                                           WHERE serviceproduct = @lt_srv_alloc-serviceproduct
                                            AND cost_version = @lt_srv_alloc-cost_version
                                            AND validfrom_alloc = @lt_srv_alloc-validfrom
@@ -310,7 +310,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
 
 
 
-          SELECT * FROM /esrcc/le FOR ALL ENTRIES IN @lt_service_share
+          SELECT legalentity, country  FROM /esrcc/le FOR ALL ENTRIES IN @lt_service_share
                                      WHERE legalentity = @lt_service_share-legalentity INTO TABLE @DATA(lt_legalentity).
 
         ENDIF.
@@ -476,7 +476,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
 
 *   Read service cost share & markup status
         IF lt_cc_cost IS NOT INITIAL.
-          SELECT  ryear,
+          SELECT  ryear, "#EC CI_NO_TRANSFORM
                   fplv,
                   sysid,
                   poper,
@@ -501,7 +501,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                  INTO TABLE @DATA(lt_srv_cost).
 
 *   Read receiver status
-          SELECT  ryear,
+          SELECT  ryear, "#EC CI_NO_TRANSFORM
                   fplv,
                   sysid,
                   poper,
@@ -794,8 +794,8 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                 <ls_result>-messagetypeservice = 'E'.
                 <ls_result>-stewardship_status = '00'.  "Not Possible
               ELSE.
-                READ TABLE lt_srv_markup ASSIGNING FIELD-SYMBOL(<ls_srv_markup>) WITH KEY serviceproduct = <ls_result>-serviceproduct
-                                                                                          BINARY SEARCH.
+*                READ TABLE lt_srv_markup ASSIGNING FIELD-SYMBOL(<ls_srv_markup>) WITH KEY serviceproduct = <ls_result>-serviceproduct BINARY SEARCH.
+                READ TABLE lt_srv_markup WITH KEY serviceproduct = <ls_result>-serviceproduct BINARY SEARCH TRANSPORTING NO FIELDS.
                 IF sy-subrc <> 0.
                   MESSAGE w001(/esrcc/execcockpit) INTO <ls_result>-messageservice.
                   <ls_result>-messagetypeservice = 'W'.
@@ -997,7 +997,8 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                 <ls_result>-messagetypechargeout = 'E'.
                 <ls_result>-chargeout_status = '00'.  "Not Possible
               ELSEIF <ls_srv_alloc>-chargeout = 'I'.
-                READ TABLE lt_srv_allocwght ASSIGNING FIELD-SYMBOL(<ls_srv_allocwght>) WITH KEY  serviceproduct = <ls_result>-serviceproduct.
+                READ TABLE lt_srv_allocwght WITH KEY  serviceproduct = <ls_result>-serviceproduct TRANSPORTING NO FIELDS.
+*                READ TABLE lt_srv_allocwght ASSIGNING FIELD-SYMBOL(<ls_srv_allocwght>) WITH KEY  serviceproduct = <ls_result>-serviceproduct.
 *                                                                                              BINARY SEARCH.
                 IF sy-subrc <> 0.
                   MESSAGE e003(/esrcc/execcockpit) INTO <ls_result>-messagechargeout.

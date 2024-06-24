@@ -10,7 +10,7 @@
     "serviceVersion": "0001",
     "rootEntitySet": "ExecutionStatusAll",
     "name": "Maintain Execution Cockpit Status",
-    "configurationGroup": "",
+    "configurationGroup": "/ESRCC/BC_GROUP8",
     "skipRootEntity": true
   },
   "appConfiguration": {

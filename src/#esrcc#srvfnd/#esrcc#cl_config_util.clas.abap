@@ -46,8 +46,8 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
       END OF ts_field_mapping_auth.
 
     TYPES:
-      tt_fields TYPE TABLE OF ts_field,
-      tt_path   TYPE TABLE OF ts_path.
+      tt_fields TYPE STANDARD TABLE OF ts_field,
+      tt_path   TYPE STANDARD TABLE OF ts_path.
 
     CLASS-METHODS
       create
@@ -141,7 +141,6 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
         delete                 TYPE abap_boolean
       RETURNING
         VALUE(is_unauthorized) TYPE abap_boolean.
-
   PRIVATE SECTION.
 
     CONSTANTS c_singletonid TYPE abp_field_name VALUE 'SINGLETONID' ##NO_TEXT.
@@ -504,7 +503,7 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
 
 
   METHOD check_auth_cost_object.
-    AUTHORITY-CHECK OBJECT '/ESRCC/CO'
+    AUTHORITY-CHECK OBJECT '/ESRCC/CO'      ##AUTH_FLD_MISSING
     ID '/ESRCC/OBJ' FIELD cost_object
     ID 'ACTVT'      FIELD activity.
     is_authorized = COND #( WHEN sy-subrc = 0 THEN abap_true ELSE abap_false ).

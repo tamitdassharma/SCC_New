@@ -7,9 +7,9 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <HEADLEN>55</HEADLEN>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Mark-up on Orig Cost (%)</DDTEXT>
-    <REPTEXT>Mark-up on Orig Cost (%)</REPTEXT>
-    <SCRTEXT_L>Mark-up on Orig Cost (%)</SCRTEXT_L>
+    <DDTEXT>Mark-up on Origin Cost (%)</DDTEXT>
+    <REPTEXT>Mark-up on Origin Cost (%)</REPTEXT>
+    <SCRTEXT_L>Mark-up on Origin Cost (%)</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>DEC</DATATYPE>
     <LENG>000005</LENG>
@@ -23,9 +23,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Aufschlag auf Origin.Kosten (%)</DDTEXT>
-     <REPTEXT>Aufschlag auf Origin.Kosten (%)</REPTEXT>
-     <SCRTEXT_L>Aufschlag auf Origin.Kosten (%)</SCRTEXT_L>
+     <DDTEXT>Aufschlag auf originäre Kosten (%)</DDTEXT>
+     <REPTEXT>Aufschlag auf originäre Kosten (%)</REPTEXT>
+     <SCRTEXT_L>Aufschlag auf originäre Kosten (%)</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>
