@@ -134,7 +134,8 @@ as projection on /ESRCC/I_CHG_ANALYTICS
     Totalchargeoutamountg,
     @ObjectModel.text.element: [ 'statusdescription' ]
     status,
-    
+    @ObjectModel.text.element: [ 'oecdDescription' ]
+    OECD,
     @ObjectModel.filter.enabled: false
     Localcurr,
     @ObjectModel.filter.enabled: false
@@ -163,6 +164,8 @@ as projection on /ESRCC/I_CHG_ANALYTICS
     costdatasetdescription,
     @Semantics.text: true
     statusdescription,
+    @Semantics.text: true
+    oecdDescription,
     @ObjectModel.filter.enabled: false
     legalentitycountry,
     @ObjectModel.filter.enabled: false

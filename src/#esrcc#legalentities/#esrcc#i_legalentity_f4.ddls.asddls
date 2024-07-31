@@ -20,6 +20,8 @@ define view entity /ESRCC/I_LEGALENTITY_F4
       RegionDesc,
       RoleDesc,
       EntitytypeDesc,
+      CountryName,
+      CurrencyName,
 
       _CountryText,
       _CurrencyText

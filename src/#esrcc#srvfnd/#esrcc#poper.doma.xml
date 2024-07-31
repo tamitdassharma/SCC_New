@@ -101,73 +101,73 @@
      <VALPOS>0001</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>001</DOMVALUE_L>
-     <DDTEXT>Jan</DDTEXT>
+     <DDTEXT>1</DDTEXT>
     </item>
     <item>
      <VALPOS>0002</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>002</DOMVALUE_L>
-     <DDTEXT>Feb</DDTEXT>
+     <DDTEXT>2</DDTEXT>
     </item>
     <item>
      <VALPOS>0003</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>003</DOMVALUE_L>
-     <DDTEXT>Mär</DDTEXT>
+     <DDTEXT>3</DDTEXT>
     </item>
     <item>
      <VALPOS>0004</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>004</DOMVALUE_L>
-     <DDTEXT>Apr</DDTEXT>
+     <DDTEXT>4</DDTEXT>
     </item>
     <item>
      <VALPOS>0005</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>005</DOMVALUE_L>
-     <DDTEXT>Mai</DDTEXT>
+     <DDTEXT>5</DDTEXT>
     </item>
     <item>
      <VALPOS>0006</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>006</DOMVALUE_L>
-     <DDTEXT>Jun</DDTEXT>
+     <DDTEXT>6</DDTEXT>
     </item>
     <item>
      <VALPOS>0007</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>007</DOMVALUE_L>
-     <DDTEXT>Jul</DDTEXT>
+     <DDTEXT>7</DDTEXT>
     </item>
     <item>
      <VALPOS>0008</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>008</DOMVALUE_L>
-     <DDTEXT>Aug</DDTEXT>
+     <DDTEXT>8</DDTEXT>
     </item>
     <item>
      <VALPOS>0009</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>009</DOMVALUE_L>
-     <DDTEXT>Sep</DDTEXT>
+     <DDTEXT>9</DDTEXT>
     </item>
     <item>
      <VALPOS>0010</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>010</DOMVALUE_L>
-     <DDTEXT>Okt</DDTEXT>
+     <DDTEXT>10</DDTEXT>
     </item>
     <item>
      <VALPOS>0011</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>011</DOMVALUE_L>
-     <DDTEXT>Nov</DDTEXT>
+     <DDTEXT>11</DDTEXT>
     </item>
     <item>
      <VALPOS>0012</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>012</DOMVALUE_L>
-     <DDTEXT>Dez</DDTEXT>
+     <DDTEXT>12</DDTEXT>
     </item>
    </DD07_TEXTS>
   </asx:values>

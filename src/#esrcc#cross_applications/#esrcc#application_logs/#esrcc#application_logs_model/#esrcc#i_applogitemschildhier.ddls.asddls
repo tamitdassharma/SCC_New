@@ -22,14 +22,14 @@ define view entity /ESRCC/I_AppLogItemsChildHier
       case message_type
         when 'I' then 'Information'
         when 'E' then 'Error'
-        when 'w' then 'Warning'
+        when 'W' then 'Warning'
         when 'S' then 'Success'
         else 'None'
       end                            as MessageType,
       case message_type
         when 'I' then 5
         when 'E' then 1
-        when 'w' then 2
+        when 'W' then 2
         when 'S' then 3
         else 0
       end                            as MessageTypeCriticality,

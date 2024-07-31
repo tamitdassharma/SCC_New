@@ -46,8 +46,10 @@ define root view entity /ESRCC/C_REC_INDKPISHARE
       reckpishare,
 //      hideaverage,
 //      hidecumulative,
-      //    Description,country & regions
-      //   Descriptions, Country & regions
+      @ObjectModel.text.element: [ 'oecdDescription' ]
+      _serviceproduct.OECD,
+      @Semantics.text: true
+      _serviceproduct.oecdDescription,
       @Semantics.text: true
       _legalentity.Description     as legalentitydescription,
       @Semantics.text: true

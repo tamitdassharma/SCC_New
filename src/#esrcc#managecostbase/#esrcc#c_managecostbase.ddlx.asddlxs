@@ -355,6 +355,18 @@ annotate view /ESRCC/C_MANAGECOSTBASE with
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_USAGECALCULATION', element: 'usagecal' }}]
   @UI.dataPoint: { qualifier: 'usage', title: 'Usage in Calculation', criticality: 'usagecriticallity', criticalityRepresentation: #WITH_ICON }
   Usagecal;
+  
+  @UI.lineItem: [ {
+    position: 146 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.textArrangement: #TEXT_ONLY
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_REASON_F4', element: 'Reasonid' },
+                                       additionalBinding: [{ element: 'calculationusage', localElement: 'Usagecal' }],
+                                       useForValidation: true }]
+//  @UI.dataPoint: { qualifier: 'usage', title: 'Usage in Calculation', criticality: 'usagecriticallity', criticalityRepresentation: #WITH_ICON }
+  ReasonId;
 
   @UI.lineItem: [ {
     position: 110 ,

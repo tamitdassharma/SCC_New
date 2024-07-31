@@ -66,6 +66,8 @@ define root view entity /ESRCC/I_REC_INDKPISHARE
       cast(round(reckpishare * 100,2) as abap.dec(15,3)) as reckpishare,
       _legalentity.Country as legalentitycountry,
       _receivingentity.Country as receivingcountry,
+      _serviceproduct.OECD,
+      _serviceproduct.oecdDescription,
 //      cast(case alloctype
 //      when 'A' then /*avergae*/
 //      'X'

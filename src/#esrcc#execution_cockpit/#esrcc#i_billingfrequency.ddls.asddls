@@ -6,9 +6,9 @@ define view entity /ESRCC/I_BillingFrequency
   association to /ESRCC/I_BILLINGFREQ               as _BillingFrq          on $projection.Billingfreq = _BillingFrq.Billingfreq
   association to /ESRCC/I_BILLINGPERIOD             as _BillingPeriodText   on $projection.Billingvalue = _BillingPeriodText.Billingperiod
 {
-      @ObjectModel.text.association: '_BillingFrq'
+//      @ObjectModel.text.association: '_BillingFrq'
   key billingfreq           as Billingfreq,
-      @ObjectModel.text.association: '_BillingPeriodText'
+//      @ObjectModel.text.association: '_BillingPeriodText'
   key billingvalue          as Billingvalue,
   key poper                 as Poper,
       @Semantics.user.createdBy: true

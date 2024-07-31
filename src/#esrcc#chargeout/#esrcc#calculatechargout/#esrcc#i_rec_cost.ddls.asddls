@@ -38,6 +38,9 @@ define view entity /ESRCC/I_REC_COST
   association [0..1] to /ESRCC/I_KEY_VERSION as _KeyVersion
   on _KeyVersion.KeyVersion = $projection.KeyVersion
   
+  association [0..1] to /ESRCC/I_INVOICESTATUS      as _InvoiceStatus    
+  on  _InvoiceStatus.InvoiceStatus = $projection.InvoiceStatus
+  
 {
   key Fplv                  as Fplv,
   key Ryear                 as Ryear,
@@ -109,7 +112,9 @@ define view entity /ESRCC/I_REC_COST
        else
        0
       end                   as statuscriticallity,
-
+      InvoiceNumber,
+      InvoiceStatus,
+      _InvoiceStatus.text as invoicestatusdescription,
       CreatedBy,
       CreatedAt,
       LastChangedAt,

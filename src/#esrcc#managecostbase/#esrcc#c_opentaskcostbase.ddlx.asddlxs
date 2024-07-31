@@ -318,6 +318,16 @@ annotate view /ESRCC/C_OPENTASKCOSTBASE with
   @UI.textArrangement: #TEXT_ONLY
   @UI.dataPoint: { qualifier: 'usage', title: 'Usage in Calculation', criticality: 'usagecriticallity', criticalityRepresentation: #WITH_ICON }
   Usagecal;
+  
+  @UI.lineItem: [ {
+    position: 211 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.textArrangement: #TEXT_ONLY
+//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_REASON_F4', element: 'Reasonid' }}]
+//  @UI.dataPoint: { qualifier: 'usage', title: 'Usage in Calculation', criticality: 'usagecriticallity', criticalityRepresentation: #WITH_ICON }
+  ReasonId;
 
   @UI.lineItem: [ {
     position: 230 ,

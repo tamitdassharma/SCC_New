@@ -7,9 +7,9 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <HEADLEN>55</HEADLEN>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Group 3: Cost Accouting Configurations</DDTEXT>
-    <REPTEXT>Group 3: Cost Accouting Configurations</REPTEXT>
-    <SCRTEXT_L>Group 3: Cost Accouting Configurations</SCRTEXT_L>
+    <DDTEXT>Group 3: Cost Accounting Configurations</DDTEXT>
+    <REPTEXT>Group 3: Cost Accounting Configurations</REPTEXT>
+    <SCRTEXT_L>Group 3: Cost Accounting Configurations</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>CHAR</DATATYPE>
     <LENG>000001</LENG>

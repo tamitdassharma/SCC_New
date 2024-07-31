@@ -46,14 +46,14 @@ CLASS LHC_/ESRCC/I_LECCODE_S IMPLEMENTATION.
         text_tky-Spras = sy-langu.
         IF line_exists( link[ KEY draft source-%TKY  = CORRESPONDING #( update-%TKY )
                                         target-%TKY  = CORRESPONDING #( text_tky ) ] ).
-          APPEND VALUE #( %TKY = text_tky
+          APPEND VALUE #( %TKY = CORRESPONDING #( text_tky )
                           %CID_REF = update-%CID_REF
                           Description = update-Description
                           %CONTROL = VALUE #( Description = update-%CONTROL-Description )
           ) TO text_update.
         ELSEIF line_exists(  text_for_new_entity[ KEY cid %IS_DRAFT = update-%IS_DRAFT
                                                           %CID_REF  = update-%CID_REF ] ).
-          APPEND VALUE #( %TKY = text_tky
+          APPEND VALUE #( %TKY = CORRESPONDING #( text_tky )
                           %CID_REF = text_for_new_entity[ %IS_DRAFT = update-%IS_DRAFT
                           %CID_REF = update-%CID_REF ]-%TARGET[ 1 ]-%CID
                           Description = update-Description

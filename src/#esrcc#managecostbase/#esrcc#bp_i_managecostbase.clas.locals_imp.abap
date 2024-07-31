@@ -102,12 +102,13 @@ CLASS lhc_managecostbase IMPLEMENTATION.
 
     MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
         ENTITY managecostbase
-         UPDATE FIELDS ( oldusagecal usagecal status )
+         UPDATE FIELDS ( oldusagecal usagecal status ReasonId )
               WITH VALUE #( FOR costbase IN costbases WHERE ( status <> 'F' AND status <> 'W' )
                               (
                                  %key = costbase-%key
                                  oldusagecal = costbase-usagecal
                                  usagecal = ls_param-usagecal
+                                 ReasonId = ls_param-reasonid
                                  status = 'D'
                                ) )
                               FAILED   FINAL(fail_mod)

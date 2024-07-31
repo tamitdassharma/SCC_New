@@ -4,8 +4,8 @@
 define root custom entity /ESRCC/C_EXECUTION_COCKPIT
 {
       @UI.lineItem           : [
-                     { type: #FOR_ACTION, dataAction: 'performcostbase', label: 'Perform Cost Base & Stewardship', position: 35, invocationGrouping: #CHANGE_SET},
-                     { type: #FOR_ACTION, dataAction: 'performchargeout', label: 'Perform Charge-Out', position: 40, invocationGrouping: #CHANGE_SET},
+                     { type  : #FOR_ACTION, dataAction: 'performcostbase', label: 'Perform Cost Base & Stewardship', position: 35, invocationGrouping: #CHANGE_SET},
+                     { type  : #FOR_ACTION, dataAction: 'performchargeout', label: 'Perform Charge-Out', position: 40, invocationGrouping: #CHANGE_SET},
                      { type  : #FOR_ACTION, dataAction: 'performstewardship', label: 'Perform Service Cost Share & Markup', position: 20, invocationGrouping: #CHANGE_SET},
                      { type  : #FOR_ACTION, dataAction: 'Finalizecostbase', label: 'Finalize Cost Base', position: 10, invocationGrouping: #CHANGE_SET},
                      { type  : #FOR_ACTION, dataAction: 'Finalizestewardship', label: 'Finalize Stewardship & Cost Share', position: 30, invocationGrouping: #CHANGE_SET},
@@ -20,8 +20,8 @@ define root custom entity /ESRCC/C_EXECUTION_COCKPIT
       @Consumption.filter.mandatory: true
       @UI.textArrangement    : #TEXT_ONLY
   key fplv                   : /esrcc/costdataset_de;
-      
-      @UI.hidden: true
+
+      @UI.hidden             : true
   key sysid                  : /esrcc/sysid;
 
       @UI.lineItem           : [{ position: 11, hidden: true }]
@@ -32,7 +32,7 @@ define root custom entity /ESRCC/C_EXECUTION_COCKPIT
   key ryear                  : /esrcc/ryear;
 
       @UI.lineItem           : [{ position: 10 }]
-      @UI.hidden: true
+      @UI.hidden             : true
   key nodeid                 : abap.char(100);
 
       @UI.lineItem           : [{ position: 40, hidden: true }]
@@ -66,9 +66,12 @@ define root custom entity /ESRCC/C_EXECUTION_COCKPIT
       @UI.textArrangement    : #TEXT_LAST
   key Costcenter             : /esrcc/costcenter;
 
+
+
       @UI.lineItem           : [{ position: 60, hidden: true  }]
       @UI.selectionField     : [{ position: 60 }]
-      @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' }}]
+      @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
+                                          additionalBinding: [{ element: 'OECD', localElement: 'oecd' }] }]
       @ObjectModel.text.element: [ 'serviceproductdescr' ]
       @UI.textArrangement    : #TEXT_LAST
   key ServiceProduct         : /esrcc/srvproduct;
@@ -86,16 +89,21 @@ define root custom entity /ESRCC/C_EXECUTION_COCKPIT
       @UI.selectionField     : [{ position: 90 }]
       @Consumption.filter.mandatory: true
       @UI.textArrangement    : #TEXT_LAST
-      @EndUserText.label: 'Billing Period'
-  key Billingperiod          : /esrcc/billperiod; 
+      @EndUserText.label     : 'Billing Period'
+  key Billingperiod          : /esrcc/billperiod;
+
+      @UI.lineItem           : [{ position: 50, hidden: true  }]
+      @UI.selectionField     : [{ position: 55 }]
+      @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_OECD', element: 'OECD' }}]
+      @UI.textArrangement    : #TEXT_LAST
+      oecd                   : /esrcc/oecdtpg_de;
 
       @UI.lineItem           : [{ position: 70, criticality: 'costbasecriticallity', criticalityRepresentation: #WITHOUT_ICON }]
-
       @EndUserText.label     : 'Cost Base & Stewardship'
       @ObjectModel.text.element: [ 'costbasestatusdescr' ]
       @UI.textArrangement    : #TEXT_ONLY
       @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_EXECSTATUS', element: 'Status' } }]
-      @UI.hidden: true
+      @UI.hidden             : true
       Costbase_status        : /esrcc/process_status_de;
 
       @UI.lineItem           : [{ position: 80, criticality: 'stewardshipcriticality', criticalityRepresentation: #WITHOUT_ICON  }]
@@ -104,7 +112,7 @@ define root custom entity /ESRCC/C_EXECUTION_COCKPIT
       @ObjectModel.text.element: [ 'stewardshipstatusdescr' ]
       @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_EXECSTATUS', element: 'Status' } }]
       @UI.textArrangement    : #TEXT_ONLY
-      @UI.hidden: true
+      @UI.hidden             : true
       Stewardship_status     : /esrcc/process_status_de;
 
       @UI.lineItem           : [{ position: 90, criticality: 'chargeoutcriticality', criticalityRepresentation: #WITHOUT_ICON  }]
@@ -112,65 +120,65 @@ define root custom entity /ESRCC/C_EXECUTION_COCKPIT
       @ObjectModel.text.element: [ 'chargeoutstatusdescr' ]
       @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_EXECSTATUS', element: 'Status' } }]
       @UI.textArrangement    : #TEXT_ONLY
-      @UI.hidden: true
+      @UI.hidden             : true
       Chargeout_status       : /esrcc/process_status_de;
 
       @UI.lineItem           : [{ position: 100, hidden: true }]
       @EndUserText.label     : 'year end adjustment'
-      @UI.hidden: true
+      @UI.hidden             : true
       ye_status              : /esrcc/process_status_de;
 
-      @UI.hidden: true
+      @UI.hidden             : true
       legalentitydescription : /esrcc/description;
-      @UI.hidden: true
+      @UI.hidden             : true
       ccodedescription       : /esrcc/description;
-      @UI.hidden: true
+      @UI.hidden             : true
       costobjectdescription  : /esrcc/description;
-      @UI.hidden: true
+      @UI.hidden             : true
       costcenterdescription  : /esrcc/description;
-      @UI.hidden: true
+      @UI.hidden             : true
       serviceproductdescr    : /esrcc/description;
-      @UI.hidden: true
+      @UI.hidden             : true
       costbasestatusdescr    : /esrcc/status_description;
-      @UI.hidden: true
+      @UI.hidden             : true
       stewardshipstatusdescr : /esrcc/status_description;
-      @UI.hidden: true
+      @UI.hidden             : true
       chargeoutstatusdescr   : /esrcc/status_description;
-      @UI.hidden: true
+      @UI.hidden             : true
       legalcountry           : land1;
-      @UI.hidden: true
+      @UI.hidden             : true
       costbasecriticallity   : abap.char(1);
-      @UI.hidden: true
+      @UI.hidden             : true
       stewardshipcriticality : abap.char(1);
-      @UI.hidden: true
+      @UI.hidden             : true
       chargeoutcriticality   : abap.char(1);
-      @UI.hidden: true
+      @UI.hidden             : true
       parentnodeid           : abap.char(100);
-      @UI.hidden: true
+      @UI.hidden             : true
       HierarchyLevel         : abap.numc(1);
-      @UI.hidden: true
+      @UI.hidden             : true
       Drillstate             : abap.char(20);
-      @UI.hidden: true
+      @UI.hidden             : true
       description            : abap.char(256);
-      @UI.hidden: true
-      selectionallowed : abap_boolean;
+      @UI.hidden             : true
+      selectionallowed       : abap_boolean;
       @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_EXECUTIONACTIONS', element: 'Action' }}]
       @Consumption.filter.hidden: true
       @UI.textArrangement    : #TEXT_ONLY
       @UI.selectionField     : [{ position: 70 }]
       @Consumption.filter.selectionType: #SINGLE
-      action : /esrcc/actions;
-      @UI.hidden: true
-      messagecostbase : abap.char( 225 );
-      @UI.hidden: true
-      messageservice  : abap.char( 225 );
-      @UI.hidden: true
-      messagechargeout : abap.char( 225 );
-      @UI.hidden: true
-      messagetypecostbase : abap.char( 1 );
-      @UI.hidden: true
-      messagetypeservice  : abap.char( 1 );
-      @UI.hidden: true
-      messagetypechargeout : abap.char( 1 );    
+      action                 : /esrcc/actions;
+      @UI.hidden             : true
+      messagecostbase        : abap.char( 225 );
+      @UI.hidden             : true
+      messageservice         : abap.char( 225 );
+      @UI.hidden             : true
+      messagechargeout       : abap.char( 225 );
+      @UI.hidden             : true
+      messagetypecostbase    : abap.char( 1 );
+      @UI.hidden             : true
+      messagetypeservice     : abap.char( 1 );
+      @UI.hidden             : true
+      messagetypechargeout   : abap.char( 1 );
 
 }

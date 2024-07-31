@@ -62,6 +62,8 @@ define root view entity /ESRCC/I_RECEIVER_COST
   
   association [0..1] to /ESRCC/I_CURR as _CurrencyTypeText
   on _CurrencyTypeText.Currencytype = $projection.Currencytype
+  
+  
 
 {
     key receivercost.Fplv,
@@ -165,6 +167,9 @@ define root view entity /ESRCC/I_RECEIVER_COST
     cast( case when Chargeout = 'I' then
     'X'
     else '' end as abap_boolean preserving type ) as hidedirect,
+    _serviceproduct.OECD,
+    @Semantics.text: true
+    _serviceproduct.oecdDescription,
     //association
     _legalentity.Country as LECountry,
     _ccode,

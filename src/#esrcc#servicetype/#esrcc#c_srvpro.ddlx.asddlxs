@@ -20,6 +20,13 @@ annotate view /ESRCC/C_SrvPro with
   },
   {
    parentId: '/ESRCC/I_SrvPro',
+   type: #IDENTIFICATION_REFERENCE,
+   purpose: #STANDARD,
+   label: 'General Information',
+   position: 10
+  },
+  {
+   parentId: '/ESRCC/I_SrvPro',
    type: #FIELDGROUP_REFERENCE,
    purpose: #STANDARD,
    label: 'Admin Information',
@@ -36,6 +43,12 @@ annotate view /ESRCC/C_SrvPro with
 
   @UI.lineItem: [ { position: 2 } ]
   Serviceproduct;
+  
+  @UI.identification: [ { position: 1 } ]
+  @UI.lineItem: [ { position: 4, cssDefault.width: '15rem' } ]
+  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_OECD', element: 'OECD' } } ]
+  @UI.textArrangement: #TEXT_LAST
+  OecdTpg;
 
   @UI.lineItem: [ { position: 3 } ]
   Description;

@@ -3,9 +3,11 @@
 define view entity /ESRCC/I_SrvPro
   as select from /esrcc/srvpro
   association        to parent /ESRCC/I_SrvPro_S       as _ServiceProductAll on  $projection.SingletonID = _ServiceProductAll.SingletonID
+  association        [0..1] to /ESRCC/I_OECD       as _OECD on  $projection.OecdTpg = _OECD.OECD
   composition [0..*] of /ESRCC/I_SrvProText            as _ServiceProductText
 {
   key serviceproduct        as Serviceproduct,
+      oecdtpg               as OecdTpg,
       @Semantics.user.createdBy: true
       created_by            as CreatedBy,
       @Semantics.systemDateTime.createdAt: true
@@ -18,5 +20,6 @@ define view entity /ESRCC/I_SrvPro
       local_last_changed_at as LocalLastChangedAt,
       1                     as SingletonID,
       _ServiceProductAll,
-      _ServiceProductText
+      _ServiceProductText,
+      _OECD
 }

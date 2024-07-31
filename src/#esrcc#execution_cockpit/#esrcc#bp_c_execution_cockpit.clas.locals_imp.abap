@@ -117,6 +117,7 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
 
     LOOP AT lt_rec_cost ASSIGNING FIELD-SYMBOL(<ls_rec_cost>).
       <ls_rec_cost>-status = 'F'.
+      <ls_rec_cost>-invoicestatus = '01'.
 
 * Admin data
       <ls_rec_cost>-last_changed_by = sy-uname.
@@ -474,6 +475,8 @@ CLASS lhc_c_execution_cockpit IMPLEMENTATION.
       ELSE.
         <ls_rec_cost>-status = 'A'.   "Approved
       ENDIF.
+
+      <ls_rec_cost>-billingperiod = <key>-billingperiod.
 
 * Admin data
       <ls_rec_cost>-created_by = sy-uname.

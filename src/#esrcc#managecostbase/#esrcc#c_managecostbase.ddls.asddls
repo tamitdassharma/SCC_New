@@ -48,6 +48,8 @@ define root view entity /ESRCC/C_MANAGECOSTBASE
   Costind,
   @ObjectModel.text.element: [ 'usagecaldescription' ]
   Usagecal,
+  @ObjectModel.text.element: [ 'reasondescription' ]
+  ReasonId,
   @ObjectModel.text.element: [ 'statusdescription' ]
   Status,
   WorkflowId,
@@ -83,6 +85,8 @@ define root view entity /ESRCC/C_MANAGECOSTBASE
   costdatasetdescription,
   @Semantics.text: true
   usagecaldescription,
+  @Semantics.text: true
+  reasondescription,  
   @Semantics.text: true
   statusdescription,
   @Semantics.text: true

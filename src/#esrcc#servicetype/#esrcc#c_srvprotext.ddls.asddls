@@ -14,6 +14,8 @@ define view entity /ESRCC/C_SrvProText
   key Spras,
   key Serviceproduct,
   Description,
+  Activities,
+  Benefit,
   @Consumption.hidden: true
   LocalLastChangedAt,
   @Consumption.hidden: true

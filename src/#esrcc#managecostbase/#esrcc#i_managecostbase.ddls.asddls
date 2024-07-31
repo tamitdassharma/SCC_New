@@ -49,6 +49,9 @@ define root view entity /ESRCC/I_MANAGECOSTBASE
   association [0..1] to /ESRCC/I_PROFITCENTER_F4 as _profitcenter
   on _profitcenter.ProfitCenter = ManageCostBase.profitcenter
   
+  association [0..1] to /ESRCC/I_REASON_F4 as _reason
+  on _reason.Reasonid = ManageCostBase.reasonid
+  
   association [0..1] to I_CountryText as _legalCountryText
   on _legalCountryText.Country = $projection.country
   and _legalCountryText.Language = $session.system_language  
@@ -77,6 +80,7 @@ define root view entity /ESRCC/I_MANAGECOSTBASE
   ManageCostBase.postingtype as Postingtype,
   ManageCostBase.costind as Costind,
   ManageCostBase.usagecal as Usagecal,
+  ManageCostBase.reasonid as ReasonId,
 //  ManageCostBase.costdataset as Costdataset,
   ManageCostBase.status as Status, 
   ManageCostBase.workflowid as WorkflowId,
@@ -104,6 +108,7 @@ define root view entity /ESRCC/I_MANAGECOSTBASE
   postingtype.text as postingtypedescription,
   costdataset.text as costdatasetdescription,
   usagecal.text as usagecaldescription,
+  _reason.reasondescription,
   status.text as statusdescription,
   legalentity.Country,
   _businessdiv.Description as businessdivdescription,

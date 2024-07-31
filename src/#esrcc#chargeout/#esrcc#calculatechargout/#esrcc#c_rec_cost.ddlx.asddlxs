@@ -126,6 +126,27 @@ annotate view /ESRCC/C_REC_COST with
   } ]
   Workflowid;
   @UI.lineItem: [ {
+  position: 100 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 100 ,
+    label: ''
+  } ]
+  InvoiceNumber;
+  @UI.lineItem: [ {
+  position: 110 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.identification: [ {
+    position: 110 ,
+    label: ''
+  } ]
+  @UI.textArrangement: #TEXT_ONLY
+  InvoiceStatus;
+  @UI.lineItem: [ {
     position: 250 ,
     importance: #MEDIUM,
     label: ''
@@ -207,5 +228,7 @@ annotate view /ESRCC/C_REC_COST with
   Currencytype;
   @UI.hidden: true
   keyversiontext;
+  @UI.hidden: true
+  invoicestatusdescription;
 
 }

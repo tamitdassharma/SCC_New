@@ -4,7 +4,7 @@ strict ( 1 );
 define behavior for /ESRCC/C_MANAGECOSTBASE alias managecostbase
 {
 
-  use update;
+//  use update;
 
   use action changevalueadd;
   use action changeitems;

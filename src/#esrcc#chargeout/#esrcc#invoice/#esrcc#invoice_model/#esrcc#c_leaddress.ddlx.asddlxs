@@ -1,0 +1,108 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Legal Entity Address',
+    typeNamePlural: 'Legal Entity Address',
+    title: {
+      type: #STANDARD,
+      label: 'Legal Entity Address',
+      value: 'LegalEntity'
+    }
+  }
+}
+annotate view /ESRCC/C_LeAddress with
+{
+  @UI.facet: [ {
+    id: 'CE',
+    type: #COLLECTION,
+    purpose: #STANDARD,
+    position: 1
+  },
+  {
+    id: '/ESRCC/I_LeAddress',
+    purpose: #STANDARD,
+    type: #IDENTIFICATION_REFERENCE,
+    parentId: 'CE',
+    label: 'General Information',
+    position: 1
+  },
+  {
+    id: 'Admin',
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'CE',
+    targetQualifier: 'AdminGroup',
+    label: 'Admin Information',
+    position: 2
+  } ]
+
+  @UI.identification: [ { position: 1, hidden: true } ]
+  @UI.lineItem: [ { position: 1 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LegalEntityAll_F4', element: 'Legalentity' },
+                                       useForValidation: true }]
+  LegalEntity;
+
+  @UI.identification: [ { position: 2 } ]
+  @UI.lineItem: [ { position: 2 } ]
+  @EndUserText.label: 'Customer Number'
+  CustomerNumber;
+
+  @UI.identification: [ { position: 3 } ]
+  @UI.lineItem: [ { position: 3 } ]
+  @EndUserText.label: 'Contact Person'
+  ContactPerson;
+
+  @UI.identification: [ { position: 4 } ]
+  @UI.lineItem: [ { position: 4 } ]
+  @EndUserText.label: 'Street 1'
+  Street1;
+
+  @UI.identification: [ { position: 5 } ]
+  @UI.lineItem: [ { position: 5 } ]
+  @EndUserText.label: 'Street 2'
+  Street2;
+
+  @UI.identification: [ { position: 6 } ]
+  @UI.lineItem: [ { position: 6 } ]
+  @EndUserText.label: 'City'
+  City;
+
+  @UI.identification: [ { position: 7 } ]
+  @UI.lineItem: [ { position: 7 } ]
+  @EndUserText.label: 'Zip'
+  Zip;
+
+  @UI.identification: [ { position: 8 } ]
+  @UI.lineItem: [ { position: 8 } ]
+  @EndUserText.label: 'Federal State'
+  State;
+
+  @UI.identification: [ { position: 9 } ]
+  @UI.lineItem: [ { position: 9 } ]
+  @EndUserText.label: 'Country'
+  Country;
+
+  @UI.identification: [ { position: 10 } ]
+  @UI.lineItem: [ { position: 10 } ]
+  @EndUserText.label: 'Telephone'
+  Telephone;
+
+  @UI.lineItem: [ { position: 11 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 1 }]
+  CreatedBy;
+
+  @UI.lineItem: [ { position: 12, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 2 }]
+  CreatedAt;
+
+  @UI.lineItem: [ { position: 13 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 3 }]
+  LastChangedBy;
+
+  @UI.lineItem: [ { position: 14, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 4 }]
+  LastChangedAt;
+  
+  @UI.hidden: true
+  LegalEntityDescription;
+}

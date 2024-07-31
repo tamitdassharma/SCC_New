@@ -38,6 +38,10 @@ define view entity /ESRCC/C_REC_COST
       statusdescription,
       @ObjectModel.text.element: [ 'receivingcountryname' ]
       Country,
+      InvoiceNumber,
+      @ObjectModel.text.element: [ 'invoicestatusdescription' ]
+      InvoiceStatus,
+      invoicestatusdescription,
       CreatedBy,
       CreatedAt,
       LastChangedAt,

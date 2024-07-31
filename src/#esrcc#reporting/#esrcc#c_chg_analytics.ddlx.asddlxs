@@ -88,8 +88,19 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' }}]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_OECD', element: 'OECD' }}]
   @UI.selectionField: [{ position: 61 }]
+  @UI.textArrangement: #TEXT_LAST
+  OECD;
+  @UI.lineItem: [ {
+  position: 280 ,
+  importance: #MEDIUM,
+  label: '',
+  cssDefault:{width: '10rem'}
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
+                                       additionalBinding: [{ element: 'OECD', localElement: 'OECD' }]}]
+  @UI.selectionField: [{ position: 62 }]
   @UI.textArrangement: #TEXT_LAST
   Serviceproduct;
   @UI.lineItem: [ {
@@ -133,20 +144,13 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   @UI.textArrangement: #TEXT_LAST
   Transactiongroup;
   @UI.lineItem: [ {
-  position: 100 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  receivergroup;
-  @UI.lineItem: [ {
   position: 110 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RECEIVINGENTITY_F4', element: 'Receivingentity' } }]
-  @UI.selectionField: [{ position: 62 }]
+  @UI.selectionField: [{ position: 63 }]
   @EndUserText.label: 'Receiving Entity'
   @UI.textArrangement: #TEXT_LAST
   Receivingentity;
@@ -396,5 +400,7 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   costdatasetdescription;
   @UI.hidden: true
   statusdescription;
+  @UI.hidden: true
+  oecdDescription;
 
 }

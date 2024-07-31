@@ -433,10 +433,17 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
                                        additionalBinding: [{ element: 'Costobject', localElement: 'Costobject'}]}]
   @UI.textArrangement: #TEXT_LAST
   Costcenter;
-
+  
+  @UI.lineItem: [{ position: 81 }]
+  @UI.selectionField: [{position: 59}]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_OECD', element: 'OECD' }}]
+  @UI.textArrangement: #TEXT_LAST
+  OECD;
+  
   @UI.lineItem: [{ position: 80 }]
   @UI.selectionField: [{position: 60}]
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' }}]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
+                                       additionalBinding: [{ element: 'OECD', localElement: 'OECD' }]}]
   @UI.textArrangement: #TEXT_LAST
   Serviceproduct;
 
@@ -468,14 +475,19 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @EndUserText.label: 'Excluded Cost'
   ExcludedTotalCost;
   @UI.lineItem: [{ position: 160 }]
-  @UI.dataPoint: { title: 'Total Included Cost', valueFormat.numberOfFractionalDigits: 2 }
-  @EndUserText.label: 'Total Included Cost'
+  @UI.dataPoint: { title: 'Total Cost Included', valueFormat.numberOfFractionalDigits: 2 }
+  @EndUserText.label: 'Total Cost Included'
   IncludedTotalCost;
 
   @UI.lineItem: [{ position: 170 }]
   @UI.dataPoint: { title: 'Stewardship', valueFormat.numberOfFractionalDigits: 2 }
   @EndUserText.label: 'Stewardship'
   Stewardship;
+  
+  @UI.lineItem: [{ position: 171 }]
+  @UI.dataPoint: { title: 'Total Cost Base Remaining', valueFormat.numberOfFractionalDigits: 2 }
+  @EndUserText.label: 'Total Cost Base Remaining'
+  TotalCostBaseRemaining;
 
   @UI.lineItem: [{ position: 190 }]
   @UI.dataPoint: { title: 'Thereof Value-Add Markup', valueFormat.numberOfFractionalDigits: 2 }
@@ -494,7 +506,7 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   
   @UI.selectionField: [{position: 100}]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CHARGEOUTSTATUS', element: 'Status' } }]
-  @UI.lineItem: [{ position: 190}]
+  @UI.lineItem: [{ position: 210}]
   @UI.textArrangement: #TEXT_ONLY
   @EndUserText.label: 'Charge-Out Status'
   status;
@@ -540,6 +552,8 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   receivingcountryname;
   @UI.hidden: true
   statusdescription;
+  @UI.hidden: true
+  oecdDescription;
 
 
 }

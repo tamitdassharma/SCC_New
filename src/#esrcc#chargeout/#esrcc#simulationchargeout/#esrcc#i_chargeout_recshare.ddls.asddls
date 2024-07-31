@@ -71,6 +71,7 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       businessdivision,
       controllingarea,
       billfrequency,
+      billingperiod,
       capacity_version,
       consumption_version,
       key_version,

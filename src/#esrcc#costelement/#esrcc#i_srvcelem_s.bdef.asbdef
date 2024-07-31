@@ -69,6 +69,7 @@ authorization dependent by _CostElementToLeAll
     Postingtype = POSTINGTYPE;
     Costind = COSTIND;
     Usagetype = USAGETYPE;
+    Reasonid = reasonid;
     ValidTo = VALID_TO;
     CreatedBy = CREATED_BY;
     CreatedAt = CREATED_AT;

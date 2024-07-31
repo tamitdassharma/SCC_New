@@ -179,7 +179,7 @@ annotate view /ESRCC/C_RECMKUP_COST with
     position: 100 ,
     label: ''
   } ]
-  @EndUserText.label: 'Total Cost (Initial)'
+  @EndUserText.label: 'Total Cost Base Remaining'
   totalcostbaseabs;
 
   @UI.lineItem: [ {

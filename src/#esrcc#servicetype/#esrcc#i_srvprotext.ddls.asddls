@@ -12,6 +12,10 @@ define view entity /ESRCC/I_SrvProText
   key serviceproduct        as Serviceproduct,
       @Semantics.text: true
       description           as Description,
+      @Semantics.text: true
+      activities            as Activities,
+      @Semantics.text: true
+      benefit               as Benefit,
       @Semantics.systemDateTime.localInstanceLastChangedAt: true
       local_last_changed_at as LocalLastChangedAt,
       1                     as SingletonID,

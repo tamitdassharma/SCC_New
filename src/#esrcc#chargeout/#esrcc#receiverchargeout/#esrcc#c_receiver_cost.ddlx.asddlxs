@@ -212,11 +212,29 @@ annotate view /ESRCC/C_RECEIVER_COST with
     label: '',
     cssDefault:{width: '15rem'}
   } ]
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' }}]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
+                                       additionalBinding: [{ element: 'OECD', localElement: 'OECD' }]}]
   @UI.selectionField: [{ position: 40 }]
-  @UI.dataPoint: { qualifier: 'srvprd' }
+  @UI.dataPoint: { qualifier: 'srvprd' }  
   @UI.textArrangement: #TEXT_LAST
   Serviceproduct;
+  
+  @UI.lineItem: [ {
+    position: 42 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '15rem'}
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_OECD', element: 'OECD' }}]
+  @UI.selectionField: [{ position: 38 }]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 3 ,
+    qualifier: 'OrgData'
+  } ]
+  @UI.textArrangement: #TEXT_LAST
+  OECD;
 
   @UI.lineItem: [ {
     position: 10,
@@ -291,8 +309,8 @@ annotate view /ESRCC/C_RECEIVER_COST with
    label: '',
    cssDefault:{width: '15rem'}
   } ]
-  @UI.dataPoint: { qualifier: 'costbase', title: 'Total Cost (Initial)' }
-  @EndUserText.label: 'Total Cost (Initial)'
+  @UI.dataPoint: { qualifier: 'costbase', title: 'Total Cost Base Remaining' }
+  @EndUserText.label: 'Total Cost Base Remaining'
   Totalcostbase;
 
   @UI.lineItem: [ {
@@ -378,5 +396,7 @@ annotate view /ESRCC/C_RECEIVER_COST with
   receivingcountryname;
   @UI.hidden: true
   currenytext;
+  @UI.hidden: true
+  oecdDescription;
 
 }

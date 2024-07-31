@@ -14,6 +14,7 @@ define view entity /ESRCC/I_SrvCeleM
   association [0..1] to /ESRCC/I_POSTINGTYPE           as _PostingTypeText    on  _PostingTypeText.Postingtype = $projection.Postingtype
   association [0..1] to /ESRCC/I_COSTIND               as _CostIndText        on  _CostIndText.costind = $projection.Costind
   association [0..1] to /ESRCC/I_USAGECALCULATION      as _UsageTypeText      on  _UsageTypeText.usagecal = $projection.Usagetype
+  association [0..1] to /ESRCC/I_REASON_F4             as _ReasonText         on  _ReasonText.Reasonid = $projection.Reasonid
 {
   key legalentity           as Legalentity,
   key sysid                 as Sysid,
@@ -24,6 +25,7 @@ define view entity /ESRCC/I_SrvCeleM
       postingtype           as Postingtype,
       costind               as Costind,
       usagetype             as Usagetype,
+      reasonid              as Reasonid,
       valid_to              as ValidTo,
       @Semantics.user.createdBy: true
       created_by            as CreatedBy,
@@ -45,5 +47,6 @@ define view entity /ESRCC/I_SrvCeleM
       _CostTypeText,
       _PostingTypeText,
       _CostIndText,
-      _UsageTypeText
+      _UsageTypeText,
+      _ReasonText
 }

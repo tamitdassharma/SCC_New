@@ -158,6 +158,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
         DATA _billingperiod   TYPE /esrcc/billperiod.
         DATA _validon         TYPE /esrcc/validfrom.
         DATA _action          TYPE /esrcc/actions.
+        DATA _oecd            TYPE RANGE OF /esrcc/oecdtpg_de.
 
 *   filters
         LOOP AT lt_filter ASSIGNING FIELD-SYMBOL(<ls_filter>).
@@ -188,6 +189,8 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
               _serviceproduct = CORRESPONDING #( <ls_filter>-range ).
             WHEN 'ACTION'.
               _action = <ls_filter>-range[ 1 ]-low.
+            WHEN 'OECD'.
+              _oecd = CORRESPONDING #( <ls_filter>-range ).
             WHEN OTHERS.
           ENDCASE.
 
@@ -219,6 +222,8 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
               ON leccode~active = @abap_true
               AND leccode~legalentity = srv~legalentity
               AND leccode~ccode = srv~ccode
+              INNER JOIN /ESRCC/C_SrvPro AS srvpro
+              ON srvpro~Serviceproduct = srv~Serviceproduct
          WHERE srv~legalentity IN @_legalentity
            AND srv~sysid IN @_sysid
            AND srv~ccode IN @_ccode
@@ -228,6 +233,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
            AND coscen~billfrequency = @_billingfreq
            AND validfrom <= @_validon
            AND validto >= @_validon
+           AND srvpro~OecdTpg IN @_oecd
            APPENDING CORRESPONDING FIELDS OF TABLE @lt_service_share.
 
           "  TK01+
@@ -417,7 +423,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                         AND costcenter IN @_costcenter
                         AND billingfreq = @_billingfreq
                         AND billingperiod = @_billingperiod
-                        ORDER BY legalentity, ccode, costobject, costcenter, billingfreq, billingperiod, process, serviceproduct
+                        ORDER BY sysid, ryear, fplv, legalentity, ccode, costobject, costcenter, billingfreq, billingperiod, process, serviceproduct
                         INTO TABLE @DATA(lt_procctrl).
 
 *Read line items for cost base status
@@ -527,9 +533,9 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                  INTO TABLE @DATA(lt_rec_cost).
 
 
-          SORT lt_cc_cost BY legalentity ccode costobject costcenter status.
-          SORT lt_srv_cost BY legalentity ccode costobject costcenter serviceproduct status.
-          SORT lt_rec_cost BY legalentity ccode costobject costcenter serviceproduct status.
+          SORT lt_cc_cost BY sysid ryear fplv legalentity ccode costobject costcenter status.
+          SORT lt_srv_cost BY sysid ryear fplv legalentity ccode costobject costcenter serviceproduct status.
+          SORT lt_rec_cost BY sysid ryear fplv  legalentity ccode costobject costcenter serviceproduct status.
         ENDIF.
 
 *  Read status text

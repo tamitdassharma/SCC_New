@@ -95,7 +95,9 @@ define view entity /ESRCC/I_CHARGEOUT_CHARTS
       @Semantics.amount.currencyCode: 'Groupcurr'
       Rectotalcostg         as TotalCostBase,
 
-
+      @DefaultAggregation: #SUM
+      @Semantics.amount.currencyCode: 'Groupcurr'
+      ( Recincludedcostg - Stewardshipg )         as TotalCostBaseRemaining,
 
       @DefaultAggregation: #SUM
       @Semantics.amount.currencyCode: 'Groupcurr'
@@ -114,6 +116,11 @@ define view entity /ESRCC/I_CHARGEOUT_CHARTS
       @ObjectModel.text.element: [ 'statusdescription' ]
       @AnalyticsDetails.query.display: #KEY
       status,      
+      
+      @ObjectModel.text.element: [ 'oecdDescription' ] 
+      @AnalyticsDetails.query.display: #KEY
+      OECD,
+      
       Groupcurr,
       @DefaultAggregation: #SUM
       @Semantics.amount.currencyCode: 'Groupcurr'
@@ -144,6 +151,8 @@ define view entity /ESRCC/I_CHARGEOUT_CHARTS
       receivingentitycountry,
       @Semantics.text: true
       statusdescription,
+      @Semantics.text: true
+      oecdDescription,
       @Semantics.text: true
       _legalCountryText.CountryName as legalcountryname,
       @Semantics.text: true

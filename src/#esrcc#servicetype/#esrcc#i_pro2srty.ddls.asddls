@@ -7,11 +7,8 @@ define view entity /ESRCC/I_Pro2SrTy
   association to /ESRCC/I_SERVICEPRODUCT_F4   as _ServiceProduct    on $projection.Serviceproduct = _ServiceProduct.ServiceProduct
   association to /ESRCC/I_TRANSACTIONGROUP_F4 as _TransactionGroup  on $projection.Transactiongroup = _TransactionGroup.Transactiongroup
 {
-      @ObjectModel.text.association: '_ServiceProduct'
   key serviceproduct        as Serviceproduct,
-      @ObjectModel.text.association: '_ServiceType'
       servicetype           as Servicetype,
-      @ObjectModel.text.association: '_TransactionGroup'
       transactiongroup      as Transactiongroup,
       @Semantics.user.createdBy: true
       created_by            as CreatedBy,

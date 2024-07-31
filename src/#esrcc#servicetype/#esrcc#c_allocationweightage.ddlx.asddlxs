@@ -99,9 +99,5 @@ annotate entity /ESRCC/C_AllocationWeightage with
   @UI.hidden: true
   AllocationKeyDescription;
   @UI.hidden: true
-  allocationtypedescription;
-  @UI.hidden: true
-  keyversiondescription;
-  @UI.hidden: true
   AllocationPeriodDescription;
 }

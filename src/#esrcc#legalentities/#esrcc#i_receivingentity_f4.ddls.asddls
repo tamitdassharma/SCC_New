@@ -17,6 +17,8 @@ define view entity /ESRCC/I_RECEIVINGENTITY_F4
       RegionDesc,
       RoleDesc,
       EntitytypeDesc,
+      CountryName,
+      CurrencyName,
 
       _CountryText,
       _CurrencyText

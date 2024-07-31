@@ -14,6 +14,9 @@ etag master LocalLastChangedAt
   field ( mandatory )
    Comments;
 
+  field (readonly : update)
+   WorkflowId, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+
   action ( features : instance, precheck, authorization : update ) changevalueadd parameter /ESRCC/C_COSTIND result [1] $self;
   action ( features : instance, precheck, authorization : update ) changeitems parameter /ESRCC/C_USAGECALCULATION result [1] $self;
   action ( features : instance, precheck, authorization : update ) discardall result [1] $self;
@@ -23,6 +26,7 @@ etag master LocalLastChangedAt
 
   mapping for /ESRCC/CB_LI corresponding
   {
+    ReasonId      = reasonid;
     CreatedBy     = created_by;
     CreatedAt     = created_at;
     LastChangedBy = last_changed_by;

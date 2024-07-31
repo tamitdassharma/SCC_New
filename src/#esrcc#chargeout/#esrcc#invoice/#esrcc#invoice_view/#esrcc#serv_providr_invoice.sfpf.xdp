@@ -1,0 +1,2190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xfa generator="AdobeLiveCycleDesigner_V11.0.9.20240424.1.48_SAP" APIVersion="3.6.24095.0"?><xdp:xdp xmlns:xdp="http://ns.adobe.com/xdp/" timeStamp="2024-07-29T16:49:53Z" uuid="fb7cd77a-3a70-4027-ae34-b2736859f7bf">
+<template xmlns:xliff="urn:oasis:names:tc:xliff:document:1.1" xmlns="http://www.xfa.org/schema/xfa-template/3.3/">
+   <?formServer defaultPDFRenderFormat acrobat10.0dynamic?>
+   <subform layout="tb" locale="en_US" name="data" restoreState="auto">
+      <pageSet>
+         <pageArea id="Page1" name="Page1">
+            <medium long="297mm" short="210mm" stock="a4Color"/>
+            <subform h="15.875mm" name="Footer" w="196.85mm" x="6.35mm" y="279.4mm">
+               <bind match="none"/>
+               <draw h="15.875mm" name="Text3" w="196.85mm">
+                  <ui>
+                     <textEdit/>
+                  </ui>
+                  <value>
+                     <exData contentType="text/html" xliff:rid="B5FBB133-5241-458C-AD9D-671126460807">
+                        <body xmlns="http://www.w3.org/1999/xhtml" xmlns:xfa="http://www.xfa.org/schema/xfa-data/1.0/"><p style="font-family:'Myriad Pro';letter-spacing:0in">Global BKS KurpfalzRides AG<span style="xfa-tab-count:1">         </span>Deutsche Bank Heidelberg<span style="xfa-tab-count:2">                  </span>Managing Director <span style="xfa-tab-count:1">         </span>Hans Müller<span style="xfa-tab-count:1">         </span>Tax reg no<span style="xfa-spacerun:yes">         </span>12135464354</p><p style="font-family:'Myriad Pro';letter-spacing:0in">Kurfürsten-Anlage 11-1<span style="xfa-tab-count:1">         </span>BIC<span style="xfa-spacerun:yes">      </span>: GENODFExxxx<span style="xfa-tab-count:2">                  </span>Reg. Office<span style="xfa-spacerun:yes">                     </span>Mannheim<span style="xfa-tab-count:1">         </span> <span style="xfa-tab-count:1">         </span>Website<span style="xfa-spacerun:yes">              </span><a href="http://www.bksgroup.com/">www.exa-ag.com</a><span style="color:#000000"><span style="xfa-tab-count:2">                  </span></span></p><p style="font-family:'Myriad Pro';text-decoration:none;letter-spacing:0in">Heidelberg,<span style="xfa-spacerun:yes"> </span><span style="text-decoration:none">69115 <span style="xfa-tab-count:2">                  </span>IBAN<span style="xfa-spacerun:yes">   </span>: DE 672 xxxx xxxx xxxx xx<span style="xfa-tab-count:2">                  </span></span>Reg. No.<span style="xfa-spacerun:yes">                          </span>HRB 85858<span style="xfa-tab-count:2">                  </span>Tel. :<span style="xfa-spacerun:yes">                     </span>+49-6221-58989854</p><p style="font-family:'Myriad Pro';letter-spacing:0in">Germany<span style="xfa-tab-count:7">                                                               </span>VAT Reg no<span style="xfa-spacerun:yes">                    </span>DE 8542122</p></body>
+                     </exData>
+                  </value>
+                  <font baselineShift="0pt" size="8pt" typeface="Aptos Narrow">
+                     <fill>
+                        <color value="150,150,150"/>
+                     </fill>
+                  </font>
+                  <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                  <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt"/>
+               </draw>
+               <?templateDesigner expand 0?></subform>
+            <draw h="15.875mm" name="Rectangle1" w="196.85mm" x="6.35mm">
+               <value>
+                  <rectangle>
+                     <edge/>
+                     <fill>
+                        <color value="129,163,220"/>
+                        <linear>
+                           <color value="255,255,255"/>
+                        </linear>
+                     </fill>
+                     <corner radius="5.08mm"/>
+                  </rectangle>
+               </value>
+            </draw>
+            <draw h="15.875mm" name="Invoice" w="44.45mm" x="6.35mm">
+               <ui>
+                  <textEdit/>
+               </ui>
+               <value>
+                  <exData contentType="text/html" xliff:rid="260C36FB-C89D-4464-BC6E-470602330448">
+                     <body xmlns="http://www.w3.org/1999/xhtml" xmlns:xfa="http://www.xfa.org/schema/xfa-data/1.0/"><p style="letter-spacing:0in">Invoice</p><p style="font-size:10pt;letter-spacing:0in">(Intercompany)</p></body>
+                  </exData>
+               </value>
+               <font baselineShift="0pt" size="20pt" typeface="Arial"/>
+               <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+               <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt"/>
+            </draw>
+            <draw h="17.076mm" name="Logo" w="47.625mm" x="155.575mm">
+               <value>
+                  <image contentType="image/png">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
+EELIGoj8H5OIL40NkDpXAAAAAElFTkSuQmCC</image>
+               </value>
+               <ui>
+                  <imageEdit/>
+               </ui>
+               <desc>
+                  <text name="embeddedHref">..\Downloads\image.png</text>
+               </desc>
+            </draw>
+            <contentArea h="250.825mm" name="ContentAreaDetails" w="196.85mm" x="6.35mm" y="22.225mm"/>
+            <?templateDesigner expand 1?></pageArea>
+         <pageSet/>
+         <?templateDesigner expand 1?></pageSet>
+      <subform layout="tb" minH="225.512mm" name="Content" w="197.923mm">
+         <bind match="none"/>
+         <subform minH="104.775mm" name="SenderReceiverDetails" w="196.907mm">
+            <bind match="none"/>
+            <keep intact="none"/>
+            <subform h="82.55mm" name="IssueTo" w="76.256mm" x="0.001mm" y="0mm">
+               <bind match="none"/>
+               <keep intact="none"/>
+               <draw h="5.2331mm" name="Text1" w="76.2mm">
+                  <ui>
+                     <textEdit/>
+                  </ui>
+                  <value>
+                     <text xliff:rid="A2057686-1BAF-41F9-B748-F16B9129016A"> Issued to:</text>
+                  </value>
+                  <font typeface="Arial"/>
+                  <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                  <border>
+                     <edge presence="hidden"/>
+                     <fill>
+                        <color value="216,216,216"/>
+                     </fill>
+                     <corner join="round" presence="hidden" radius="2mm" thickness="0.175mm"/>
+                  </border>
+                  <?renderCache.bounds 213166 12000 0 0 1417 1417 0 0?>
+                  <?renderCache.textRun 11  Issued to: 0 1417 9313 0 0 0 "Arial" 0 0 10000 ISO-8859-1?></draw>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_STREET1" w="76.2mm" y="25.4mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="3AE629B5-1A91-4532-8DA0-E8A1DAD9DEDE">Street 1</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.RECEIVER.ADDRESS_STREET1"/>
+                  <value>
+                     <text maxChars="50" xliff:rid="7CAE401C-94D3-4BF5-8A71-A8093520F3F9"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_STREET2" w="76.2mm" y="31.75mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="2260D823-582C-49A9-8E14-633918A10016">Street 2</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.RECEIVER.ADDRESS_STREET2"/>
+                  <value>
+                     <text maxChars="50"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_CITY" w="76.2mm" y="38.1mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="C02F5A5D-05F5-4A97-9A66-4551E27400D1">City	</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.RECEIVER.ADDRESS_CITY"/>
+                  <value>
+                     <text maxChars="20" xliff:rid="1DD3CB4E-FB96-42F6-8EA9-A6B24AFB33E9"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_ZIP" w="76.2mm" y="44.45mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="08C4DBE2-6FA7-4C73-A013-497B197D5519">ZIP</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.RECEIVER.ADDRESS_ZIP"/>
+                  <value>
+                     <text maxChars="6" xliff:rid="9397C5C4-4F5F-47E6-A180-CF87E123D0BD"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_STATE" w="76.2mm" y="50.8mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="A09EC741-300F-4153-9D38-01777388F668">State</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.RECEIVER.ADDRESS_STATE"/>
+                  <value>
+                     <text maxChars="20" xliff:rid="CE5054C3-CB8E-4035-A59D-EC79BD8945F9"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_COUNTRY" w="76.2mm" y="57.15mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="2F3D9210-836B-43CD-9F1D-8687B2C2ECBE">Country</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.RECEIVER.ADDRESS_COUNTRY"/>
+                  <value>
+                     <text maxChars="10" xliff:rid="3EFE8ACC-C952-439D-9DA6-43ACC8ED5295"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="VAT_NUMBER" w="76.2mm" y="63.5mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="45B5F369-BA6C-42E3-9E1D-11F79C2E3D39">VAT. No.</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.RECEIVER.VAT_NUMBER"/>
+                  <value>
+                     <text maxChars="20" xliff:rid="06BD96C0-BBAB-4BB8-801C-69F945140E70"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="TAX_REGISTRATION_NUMBER" w="76.2mm" y="69.85mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="5B589ED2-15E9-44F3-A896-58654DBD0A3F">Tax Reg. No.</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.RECEIVER.TAX_REGISTRATION_NUMBER"/>
+                  <value>
+                     <text maxChars="20" xliff:rid="564FCD17-60C7-4105-BC76-642778E277C1"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="TELEPHONE" w="76.2mm" y="76.2mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="811459F8-EC50-484E-AE84-7C9910CA09D6">Telephone</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.RECEIVER.TELEPHONE"/>
+                  <value>
+                     <text maxChars="10" xliff:rid="F86C5419-FC91-402C-8F27-A21DE8B902EF"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ENTITY" w="76.2mm" y="12.7mm">
+                  <ui>
+                     <textEdit multiLine="1">
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="CC2E3D7C-418B-4F98-ABF7-A060302917C2">Service Receiver</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.RECEIVER.ENTITY"/>
+                  <value>
+                     <text maxChars="10" xliff:rid="5D367F49-FAB8-4062-99CF-7C0E9C3BF723"/>
+                  </value>
+                  <desc>
+                     <text name="Schema Annotation">Legal Entity</text>
+                  </desc>
+               </field>
+               <field access="readOnly" h="6.35mm" name="CUSTOMER_NUMBER" w="76.2mm" y="6.35mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <font baselineShift="0pt" kerningMode="pair" size="8pt" typeface="Arial"/>
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="198BD973-4F8D-48B2-902D-884DEACDE037">Customer Number</text>
+                     </value>
+                  </caption>
+                  <value>
+                     <text maxChars="10" xliff:rid="1DEC62C1-2E4A-4DE2-AC5C-EA82CD9C7981"/>
+                  </value>
+                  <bind match="dataRef" ref="$.RECEIVER.CUSTOMER_NUMBER"/>
+               </field>
+               <field access="readOnly" h="6.35mm" name="CONTACT_PERSON" w="76.2mm" y="19.05mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="976B779D-533D-4CE5-A6F5-49F7259123E8">Contact Person</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.RECEIVER.CONTACT_PERSON"/>
+                  <value>
+                     <text maxChars="100" xliff:rid="1EA6E667-B37F-4D2E-8779-43B6EAD14478"/>
+                  </value>
+               </field>
+               <?templateDesigner expand 0?></subform>
+            <field access="readOnly" h="6.35mm" name="INVOICE_NUMBER" w="76.2mm" x="0.057mm" y="85.812mm">
+               <ui>
+                  <textEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para vAlign="middle"/>
+               <caption reserve="34.5162mm">
+                  <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="1A552500-71A3-4077-A00E-2F4DDA0203BA">Invoice Number</text>
+                  </value>
+                  <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+               </caption>
+               <bind match="dataRef" ref="$.INVOICE_DETAIL.INVOICE_NUMBER"/>
+               <value>
+                  <text maxChars="10" xliff:rid="58B511E9-7C39-4D9A-98AD-FBBAFF49F842"/>
+               </value>
+            </field>
+            <field access="readOnly" h="6.35mm" name="REFERENCE_NUMBER" w="76.2mm" x="0.057mm" y="92.162mm">
+               <ui>
+                  <textEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para vAlign="middle"/>
+               <caption reserve="34.5162mm">
+                  <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="EDA4D0D5-8861-4052-95D7-679E5BFB4F79">Order Ref. Number	</text>
+                  </value>
+                  <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+               </caption>
+               <bind match="dataRef" ref="$.INVOICE_DETAIL.REFERENCE_NUMBER"/>
+               <value>
+                  <text maxChars="10" xliff:rid="34FDC173-1D06-47EB-940F-3DD6731EC460"/>
+               </value>
+            </field>
+            <field access="readOnly" h="6.35mm" name="DELIVERY_DATE" w="76.2mm" x="120.707mm" y="92.162mm">
+               <ui>
+                  <dateTimeEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </dateTimeEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para vAlign="middle"/>
+               <value>
+                  <date/>
+               </value>
+               <caption reserve="34.5162mm">
+                  <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="A01B319F-7968-42FB-837F-7865EB7B9D52">Service/Delivery Date</text>
+                  </value>
+                  <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+               </caption>
+               <bind match="dataRef" ref="$.INVOICE_DETAIL.DELIVERY_DATE">
+                  <picture>date{YYYY-MM-DD}</picture>
+               </bind>
+            </field>
+            <field access="readOnly" h="6.35mm" name="INVOICE_DATE" w="76.2mm" x="120.707mm" y="85.812mm">
+               <ui>
+                  <dateTimeEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </dateTimeEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para hAlign="justify" vAlign="middle"/>
+               <value>
+                  <date/>
+               </value>
+               <caption reserve="34.5162mm">
+                  <para hAlign="justify" marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="E1966594-80E7-4E3E-9835-D6092F5FF6EF">Invoice Date</text>
+                  </value>
+                  <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+               </caption>
+               <bind match="dataRef" ref="$.INVOICE_DETAIL.INVOICE_DATE">
+                  <picture>date{YYYY-MM-DD}</picture>
+               </bind>
+            </field>
+            <subform minH="85.725mm" name="IssueBy" w="76.2mm" x="120.707mm" y="0.087mm">
+               <bind match="none"/>
+               <draw h="5.2331mm" name="Text1" w="76.2mm">
+                  <ui>
+                     <textEdit/>
+                  </ui>
+                  <value>
+                     <text xliff:rid="0B273B1F-9756-46DF-B893-6E1EE946CE36"> Issued by:</text>
+                  </value>
+                  <font typeface="Arial"/>
+                  <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                  <border>
+                     <edge presence="hidden"/>
+                     <fill>
+                        <color value="216,216,216"/>
+                     </fill>
+                     <corner join="round" presence="hidden" radius="2mm" thickness="0.175mm"/>
+                  </border>
+                  <?renderCache.bounds 213166 12000 0 0 1417 1417 0 0?>
+                  <?renderCache.textRun 11  Issued by: 0 1417 9313 0 0 0 "Arial" 0 0 10000 ISO-8859-1?></draw>
+               <field access="readOnly" h="6.35mm" name="CUSTOMER_NUMBER" w="76.2mm" y="6.35mm">
+                  <ui>
+                     <textEdit multiLine="1">
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="B01ADA7E-DC89-42B1-A21E-1B59E32DE1F2">Provider Number</text>
+                     </value>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.CUSTOMER_NUMBER"/>
+                  <value>
+                     <text maxChars="10"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ENTITY" w="76.2mm" y="12.7mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="7A7112C7-A7E1-427F-AB38-AA682E22140F">Service Provider</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.ENTITY"/>
+                  <value>
+                     <text maxChars="10" xliff:rid="47E4B798-49E9-4387-9F77-3FF674DB79B2"/>
+                  </value>
+                  <desc>
+                     <text name="Schema Annotation">Legal Entity</text>
+                  </desc>
+               </field>
+               <field access="readOnly" h="6.35mm" name="CONTACT_PERSON" w="76.2mm" y="19.05mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="62AC5D37-757F-4B2C-8407-EDE4F937D428">Contact Person</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.CONTACT_PERSON"/>
+                  <value>
+                     <text maxChars="100" xliff:rid="E668E056-64D3-48DB-95DB-C4533CCE7A59"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_STREET1" w="76.2mm" y="25.4mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="C3D3DDB5-E7B7-4F90-88EB-8F615D17314A">Street 1</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.ADDRESS_STREET1"/>
+                  <value>
+                     <text maxChars="50" xliff:rid="EC233308-197B-4092-B4D0-84A0A2872D54"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_STREET2" w="76.2mm" y="31.75mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="04C49069-06A8-4194-B188-3F255F4F41E2">Street 2</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.ADDRESS_STREET2"/>
+                  <value>
+                     <text maxChars="50"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_CITY" w="76.2mm" y="38.1mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="C1DBF53E-176F-41E8-B9F5-32AB3889CF1C">City	</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.ADDRESS_CITY"/>
+                  <value>
+                     <text maxChars="20" xliff:rid="2129CA68-497E-4ADF-A4E1-D31CD51123DE"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_ZIP" w="76.2mm" y="44.45mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="94D6C982-43D7-48D2-9BCC-367520032114">ZIP</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.ADDRESS_ZIP"/>
+                  <value>
+                     <text maxChars="6" xliff:rid="49872DBB-808F-47A6-B026-9781C360A6D4"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_STATE" w="76.2mm" y="50.8mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="566A8F5D-DB9A-44C1-88D6-496FB56FDEAA">State</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.ADDRESS_STATE"/>
+                  <value>
+                     <text maxChars="20" xliff:rid="200DE476-B60F-4FEB-810B-0BFB3C977D36"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="ADDRESS_COUNTRY" w="76.2mm" y="57.15mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="7527A6EF-9CEC-4BF5-8D52-B8429A7137C6">Country</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.ADDRESS_COUNTRY"/>
+                  <value>
+                     <text maxChars="10" xliff:rid="0BB17251-D76C-419B-9EFB-90BC7B902229"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="VAT_NUMBER" w="76.2mm" y="63.5mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="7B253C43-972B-4C78-BCA9-C677D849A96E">VAT. No.</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.VAT_NUMBER"/>
+                  <value>
+                     <text maxChars="20" xliff:rid="074F5F40-451B-4CF7-BF49-3FEB87A96260"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="TAX_REGISTRATION_NUMBER" w="76.2mm" y="69.85mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="8149E148-DA7A-4A6F-9464-0E9428429C05">Tax Reg. No.</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.TAX_REGISTRATION_NUMBER"/>
+                  <value>
+                     <text maxChars="20" xliff:rid="1D83DE03-BC4A-486B-A8F8-107ADC9F4FE8"/>
+                  </value>
+               </field>
+               <field access="readOnly" h="6.35mm" name="TELEPHONE" w="76.2mm" y="76.2mm">
+                  <ui>
+                     <textEdit>
+                        <border presence="hidden"/>
+                        <margin/>
+                     </textEdit>
+                  </ui>
+                  <font size="8pt" typeface="Arial"/>
+                  <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                  <para vAlign="middle"/>
+                  <caption reserve="34.6945mm">
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                     <value>
+                        <text xliff:rid="596893D0-3879-492C-BCF4-E49DF5944B3A">Telephone</text>
+                     </value>
+                     <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                  </caption>
+                  <bind match="dataRef" ref="$.SENDER.TELEPHONE"/>
+                  <value>
+                     <text maxChars="10" xliff:rid="846F4ABD-031A-4365-9406-D0E405D93482"/>
+                  </value>
+               </field>
+               <?templateDesigner expand 0?></subform>
+            <?templateDesigner expand 0?></subform>
+         <subform layout="tb" minH="20mm" name="Items" w="196.85mm">
+            <bind match="none"/>
+            <subform columnWidths="18.5137mm 18.88mm 18.5137mm 18.5137mm 18.5137mm 14.566mm 18.5137mm 18.5137mm 18.88mm 18.5137mm 16.001mm" layout="table" name="InvoiceDetails">
+               <border>
+                  <edge/>
+               </border>
+               <subform layout="row" name="HeaderRow">
+                  <assist role="TH"/>
+                  <draw h="10mm" name="Cell1">
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="3B004A8D-09F7-4218-9A43-2C31805CAB15">Position</text>
+                     </value>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                  </draw>
+                  <draw h="10mm" name="Cell2" w="0.743306in">
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="EC5D703A-D139-4AC3-B887-C41F96473D75">Service Product</text>
+                     </value>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                  </draw>
+                  <draw h="10mm" name="Cell3">
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="A4AD0D05-12FF-4998-9F53-E015C49E9D96">Description</text>
+                     </value>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                  </draw>
+                  <draw h="10mm" name="Cell4">
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="9C34D454-4208-44A3-97C5-EB016D3944A7">Method		</text>
+                     </value>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                  </draw>
+                  <draw h="10mm" name="Cell5">
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="6D4B88FF-274A-476F-AA46-16B36AA8337F">Billing Period</text>
+                     </value>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                  </draw>
+                  <draw h="10mm" name="Cell6">
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="E480C19E-04F1-4526-91F9-AE10B6372B4A">UoM</text>
+                     </value>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                  </draw>
+                  <draw h="10mm" name="Cell7">
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="309FFFA2-A7FA-487B-A4D9-8C8D0F8C3310">Quantity</text>
+                     </value>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                  </draw>
+                  <draw h="10mm" name="Cell8" w="0.728889in">
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="EAD0510E-7E9B-4479-A227-B12A581C92CC">Unit Price/Share</text>
+                     </value>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                  </draw>
+                  <draw h="10mm" name="Cell9">
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="7F1F2E85-D10F-4D7C-8338-C4DF0ABD3B60">Total Amount</text>
+                     </value>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                  </draw>
+                  <draw h="10mm" name="Cell10">
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="366CD92D-8BC3-41C0-AC83-D8B44CA84C1F">Currency</text>
+                     </value>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                  </draw>
+                  <draw h="10mm" name="Cell11">
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="2A38854E-F24C-458A-A914-ED1D48B61807">Tax (%)</text>
+                     </value>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                  </draw>
+                  <border>
+                     <edge presence="hidden"/>
+                  </border>
+                  <bind match="none"/>
+                  <?templateDesigner expand 0?></subform>
+               <subform layout="row" name="Row1">
+                  <assist role="TR"/>
+                  <field access="readOnly" h="10mm" name="ITEM_POSITION">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <bind match="dataRef" ref="$.ITEM_POSITION"/>
+                  </field>
+                  <field access="readOnly" h="10mm" name="SERVICE_PRODUCT">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <value>
+                        <text maxChars="20"/>
+                     </value>
+                     <bind match="dataRef" ref="$.SERVICE_PRODUCT"/>
+                     <desc>
+                        <text name="Schema Annotation">Service Product</text>
+                     </desc>
+                  </field>
+                  <field access="readOnly" h="10mm" name="DESCRIPTION">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <value>
+                        <text maxChars="40"/>
+                     </value>
+                     <bind match="dataRef" ref="$.DESCRIPTION"/>
+                     <desc>
+                        <text name="Schema Annotation">Description</text>
+                     </desc>
+                  </field>
+                  <field access="readOnly" h="10mm" name="METHOD">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <bind match="dataRef" ref="$.METHOD"/>
+                     <desc>
+                        <text name="Schema Annotation">Charge Out Method</text>
+                     </desc>
+                  </field>
+                  <field access="readOnly" h="10mm" name="BILLING_PERIOD">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <value>
+                        <text maxChars="10"/>
+                     </value>
+                     <bind match="dataRef" ref="$.BILLING_PERIOD"/>
+                  </field>
+                  <field access="readOnly" h="10mm" name="UNIT_OF_MEASURE">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <value>
+                        <text maxChars="3"/>
+                     </value>
+                     <bind match="dataRef" ref="$.UNIT_OF_MEASURE"/>
+                  </field>
+                  <field access="readOnly" h="10mm" name="QUANTITY">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <bind match="dataRef" ref="$.QUANTITY"/>
+                  </field>
+                  <field access="readOnly" h="10mm" name="UNIT_PRICE_PER_SHARE">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <bind match="dataRef" ref="$.UNIT_PRICE_PER_SHARE"/>
+                     <value>
+                        <text maxChars="10"/>
+                     </value>
+                  </field>
+                  <field access="readOnly" h="10mm" name="TOTAL_AMOUNT">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <bind match="dataRef" ref="$.TOTAL_AMOUNT"/>
+                  </field>
+                  <field access="readOnly" h="10mm" name="CURRENCY">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <value>
+                        <text maxChars="5"/>
+                     </value>
+                     <bind match="dataRef" ref="$.CURRENCY"/>
+                  </field>
+                  <field access="readOnly" h="10mm" name="TAX">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <para hAlign="center" vAlign="middle"/>
+                     <border>
+                        <edge/>
+                        <corner thickness="0.1778mm"/>
+                     </border>
+                     <bind match="dataRef" ref="$.TAX"/>
+                     <value>
+                        <text maxChars="4"/>
+                     </value>
+                  </field>
+                  <border>
+                     <edge presence="hidden"/>
+                     <fill>
+                        <color value="240,240,240"/>
+                     </fill>
+                  </border>
+                  <occur max="-1"/>
+                  <event activity="indexChange" name="event__indexChange">
+                     <script contentType="application/x-javascript" runAt="both">//{{Adobe LiveCycle Designer Generated Code Begin}} - row shading script. Don't modify it!
+var Freqs=[1,2];
+var Colors=["240,240,240","234,234,234"];
+var nFreqSize = 0;
+for (var i=0; i&lt;Freqs.length; i++)
+  nFreqSize += Freqs[i];
+var nRelIndex = this.index % nFreqSize + 1;
+for (var nRun=0; nRun&lt;Freqs.length; nRun++)
+{
+   if (nRelIndex&gt;Freqs[nRun])
+   {
+        nRelIndex -= Freqs[nRun];
+   }
+   else
+   {
+      this.border.fill.color.value = Colors[nRun];
+      break;
+   }
+}
+//{{Adobe LiveCycle Designer Generated Code End}} - row shading script.
+</script>
+                  </event>
+                  <?templateDesigner rowpattern first:1, next:2, firstcolor:f0f0f0, nextcolor:eaeaea, apply:1?>
+                  <bind match="dataRef" ref="$record.ITEMS.DATA[*]"/>
+                  <?templateDesigner expand 0?></subform>
+               <?templateDesigner rowpattern first:1, next:2, firstcolor:f0f0f0, nextcolor:eaeaea, apply:1?>
+               <?templateDesigner expand 1?></subform>
+            <field access="readOnly" h="5.4mm" hAlign="right" name="TOTAL_VALUE" w="80.448mm">
+               <ui>
+                  <textEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para vAlign="middle"/>
+               <caption reserve="25.3843mm">
+                  <para vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="697E2329-8C8F-4EA3-8316-65AC9E86B9F7">Total</text>
+                  </value>
+               </caption>
+               <bind match="dataRef" ref="$.TOTALS.TOTAL_VALUE"/>
+            </field>
+            <field access="readOnly" h="6.35mm" hAlign="right" name="VAT_OR_SALES_TAX" w="80.448mm">
+               <ui>
+                  <textEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para vAlign="middle"/>
+               <caption reserve="25mm">
+                  <para vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="C7508F86-D238-47AD-972F-0338622DD737">VAT/Sales Tax</text>
+                  </value>
+               </caption>
+               <bind match="dataRef" ref="$.TOTALS.VAT_OR_SALES_TAX"/>
+            </field>
+            <field access="readOnly" h="6.35mm" hAlign="right" name="GROSS_VALUE" w="80.448mm">
+               <ui>
+                  <textEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para vAlign="middle"/>
+               <caption reserve="25mm">
+                  <para vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="ADAF64A9-4525-4268-99F7-6583304225AB">Gross</text>
+                  </value>
+               </caption>
+               <bind match="dataRef" ref="$.TOTALS.GROSS_VALUE"/>
+            </field>
+            <field access="readOnly" h="6.35mm" name="IBAN" w="95.25mm">
+               <ui>
+                  <textEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para vAlign="middle"/>
+               <caption reserve="50.874mm">
+                  <para vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="2DC73C7F-9583-4E7E-B88F-31DC29BEFD4A">Provider's bank account 	       IBAN</text>
+                  </value>
+               </caption>
+               <bind match="dataRef" ref="$.BANK_DETAIL.IBAN"/>
+               <value>
+                  <text maxChars="22"/>
+               </value>
+            </field>
+            <field access="readOnly" h="6.35mm" name="PAYMENT_TERMS" w="95.25mm" y="6.35mm">
+               <ui>
+                  <textEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para vAlign="middle"/>
+               <caption reserve="50.874mm">
+                  <para vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="5CBE0F7D-A258-423C-A02A-4F3F41BCE977">Settlement/Payment Terms</text>
+                  </value>
+               </caption>
+               <bind match="dataRef" ref="$.BANK_DETAIL.PAYMENT_TERMS"/>
+               <value>
+                  <text maxChars="20"/>
+               </value>
+            </field>
+            <field access="readOnly" h="6.35mm" name="FREE_TEXT" w="95.25mm" y="12.7mm">
+               <ui>
+                  <textEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para vAlign="middle"/>
+               <caption reserve="50.874mm">
+                  <para vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="154106EF-A388-4026-8828-1241728C0AD5">Free Text</text>
+                  </value>
+               </caption>
+               <bind match="dataRef" ref="$.BANK_DETAIL.FREE_TEXT"/>
+            </field>
+            <field access="readOnly" h="6.35mm" name="CONTACT_PERSON" w="95.25mm" y="19.05mm">
+               <ui>
+                  <textEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para vAlign="middle"/>
+               <caption reserve="50.874mm">
+                  <para vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="56AC08A8-ADAC-4EB8-9BF2-09F7D0C96480">Contact Person at Service Provider</text>
+                  </value>
+               </caption>
+               <bind match="dataRef" ref="$.BANK_DETAIL.CONTACT_PERSON"/>
+               <value>
+                  <text maxChars="50"/>
+               </value>
+            </field>
+            <field access="readOnly" h="6.35mm" name="AGREEMENT_ID" w="95.25mm" y="25.4mm">
+               <ui>
+                  <textEdit>
+                     <border presence="hidden"/>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="8pt" typeface="Arial"/>
+               <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+               <para vAlign="middle"/>
+               <caption reserve="50.874mm">
+                  <para vAlign="middle"/>
+                  <value>
+                     <text xliff:rid="615140BD-7A3D-4071-AE6E-48119B46777E">Intercompany Contract/Agreement Id</text>
+                  </value>
+               </caption>
+               <bind match="dataRef" ref="$.BANK_DETAIL.AGREEMENT_ID"/>
+               <value>
+                  <text maxChars="10"/>
+               </value>
+            </field>
+            <subform name="PostingDetails" w="196.85mm">
+               <bind match="none"/>
+               <subform minH="44.45mm" name="ReceiverPosting" w="76.2mm" y="6.35mm">
+                  <bind match="none"/>
+                  <draw h="5.2331mm" name="Text1" w="76.2mm">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="2CE8DB43-19C4-4182-BE15-96AF082FEE7B">For Service Invoice Receiver</text>
+                     </value>
+                     <font baselineShift="0pt" typeface="Arial">
+                        <fill>
+                           <color value="255,0,0"/>
+                        </fill>
+                     </font>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <border>
+                        <edge presence="hidden"/>
+                        <corner join="round" presence="hidden" radius="2mm" thickness="0.175mm"/>
+                     </border>
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt"/>
+                     <?renderCache.bounds 213166 12000 0 0 1417 1417 0 0?>
+                     <?renderCache.textRun 28 For Service Invoice Receiver 0 1417 9313 255 0 0 "Arial" 0 0 10000 ISO-8859-1?></draw>
+                  <field access="readOnly" h="6.35mm" name="BUSINESS_PARTNER_NUMBER" w="76.2mm" y="12.7mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="7DDD956A-011E-4F40-8BF7-CEA7E13B662F">Business Partner No.</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.RECEIVER.BUSINESS_PARTNER_NUMBER"/>
+                     <value>
+                        <text maxChars="30"/>
+                     </value>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="COMPANY_CODE" w="76.2mm" y="19.05mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="1231D1C3-FAA5-4990-98D0-F030EF6E7E1C">Company Code</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.RECEIVER.COMPANY_CODE"/>
+                     <value>
+                        <text maxChars="4"/>
+                     </value>
+                     <desc>
+                        <text name="Schema Annotation">Company Code</text>
+                     </desc>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="ACCOUNT_PNL" w="76.2mm" y="25.4mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="751C3597-5C57-4579-913E-DBF9EFB4FB3E">Account (P&amp;L)</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.RECEIVER.ACCOUNT_PNL"/>
+                     <value>
+                        <text maxChars="10"/>
+                     </value>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="CONTROLLING_OBJECT" w="76.2mm" y="31.75mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="1D5D32B9-1283-4634-81EC-B5F0563E8F75">CO Object</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.RECEIVER.CONTROLLING_OBJECT"/>
+                     <value>
+                        <text maxChars="30"/>
+                     </value>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="BUSINESS_DIVISION" w="76.2mm" y="38.1mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="C523A7B2-C3BD-43DF-90A7-75EA04636D09">Business Division</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.RECEIVER.BUSINESS_DIVISION"/>
+                     <value>
+                        <text maxChars="10"/>
+                     </value>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="TP_TRANSACTION_GROUP" w="76.2mm" y="44.45mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="F9051532-6D2A-41D0-A020-8F3F78E9759E">Transaction Group	</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.RECEIVER.TP_TRANSACTION_GROUP"/>
+                     <value>
+                        <text maxChars="10"/>
+                     </value>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="POSTING_PERIOD" w="76.2mm" y="6.35mm">
+                     <ui>
+                        <textEdit multiLine="1">
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <font baselineShift="0pt" kerningMode="pair" size="8pt" typeface="Arial"/>
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="F79D521E-95A6-44CC-8E5B-4B4B0445A02A">Posting Period to use</text>
+                        </value>
+                     </caption>
+                     <bind match="dataRef" ref="$.RECEIVER.POSTING_PERIOD"/>
+                     <value>
+                        <text maxChars="3"/>
+                     </value>
+                     <desc>
+                        <text name="Schema Annotation">Posting Period</text>
+                     </desc>
+                  </field>
+                  <?templateDesigner expand 1?></subform>
+               <subform minH="44.45mm" name="ProviderPosting" w="82.55mm" x="114.3mm" y="6.35mm">
+                  <bind match="none"/>
+                  <draw h="5.2331mm" name="Text1" w="82.55mm">
+                     <ui>
+                        <textEdit/>
+                     </ui>
+                     <value>
+                        <text xliff:rid="8D868428-8266-4732-A072-BEA309001632">For Service Invoice Issuer</text>
+                     </value>
+                     <font baselineShift="0pt" typeface="Arial">
+                        <fill>
+                           <color value="255,0,0"/>
+                        </fill>
+                     </font>
+                     <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                     <border>
+                        <edge presence="hidden"/>
+                        <corner join="round" presence="hidden" radius="2mm" thickness="0.175mm"/>
+                     </border>
+                     <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt"/>
+                     <?renderCache.bounds 231166 12000 0 0 1417 1417 0 0?>
+                     <?renderCache.textRun 26 For Service Invoice Issuer 0 1417 9313 255 0 0 "Arial" 0 0 10000 ISO-8859-1?></draw>
+                  <field access="readOnly" h="6.35mm" name="BUSINESS_PARTNER_NUMBER" w="82.55mm" y="12.7mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="A766242A-826B-4A85-9FC9-D53FC0BF4417">Business Partner No.</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.SENDER.BUSINESS_PARTNER_NUMBER"/>
+                     <value>
+                        <text maxChars="30"/>
+                     </value>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="POSTING_PERIOD" w="82.55mm" y="6.35mm">
+                     <ui>
+                        <textEdit multiLine="1">
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <font baselineShift="0pt" kerningMode="pair" size="8pt" typeface="Arial"/>
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="B8551342-F47D-45E4-B92D-E01F5F9F0DC4">Posting Period to use</text>
+                        </value>
+                     </caption>
+                     <bind match="dataRef" ref="$.SENDER.POSTING_PERIOD"/>
+                     <value>
+                        <text maxChars="3"/>
+                     </value>
+                     <desc>
+                        <text name="Schema Annotation">Posting Period</text>
+                     </desc>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="COMPANY_CODE" w="82.55mm" y="19.05mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="7C41627C-4536-4D99-9888-77B452314821">Company Code</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.SENDER.COMPANY_CODE"/>
+                     <value>
+                        <text maxChars="4"/>
+                     </value>
+                     <desc>
+                        <text name="Schema Annotation">Company Code</text>
+                     </desc>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="ACCOUNT_PNL" w="82.55mm" y="25.4mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="31846DB5-100F-443E-89BA-8426C89E53A9">Account (P&amp;L)</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.SENDER.ACCOUNT_PNL"/>
+                     <value>
+                        <text maxChars="10"/>
+                     </value>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="CONTROLLING_OBJECT" w="82.55mm" y="31.75mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="E1D34570-C825-4689-B50D-B977B6F1E565">CO Object</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.SENDER.CONTROLLING_OBJECT"/>
+                     <value>
+                        <text maxChars="30"/>
+                     </value>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="BUSINESS_DIVISION" w="82.55mm" y="38.1mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="67194E57-7166-45ED-A6DC-6BCC3AF64D18">Business Division</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.SENDER.BUSINESS_DIVISION"/>
+                     <value>
+                        <text maxChars="10"/>
+                     </value>
+                  </field>
+                  <field access="readOnly" h="6.35mm" name="TP_TRANSACTION_GROUP" w="82.55mm" y="44.45mm">
+                     <ui>
+                        <textEdit>
+                           <border presence="hidden"/>
+                           <margin/>
+                        </textEdit>
+                     </ui>
+                     <font size="8pt" typeface="Arial"/>
+                     <margin bottomInset="1mm" leftInset="1mm" rightInset="1mm" topInset="1mm"/>
+                     <para vAlign="middle"/>
+                     <caption reserve="34.6945mm">
+                        <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" vAlign="middle"/>
+                        <value>
+                           <text xliff:rid="7DE0980B-C6E2-47BD-A3D1-1A1CF1EEB88D">Transaction Group</text>
+                        </value>
+                        <font baselineShift="0pt" size="8pt" typeface="Arial"/>
+                     </caption>
+                     <bind match="dataRef" ref="$.SENDER.TP_TRANSACTION_GROUP"/>
+                     <value>
+                        <text maxChars="10"/>
+                     </value>
+                  </field>
+                  <?templateDesigner expand 1?></subform>
+               <draw anchorType="middleCenter" h="6.35mm" name="Text2" w="196.85mm" x="98.425mm" y="3.175mm">
+                  <ui>
+                     <textEdit/>
+                  </ui>
+                  <value>
+                     <exData contentType="text/html" xliff:rid="F8CA613E-D5E5-4E83-B692-E4290DDA44F3">
+                        <body xmlns="http://www.w3.org/1999/xhtml" xmlns:xfa="http://www.xfa.org/schema/xfa-data/1.0/"><p style="font-weight:bold;letter-spacing:0in"><span style="xfa-spacerun:yes"> </span>Intercompany Accounting posting details information<span style="xfa-tab-count:3">                           </span></p></body>
+                     </exData>
+                  </value>
+                  <font baselineShift="0pt" typeface="Arial"/>
+                  <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+                  <para hAlign="center" marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt"/>
+                  <border>
+                     <edge presence="hidden"/>
+                     <fill>
+                        <color value="239,239,239"/>
+                     </fill>
+                     <corner join="round" presence="hidden" radius="2mm" thickness="0.175mm"/>
+                  </border>
+               </draw>
+               <?templateDesigner expand 0?></subform>
+            <?templateDesigner expand 0?></subform>
+         <?templateDesigner expand 1?></subform>
+      <proto/>
+      <desc>
+         <text name="version">11.0.9.20240424.1.48.2</text>
+      </desc>
+      <?templateDesigner expand 1?>
+      <?renderCache.subset "Arial" 0 0 ISO-8859-1 4 212 53 000300080009000A000B000C0011001200140015001D00240025002600270029002A002C002F0030003100320033003400350036003700380039003D004400450046004700480049004A004B004C004D004E004F005000510052005300550056005700580059005B005C %&'()./12:ABCDFGILMNOPQRSTUVZabcdefghijklmnoprstuvxy?>
+      <?renderCache.subset "Arial" 1 0 ISO-8859-1 4 80 20 00030024002C00440046004700480049004A004C004F00500051005200530055005600570058005C AIacdefgilmnoprstuy?>
+      <?renderCache.subset "Myriad Pro" 0 0 ISO-8859-1 4 228 58 0001000C000D000E000F00120013001400150016001700180019001A001B00220023002400250026002700280029002A002C002E002F00300033003400350037003800420043004400450046004700480049004A004C004D004E004F00500051005300540055005600580059005A005B00E0 +,-.123456789:ABCDEFGHIKMNORSTVWabcdefghiklmnoprstuwxyzü?></subform>
+   <?templateDesigner DefaultPreviewDynamic 1?>
+   <?templateDesigner DefaultRunAt client?>
+   <?templateDesigner DefaultCaptionFontSettings face:Arial;size:10;weight:normal;style:normal?>
+   <?templateDesigner DefaultValueFontSettings face:Arial;size:10;weight:normal;style:normal?>
+   <?templateDesigner DefaultLanguage JavaScript?>
+   <?acrobat JavaScript strictScoping?>
+   <?templateDesigner WidowOrphanControl 0?>
+   <?templateDesigner Grid show:1, snap:1, units:0, color:ff8080, origin:(0,0), interval:(125000,125000), objsnap:0, guidesnap:0, pagecentersnap:0?>
+   <?templateDesigner SavePDFWithLog 0?>
+   <?templateDesigner SaveTaggedPDF 0?>
+   <?templateDesigner SavePDFWithEmbeddedFonts 0?>
+   <?templateDesigner FormTargetVersion 33?>
+   <?templateDesigner Rulers horizontal:1, vertical:1, guidelines:1, crosshairs:0?>
+   <?templateDesigner Zoom 76?></template>
+<config xmlns="http://www.xfa.org/schema/xci/3.0/">
+   <agent name="designer">
+      <!--  [0..n]  -->
+      <destination>pdf</destination>
+      <pdf>
+         <!--  [0..n]  -->
+         <fontInfo/>
+      </pdf>
+      <common>
+         <template>
+            <base>http://v224sdc:8000/sap/bc/fp/form/layout/</base>
+         </template>
+      </common>
+   </agent>
+   <present>
+      <!--  [0..n]  -->
+      <pdf>
+         <!--  [0..n]  -->
+         <version>1.7</version>
+         <adobeExtensionLevel>8</adobeExtensionLevel>
+      </pdf>
+      <common>
+         <data>
+            <xsl>
+               <uri/>
+            </xsl>
+            <outputXSL>
+               <uri/>
+            </outputXSL>
+         </data>
+      </common>
+      <xdp>
+         <packets>*</packets>
+      </xdp>
+   </present>
+</config>
+<localeSet xmlns="http://www.xfa.org/schema/xfa-locale-set/2.7/">
+   <locale desc="English (United States)" name="en_US">
+      <calendarSymbols name="gregorian">
+         <monthNames>
+            <month>January</month>
+            <month>February</month>
+            <month>March</month>
+            <month>April</month>
+            <month>May</month>
+            <month>June</month>
+            <month>July</month>
+            <month>August</month>
+            <month>September</month>
+            <month>October</month>
+            <month>November</month>
+            <month>December</month>
+         </monthNames>
+         <monthNames abbr="1">
+            <month>Jan</month>
+            <month>Feb</month>
+            <month>Mar</month>
+            <month>Apr</month>
+            <month>May</month>
+            <month>Jun</month>
+            <month>Jul</month>
+            <month>Aug</month>
+            <month>Sep</month>
+            <month>Oct</month>
+            <month>Nov</month>
+            <month>Dec</month>
+         </monthNames>
+         <dayNames>
+            <day>Sunday</day>
+            <day>Monday</day>
+            <day>Tuesday</day>
+            <day>Wednesday</day>
+            <day>Thursday</day>
+            <day>Friday</day>
+            <day>Saturday</day>
+         </dayNames>
+         <dayNames abbr="1">
+            <day>Sun</day>
+            <day>Mon</day>
+            <day>Tue</day>
+            <day>Wed</day>
+            <day>Thu</day>
+            <day>Fri</day>
+            <day>Sat</day>
+         </dayNames>
+         <meridiemNames>
+            <meridiem>AM</meridiem>
+            <meridiem>PM</meridiem>
+         </meridiemNames>
+         <eraNames>
+            <era>BC</era>
+            <era>AD</era>
+         </eraNames>
+      </calendarSymbols>
+      <datePatterns>
+         <datePattern name="full">EEEE, MMMM D, YYYY</datePattern>
+         <datePattern name="long">MMMM D, YYYY</datePattern>
+         <datePattern name="med">MMM D, YYYY</datePattern>
+         <datePattern name="short">M/D/YY</datePattern>
+      </datePatterns>
+      <timePatterns>
+         <timePattern name="full">h:MM:SS A Z</timePattern>
+         <timePattern name="long">h:MM:SS A Z</timePattern>
+         <timePattern name="med">h:MM:SS A</timePattern>
+         <timePattern name="short">h:MM A</timePattern>
+      </timePatterns>
+      <dateTimeSymbols>GyMdkHmsSEDFwWahKzZ</dateTimeSymbols>
+      <numberPatterns>
+         <numberPattern name="numeric">z,zz9.zzz</numberPattern>
+         <numberPattern name="currency">$z,zz9.99|($z,zz9.99)</numberPattern>
+         <numberPattern name="percent">z,zz9%</numberPattern>
+      </numberPatterns>
+      <numberSymbols>
+         <numberSymbol name="decimal">.</numberSymbol>
+         <numberSymbol name="grouping">,</numberSymbol>
+         <numberSymbol name="percent">%</numberSymbol>
+         <numberSymbol name="minus">-</numberSymbol>
+         <numberSymbol name="zero">0</numberSymbol>
+      </numberSymbols>
+      <currencySymbols>
+         <currencySymbol name="symbol">$</currencySymbol>
+         <currencySymbol name="isoname">USD</currencySymbol>
+         <currencySymbol name="decimal">.</currencySymbol>
+      </currencySymbols>
+      <typefaces>
+         <typeface name="Myriad Pro"/>
+         <typeface name="Minion Pro"/>
+         <typeface name="Courier Std"/>
+         <typeface name="Adobe Pi Std"/>
+         <typeface name="Adobe Hebrew"/>
+         <typeface name="Adobe Arabic"/>
+         <typeface name="Adobe Thai"/>
+         <typeface name="Kozuka Gothic Pro-VI M"/>
+         <typeface name="Kozuka Mincho Pro-VI R"/>
+         <typeface name="Adobe Ming Std L"/>
+         <typeface name="Adobe Song Std L"/>
+         <typeface name="Adobe Myungjo Std M"/>
+         <typeface name="Adobe Devanagari"/>
+      </typefaces>
+   </locale>
+</localeSet>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 9.0-c000 79.cca54b0, 2022/11/26-09:29:55        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:pdfuaid="http://www.aiim.org/pdfua/ns/id/" xmlns:pdf="http://ns.adobe.com/pdf/1.3/" xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/" xmlns:desc="http://ns.adobe.com/xfa/promoted-desc/" rdf:about="">
+         <xmp:MetadataDate>2024-07-29T16:49:53Z</xmp:MetadataDate>
+         <xmp:CreatorTool>Adobe LiveCycle Designer 11.0</xmp:CreatorTool>
+         <pdfuaid:part>1</pdfuaid:part>
+         <pdf:Producer>Adobe LiveCycle Designer 11.0</pdf:Producer>
+         <xmpMM:DocumentID>uuid:fb7cd77a-3a70-4027-ae34-b2736859f7bf</xmpMM:DocumentID>
+         <desc:version rdf:parseType="Resource">
+            <rdf:value>11.0.9.20240424.1.48.2</rdf:value>
+            <desc:ref>/template/subform[1]</desc:ref>
+         </desc:version>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+<xfa:datasets xmlns:xfa="http://www.xfa.org/schema/xfa-data/1.0/">
+   <xfa:data xfa:dataNode="dataGroup"/>
+   <dd:dataDescription xmlns:dd="http://ns.adobe.com/data-description/" dd:name="data">
+      <data>
+         <RECEIVER>
+            <CUSTOMER_NUMBER/>
+            <ENTITY/>
+            <CONTACT_PERSON/>
+            <ADDRESS_STREET1/>
+            <ADDRESS_STREET2/>
+            <ADDRESS_STREET3/>
+            <ADDRESS_CITY/>
+            <ADDRESS_ZIP/>
+            <ADDRESS_STATE/>
+            <ADDRESS_COUNTRY/>
+            <VAT_NUMBER/>
+            <TAX_REGISTRATION_NUMBER/>
+            <TELEPHONE/>
+            <POSTING_PERIOD/>
+            <BUSINESS_PARTNER_NUMBER/>
+            <COMPANY_CODE/>
+            <ACCOUNT_PNL/>
+            <CONTROLLING_OBJECT/>
+            <BUSINESS_DIVISION/>
+            <TP_TRANSACTION_GROUP/>
+         </RECEIVER>
+         <SENDER>
+            <CUSTOMER_NUMBER/>
+            <ENTITY/>
+            <CONTACT_PERSON/>
+            <ADDRESS_STREET1/>
+            <ADDRESS_STREET2/>
+            <ADDRESS_STREET3/>
+            <ADDRESS_CITY/>
+            <ADDRESS_ZIP/>
+            <ADDRESS_STATE/>
+            <ADDRESS_COUNTRY/>
+            <VAT_NUMBER/>
+            <TAX_REGISTRATION_NUMBER/>
+            <TELEPHONE/>
+            <POSTING_PERIOD/>
+            <BUSINESS_PARTNER_NUMBER/>
+            <COMPANY_CODE/>
+            <ACCOUNT_PNL/>
+            <CONTROLLING_OBJECT/>
+            <BUSINESS_DIVISION/>
+            <TP_TRANSACTION_GROUP/>
+         </SENDER>
+         <BANK_DETAIL>
+            <IBAN/>
+            <BIC/>
+            <PAYMENT_TERMS/>
+            <CONTACT_PERSON/>
+            <TELEPHONE/>
+            <AGREEMENT_ID/>
+            <FREE_TEXT/>
+         </BANK_DETAIL>
+         <INVOICE_DETAIL>
+            <INVOICE_NUMBER/>
+            <INVOICE_DATE/>
+            <REFERENCE_NUMBER/>
+            <DELIVERY_DATE/>
+         </INVOICE_DETAIL>
+         <ITEMS dd:minOccur="0">
+            <DATA dd:maxOccur="-1">
+               <ITEM_POSITION/>
+               <SERVICE_PRODUCT/>
+               <DESCRIPTION/>
+               <METHOD/>
+               <BILLING_PERIOD/>
+               <UNIT_OF_MEASURE/>
+               <QUANTITY/>
+               <UNIT_PRICE_PER_SHARE/>
+               <CURRENCY/>
+               <TOTAL_AMOUNT/>
+               <TAX/>
+            </DATA>
+         </ITEMS>
+         <TOTALS>
+            <TOTAL_VALUE/>
+            <GROSS_VALUE/>
+            <VAT_OR_SALES_TAX/>
+         </TOTALS>
+      </data>
+   </dd:dataDescription>
+</xfa:datasets>
+<connectionSet xmlns="http://www.xfa.org/schema/xfa-connection-set/2.8/">
+   <xsdConnection dataDescription="data" name="_ESRCC_SERV_PROVIDR_INVOICE">
+      <uri/>
+      <rootElement>data</rootElement>
+   </xsdConnection>
+</connectionSet></xdp:xdp>

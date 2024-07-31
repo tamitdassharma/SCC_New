@@ -211,9 +211,27 @@ annotate view /ESRCC/C_REC_INDKPISHARE with
   } ]
   @UI.selectionField: [{ position: 90 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
-                                        additionalBinding: [{ element: 'Sysid', localElement: 'sysid'}]}]
+                                        additionalBinding: [{ element: 'OECD', localElement: 'OECD'}]}]
   @UI.textArrangement: #TEXT_LAST
   serviceproduct;
+  
+  @UI.lineItem: [ {
+  position: 91 ,
+  importance: #MEDIUM,
+  label: '',
+  cssDefault:{width: '10rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 90 ,
+    qualifier: 'OrgData'
+  } ]
+  @UI.selectionField: [{ position: 89 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_OECD', element: 'OECD' }}]
+  @UI.textArrangement: #TEXT_LAST
+  OECD;
+  
   @UI.lineItem: [ {
   position: 100 ,
   importance: #HIGH,
@@ -357,4 +375,6 @@ annotate view /ESRCC/C_REC_INDKPISHARE with
    legalcountryname;
    @UI.hidden: true
    receivingcountryname;
+   @UI.hidden: true
+   oecdDescription;
 }

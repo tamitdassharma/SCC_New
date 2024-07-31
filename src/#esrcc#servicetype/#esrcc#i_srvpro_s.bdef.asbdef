@@ -32,7 +32,7 @@ authorization dependent by _ServiceProductAll
 
 {
   field ( mandatory : create )
-  Serviceproduct;
+  Serviceproduct, OecdTpg;
 
   field ( readonly )
   SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
@@ -47,6 +47,7 @@ authorization dependent by _ServiceProductAll
   mapping for /ESRCC/SRVPRO
   {
     Serviceproduct = SERVICEPRODUCT;
+    OecdTpg = OECDTPG;
     CreatedBy = CREATED_BY;
     CreatedAt = CREATED_AT;
     LastChangedBy = LAST_CHANGED_BY;
@@ -87,6 +88,8 @@ authorization dependent by _ServiceProductAll
     Spras = SPRAS;
     Serviceproduct = SERVICEPRODUCT;
     Description = DESCRIPTION;
+    Activities = ACTIVITIES;
+    Benefit = BENEFIT;
     LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
   }
 

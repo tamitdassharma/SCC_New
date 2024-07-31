@@ -21,7 +21,8 @@ define view entity /ESRCC/C_SrvCeleM
       Costind,
       @ObjectModel.text.element: ['UsageTypeDesc']
       Usagetype,
-
+      @ObjectModel.text.element: ['ReasonDesc']
+      Reasonid,
       ValidTo,
       CreatedBy,
       CreatedAt,
@@ -46,6 +47,8 @@ define view entity /ESRCC/C_SrvCeleM
       _CostIndText.text                       as CostIndDesc,
       @Semantics.text: true
       _UsageTypeText.text                     as UsageTypeDesc,
+      @Semantics.text: true
+      _ReasonText.reasondescription           as ReasonDesc,
       @Consumption.hidden: true
       SingletonID,
       _CostElementToLeAll : redirected to parent /ESRCC/C_SrvCeleM_S

@@ -38,6 +38,8 @@ define root view entity /ESRCC/C_OPENTASKCOSTBASE
   Costind,
   @ObjectModel.text.element: [ 'usagecaldescription' ]
   Usagecal,
+  @ObjectModel.text.element: [ 'reasondescription' ]
+  ReasonId,
 //  @ObjectModel.text.element: [ 'costdatasetdescription' ]
 //  Costdataset,
   @ObjectModel.text.element: [ 'statusdescription' ]
@@ -67,6 +69,8 @@ define root view entity /ESRCC/C_OPENTASKCOSTBASE
   businessdivdescription,
   profitcenterdescription,
   usagecriticallity,
+  @Semantics.text: true
+  reasondescription, 
   statuscriticallity,
   @ObjectModel.text.element: [ 'legalentitycountryname' ]
   Country,

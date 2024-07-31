@@ -101,6 +101,17 @@ annotate view /ESRCC/C_SrvCeleM with
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_USAGECALCULATION', element: 'usagecal' }}]
   Usagetype;
+  
+  @UI.identification: [ { position: 9 } ]
+  @UI.lineItem: [ { position: 11, cssDefault.width: '15rem' } ]
+  @UI.textArrangement: #TEXT_LAST
+//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_REASON_F4', element: 'Reasonid' },
+//                                       additionalBinding: [{ element: 'calculationusage', localElement: 'Usagetype' }],
+//                                       useForValidation: true }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_REASON_F4', element: 'Reasonid' }}]
+//                                       additionalBinding: [{ element: 'calculationusage', localElement: 'Usagetype' }],
+//                                       useForValidation: true }]
+  Reasonid;
 
   @UI.lineItem: [ { position: 5 } ]
   @UI.fieldGroup: [{ position: 1, qualifier: 'ValidityGroup' }]
@@ -110,19 +121,19 @@ annotate view /ESRCC/C_SrvCeleM with
   @UI.fieldGroup: [{ position: 2, qualifier: 'ValidityGroup' }]
   ValidTo;
 
-  @UI.lineItem: [ { position: 11 } ]
+  @UI.lineItem: [ { position: 12 } ]
   @UI.fieldGroup: [{ position: 1, qualifier: 'AdminGroup' }]
   CreatedBy;
 
-  @UI.lineItem: [ { position: 12, cssDefault.width: '9.5rem' } ]
+  @UI.lineItem: [ { position: 13, cssDefault.width: '9.5rem' } ]
   @UI.fieldGroup: [{ position: 2, qualifier: 'AdminGroup' }]
   CreatedAt;
 
-  @UI.lineItem: [ { position: 13 } ]
+  @UI.lineItem: [ { position: 14 } ]
   @UI.fieldGroup: [{ position: 3, qualifier: 'AdminGroup' }]
   LastChangedBy;
 
-  @UI.lineItem: [ { position: 14, cssDefault.width: '9.5rem' } ]
+  @UI.lineItem: [ { position: 15, cssDefault.width: '9.5rem' } ]
   @UI.fieldGroup: [{ position: 4, qualifier: 'AdminGroup' }]
   LastChangedAt;
 
@@ -142,4 +153,6 @@ annotate view /ESRCC/C_SrvCeleM with
   CostIndDesc;
   @UI.hidden: true
   UsageTypeDesc;
+  @UI.hidden: true
+  ReasonDesc;
 }

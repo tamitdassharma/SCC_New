@@ -113,7 +113,7 @@ as select from /esrcc/rec_cost as ReceiverShare
     ( recorigtotalcostg + recpasstotalcostg ) - ( recvalueaddedg + recpassthroughg ) as Stewardshipg,  
     
     status,
-    
+    serviceproduct.OECD,
     @Semantics.text: true
     legalentity.Description as legalentitydescription,
     @Semantics.text: true
@@ -134,6 +134,8 @@ as select from /esrcc/rec_cost as ReceiverShare
     businessdiv.Description as businessdescription,
     @Semantics.text: true
     profitcenter.profitcenterdescription,
+    @Semantics.text: true
+    serviceproduct.oecdDescription,
     costdataset.text as costdatasetdescription,
     _status.text as statusdescription,   
     legalentity.Country          as legalentitycountry,

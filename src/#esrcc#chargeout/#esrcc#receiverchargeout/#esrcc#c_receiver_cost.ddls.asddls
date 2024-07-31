@@ -80,6 +80,10 @@ as projection on /ESRCC/I_RECEIVER_COST
     _RecCountryText.CountryName as receivingcountryname,   
     hidedirect,    
     hideindirect,
+    @ObjectModel.text.element: [ 'oecdDescription' ]
+    OECD,
+    @Semantics.text: true
+    oecdDescription,
     /* Associations */
     _RecmkupCost : redirected to composition child /ESRCC/C_RECMKUP_COST,
     _IndRecmkupCost : redirected to composition child /ESRCC/C_INDRECMKUP_COST
