@@ -97,7 +97,9 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
 //  Direct allocation unit cost
     @Semantics.quantity.unitOfMeasure: 'uom'
     cast(case when chargeout = 'D' and dirplan.uom <> uom then
-    unit_conversion( quantity => dirplan.planning,
+    unit_conversion( 
+                     client => $session.client,
+                     quantity => dirplan.planning,
                      source_unit => dirplan.uom,
                      target_unit => uom,
                      error_handling => 'SET_TO_NULL' ) 
@@ -106,7 +108,9 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     uom,
     cast(case when chargeout = 'D' and  dirplan.planning <> 0 then
     totalcb_li.srvcostshareL / case when chargeout = 'D' and dirplan.uom <> uom then
-                                    unit_conversion( quantity => dirplan.planning,
+                                    unit_conversion( 
+                                                     client => $session.client,
+                                                     quantity => dirplan.planning,
                                                      source_unit => dirplan.uom,
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
@@ -116,7 +120,9 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     
     cast(case when chargeout = 'D' and  dirplan.planning <> 0  then
     ( valueaddshareL / case when chargeout = 'D' and dirplan.uom <> uom then
-                                    unit_conversion( quantity => dirplan.planning,
+                                    unit_conversion( 
+                                                     client => $session.client,
+                                                     quantity => dirplan.planning,
                                                      source_unit => dirplan.uom,
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
@@ -126,7 +132,9 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     
     cast(case when chargeout = 'D' and  dirplan.planning <> 0 then
     (passthroughshareL / case when chargeout = 'D' and dirplan.uom <> uom then
-                                    unit_conversion( quantity => dirplan.planning,
+                                    unit_conversion( 
+                                                     client => $session.client,
+                                                     quantity => dirplan.planning,
                                                      source_unit => dirplan.uom,
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
@@ -138,7 +146,9 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     
     cast(case when chargeout = 'D' and  dirplan.planning <> 0 then
     (totalcb_li.srvcostshareG / case when chargeout = 'D' and dirplan.uom <> uom then
-                                    unit_conversion( quantity => dirplan.planning,
+                                    unit_conversion( 
+                                                     client => $session.client,
+                                                     quantity => dirplan.planning,
                                                      source_unit => dirplan.uom,
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
@@ -148,7 +158,9 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     
     cast(case when chargeout = 'D' and  dirplan.planning <> 0 then
     (valueaddshareG / case when chargeout = 'D' and dirplan.uom <> uom then
-                                    unit_conversion( quantity => dirplan.planning,
+                                    unit_conversion( 
+                                                     client => $session.client,
+                                                     quantity => dirplan.planning,
                                                      source_unit => dirplan.uom,
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
@@ -158,7 +170,9 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     
     cast(case when chargeout = 'D' and  dirplan.planning <> 0  then
     (passthroughshareG / case when chargeout = 'D' and dirplan.uom <> uom then
-                                    unit_conversion( quantity => dirplan.planning,
+                                    unit_conversion( 
+                                                     client => $session.client,
+                                                     quantity => dirplan.planning,
                                                      source_unit => dirplan.uom,
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
@@ -172,7 +186,9 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     
     cast(case when chargeout = 'D' and dirplan.planning <> 0 then
     (valueaddshareL / case when chargeout = 'D' and dirplan.uom <> uom then
-                                    unit_conversion( quantity => dirplan.planning,
+                                    unit_conversion( 
+                                                     client => $session.client,
+                                                     quantity => dirplan.planning,
                                                      source_unit => dirplan.uom,
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
@@ -181,7 +197,9 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     
     cast(case when chargeout = 'D' and dirplan.planning <> 0 then
     (valueaddshareG / case when chargeout = 'D' and dirplan.uom <> uom then
-                                    unit_conversion( quantity => dirplan.planning,
+                                    unit_conversion( 
+                                                     client => $session.client,
+                                                     quantity => dirplan.planning,
                                                      source_unit => dirplan.uom,
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
@@ -190,7 +208,9 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     
     cast(case when chargeout = 'D' and dirplan.planning <> 0 then
     (passthroughshareL / case when chargeout = 'D' and dirplan.uom <> uom then
-                                    unit_conversion( quantity => dirplan.planning,
+                                    unit_conversion( 
+                                                     client => $session.client,
+                                                     quantity => dirplan.planning,
                                                      source_unit => dirplan.uom,
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 
@@ -199,7 +219,9 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     
     cast(case when chargeout = 'D' and dirplan.planning <> 0 then
     (passthroughshareG / case when chargeout = 'D' and dirplan.uom <> uom then
-                                    unit_conversion( quantity => dirplan.planning,
+                                    unit_conversion( 
+                                                     client => $session.client,
+                                                     quantity => dirplan.planning,
                                                      source_unit => dirplan.uom,
                                                      target_unit => uom,
                                                      error_handling => 'SET_TO_NULL' ) 

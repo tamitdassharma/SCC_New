@@ -48,7 +48,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       //Direct Allocation
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(transferprice as abap.curr(23,2)),
+      currency_conversion( 
+                           client => $session.client,
+                           amount => cast(transferprice as abap.curr(23,2)),
                            source_currency => Currency,
                            round => 'X',
                            target_currency => rcventity.LocalCurr,
@@ -58,7 +60,9 @@ define view entity /ESRCC/I_RECMKUP_COST
 
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(Servicecostperunit as abap.curr(23,2)),
+      currency_conversion( 
+                           client => $session.client,
+                           amount => cast(Servicecostperunit as abap.curr(23,2)),
                            source_currency => Currency,
                            round => 'X',
                            target_currency => rcventity.LocalCurr,
@@ -68,7 +72,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(Valueaddcostperunit as abap.curr(23,2)),
+      currency_conversion( 
+                           client => $session.client,
+                           amount => cast(Valueaddcostperunit as abap.curr(23,2)),
                            source_currency => Currency,
                            round => 'X',
                            target_currency => rcventity.LocalCurr,
@@ -78,7 +84,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(Passthrucostperunit as abap.curr(23,2)),
+      currency_conversion( 
+                         client => $session.client,
+                         amount => cast(Passthrucostperunit as abap.curr(23,2)),
                          source_currency => Currency,
                          round => 'X',
                          target_currency => rcventity.LocalCurr,
@@ -89,7 +97,9 @@ define view entity /ESRCC/I_RECMKUP_COST
 
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(tp_totalsrvmarkupabs as abap.curr(23,2)),
+      currency_conversion( 
+                         client => $session.client,
+                         amount => cast(tp_totalsrvmarkupabs as abap.curr(23,2)),
                          source_currency => Currency,
                          round => 'X',
                          target_currency => rcventity.LocalCurr,
@@ -99,7 +109,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(tp_valueaddmarkupabs as abap.curr(23,2)),
+      currency_conversion( 
+                         client => $session.client,
+                         amount => cast(tp_valueaddmarkupabs as abap.curr(23,2)),
                          source_currency => Currency,
                          round => 'X',
                          target_currency => rcventity.LocalCurr,
@@ -109,7 +121,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(tp_passthrumarkupabs as abap.curr(23,2)),
+      currency_conversion( 
+                         client => $session.client,
+                         amount => cast(tp_passthrumarkupabs as abap.curr(23,2)),
                          source_currency => Currency,
                          round => 'X',
                          target_currency => rcventity.LocalCurr,
@@ -122,7 +136,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       //Markup
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(onvalueaddedmarkupabs as abap.curr(23,2)),
+      currency_conversion( 
+                         client => $session.client,
+                         amount => cast(onvalueaddedmarkupabs as abap.curr(23,2)),
                          source_currency => Currency,
                          round => 'X',
                          target_currency => rcventity.LocalCurr,
@@ -132,7 +148,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(onvpassthrudmarkupabs as abap.curr(23,2)),
+      currency_conversion( 
+                         client => $session.client,
+                         amount => cast(onvpassthrudmarkupabs as abap.curr(23,2)),
                          source_currency => Currency,
                          round => 'X',
                          target_currency => rcventity.LocalCurr,
@@ -142,7 +160,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(totaludmarkupabs as abap.curr(23,2)),
+      currency_conversion( 
+                         client => $session.client,
+                         amount => cast(totaludmarkupabs as abap.curr(23,2)),
                          source_currency => Currency,
                          round => 'X',
                          target_currency => rcventity.LocalCurr,
@@ -153,7 +173,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       //    Indirect Allocation
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(totalcostbaseabs as abap.curr(23,2)),
+      currency_conversion( 
+                         client => $session.client,
+                         amount => cast(totalcostbaseabs as abap.curr(23,2)),
                          source_currency => Currency,
                          round => 'X',
                          target_currency => rcventity.LocalCurr,
@@ -163,7 +185,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(valuaddabs as abap.curr(23,2)),
+      currency_conversion( 
+                         client => $session.client,
+                         amount => cast(valuaddabs as abap.curr(23,2)),
                          source_currency => Currency,
                          round => 'X',
                          target_currency => rcventity.LocalCurr,
@@ -173,7 +197,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(passthruabs as abap.curr(23,2)),
+      currency_conversion( 
+                         client => $session.client,
+                         amount => cast(passthruabs as abap.curr(23,2)),
                          source_currency => Currency,
                          round => 'X',
                          target_currency => rcventity.LocalCurr,
@@ -183,7 +209,9 @@ define view entity /ESRCC/I_RECMKUP_COST
       
       @Semantics.amount.currencyCode: 'Currency'
       case when Currencytype = 'L' and Currency <> rcventity.LocalCurr then
-      currency_conversion( amount => cast(chargeoutforservice as abap.curr(23,2)),
+      currency_conversion( 
+                         client => $session.client,
+                         amount => cast(chargeoutforservice as abap.curr(23,2)),
                          source_currency => Currency,
                          round => 'X',
                          target_currency => rcventity.LocalCurr,

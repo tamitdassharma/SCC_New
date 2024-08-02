@@ -152,7 +152,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * totalchargeoutamountL ) as abap.dec(23,2)) 
       else
       cast(transferpriceL * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -164,7 +166,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * totalchargeoutamountG ) as abap.dec(23,2)) 
       else
       cast(transferpriceG * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -176,7 +180,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * srvtotalmarkupabsL ) as abap.dec(23,2))
       else 
       cast( (tp_valueaddmarkupcostperunitl + tp_passthrumarkupcostperunitl) * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -188,7 +194,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * srvtotalmarkupabsG ) as abap.dec(23,2))
       else 
       cast( (tp_valueaddmarkupcostperunitg + tp_passthrumarkupcostperunitg) * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -200,7 +208,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * valueaddmarkupabsl ) as abap.dec(23,2))
       else 
       cast( tp_valueaddmarkupcostperunitl * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -212,7 +222,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * valueaddmarkupabsg ) as abap.dec(23,2))
       else 
       cast( tp_valueaddmarkupcostperunitg * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -224,7 +236,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * passthrumarkupabsl ) as abap.dec(23,2))
       else 
       cast( tp_passthrumarkupcostperunitl * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -236,7 +250,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * passthrumarkupabsg ) as abap.dec(23,2))
       else 
       cast( tp_passthrumarkupcostperunitg * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -248,7 +264,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * srvcostsharel )  as abap.dec(23,2))
       else 
       cast( servicecostperunitl * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -260,7 +278,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * srvcostshareg )  as abap.dec(23,2))
       else 
       cast( servicecostperunitg * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -272,7 +292,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * valueaddsharel )  as abap.dec(23,2))
       else 
       cast( valueaddcostperunitl * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -284,7 +306,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * valueaddshareg )  as abap.dec(23,2))
       else 
       cast( valueaddcostperunitg * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -296,7 +320,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * passthroughsharel )  as abap.dec(23,2))
       else 
       cast( passthrucostperunitl * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -308,7 +334,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       cast( ( _chargeoutreckpisum.totalreckpishare  * passthroughshareg )  as abap.dec(23,2))
       else 
       cast( passthrucostperunitg * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -321,7 +349,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostsharel <> 0 then
       cast( ( ( servicecostperunitl * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -335,7 +365,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostshareg <> 0 then
       cast( ( ( servicecostperunitg * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -349,7 +381,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostsharel <> 0 then
       cast( ( ( ( servicecostperunitl * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -363,7 +397,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostshareg <> 0 then
       cast( ( ( ( servicecostperunitg * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -377,7 +413,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostsharel <> 0 then
       cast( ( ( ( ( ( servicecostperunitl * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -391,7 +429,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostshareg <> 0 then
       cast( ( ( ( ( ( servicecostperunitg * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -405,7 +445,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostsharel <> 0 then
       cast( ( ( ( ( ( servicecostperunitl * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -419,7 +461,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostshareg <> 0 then
       cast( ( ( ( ( ( servicecostperunitg * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -433,7 +477,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostsharel <> 0 then
       cast( ( ( servicecostperunitl * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -447,7 +493,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostshareg <> 0 then
       cast( ( ( servicecostperunitg * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -461,7 +509,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostsharel <> 0 then
       cast( ( ( servicecostperunitl * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
@@ -475,7 +525,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       else 
       case when srvcostshareg <> 0 then
       cast( ( ( servicecostperunitg * (cast(case when _diralloc.uom <> chargeoutreckpi.uom then
-                              unit_conversion( quantity => _diralloc.consumption,
+                              unit_conversion( 
+                                             client => $session.client,
+                                             quantity => _diralloc.consumption,
                                              source_unit => _diralloc.uom,
                                              target_unit => chargeoutreckpi.uom,
                                              error_handling => 'SET_TO_NULL' ) 
