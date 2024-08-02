@@ -1,35 +1,35 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain Legal Entity Address",
+    "description": "Maintain Bank Information",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
-    "serviceBinding": "/ESRCC/UI_LE_ADDRESS_O4",
-    "serviceName": "/ESRCC/UI_LE_ADDRESS_O4",
+    "serviceBinding": "/ESRCC/UI_LEBNKINFO",
+    "serviceName": "/ESRCC/UI_LEBNKINFO",
     "serviceVersion": "0001",
-    "rootEntitySet": "LeAddressAll",
-    "name": "Maintain Legal Entity Address",
-    "configurationGroup": "/ESRCC/BC_GROUP9",
+    "rootEntitySet": "BankInformationAll",
+    "name": "Maintain Bank Information",
+    "configurationGroup": "",
     "skipRootEntity": true
   },
   "appConfiguration": {
     "listReport": {},
     "objectPages": [
       {
-        "entitySet": "LeAddress"
+        "entitySet": "BankInformation"
       }
     ],
     "tableSettings": [
       {
-        "entitySet": "LeAddress",
+        "entitySet": "BankInformation",
         "tableType": "gridTable",
         "creationModeName": "creationRow",
         "enableFullScreen": true,
         "rowCountMode": "auto"
       },
       {
-        "entitySet": "LeAddressAll"
+        "entitySet": "BankInformationAll"
       }
     ]
   }

@@ -1,35 +1,35 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain Legal Entity Additional Information",
+    "description": "Maintain Tax Information",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
-    "serviceBinding": "/ESRCC/UI_LEOTHERS",
-    "serviceName": "/ESRCC/UI_LEOTHERS",
+    "serviceBinding": "/ESRCC/UI_LETAXINFO_O4",
+    "serviceName": "/ESRCC/UI_LETAXINFO_O4",
     "serviceVersion": "0001",
-    "rootEntitySet": "OtherInformationAll",
-    "name": "Maintain Legal Entity Additional Information",
-    "configurationGroup": "/ESRCC/BC_GROUP9",
+    "rootEntitySet": "TaxInformationAll",
+    "name": "Maintain Tax Information",
+    "configurationGroup": "",
     "skipRootEntity": true
   },
   "appConfiguration": {
     "listReport": {},
     "objectPages": [
       {
-        "entitySet": "OtherInformation"
+        "entitySet": "TaxInformation"
       }
     ],
     "tableSettings": [
       {
-        "entitySet": "OtherInformation",
+        "entitySet": "TaxInformation",
         "tableType": "gridTable",
         "creationModeName": "creationRow",
         "enableFullScreen": true,
         "rowCountMode": "auto"
       },
       {
-        "entitySet": "OtherInformationAll"
+        "entitySet": "TaxInformationAll"
       }
     ]
   }
