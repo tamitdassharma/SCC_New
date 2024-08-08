@@ -19,7 +19,7 @@ CLASS LHC_/ESRCC/I_BUSDIV_S IMPLEMENTATION.
     LOOP AT entity-%TARGET ASSIGNING FIELD-SYMBOL(<target>).
       INSERT VALUE #( %CID_REF = <target>-%CID
                       %IS_DRAFT = <target>-%IS_DRAFT
-                        %KEY-BusinessDivison = <target>-%KEY-BusinessDivison
+                        %KEY-BusinessDivision = <target>-%KEY-BusinessDivision
                       %TARGET = VALUE #( (
                         %CID = |CREATETEXTCID{ sy-tabix }|
                         %IS_DRAFT = <target>-%IS_DRAFT

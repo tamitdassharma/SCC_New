@@ -189,7 +189,7 @@ annotate view /ESRCC/C_CC_COST with
     label: '',
     cssDefault:{width: '15rem'}
   } ]
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CompanyCodes_F4', element: 'Ccode' },
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_PR_F4', element: 'Ccode' },
                                        additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity' }]}]
   @UI.selectionField: [{ position: 40 }]
   @UI.fieldGroup: [

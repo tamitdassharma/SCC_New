@@ -84,7 +84,9 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
        0 
       else
       case when _diralloc.uom <> chargeoutreckpi.uom then
-      unit_conversion( quantity => _diralloc.consumption,
+      unit_conversion( 
+                     client => $session.client,
+                     quantity => _diralloc.consumption,
                      source_unit => _diralloc.uom,
                      target_unit => chargeoutreckpi.uom,
                      error_handling => 'SET_TO_NULL' ) 

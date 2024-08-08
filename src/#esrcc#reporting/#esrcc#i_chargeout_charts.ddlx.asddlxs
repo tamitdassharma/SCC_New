@@ -378,7 +378,7 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @UI.lineItem: [{ position: 05 ,cssDefault:{width: '10rem'}} ]
   @UI.selectionField: [{position: 05 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTDATASET', element: 'costdataset' }}]
-  @UI.textArrangement: #TEXT_ONLY 
+  @UI.textArrangement: #TEXT_ONLY
   Fplv;
 
   @UI.lineItem: [{ position: 10 }]
@@ -404,8 +404,8 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
 
   @UI.lineItem: [{ position: 50 }]
   @UI.selectionField: [{position: 30 }]
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_F4', element: 'ccode' },
-                                       additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity' }] }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_PR_F4', element: 'Ccode' },
+                                       additionalBinding: [ { element: 'Legalentity', localElement: 'Legalentity' } ]}]
   @UI.textArrangement: #TEXT_LAST
   Ccode;
 
@@ -433,13 +433,13 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
                                        additionalBinding: [{ element: 'Costobject', localElement: 'Costobject'}]}]
   @UI.textArrangement: #TEXT_LAST
   Costcenter;
-  
+
   @UI.lineItem: [{ position: 81 }]
   @UI.selectionField: [{position: 59}]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_OECD', element: 'OECD' }}]
   @UI.textArrangement: #TEXT_LAST
   OECD;
-  
+
   @UI.lineItem: [{ position: 80 }]
   @UI.selectionField: [{position: 60}]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
@@ -483,7 +483,7 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @UI.dataPoint: { title: 'Stewardship', valueFormat.numberOfFractionalDigits: 2 }
   @EndUserText.label: 'Stewardship'
   Stewardship;
-  
+
   @UI.lineItem: [{ position: 171 }]
   @UI.dataPoint: { title: 'Total Cost Base Remaining', valueFormat.numberOfFractionalDigits: 2 }
   @EndUserText.label: 'Total Cost Base Remaining'
@@ -503,14 +503,14 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @UI.dataPoint: { title: 'Total Mark-up', valueFormat.numberOfFractionalDigits: 2 }
   @EndUserText.label: 'Total Mark-up'
   SrvTotalMarkup;
-  
+
   @UI.selectionField: [{position: 100}]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CHARGEOUTSTATUS', element: 'Status' } }]
   @UI.lineItem: [{ position: 210}]
   @UI.textArrangement: #TEXT_ONLY
   @EndUserText.label: 'Charge-Out Status'
   status;
-  
+
   @UI.lineItem: [{ position: 999 }]
   @EndUserText.label: 'Legal Entity Country'
   @EndUserText.quickInfo: 'Legal Entity Country'
@@ -521,7 +521,7 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @EndUserText.quickInfo: 'Receiving Country'
   @UI.textArrangement: #TEXT_LAST
   receivingentitycountry;
-  
+
 
   //hidden fields
   @UI.hidden: true

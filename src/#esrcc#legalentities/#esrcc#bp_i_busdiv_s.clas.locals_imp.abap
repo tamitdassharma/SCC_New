@@ -29,7 +29,7 @@ CLASS lcl_custom_validation IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF control-businessdivision = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'BUSINESSDIVISON' ) TO fields. ENDIF.
+    IF control-businessdivision = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'BUSINESSDIVISION' ) TO fields. ENDIF.
 
     config_util_ref->validate_initial(
       fields = fields

@@ -5,7 +5,7 @@ define view entity /ESRCC/I_BusDiv
   association to parent /ESRCC/I_BusDiv_S   as _BusinessDivisionAll on $projection.SingletonID = _BusinessDivisionAll.SingletonID
   composition [0..*] of /ESRCC/I_BusDivText as _BusinessDivisioText
 {
-  key business_divison      as BusinessDivison,
+  key business_division     as BusinessDivision,
       @Semantics.user.createdBy: true
       created_by            as CreatedBy,
       @Semantics.systemDateTime.createdAt: true

@@ -221,16 +221,6 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
 
 
   METHOD extract_field_label.
-*    DATA(field) = VALUE ts_field( fieldname = gs_active_field-fieldname ).
-*
-*    field-fieldname = gs_active_field-fieldname.
-*    field-fieldtext = go_abap_dictionary->derive_field_label(
-*      EXPORTING
-*        iv_entity_name  = gv_source_entity_name
-*        iv_data_element = gv_data_element
-*        iv_field_name   = gs_active_field-fieldname
-*    ).
-
     DATA(field) = VALUE ts_field( fieldname = fieldname
                                   fieldtext = go_abap_dictionary->derive_field_label(
                                                 EXPORTING

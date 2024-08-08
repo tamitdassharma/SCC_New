@@ -32,13 +32,13 @@ authorization dependent by _BusinessDivisionAll
 
 {
   field ( mandatory : create )
-   BusinessDivison;
+   BusinessDivision;
 
   field ( readonly )
    SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
 
   field ( readonly : update )
-   BusinessDivison;
+   BusinessDivision;
 
 
   update( features : global );
@@ -46,7 +46,7 @@ authorization dependent by _BusinessDivisionAll
 
   mapping for /ESRCC/BUS_DIV
   {
-    BusinessDivison = BUSINESS_DIVISON;
+    BusinessDivision = BUSINESS_DIVISION;
     CreatedBy = CREATED_BY;
     CreatedAt = CREATED_AT;
     LastChangedBy = LAST_CHANGED_BY;

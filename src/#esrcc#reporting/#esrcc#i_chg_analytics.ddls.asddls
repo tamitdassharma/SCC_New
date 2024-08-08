@@ -13,7 +13,7 @@ as select from /esrcc/rec_cost as ReceiverShare
   association [0..1] to /ESRCC/I_COMPANYCODES_F4 as ccode  
   on ccode.Ccode = $projection.Ccode
   and ccode.Sysid = $projection.Sysid
-  and ccode.Legalentity = $projection.Legalentity
+//  and ccode.Legalentity = $projection.Legalentity
   
   association [0..1] to /ESRCC/I_COSTOBJECTS as costobject  
   on costobject.Costobject = $projection.Costobject

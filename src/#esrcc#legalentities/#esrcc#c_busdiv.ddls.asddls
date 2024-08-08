@@ -4,7 +4,7 @@
 define view entity /ESRCC/C_BusDiv
   as projection on /ESRCC/I_BusDiv
 {
-  key BusinessDivison,
+  key BusinessDivision,
   CreatedBy,
   CreatedAt,
   LastChangedBy,

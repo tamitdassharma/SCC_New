@@ -32,6 +32,12 @@
      <DOMVALUE_L>PS</DOMVALUE_L>
      <DDTEXT>Project (WBS Element)</DDTEXT>
     </DD07V>
+    <DD07V>
+     <VALPOS>0004</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>TB</DOMVALUE_L>
+     <DDTEXT>Account Balance total</DDTEXT>
+    </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>
     <LANGU>D</LANGU>
@@ -59,6 +65,12 @@
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>PS</DOMVALUE_L>
      <DDTEXT>Projekt (PSP-Element)</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0004</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>TB</DOMVALUE_L>
+     <DDTEXT>Kontensaldo gesamt</DDTEXT>
     </item>
    </DD07_TEXTS>
   </asx:values>

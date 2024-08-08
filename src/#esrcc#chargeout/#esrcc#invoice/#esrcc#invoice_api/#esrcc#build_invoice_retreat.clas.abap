@@ -50,17 +50,14 @@ CLASS /ESRCC/BUILD_INVOICE_RETREAT IMPLEMENTATION.
     DATA(invoice_data) = VALUE invoice_detail( ).
 
     FINAL(charge_out) = VALUE #( chargeouts[ 1 ] OPTIONAL ).
-    DATA(position) = 0.
     invoice_data-bank_information    = CORRESPONDING #( <other_detail>-sender-bank_information MAPPING iban = bank_account_number bic = bic_code ).
     invoice_data-items               = VALUE #(
         FOR <charge_out> IN chargeouts INDEX INTO chargeout_index
         ( VALUE #( BASE CORRESPONDING #( <charge_out> MAPPING service_product = Serviceproduct description = Serviceproductdescription
                                        method = chargeoutdescription billing_period = Poper unit_of_measure = Uom quantity = Reckpi
                                        unit_price_per_share = Reckpishare total_amount = Reckpishareabs )
-                   tax = <other_detail>-sender-tax_information-tax_percentage item_position = chargeout_index ) ) ).
-*    invoice_data-items               = CORRESPONDING #( chargeouts MAPPING service_product = Serviceproduct description = Serviceproductdescription
-*                                                        method = chargeoutdescription billing_period = Poper unit_of_measure = Uom quantity = Reckpi
-*                                                        unit_price_per_share = Reckpishare total_amount = Reckpishareabs ).
+                   tax           = <other_detail>-sender-tax_information-tax_percentage
+                   item_position = chargeout_index ) ) ).
     invoice_data-sender              = VALUE #( BASE CORRESPONDING #(
                                            CORRESPONDING /esrcc/entity_details(
                                              BASE (
@@ -88,8 +85,8 @@ CLASS /ESRCC/BUILD_INVOICE_RETREAT IMPLEMENTATION.
                                                                                                             tp_transaction_group = transaction_group ) )
                                                 posting_period = charge_out-Poper ).
     invoice_data-invoice_information = VALUE #( BASE CORRESPONDING #( charge_out MAPPING invoice_number = InvoiceNumber  reference_number = InvoiceNumber )
-                                                invoice_date  = sy-datum
-                                                delivery_date = sy-datum ).
+                                                invoice_date  = cl_abap_context_info=>get_system_date( )
+                                                delivery_date = cl_abap_context_info=>get_system_date( ) ).
     DATA(total) = VALUE f( ).
     DATA(tax) = VALUE f( ).
     LOOP AT invoice_data-items ASSIGNING FIELD-SYMBOL(<item>).
@@ -97,10 +94,7 @@ CLASS /ESRCC/BUILD_INVOICE_RETREAT IMPLEMENTATION.
       tax += ( ( <item>-total_amount * <item>-tax ) / 100 ).
     ENDLOOP.
 
-    invoice_data-totals-gross_value = <item>-total_amount + <item>-tax.
-*    SELECT SUM( total_amount ) FROM @invoice_data-items AS charge_out_amount INTO @FINAL(total_value).
-*    SELECT SUM( total_amount * <other_detail>-sender-tax_information-tax_percentage * '0.01' ) from @invoice_data-items AS charge_out_tax INTO @FINAL(tax_value).
-
+    invoice_data-totals-gross_value      = <item>-total_amount + <item>-tax.
     invoice_data-totals-total_value      = |{ total CURRENCY = charge_out-Currency } { charge_out-Currency } |.
     invoice_data-totals-vat_or_sales_tax = |{ tax CURRENCY = charge_out-Currency } { charge_out-Currency }|.
     invoice_data-totals-gross_value      = |{ ( total + tax ) CURRENCY = charge_out-Currency } { charge_out-Currency }|.
@@ -110,31 +104,32 @@ CLASS /ESRCC/BUILD_INVOICE_RETREAT IMPLEMENTATION.
 
   METHOD /esrcc/build_invoice_badi~get_other_details_for_invoice.
     DATA(other_invoice_detail) = VALUE _other_invoice_detail_type( ).
-    SELECT DISTINCT legalentity     AS sender,
-                    receivingentity AS receiver
-      FROM @chargeouts AS charge_outs
+    SELECT ##ITAB_DB_SELECT
+        DISTINCT legalentity     AS sender,
+                 receivingentity AS receiver
+      FROM @chargeouts AS charge_outs ##ITAB_KEY_IN_SELECT
       INTO TABLE @FINAL(charge_outs).
     FINAL(charge_out) = VALUE #( charge_outs[ 1 ] ).
 
-    SELECT SINGLE * FROM /esrcc/lebnkinfo AS bank_info
+    SELECT SINGLE * FROM /esrcc/lebnkinfo AS bank_info "#EC CI_ALL_FIELDS_NEEDED
       WHERE legal_entity = @charge_out-sender
       INTO @other_invoice_detail-sender-bank_information.
 
-    SELECT SINGLE * FROM /esrcc/letaxinfo AS tax_info
+    SELECT SINGLE * FROM /esrcc/letaxinfo AS tax_info "#EC CI_ALL_FIELDS_NEEDED
       WHERE legal_entity = @charge_out-sender
       INTO @other_invoice_detail-sender-tax_information.
-    SELECT SINGLE * FROM /esrcc/letaxinfo AS tax_info
+    SELECT SINGLE * FROM /esrcc/letaxinfo AS tax_info "#EC CI_ALL_FIELDS_NEEDED
       WHERE legal_entity = @charge_out-receiver
       INTO @other_invoice_detail-receiver-tax_information.
 
-    SELECT SINGLE * FROM /esrcc/le_addres AS address
+    SELECT SINGLE * FROM /esrcc/le_addres AS address "#EC CI_ALL_FIELDS_NEEDED
       WHERE legal_entity = @charge_out-sender
       INTO @other_invoice_detail-sender-address.
-    SELECT SINGLE * FROM /esrcc/le_addres AS address
+    SELECT SINGLE * FROM /esrcc/le_addres AS address "#EC CI_ALL_FIELDS_NEEDED
       WHERE legal_entity = @charge_out-receiver
       INTO @other_invoice_detail-receiver-address.
 
-    SELECT * FROM /esrcc/le_others AS other
+    SELECT * FROM /esrcc/le_others AS other "#EC CI_ALL_FIELDS_NEEDED
       WHERE legal_entity = @charge_out-sender AND role = 'R1'
       ORDER BY company_code DESCENDING,
                cost_object DESCENDING,
@@ -144,24 +139,16 @@ CLASS /ESRCC/BUILD_INVOICE_RETREAT IMPLEMENTATION.
     IF sy-subrc = 0.
       other_invoice_detail-sender-other_information = VALUE #( other_sender_info[ 1 ] OPTIONAL ).
     ENDIF.
-    SELECT * FROM /esrcc/le_others AS other
+    SELECT * FROM /esrcc/le_others AS other "#EC CI_ALL_FIELDS_NEEDED
       WHERE legal_entity = @charge_out-receiver AND role = 'R2'
       ORDER BY company_code DESCENDING,
                cost_object DESCENDING,
                business_division DESCENDING,
                transaction_group DESCENDING
-      " TODO: variable is assigned but never used (ABAP cleaner)
       INTO TABLE @FINAL(other_receiver_info).
     IF sy-subrc = 0.
-      other_invoice_detail-receiver-other_information = VALUE #( other_sender_info[ 1 ] OPTIONAL ).
+      other_invoice_detail-receiver-other_information = VALUE #( other_receiver_info[ 1 ] OPTIONAL ).
     ENDIF.
-
-*    SELECT SINGLE * FROM /esrcc/le_others AS other
-*    WHERE legal_entity = @charge_out-sender AND role = 'R1'
-*    INTO @other_invoice_detail-sender-other_information.
-*    SELECT SINGLE * FROM /esrcc/le_others AS other
-*      WHERE legal_entity = @charge_out-receiver AND role = 'R2'
-*      INTO @other_invoice_detail-receiver-other_information.
 
     other_details = NEW _other_invoice_detail_type( other_invoice_detail ).
   ENDMETHOD.

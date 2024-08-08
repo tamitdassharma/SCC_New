@@ -19,7 +19,7 @@ define view entity /ESRCC/I_SERVICEPRODUCT_F4
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
       @UI.textArrangement: #TEXT_LAST
       @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_OECD', element: 'OECD' } }]
-  key oecdtpg             as OECD,
+      oecdtpg             as OECD,
 
       @Semantics.text: true
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
@@ -29,5 +29,6 @@ define view entity /ESRCC/I_SERVICEPRODUCT_F4
       @Semantics.text: true
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
       @Consumption.filter.hidden: true
+      @UI.lineItem: [{ hidden: true }]
       _OECD.text          as oecdDescription
 }

@@ -10,7 +10,7 @@
     "serviceVersion": "0001",
     "rootEntitySet": "ReasonAll",
     "name": "Maintain Reason for Cost Exclusion/Inclusion",
-    "configurationGroup": "/ESRCC/BC_GROUP5",
+    "configurationGroup": "",
     "skipRootEntity": true
   },
   "appConfiguration": {

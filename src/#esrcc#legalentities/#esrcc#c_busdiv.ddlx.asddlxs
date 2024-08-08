@@ -6,7 +6,7 @@
     title: {
       type: #STANDARD,
       label: 'Business Division',
-      value: 'BusinessDivison'
+      value: 'BusinessDivision'
     },
     description: { value: 'Description' }
   }
@@ -36,7 +36,7 @@ annotate view /ESRCC/C_BusDiv with
   } ]
 
   @UI.lineItem: [ { position: 1 } ]
-  BusinessDivison;
+  BusinessDivision;
 
   @UI.lineItem: [ { position: 4 } ]
   @UI.fieldGroup: [{ position: 1, qualifier: 'AdminGroup' }]

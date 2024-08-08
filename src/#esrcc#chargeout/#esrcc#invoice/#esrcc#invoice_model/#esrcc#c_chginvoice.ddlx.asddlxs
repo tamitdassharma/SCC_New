@@ -180,7 +180,7 @@ annotate view /ESRCC/C_CHGINVOICE with
     position: 50 ,
     qualifier: 'OrgData'
   } ]
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CompanyCodes_F4', element: 'Ccode' },
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_PR_F4', element: 'Ccode' },
                                        additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity' }]}]
   @UI.selectionField: [{ position: 40 }]
   @UI.textArrangement: #TEXT_LAST

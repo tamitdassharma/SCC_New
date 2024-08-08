@@ -8,7 +8,7 @@ define view entity /ESRCC/I_LEGALENTITY_F4
   as select from /ESRCC/I_LegalEntityAll_F4
 {
 
-@ObjectModel.text.element: ['Description']
+      @ObjectModel.text.element: ['Description']
   key Legalentity,
       Entitytype,
       Role,

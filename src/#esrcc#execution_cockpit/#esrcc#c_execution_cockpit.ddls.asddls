@@ -44,7 +44,7 @@ define root custom entity /ESRCC/C_EXECUTION_COCKPIT
 
       @UI.lineItem           : [{ position: 41, hidden: true  }]
       @UI.selectionField     : [{ position: 30 }]
-      @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_F4', element: 'Ccode' },
+      @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_PR_F4', element: 'Ccode' },
                                        additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity' }] }]
       @ObjectModel.text.element: [ 'ccodedescription' ]
       @UI.textArrangement    : #TEXT_LAST

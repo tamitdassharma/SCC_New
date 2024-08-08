@@ -6,6 +6,7 @@ provider contract transactional_query
 as projection on /ESRCC/I_RECCOST_WORKFLOW
 {   
     @ObjectModel.filter.enabled: false
+    @ObjectModel.text.element: [ 'costdatasetdescription' ]
     key Fplv,
     @ObjectModel.filter.enabled: false
     key Ryear,
@@ -32,8 +33,10 @@ as projection on /ESRCC/I_RECCOST_WORKFLOW
     key Receivingentity,
     key Currencytype,
     @ObjectModel.filter.enabled: false
+    @ObjectModel.text.element: [ 'billingfrequencydescription' ]
     key Billingfrequqncy,
     @ObjectModel.filter.enabled: false
+    @ObjectModel.text.element: [ 'billingperioddescription' ]
     key Billingperiod,
     Reckpi,
     @ObjectModel.filter.enabled: false
@@ -64,6 +67,8 @@ as projection on /ESRCC/I_RECCOST_WORKFLOW
     @ObjectModel.text.element: [ 'statusdescription' ]
     Status,
     @Semantics.text: true
+    costdatasetdescription,
+    @Semantics.text: true
     legalentitydescription,
     @Semantics.text: true
     ccodedescription,
@@ -79,6 +84,10 @@ as projection on /ESRCC/I_RECCOST_WORKFLOW
     statusdescription,
     @Semantics.text: true
     receivingentitydescription,
+    @Semantics.text: true
+    billingfrequencydescription,
+    @Semantics.text: true
+    billingperioddescription,
     @ObjectModel.text.element: [ 'reccountryname' ]
     receivingentitycountry,
     @ObjectModel.text.element: [ 'legalcountryname' ]
