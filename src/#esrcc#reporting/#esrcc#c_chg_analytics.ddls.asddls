@@ -5,27 +5,40 @@ define root view entity /ESRCC/C_CHG_ANALYTICS
 provider contract transactional_query
 as projection on /ESRCC/I_CHG_ANALYTICS
 {   
+    key UUID,
+    key ParentUUID,
+    key RootUUID,
+    key Currencytype,
     @ObjectModel.text.element: [ 'costdatasetdescription' ]
-    key Fplv,
-    key Ryear,
-    key Poper,
-    key Sysid,
+    Fplv,
+    Ryear,
+    Poper,
+    Sysid,
     @ObjectModel.text.element: [ 'legalentitydescription' ]
-    key Legalentity,
+    Legalentity,
     @ObjectModel.text.element: [ 'ccodedescription' ]
-    key Ccode,
+    Ccode,
     @ObjectModel.text.element: [ 'costobjectdescription' ]
-    key Costobject,
+    Costobject,
     @ObjectModel.text.element: [ 'costcenterdescription' ]
-    key Costcenter,
+    Costcenter,
     @ObjectModel.text.element: [ 'serviceproductdescription' ]
-    key Serviceproduct,
+    Serviceproduct,
+    ReceiverSysId,
+    @ObjectModel.text.element: [ 'RecCcodedescription' ]
+    ReceiverCompanyCode,
     @ObjectModel.text.element: [ 'receivingentitydescription' ]
-    key Receivingentity,
+    Receivingentity,
+    @ObjectModel.text.element: [ 'RecCostObjectdescription' ]
+    ReceiverCostObject,
+    @ObjectModel.text.element: [ 'RecCostCenterdescription' ]
+    ReceiverCostCenter,
     @ObjectModel.filter.enabled: false
-    Billfrequency,
+    Billingfrequqncy,
     @ObjectModel.filter.enabled: false
     Billingperiod,
+    @ObjectModel.text.element: [ 'functionalareadescription' ]
+    FunctionalArea,
     @ObjectModel.text.element: [ 'businessdescription' ]
     Businessdivision,
     @ObjectModel.text.element: [ 'profitcenterdescription' ]
@@ -38,108 +51,57 @@ as projection on /ESRCC/I_CHG_ANALYTICS
     Transactiongroup,
     @ObjectModel.filter.enabled: false
     Chargeout,
-//    CapacityVersion,
-//    ConsumptionVersion,
-//    Planning,
     @ObjectModel.filter.enabled: false
-    Uom,
-//    Stewardship,
+    Uom,    
     @ObjectModel.filter.enabled: false
     Reckpi,
     @ObjectModel.filter.enabled: false
     Reckpishare,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Reckpishareabsl,
+    @Semantics.amount.currencyCode: 'Currency'
+    TotalChargeout,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Reckpishareabsg,
+    @Semantics.amount.currencyCode: 'Currency'
+    TotalRecMarkup,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Rectotalmarkupabsl,
+    @Semantics.amount.currencyCode: 'Currency'
+    RecValueaddMarkup,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Rectotalmarkupabsg,
+    @Semantics.amount.currencyCode: 'Currency'
+    RecPassthroughMarkup,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Recvalueaddmarkupabsl,
+    @Semantics.amount.currencyCode: 'Currency'
+    RecCostShare,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Recvalueaddmarkupabsg,
+    @Semantics.amount.currencyCode: 'Currency'
+    RecValueadded,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Recpassthrumarkupabsl,
+    @Semantics.amount.currencyCode: 'Currency'
+    RecPassthrough,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Recpassthrumarkupabsg,
+    @Semantics.amount.currencyCode: 'Currency'
+    RecStewardship,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Reccostsharel,
+    @Semantics.amount.currencyCode: 'Currency'
+    RecIncludedCost,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Reccostshareg,
+    @Semantics.amount.currencyCode: 'Currency'
+    RecOrigTotalCost,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Recvalueaddedl,
+    @Semantics.amount.currencyCode: 'Currency'
+    RecPassTotalCost,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Recvalueaddedg,
+    @Semantics.amount.currencyCode: 'Currency'
+    RecExcludedCost,
     @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Recpassthroughl,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Recpassthroughg,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Stewardshipg,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Stewardshipl,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Recincludedcostl,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Recincludedcostg,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Recorigtotalcostl,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Recorigtotalcostg,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Recpasstotalcostl,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Recpasstotalcostg,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Recexcludedcostl,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Recexcludedcostg,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Rectotalcostl,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Rectotalcostg,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Localcurr'
-    Totalchargeoutamountl,
-    @ObjectModel.filter.enabled: false
-    @Semantics.amount.currencyCode: 'Groupcurr'
-    Totalchargeoutamountg,
+    @Semantics.amount.currencyCode: 'Currency'
+    RecTotalCost,
     @ObjectModel.text.element: [ 'statusdescription' ]
-    status,
+    Status,
     @ObjectModel.text.element: [ 'oecdDescription' ]
     OECD,
     @ObjectModel.filter.enabled: false
-    Localcurr,
-    @ObjectModel.filter.enabled: false
-    Groupcurr,
+    Currency,
     @Semantics.text: true
     legalentitydescription,
     @Semantics.text: true
@@ -149,19 +111,27 @@ as projection on /ESRCC/I_CHG_ANALYTICS
     @Semantics.text: true
     receivingentitydescription,
     @Semantics.text: true
-    serviceproductdescription,
+    Serviceproductdescription,
     @Semantics.text: true
-    transactiongroupdescription,
+    Transactiongroupdescription,
     @Semantics.text: true
-    servicetypedescription,
+    Servicetypedescription,
     @Semantics.text: true
     ccodedescription,
+    @Semantics.text: true
+    functionalareadescription,
     @Semantics.text: true
     businessdescription,
     @Semantics.text: true
     profitcenterdescription,
     @Semantics.text: true
     costdatasetdescription,
+    @Semantics.text: true
+    RecCcodedescription,
+    @Semantics.text: true
+    RecCostObjectdescription,
+    @Semantics.text: true
+    RecCostCenterdescription,
     @Semantics.text: true
     statusdescription,
     @Semantics.text: true
@@ -173,9 +143,9 @@ as projection on /ESRCC/I_CHG_ANALYTICS
     @ObjectModel.filter.enabled: false
     legalentitycurrecy,
     @ObjectModel.filter.enabled: false
-    receivingentitycurrency,
+    ReceiverCurrency,
     @ObjectModel.filter.enabled: false
     legalentityregion,
     @ObjectModel.filter.enabled: false
-    receivingentityregion
+    ReceiverRegion
 }

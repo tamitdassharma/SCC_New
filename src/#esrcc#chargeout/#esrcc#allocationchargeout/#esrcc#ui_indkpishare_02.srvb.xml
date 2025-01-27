@@ -6,7 +6,7 @@
     <METADATA>
      <NAME>/ESRCC/UI_INDKPISHARE_02</NAME>
      <TYPE>SRVB/SVB</TYPE>
-     <DESCRIPTION>Indirect Allocation KPI Share</DESCRIPTION>
+     <DESCRIPTION>Allocation Share &amp; Values</DESCRIPTION>
      <LINKS>
       <item>
        <HREF>versions</HREF>
@@ -38,7 +38,7 @@
        <TITLE>SemanticVersion</TITLE>
       </item>
      </LINKS>
-     <RESPONSIBLE>VARUNA</RESPONSIBLE>
+     <RESPONSIBLE>SATISHDR</RESPONSIBLE>
      <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
      <ABAP_LANGU_VERSION>5</ABAP_LANGU_VERSION>
     </METADATA>

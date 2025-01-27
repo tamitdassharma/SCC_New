@@ -1,23 +1,23 @@
 @Metadata.layer: #CORE
 
-@UI.selectionVariant: [
-  {
-    text: 'Good',
-    qualifier: 'Good'
-  },
-   {
-    text: 'Medium Rating',
-    qualifier: 'Default'
-  }
-]
-
-@UI.selectionPresentationVariant: [{
-  id: '',
-  text: 'Medium Rating/PV',
-  selectionVariantQualifier: 'Default',
-  presentationVariantQualifier: 'Default',
-  qualifier: 'PV'
-}]
+//@UI.selectionVariant: [
+//  {
+//    text: 'Good',
+//    qualifier: 'Good'
+//  },
+//   {
+//    text: 'Medium Rating',
+//    qualifier: 'Default'
+//  }
+//]
+//
+//@UI.selectionPresentationVariant: [{
+//  id: '',
+//  text: 'Medium Rating/PV',
+//  selectionVariantQualifier: 'Default',
+//  presentationVariantQualifier: 'Default',
+//  qualifier: 'PV'
+//}]
 
 
 @UI.presentationVariant: [
@@ -86,14 +86,14 @@ annotate view /ESRCC/C_MANAGECOSTBASE with
 
   @UI.lineItem: [
 
-//  { type: #FOR_ACTION,  dataAction: 'changevalueadd' , label: 'Maintain Value-Add/Pass-Through' , position: 1, invocationGrouping: #CHANGE_SET },
-//  { type: #FOR_ACTION,  dataAction: 'changeitems' , label: 'Include/Exclude Items in Calculation' , position: 2, invocationGrouping: #CHANGE_SET },
-//  { type: #FOR_ACTION,  dataAction: 'discardall' , label: 'Discard' , position: 4, invocationGrouping: #CHANGE_SET  },
-//  { type: #FOR_ACTION,  dataAction: 'submit' , label: 'Submit' , position: 5, invocationGrouping: #CHANGE_SET  } ,
+  //  { type: #FOR_ACTION,  dataAction: 'changevalueadd' , label: 'Maintain Value-Add/Pass-Through' , position: 1, invocationGrouping: #CHANGE_SET },
+  //  { type: #FOR_ACTION,  dataAction: 'changeitems' , label: 'Include/Exclude Items in Calculation' , position: 2, invocationGrouping: #CHANGE_SET },
+  //  { type: #FOR_ACTION,  dataAction: 'discardall' , label: 'Discard' , position: 4, invocationGrouping: #CHANGE_SET  },
+  //  { type: #FOR_ACTION,  dataAction: 'submit' , label: 'Submit' , position: 5, invocationGrouping: #CHANGE_SET  } ,
   {
     position: 30 ,
     importance: #MEDIUM,
-    label: ''    
+    label: ''
   }]
 
   @UI.identification: [ {
@@ -156,6 +156,15 @@ annotate view /ESRCC/C_MANAGECOSTBASE with
     label: ''
   } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LegalEntity_F4', element: 'Legalentity' } }]
+////  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_F4', element: 'Legalentity' } }]
+//  @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'LegalEntity' },
+//                                       additionalBinding: [{ localElement: 'LegalEntity', element: 'Legalentity' },
+//                                                           { localElement: 'Sysid', element: 'Sysid' },
+//                                                           { localElement: 'Ccode', element: 'CompanyCode' },
+//                                                           { localElement: 'Costobject', element: 'Costobject' },
+//                                                           { localElement: 'Costcenter', element: 'Costcenter' }
+//                                                          ],
+//                                       useForValidation: true }]
   @UI.selectionField: [{position: 10}]
   @UI.textArrangement: #TEXT_LAST
   Legalentity;
@@ -243,6 +252,19 @@ annotate view /ESRCC/C_MANAGECOSTBASE with
   @UI.selectionField: [{position: 80}]
   @UI.textArrangement: #TEXT_LAST
   Costelement;
+  
+  @UI.lineItem: [ {
+    position: 85 ,
+    importance: #MEDIUM
+  } ]
+  @UI.identification: [ {
+  position: 85,
+  importance: #HIGH
+  } ]
+  @UI.selectionField: [{position: 85}]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_VALUESOURCE', element: 'ValueSource' } }]
+  ValueSource;
 
   @UI.lineItem: [ {
     position: 190 ,
@@ -355,7 +377,7 @@ annotate view /ESRCC/C_MANAGECOSTBASE with
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_USAGECALCULATION', element: 'usagecal' }}]
   @UI.dataPoint: { qualifier: 'usage', title: 'Usage in Calculation', criticality: 'usagecriticallity', criticalityRepresentation: #WITH_ICON }
   Usagecal;
-  
+
   @UI.lineItem: [ {
     position: 146 ,
     importance: #MEDIUM,
@@ -363,9 +385,9 @@ annotate view /ESRCC/C_MANAGECOSTBASE with
   } ]
   @UI.textArrangement: #TEXT_ONLY
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_REASON_F4', element: 'Reasonid' },
-                                       additionalBinding: [{ element: 'calculationusage', localElement: 'Usagecal' }],
+                                       additionalBinding: [{ element: 'CalculationUsage', localElement: 'Usagecal' }],
                                        useForValidation: true }]
-//  @UI.dataPoint: { qualifier: 'usage', title: 'Usage in Calculation', criticality: 'usagecriticallity', criticalityRepresentation: #WITH_ICON }
+  //  @UI.dataPoint: { qualifier: 'usage', title: 'Usage in Calculation', criticality: 'usagecriticallity', criticalityRepresentation: #WITH_ICON }
   ReasonId;
 
   @UI.lineItem: [ {
@@ -389,16 +411,17 @@ annotate view /ESRCC/C_MANAGECOSTBASE with
   position: 210 ,
   importance: #HIGH
   } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' } }]
   WorkflowId;
 
-//  @UI.lineItem: [ {
-//    position: 236
-//  } ]
-//  @UI.identification: [ {
-//  position: 236
-//  } ]
-//  @EndUserText.label: 'Comments'
-//  Comments;
+  //  @UI.lineItem: [ {
+  //    position: 236
+  //  } ]
+  //  @UI.identification: [ {
+  //  position: 236
+  //  } ]
+  //  @EndUserText.label: 'Comments'
+  //  Comments;
 
   @UI.lineItem: [ {
     position: 240 ,
@@ -448,8 +471,8 @@ annotate view /ESRCC/C_MANAGECOSTBASE with
       importance: #LOW,
       label: ''
     } ]
-  @EndUserText.label: 'Legal Entity Country' 
-  @EndUserText.quickInfo: 'Legal Entity Country'  
+  @EndUserText.label: 'Legal Entity Country'
+  @EndUserText.quickInfo: 'Legal Entity Country'
   @UI.textArrangement: #TEXT_LAST
   Country;
 
@@ -493,4 +516,6 @@ annotate view /ESRCC/C_MANAGECOSTBASE with
   profitcenterdescription;
   @UI.hidden: true
   legalentitycountryname;
+  @UI.hidden: true
+  valuesourcedescription;
 }

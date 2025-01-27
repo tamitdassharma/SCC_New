@@ -1,0 +1,517 @@
+@Metadata.layer: #CORE
+
+@UI: {
+  headerInfo: {
+    typeName: 'Charge-Out Received',
+    typeNamePlural: 'Charge-Outs Received',
+    title: {
+      type: #STANDARD,
+      value: 'Receivingentity'
+    },
+    description.value: 'receivingentitydescription'
+  }
+}
+
+annotate view /ESRCC/C_ChargeOutReceived with
+{
+
+
+  @UI.facet: [
+    {
+     id: 'general',
+     type: #COLLECTION,
+     label: 'Charge-Out Received Details',
+     purpose: #STANDARD,
+     position: 10
+    },
+   {
+    label: 'Service Provider Details',
+    targetQualifier: 'OrgData',
+    type: #FIELDGROUP_REFERENCE,
+    purpose: #STANDARD,
+    parentId: 'general'
+  },
+  {
+    label: 'Charge-Out Details',
+    targetQualifier: 'ChgData',
+    type: #FIELDGROUP_REFERENCE,
+    purpose: #STANDARD,
+    parentId: 'general'
+  },
+  {type: #DATAPOINT_REFERENCE,
+   targetQualifier: 'srvprd',
+    purpose: #HEADER
+  },
+//  {type: #DATAPOINT_REFERENCE,
+//   targetQualifier: 'tp',
+//    purpose: #HEADER,
+//    hidden: #( hidedirect )
+//  },
+//  {type: #DATAPOINT_REFERENCE,
+//   targetQualifier: 'tpm',
+//    purpose: #HEADER,
+//    hidden: #( hidedirect )
+//  },
+  {type: #DATAPOINT_REFERENCE,
+   targetQualifier: 'chargeout',
+    purpose: #HEADER
+  },
+  {type: #DATAPOINT_REFERENCE,
+   targetQualifier: 'markup',
+    purpose: #HEADER
+  },
+   {type: #DATAPOINT_REFERENCE,
+   targetQualifier: 'costbase',
+    purpose: #HEADER
+  }
+//  {
+//    id: '/ESRCC/I_RECMKUP_COST',
+//    type: #LINEITEM_REFERENCE,
+//    position: 20,
+//    targetElement: '_RecmkupCost',
+//    hidden: #( hidedirect )
+//   },
+//     {
+//      id: '/ESRCC/I_INDRECMKUP_COST',
+//      type: #LINEITEM_REFERENCE,
+//      position: 20,
+//      targetElement: '_IndRecmkupCost',
+//      hidden: #( hideindirect )
+//     }
+   ]
+
+  @UI.lineItem: [
+  {  position: 70 ,
+  importance: #MEDIUM,
+  label: '',
+  cssDefault:{width: '10rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 5 ,
+    qualifier: 'OrgData'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTDATASET', element: 'costdataset' } }]
+  @UI.selectionField: [{ position: 70 }]
+  @UI.textArrangement: #TEXT_ONLY
+  Fplv;
+
+  @UI.lineItem: [
+  {  position: 20 ,
+  importance: #MEDIUM,
+  label: '',
+  cssDefault:{width: '5rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 10 ,
+    qualifier: 'OrgData'
+  } ]
+
+  @Consumption.valueHelpDefinition: [{distinctValues: true },{ entity: { name: '/ESRCC/I_RYEAR', element: 'ryear' }}]
+  @UI.selectionField: [{ position: 20 }]
+  Ryear;
+  @UI.lineItem: [
+  {  position: 80 ,
+  importance: #MEDIUM,
+  label: '',
+  cssDefault:{width: '8rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 15 ,
+    qualifier: 'OrgData'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BILLINGFREQ', element: 'Billingfreq' } }]
+  @UI.selectionField: [{ position: 80 }]
+  @UI.textArrangement: #TEXT_ONLY
+  Billingfrequqncy;
+  @UI.lineItem: [
+  {  position: 90 ,
+  importance: #MEDIUM,
+  label: '',
+  cssDefault:{width: '8rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 16 ,
+    qualifier: 'OrgData'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BILLINGFREQUENCY_F4', element: 'Billingperiod' },
+                                          additionalBinding: [{ element: 'Billingfreq', localElement: 'Billingfrequqncy' }] }]
+  @UI.selectionField: [{ position: 90 }]
+  @UI.textArrangement: #TEXT_ONLY
+  Billingperiod;
+  @UI.lineItem: [ {
+    position: 30 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '5rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 20 ,
+    qualifier: 'OrgData'
+  } ]
+  @UI.selectionField: [{ position: 30 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_POPER', element: 'Poper' }}]
+  Poper;
+  @UI.lineItem: [ {
+    position: 100 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '5rem'}
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' } }]
+  Sysid;
+  @UI.lineItem: [ {
+    position: 50 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '20rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 30 ,
+    qualifier: 'OrgData'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LegalEntity_F4', element: 'Legalentity' } }]
+  @UI.selectionField: [{ position: 50 }]
+  @UI.textArrangement: #TEXT_LAST
+  @EndUserText.label: 'Legal Entity (Provider)'
+  @EndUserText.quickInfo: 'Legal Entity (Provider)'
+  Legalentity;
+  @UI.lineItem: [ {
+    position: 60 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '15rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 40 ,
+    qualifier: 'OrgData'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_PR_F4', element: 'Ccode' },
+                                       additionalBinding: [{ element: 'Legalentity', localElement: 'Legalentity' }]}]
+  @UI.selectionField: [{ position: 60 }]
+  @UI.textArrangement: #TEXT_LAST
+  @EndUserText.label: 'Company Code (Provider)'
+  @EndUserText.quickInfo: 'Company Code (Provider)'
+  Ccode;
+  @UI.lineItem: [ {
+    position: 70 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '5rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 50 ,
+    qualifier: 'OrgData'
+  } ]
+  @EndUserText.label: 'Cost Object Type (Provider)'
+  @EndUserText.quickInfo: 'Cost Object Type (Provider)'
+//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' } }]
+  @UI.textArrangement: #TEXT_LAST
+  Costobject;
+  @UI.lineItem: [ {
+    position: 80 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '5rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 60 ,
+    qualifier: 'OrgData'
+  } ]
+  @EndUserText.label: 'Cost Object Number (Provider)'
+  @EndUserText.quickInfo: 'Cost Object Number (Provider)'
+//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' } }]
+  @UI.textArrangement: #TEXT_LAST
+  Costcenter;
+  @UI.lineItem: [ {
+    position: 40 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '15rem'}
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
+                                       additionalBinding: [{ element: 'OECD', localElement: 'OECD' }]}]
+  @UI.selectionField: [{ position: 40 }]
+  @UI.dataPoint: { qualifier: 'srvprd' }  
+  @UI.textArrangement: #TEXT_LAST
+  Serviceproduct;
+  
+  @UI.lineItem: [ {
+    position: 42 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '15rem'}
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_OECD', element: 'OECD' }}]
+  @UI.selectionField: [{ position: 38 }]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 3 ,
+    qualifier: 'OrgData'
+  } ]
+  @UI.textArrangement: #TEXT_LAST
+  OECD;
+  
+  @UI.lineItem: [ {
+    position: 10,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '20rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 80 ,
+    qualifier: 'OrgData'
+  } ]
+//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RECEIVINGENTITY_F4', element: 'Receivingentity' } }]
+//  @UI.selectionField: [{ position: 10 }]
+  @UI.textArrangement: #TEXT_LAST
+  Receivingentity;
+  @UI.lineItem: [ {
+    position: 11 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '5rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 90 ,
+    qualifier: 'OrgData'
+  } ]
+  @EndUserText.label: 'Company Code (Receiver)'
+  @EndUserText.quickInfo: 'Company Code (Receiver)'
+//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' } }]
+  @UI.textArrangement: #TEXT_LAST
+  ReceiverCompanyCode;
+  @UI.lineItem: [ {
+    position: 12 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '5rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 100 ,
+    qualifier: 'OrgData'
+  } ]
+  @EndUserText.label: 'Cost Object Type (Receiver)'
+  @EndUserText.quickInfo: 'Cost Object Type (Receiver)'
+//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' } }]
+  @UI.textArrangement: #TEXT_LAST
+  ReceiverCostObject;
+  @UI.lineItem: [ {
+    position: 13 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '5rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 110 ,
+    qualifier: 'OrgData'
+  } ]
+  @EndUserText.label: 'Cost Object Number (Receiver)'
+  @EndUserText.quickInfo: 'Cost Object Number (Receiver)'
+//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' } }]
+  @UI.textArrangement: #TEXT_LAST
+  ReceiverCostCenter;
+  @UI.lineItem: [ {
+    position: 14 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '5rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 120 ,
+    qualifier: 'OrgData'
+  } ]
+//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' } }]
+  ReceiverSysId;
+  @UI.lineItem: [{ hidden: true }]
+  @UI.selectionField: [{ position: 100 }]
+  @Consumption.filter.mandatory: true
+  @Consumption.filter.selectionType: #SINGLE
+  @EndUserText.label: 'Currency Type'
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CURR', element: 'Currencytype' }}]
+  @Consumption.filter.defaultValue: 'L'
+  @UI.textArrangement: #TEXT_LAST
+  Currencytype;
+  @UI.lineItem: [ {
+   position: 110 ,
+   importance: #MEDIUM,
+   label: '',
+   cssDefault:{width: '5rem'}
+  } ]
+  @UI.identification: [ {
+    position: 81 ,
+    label: ''
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CHGOUT', element: 'Chargeout' }}]
+  @UI.textArrangement: #TEXT_ONLY
+  Chargeout;
+  @UI.lineItem: [ {
+    position: 130 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.dataPoint: { qualifier: 'chargeout', title: 'Total Charge-Out Received' }
+  @EndUserText.label: 'Total Charge-Out Received'
+  TotalChargeoutAmount;
+//  @UI.lineItem: [ {
+//    position: 120 ,
+//    importance: #MEDIUM,
+//    label: ''
+//  } ]
+//  @UI.dataPoint: { qualifier: 'tp', title: 'Transfer Price per unit' }
+//  @EndUserText.label: 'Transfer Price per unit'
+//  Transferprice;
+//
+//  @UI.lineItem: [ {
+//    position: 121 ,
+//    importance: #MEDIUM,
+//    label: ''
+//  } ]
+//  @UI.dataPoint: { qualifier: 'tpm', title: 'Total Mark-up per unit' }
+//  @EndUserText.label: 'Total Mark-up per unit'
+//  TotalMarkupperunit;
+
+  @UI.lineItem: [ {
+    position: 140 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.dataPoint: { qualifier: 'markup', title: 'Total Mark-up' }
+  @EndUserText.label: 'Total Mark-up'
+  TotalMarkup;
+
+  @UI.lineItem: [ {
+   position: 170 ,
+   importance: #MEDIUM,
+   label: '',
+   cssDefault:{width: '15rem'}
+  } ]
+  @UI.dataPoint: { qualifier: 'costbase', title: 'Total Cost Base Remaining' }
+  @EndUserText.label: 'Total Cost Base Remaining'
+  TotalCostbase;
+
+  @UI.lineItem: [ {
+    position: 180 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 10 ,
+    qualifier: 'ChgData'
+  } ]
+  @EndUserText.label: 'Thereof Value-Add'
+  TotalValueAdd;
+
+  @UI.lineItem: [ {
+    position: 200 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 20 ,
+    qualifier: 'ChgData'
+  } ]
+  @EndUserText.label: 'Thereof Pass-Through'
+  TotalPassthrough;
+  @UI.lineItem: [ {
+    position: 999 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @EndUserText.label: 'Receiving Country'
+  @EndUserText.quickInfo: 'Receiving Country'
+  @UI.textArrangement: #TEXT_LAST
+  RecCountry;
+  @UI.lineItem: [ {
+    position: 999 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @EndUserText.label: 'Legal Entity Country'
+  @EndUserText.quickInfo: 'Legal Entity Country'
+  @UI.textArrangement: #TEXT_LAST
+  LECountry;
+
+  @UI.hidden: true
+  legalentitydescription;
+  @UI.hidden: true
+  ccodedescription;
+  @UI.hidden: true
+  costobjectdescription;
+  @UI.hidden: true
+  costcenterdescription;
+  @UI.hidden: true
+  costdatasetdescription;
+  @UI.hidden: true
+  billingfrequencydescription;
+  @UI.hidden: true
+  billingperioddescription;
+  @UI.hidden: true
+  Serviceproductdescription;
+  @UI.hidden: true
+  Servicetypedescription;
+  @UI.hidden: true
+  Transactiongroupdescription;
+  @UI.hidden: true
+  chargeoutdescription;
+  @UI.hidden: true
+  hidedirect;
+  @UI.hidden: true
+  hideindirect;
+  @UI.hidden: true
+  Servicetype;
+  @UI.hidden: true
+  Transactiongroup;
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'I_Currency', element: 'Currency' }} ]
+  @EndUserText.label: 'Currency'
+  Currency;
+  @UI.hidden: true
+  legalentitycountryname;
+  @UI.hidden: true
+  receivingcountryname;
+  @UI.hidden: true
+  currenytext;
+  @UI.hidden: true
+  oecdDescription;
+  @UI.hidden: true
+  receivingentitydescription;
+  @UI.hidden: true
+  RecCcodedescription;
+  @UI.hidden: true
+  RecCostObjectdescription;
+  @UI.hidden: true
+  RecCostCenterdescription;
+
+}

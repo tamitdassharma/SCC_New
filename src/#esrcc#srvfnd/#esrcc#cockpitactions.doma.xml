@@ -36,37 +36,37 @@
      <VALPOS>0004</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>04</DOMVALUE_L>
-     <DDTEXT>Calculate Service Cost &amp; Markup</DDTEXT>
+     <DDTEXT>Calculate Service Product Cost &amp; Receiver Share​</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0005</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>05</DOMVALUE_L>
-     <DDTEXT>Finalize Service Cost &amp; Markup</DDTEXT>
+     <DDTEXT>Finalize Service Product Cost &amp; Receiver Share​</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0006</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>06</DOMVALUE_L>
-     <DDTEXT>Re-Open Service Cost &amp; Markup</DDTEXT>
+     <DDTEXT>Re-Open Service Product Cost &amp; Receiver Share​</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0007</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>07</DOMVALUE_L>
-     <DDTEXT>Calculate Service Charge-Out</DDTEXT>
+     <DDTEXT>Calculate Mark-up and Allocations/Charge-outs</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0008</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>08</DOMVALUE_L>
-     <DDTEXT>Finalize Service Charge-Out</DDTEXT>
+     <DDTEXT>Finalize Mark-up and Allocations/Charge-outs</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0009</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>09</DOMVALUE_L>
-     <DDTEXT>Re-Open Service Charge-Out</DDTEXT>
+     <DDTEXT>Re-Open Mark-up and Allocations/Charge-outs​</DDTEXT>
     </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>

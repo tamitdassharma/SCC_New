@@ -24,8 +24,10 @@ define root view entity /ESRCC/C_INIRECTALLOCATION
       LocalLastChangedAt,
       @Semantics.text: true
       _ReceiverText.Description as ReceivingentityDescription,
+
       @Semantics.text: true
       _KeyVersionText.text      as FplvDescription,
+      @Semantics.text: true
       _AllockeyText.AllocationKeyDescription,
       @Semantics.text: true
       _PoperText.text           as PoperDescription

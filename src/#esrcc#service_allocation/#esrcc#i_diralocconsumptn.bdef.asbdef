@@ -1,0 +1,71 @@
+managed implementation in class /ESRCC/BP_I_DirAlocConsumptn unique;
+strict ( 2 );
+//with draft;
+
+define behavior for /ESRCC/I_DIRALOCCONSUMPTN alias DirectAllocationConsumption
+persistent table /esrcc/consumptn
+//draft table /ESRCC/D_CONSUM
+//etag master LocalLastChangedAt
+lock master
+//total etag LastChangedAt
+authorization master ( global )
+
+{
+  field ( mandatory )
+  Sysid,
+  ReceivingEntity,
+  ReceivingCompany,
+  CostObject,
+  CostCenter,
+
+  ProviderSysid,
+  ProviderEntity,
+  ProviderCompany,
+  ProviderCostObject,
+  ProviderCostCenter,
+
+  Ryear,
+  Poper,
+  ServiceProduct,
+  Fplv;
+
+  field ( readonly )
+  CreatedAt,
+  CreatedBy,
+  LastChangedAt,
+  LastChangedBy,
+  LocalLastChangedAt;
+
+  field ( numbering : managed )
+  DirectAllocationUUID;
+
+  create;
+  update ( precheck );
+  delete;
+
+  //  draft action Edit;
+  //  draft action Activate;
+  //  draft action Discard;
+  //  draft action Resume;
+  //  draft determine action Prepare;
+
+  mapping for /ESRCC/CONSUMPTN
+  {
+    DirectAllocationUUID = DIRECT_ALLOCATION_UUID;
+    ServiceProduct = SERVICE_PRODUCT;
+    Ryear = RYEAR;
+    Poper = POPER;
+    Fplv = FPLV;
+    Consumption = CONSUMPTION;
+    Uom = UOM;
+    CostObjectUuid = COST_OBJECT_UUID;
+    ProviderCostObjectUuid = PROVIDER_COST_OBJECT_UUID;
+    CreatedBy = CREATED_BY;
+    CreatedAt = CREATED_AT;
+    LastChangedBy = LAST_CHANGED_BY;
+    LastChangedAt = LAST_CHANGED_AT;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+  }
+
+  validation ValidateData on save { create; update; }
+}

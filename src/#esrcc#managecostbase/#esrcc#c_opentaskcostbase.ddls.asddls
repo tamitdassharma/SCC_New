@@ -21,6 +21,8 @@ define root view entity /ESRCC/C_OPENTASKCOSTBASE
   key Costcenter,
   @ObjectModel.text.element: [ 'costelementdescription' ]
   key Costelement,
+  @ObjectModel.text.element: [ 'valuesourcedescription' ]
+  ValueSource,
   @ObjectModel.text.element: [ 'businessdivdescription' ]
   Businessdivision,
   @ObjectModel.text.element: [ 'profitcenterdescription' ]
@@ -55,20 +57,34 @@ define root view entity /ESRCC/C_OPENTASKCOSTBASE
   @Semantics.systemDateTime.lastChangedAt: true
   LastChangedAt,
   LocalLastChangedAt,
+  @Semantics.text: true
   ccodedescription,
+  @Semantics.text: true
   legalentitydescription,
+  @Semantics.text: true
   costobjectdescription,
+  @Semantics.text: true
   costcenterdescription,
+  @Semantics.text: true
   costelementdescription,
+  @Semantics.text: true
   costtypedescription,
+  @Semantics.text: true
   costinddescription,
+  @Semantics.text: true
   postingtypedescription,
+  @Semantics.text: true
   costdatasetdescription,
+  @Semantics.text: true
   usagecaldescription,
+  @Semantics.text: true
   statusdescription,
+  @Semantics.text: true
   businessdivdescription,
   profitcenterdescription,
   usagecriticallity,
+  @Semantics.text: true
+  valuesourcedescription,
   @Semantics.text: true
   reasondescription, 
   statuscriticallity,

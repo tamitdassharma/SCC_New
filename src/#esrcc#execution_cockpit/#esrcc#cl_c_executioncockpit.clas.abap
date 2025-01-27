@@ -212,27 +212,39 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
         LOOP AT _poper ASSIGNING FIELD-SYMBOL(<ls_poper>).
           CONCATENATE lv_year <ls_poper>-low+1(2) '01' INTO _validon.
 
-*         Read Cost Share
-          SELECT *
-          FROM  /esrcc/c_serviceparameter AS srv INNER JOIN
-               /esrcc/c_coscen AS coscen
-            ON coscen~costobject = srv~costobject
-           AND coscen~costcenter = srv~costcenter
+*         Read Services Information from customizing
+          SELECT srv~legalentity,
+                 srv~sysid,
+                 srv~companycode as ccode,
+                 srv~costobject,
+                 srv~costcenter,
+                 srv~stewardship,
+                 srv~serviceproduct,
+                 srv~shareofcost as costshare,
+                 srv~LegalEntityDescription as legalentitydesc,
+                 srv~CompanyCodeDescription as ccodedesc,
+                 srv~CostObjectDescription as costobjectdesc,
+                 srv~CostCenterDescription as costcenterdesc,
+                 srvprodt~description as serviceproductdesc
+          FROM  /esrcc/i_stw_serviceproduct AS srv
               INNER JOIN /esrcc/c_leccode AS leccode
               ON leccode~active = @abap_true
               AND leccode~legalentity = srv~legalentity
-              AND leccode~ccode = srv~ccode
+              AND leccode~ccode = srv~CompanyCode
               INNER JOIN /ESRCC/C_SrvPro AS srvpro
               ON srvpro~Serviceproduct = srv~Serviceproduct
+              left OUTER JOIN /esrcc/srvprot as srvprodt
+               on srv~serviceproduct = srvprodt~serviceproduct
+              and srvprodt~spras = @sy-langu
          WHERE srv~legalentity IN @_legalentity
            AND srv~sysid IN @_sysid
-           AND srv~ccode IN @_ccode
+           AND srv~CompanyCode IN @_ccode
            AND srv~costobject IN @_costobject
            AND srv~costcenter IN @_costcenter
            AND srv~serviceproduct IN @_serviceproduct
-           AND coscen~billfrequency = @_billingfreq
-           AND validfrom <= @_validon
-           AND validto >= @_validon
+           AND srv~BillingFrequency = @_billingfreq
+           AND srv~Spvalidfrom <= @_validon
+           AND srv~validto >= @_validon
            AND srvpro~OecdTpg IN @_oecd
            APPENDING CORRESPONDING FIELDS OF TABLE @lt_service_share.
 
@@ -244,24 +256,32 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
           ENDIF.
           "  TK01+
 
-          SELECT *
-            FROM /esrcc/c_lecctr AS lecctr INNER JOIN
-                 /esrcc/c_coscen AS coscen
-              ON coscen~costobject = lecctr~costobject
-             AND coscen~costcenter = lecctr~costcenter
+*         Read Cost Center Information from customizing
+          SELECT lecctr~legalentity,
+                 lecctr~sysid,
+                 lecctr~companycode as ccode,
+                 lecctr~costobject,
+                 lecctr~costcenter,
+                 lecctr~stewardship,
+                 lecctr~sysiddescription,
+                 lecctr~LegalEntityDescription as legalentitydesc,
+                 lecctr~CompanyCodeDescription as ccodedesc,
+                 lecctr~CostObjectDescription as costobjectdesc,
+                 lecctr~CostCenterDescription as costcenterdesc
+            FROM /ESRCC/I_Stewardship AS lecctr
                  INNER JOIN /esrcc/c_leccode AS leccode
-              ON leccode~active = @abap_true
+              ON leccode~active       = @abap_true
               AND leccode~legalentity = lecctr~legalentity
-              AND leccode~ccode = lecctr~ccode
+              AND leccode~ccode       = lecctr~CompanyCode
            FOR ALL ENTRIES IN @lt_service_share
-           WHERE lecctr~legalentity = @lt_service_share-legalentity
-             AND lecctr~sysid = @lt_service_share-sysid
-             AND lecctr~ccode = @lt_service_share-ccode
-             AND lecctr~costobject = @lt_service_share-costobject
-             AND lecctr~costcenter = @lt_service_share-costcenter
-             AND coscen~billfrequency = @_billingfreq
-             AND lecctr~validfrom <= @_validon
-             AND lecctr~validto >= @_validon
+           WHERE lecctr~legalentity      = @lt_service_share-legalentity
+             AND lecctr~sysid            = @lt_service_share-sysid
+             AND lecctr~CompanyCode      = @lt_service_share-ccode
+             AND lecctr~costobject       = @lt_service_share-costobject
+             AND lecctr~costcenter       = @lt_service_share-costcenter
+             AND lecctr~BillingFrequency = @_billingfreq
+             AND lecctr~validfrom       <= @_validon
+             AND lecctr~validto         >= @_validon
              APPENDING CORRESPONDING FIELDS OF TABLE @lt_service_share.
 
 
@@ -274,12 +294,21 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                                          AND validto >= @_validon
                                          APPENDING TABLE @DATA(lt_srv_markup).
 
-          SELECT * FROM  /esrcc/srvaloc FOR ALL ENTRIES IN @lt_service_share
-                                        WHERE serviceproduct = @lt_service_share-serviceproduct
-                                         AND cost_version IN @_fplv
-                                         AND validfrom <= @_validon
-                                         AND validto >= @_validon
-                                         APPENDING TABLE @DATA(lt_srv_alloc).
+*          SELECT * FROM  /esrcc/srvaloc FOR ALL ENTRIES IN @lt_service_share
+*                                        WHERE serviceproduct = @lt_service_share-serviceproduct
+*                                         AND cost_version IN @_fplv
+*                                         AND validfrom <= @_validon
+*                                         AND validto >= @_validon
+*                                         APPENDING TABLE @DATA(lt_srv_alloc).
+          SELECT cout~serviceproduct, rule~cost_version, cout~validfrom, rule~chargeout_method as chargeout  FROM /esrcc/chargeout AS cout
+            INNER JOIN /esrcc/co_rule AS rule
+            ON rule~rule_id = cout~chargeout_rule_id
+            FOR ALL ENTRIES IN @lt_service_share
+            WHERE cout~serviceproduct = @lt_service_share-serviceproduct
+              AND rule~cost_version IN @_fplv
+              AND cout~validfrom <= @_validon
+              AND cout~validto >= @_validon
+            APPENDING TABLE @DATA(lt_srv_alloc).
 
 
         ENDLOOP.
@@ -295,19 +324,24 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
 
         IF lt_srv_alloc IS NOT INITIAL.
 
-          SELECT serviceproduct FROM  /esrcc/alloc_wgt FOR ALL ENTRIES IN @lt_srv_alloc
-                                          WHERE serviceproduct = @lt_srv_alloc-serviceproduct
-                                           AND cost_version = @lt_srv_alloc-cost_version
-                                           AND validfrom_alloc = @lt_srv_alloc-validfrom
-                                           APPENDING TABLE @DATA(lt_srv_allocwght).
+          SELECT cout~serviceproduct FROM /esrcc/chargeout as cout
+            INNER JOIN /esrcc/aloc_wgt AS wgt
+              ON cout~chargeout_rule_id = wgt~rule_id
+            INNER JOIN /esrcc/co_rule AS rule
+              ON rule~rule_id = wgt~rule_id
+            FOR ALL ENTRIES IN @lt_srv_alloc
+              WHERE cout~serviceproduct = @lt_srv_alloc-serviceproduct
+               AND rule~cost_version = @lt_srv_alloc-cost_version
+               AND cout~validfrom = @lt_srv_alloc-validfrom
+               APPENDING TABLE @DATA(lt_srv_allocwght).
         ENDIF.
 
         IF lt_service_share IS NOT INITIAL.
 
-          SELECT * FROM  /esrcc/srv_pr_le FOR ALL ENTRIES IN @lt_service_share
-                                           WHERE sysid = @lt_service_share-sysid
+          SELECT * FROM  /esrcc/i_srvproduct_receivers FOR ALL ENTRIES IN @lt_service_share
+                                           WHERE SystemId = @lt_service_share-sysid
                                             AND legalentity = @lt_service_share-legalentity
-                                            AND ccode = @lt_service_share-ccode
+                                            AND CompanyCode = @lt_service_share-ccode
                                             AND costobject = @lt_service_share-costobject
                                             AND costcenter = @lt_service_share-costcenter
                                             AND serviceproduct = @lt_service_share-serviceproduct
@@ -469,7 +503,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                 billfrequency,
                 billingperiod,
                 status
-                FROM /esrcc/cc_cost
+                FROM /esrcc/cb_stw
                 WHERE ryear IN @_ryear
                   AND fplv  IN @_fplv
                   AND sysid IN @_sysid
@@ -482,7 +516,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
 
 *   Read service cost share & markup status
         IF lt_cc_cost IS NOT INITIAL.
-          SELECT  ryear, "#EC CI_NO_TRANSFORM
+          SELECT  ryear,                           "#EC CI_NO_TRANSFORM
                   fplv,
                   sysid,
                   poper,
@@ -491,8 +525,10 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                   costobject,
                   costcenter,
                   serviceproduct,
-                  status
-                  FROM /esrcc/srv_cost
+                  srvshare~status
+                  FROM /esrcc/srv_share as srvshare
+                  INNER JOIN /esrcc/cb_stw as cb_stw
+                  on cb_stw~cc_uuid = srvshare~cc_uuid
                   FOR ALL ENTRIES IN @lt_cc_cost
                   WHERE ryear = @lt_cc_cost-ryear
                     AND fplv  = @lt_cc_cost-fplv
@@ -507,7 +543,7 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                  INTO TABLE @DATA(lt_srv_cost).
 
 *   Read receiver status
-          SELECT  ryear, "#EC CI_NO_TRANSFORM
+          SELECT  ryear,                           "#EC CI_NO_TRANSFORM
                   fplv,
                   sysid,
                   poper,
@@ -517,8 +553,12 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                   costcenter,
                   serviceproduct,
                   receivingentity,
-                  status
-                  FROM /esrcc/rec_cost
+                  recshare~status
+                  FROM /esrcc/rec_chg as recshare
+                  INNER JOIN /esrcc/cb_stw as cb_stw
+                  on cb_stw~cc_uuid = recshare~cc_uuid
+                  INNER JOIN /esrcc/srv_share as srvshare
+                  on srvshare~srv_uuid = recshare~srv_uuid
                   FOR ALL ENTRIES IN @lt_cc_cost
                   WHERE ryear = @lt_cc_cost-ryear
                     AND fplv  = @lt_cc_cost-fplv
@@ -1012,11 +1052,11 @@ CLASS /ESRCC/CL_C_EXECUTIONCOCKPIT IMPLEMENTATION.
                   <ls_result>-chargeout_status = '00'.  "Not Possible
                 ENDIF.
               ENDIF.
-              READ TABLE lt_srv_receivers ASSIGNING FIELD-SYMBOL(<ls_srv_receivers>) WITH KEY sysid       = <ls_result>-sysid
-                                                                                              legalentity = <ls_result>-legalentity
-                                                                                              ccode       = <ls_result>-ccode
-                                                                                              costobject  = <ls_result>-costobject
-                                                                                              costcenter  = <ls_result>-costcenter
+              READ TABLE lt_srv_receivers ASSIGNING FIELD-SYMBOL(<ls_srv_receivers>) WITH KEY SystemId       = <ls_result>-sysid
+                                                                                              legalentity    = <ls_result>-legalentity
+                                                                                              CompanyCode    = <ls_result>-ccode
+                                                                                              costobject     = <ls_result>-costobject
+                                                                                              costcenter     = <ls_result>-costcenter
                                                                                               serviceproduct = <ls_result>-serviceproduct.
 *                                                                                           BINARY SEARCH.
               IF sy-subrc <> 0.

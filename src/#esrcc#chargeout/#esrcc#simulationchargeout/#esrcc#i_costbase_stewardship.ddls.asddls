@@ -9,33 +9,40 @@
 }
 define view entity /ESRCC/I_COSTBASE_STEWARDSHIP
      as select from /ESRCC/I_TOTALCOSTABSE as totalcb_li
-  
-    association [0..*] to /esrcc/le_cctr as cc2le
-    on  cc2le.legalentity = totalcb_li.Legalentity
+   
+    association [0..1] to /ESRCC/I_Stewardship as cc2le
+    on  cc2le.LegalEntity = totalcb_li.Legalentity
     and cc2le.sysid = totalcb_li.Sysid
-    and cc2le.ccode = totalcb_li.Ccode
-    and cc2le.costobject = totalcb_li.Costobject
-    and cc2le.costcenter = totalcb_li.Costcenter
-    and totalcb_li.validon between cc2le.validfrom and cc2le.validto
+    and cc2le.CompanyCode = totalcb_li.Ccode
+    and cc2le.CostObject = totalcb_li.Costobject
+    and cc2le.CostCenter = totalcb_li.Costcenter
+    and totalcb_li.validon between cc2le.ValidFrom and cc2le.Validto
+    
+    association [0..1] to /esrcc/le_ccode as ccode
+    on ccode.sysid  = $projection.Sysid
+    and ccode.ccode = $projection.Ccode
+    and ccode.active = 'X'
+    
 {
     key Ryear,
     key Poper,
     key Fplv,
     key Sysid,
     key Legalentity,
-    key Ccode,
+    key totalcb_li.Ccode,
     key Costobject,
     key Costcenter,
 
 // Additonal Characteristicsa
-    profitcenter,
-    businessdivision,
-    controllingarea,
-    billfrequency,    
+    cc2le.FunctionalArea,
+    cc2le.ProfitCenter,
+    cc2le.BusinessDivision,
+    ccode.controllingarea,
+    cc2le.BillingFrequency as billfrequency,    
     validon,
     Localcurr,
     Groupcurr,
-
+    cc2le.stewardship,
 //cost center cost evaluation
     ( origtotalcost_l + passtotalcost_l + excludedtotalcost_l ) as Totalcost_l,
     excludedtotalcost_l,
@@ -46,7 +53,7 @@ define view entity /ESRCC/I_COSTBASE_STEWARDSHIP
     excludedtotalcost_g,
     ( origtotalcost_g + passtotalcost_g) as includetotalcost_g,    
     origtotalcost_g,
-    passtotalcost_g,
-    cc2le.stewardship    
+    passtotalcost_g
+       
 
 }

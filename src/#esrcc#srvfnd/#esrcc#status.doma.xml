@@ -62,6 +62,12 @@
      <DOMVALUE_L>P</DOMVALUE_L>
      <DDTEXT>In Process</DDTEXT>
     </DD07V>
+    <DD07V>
+     <VALPOS>0009</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>V</DOMVALUE_L>
+     <DDTEXT>Virtual Postings</DDTEXT>
+    </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>
     <LANGU>D</LANGU>
@@ -118,6 +124,11 @@
      <VALPOS>0008</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>P</DOMVALUE_L>
+    </item>
+    <item>
+     <VALPOS>0009</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>V</DOMVALUE_L>
     </item>
    </DD07_TEXTS>
   </asx:values>

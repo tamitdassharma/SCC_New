@@ -23,6 +23,8 @@ as projection on /ESRCC/I_CC_COST
     Billingfrequqncy,
     @ObjectModel.text.element: [ 'businessdescription' ]
     Businessdivision,
+    @ObjectModel.text.element: [ 'functionalareadescription' ]
+    FunctionalArea,
     @ObjectModel.text.element: [ 'profitcenterdescription' ]
     Profitcenter,
     Controllingarea,    
@@ -66,6 +68,8 @@ as projection on /ESRCC/I_CC_COST
     costdatasetdescription,
     @Semantics.text: true 
     businessdescription,
+    @Semantics.text: true 
+    functionalareadescription,
     @Semantics.text: true 
     profitcenterdescription,
     @Semantics.text: true 

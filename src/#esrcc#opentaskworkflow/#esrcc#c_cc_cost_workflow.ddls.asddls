@@ -3,34 +3,28 @@
 @Metadata.allowExtensions: true
 define root view entity /ESRCC/C_CC_COST_WORKFLOW 
 provider contract transactional_query
-as projection on /ESRCC/I_CC_COST
+as projection on /ESRCC/I_CostBaseStewardship
 {
-    @ObjectModel.text.element: [ 'costdatasetdescription' ]
-    
-    key Fplv,
-    
-    key Ryear,
-    
-    key Poper,
-    
-    key Sysid,
-    
-    @ObjectModel.text.element: [ 'legalentitydescription' ]
-    key Legalentity,
-    
-    @ObjectModel.text.element: [ 'ccodedescription' ]
-    key Ccode,
-    
-    @ObjectModel.text.element: [ 'costobjectdescription' ]
-    key Costobject,
-    
-    @ObjectModel.text.element: [ 'costcenterdescription' ]
-    key Costcenter,
+    key UUID,
     key Currencytype,
+    @ObjectModel.text.element: [ 'costdatasetdescription' ]
+    Fplv,
+    Ryear,
+    Poper,
+    Sysid,
+    @ObjectModel.text.element: [ 'legalentitydescription' ]
+    Legalentity,
+    @ObjectModel.text.element: [ 'ccodedescription' ]
+    Ccode,
+    @ObjectModel.text.element: [ 'costobjectdescription' ]
+    Costobject,
+    @ObjectModel.text.element: [ 'costcenterdescription' ]
+    Costcenter,
     
     @ObjectModel.text.element: [ 'billingfrequencydescription' ]
     Billingfrequqncy,
-    
+    @ObjectModel.text.element: [ 'functionalareadescription' ]
+    FunctionalArea,
     @ObjectModel.text.element: [ 'businessdescription' ]
     Businessdivision,
     
@@ -78,6 +72,8 @@ as projection on /ESRCC/I_CC_COST
     costcenterdescription,
     @Semantics.text: true 
     costdatasetdescription,
+    @Semantics.text: true 
+    functionalareadescription,
     @Semantics.text: true 
     businessdescription,
     @Semantics.text: true 

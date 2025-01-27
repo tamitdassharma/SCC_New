@@ -10,10 +10,10 @@
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
     <DDTEXT>System ID (Source)</DDTEXT>
-    <REPTEXT>System ID (Source)</REPTEXT>
+    <REPTEXT>System ID</REPTEXT>
     <SCRTEXT_S>System ID</SCRTEXT_S>
-    <SCRTEXT_M>System ID (Source)</SCRTEXT_M>
-    <SCRTEXT_L>System ID (Source)</SCRTEXT_L>
+    <SCRTEXT_M>System ID</SCRTEXT_M>
+    <SCRTEXT_L>System ID</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>CHAR</DATATYPE>
     <LENG>000010</LENG>

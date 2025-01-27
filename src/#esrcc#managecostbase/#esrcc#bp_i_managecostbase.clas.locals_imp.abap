@@ -31,7 +31,12 @@ CLASS lhc_managecostbase DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR ACTION managecostbase~submit.
     METHODS triggerworkflow FOR DETERMINE ON SAVE
       IMPORTING keys FOR managecostbase~triggerworkflow.
-
+    METHODS adhocchargeout FOR MODIFY
+      IMPORTING keys FOR ACTION managecostbase~adhocchargeout.
+    METHODS precheck_adhocchargeout FOR PRECHECK
+      IMPORTING keys FOR ACTION managecostbase~adhocchargeout.
+    METHODS simulatechargout FOR MODIFY
+      IMPORTING keys FOR ACTION managecostbase~simulatechargout RESULT result.
 
 ENDCLASS.
 
@@ -170,8 +175,8 @@ CLASS lhc_managecostbase IMPLEMENTATION.
               WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'D' )
                               (
                                  %key = costbase-%key
-                                 costind = COND #( when costbase-oldcostind is INITIAL then costbase-costind else costbase-oldcostind )
-                                 usagecal = COND #( when costbase-oldusagecal is INITIAL then costbase-usagecal else costbase-oldusagecal )
+                                 costind = COND #( WHEN costbase-oldcostind IS INITIAL THEN costbase-costind ELSE costbase-oldcostind )
+                                 usagecal = COND #( WHEN costbase-oldusagecal IS INITIAL THEN costbase-usagecal ELSE costbase-oldusagecal )
                                  status = 'U'
                                  oldcostind = ''
                                  oldcostdataset = ''
@@ -353,17 +358,17 @@ CLASS lhc_managecostbase IMPLEMENTATION.
         WITH CORRESPONDING #( keys )
         RESULT DATA(costbases).
 
-    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>) where Status <> 'D'.
+    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>) WHERE Status <> 'D'.
 
-        APPEND VALUE #( %tky = <costbase>-%tky
-                        %msg = new_message(
-                        id   = '/ESRCC/MANAGECOSTBAS'
-                        number = '004'
-                        v1   = <costbase>-belnr
-                        severity  = if_abap_behv_message=>severity-error )
-                       ) TO reported-managecostbase.
-        APPEND VALUE #( %tky = <costbase>-%tky ) TO
-                        failed-managecostbase.
+      APPEND VALUE #( %tky = <costbase>-%tky
+                      %msg = new_message(
+                      id   = '/ESRCC/MANAGECOSTBAS'
+                      number = '004'
+                      v1   = <costbase>-belnr
+                      severity  = if_abap_behv_message=>severity-error )
+                     ) TO reported-managecostbase.
+      APPEND VALUE #( %tky = <costbase>-%tky ) TO
+                      failed-managecostbase.
 
     ENDLOOP.
 
@@ -378,17 +383,17 @@ CLASS lhc_managecostbase IMPLEMENTATION.
         WITH CORRESPONDING #( keys )
         RESULT DATA(costbases).
 
-    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>) where status <> 'D'.
+    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>) WHERE status <> 'D'.
 
-        APPEND VALUE #( %tky = <costbase>-%tky
-                        %msg = new_message(
-                        id   = '/ESRCC/MANAGECOSTBAS'
-                        number = '003'
-                        v1   = <costbase>-belnr
-                        severity  = if_abap_behv_message=>severity-error )
-                       ) TO reported-managecostbase.
-        APPEND VALUE #( %tky = <costbase>-%tky ) TO
-                        failed-managecostbase.
+      APPEND VALUE #( %tky = <costbase>-%tky
+                      %msg = new_message(
+                      id   = '/ESRCC/MANAGECOSTBAS'
+                      number = '003'
+                      v1   = <costbase>-belnr
+                      severity  = if_abap_behv_message=>severity-error )
+                     ) TO reported-managecostbase.
+      APPEND VALUE #( %tky = <costbase>-%tky ) TO
+                      failed-managecostbase.
 
     ENDLOOP.
 
@@ -505,6 +510,146 @@ CLASS lhc_managecostbase IMPLEMENTATION.
 *                              REPORTED FINAL(rep_mod)
 *                              MAPPED FINAL(map_mod).
 
+
+  ENDMETHOD.
+
+  METHOD adhocchargeout.
+
+    DATA ls_param    TYPE /esrcc/c_adhocchargeout.
+    DATA lt_receiver TYPE /esrcc/tt_receivers.
+    DATA lt_cbli     TYPE TABLE OF /esrcc/cb_li.
+
+    " Return result to UI
+    READ ENTITIES OF /esrcc/i_managecostbase IN LOCAL MODE
+        ENTITY managecostbase
+        ALL FIELDS
+        WITH CORRESPONDING #( keys )
+        RESULT DATA(costbases).
+
+    lt_cbli = CORRESPONDING #( costbases ).
+
+    ls_param = CORRESPONDING #( keys[ 1 ]-%param ).
+
+    xco_cp_json=>data->from_string( ls_param-receivers )->apply( VALUE #(
+      ( xco_cp_json=>transformation->pascal_case_to_underscore )
+      ( xco_cp_json=>transformation->boolean_to_abap_bool )
+        ) )->write_to( REF #( lt_receiver ) ).
+
+    /esrcc/cl_calculate_chargeout=>calculate_adhocchargeout(
+      it_cbli       = lt_cbli
+      is_parameters = ls_param
+      it_receivers  = lt_receiver
+    ).
+
+    READ TABLE costbases ASSIGNING FIELD-SYMBOL(<costbase>) INDEX 1.
+    IF sy-subrc = 0.
+      APPEND VALUE #(     %tky = <costbase>-%tky
+                          %msg = new_message(
+                          id   = '/ESRCC/MANAGECOSTBAS'
+                          number = '006'
+                          severity  = if_abap_behv_message=>severity-information )
+                         ) TO reported-managecostbase.
+    ENDIF.
+*        APPEND VALUE #( ) TO
+*                        reported-managecostbase.
+
+  ENDMETHOD.
+
+  METHOD precheck_adhocchargeout.
+
+    " Return result to UI
+    READ ENTITIES OF /esrcc/i_managecostbase IN LOCAL MODE
+        ENTITY managecostbase
+        ALL FIELDS
+        WITH CORRESPONDING #( keys )
+        RESULT DATA(costbases).
+
+    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
+
+      IF <costbase>-status = 'F'.
+        APPEND VALUE #( %tky = <costbase>-%tky
+                        %msg = new_message(
+                        id   = '/ESRCC/MANAGECOSTBAS'
+                        number = '005'
+                        severity  = if_abap_behv_message=>severity-error )
+                       ) TO reported-managecostbase.
+        APPEND VALUE #( %tky = <costbase>-%tky ) TO
+                        failed-managecostbase.
+      ENDIF.
+
+      IF <costbase>-status = 'W'.
+        APPEND VALUE #( %tky = <costbase>-%tky
+                        %msg = new_message(
+                        id   = '/ESRCC/MANAGECOSTBAS'
+                        number = '007'
+                        severity  = if_abap_behv_message=>severity-error )
+                       ) TO reported-managecostbase.
+        APPEND VALUE #( %tky = <costbase>-%tky ) TO
+                        failed-managecostbase.
+      ENDIF.
+    ENDLOOP.
+
+  ENDMETHOD.
+
+  METHOD simulatechargout.
+
+    DATA ls_param    TYPE /esrcc/c_adhocchargeout.
+    DATA lt_receiver TYPE /esrcc/tt_receivers.
+    DATA totalcostbase         TYPE /esrcc/hsl.
+    DATA totalcostbasepass     TYPE /esrcc/hsl.
+    DATA totalcostbasevalueadd TYPE /esrcc/hsl.
+    DATA costabsolutepass      TYPE /esrcc/hsl.
+    DATA costabsolutevalueadd  TYPE /esrcc/hsl.
+
+    SELECT * FROM /esrcc/cb_li FOR ALL ENTRIES IN @keys
+                               WHERE belnr = @keys-%param-belnr
+                                 AND buzei = @keys-%param-buzei
+                                 INTO TABLE @DATA(costbases).
+
+    ls_param = CORRESPONDING #( keys[ 1 ]-%param ).
+
+    xco_cp_json=>data->from_string( ls_param-receivers )->apply( VALUE #(
+      ( xco_cp_json=>transformation->pascal_case_to_underscore )
+      ( xco_cp_json=>transformation->boolean_to_abap_bool )
+        ) )->write_to( REF #( lt_receiver ) ).
+
+    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
+      IF <costbase>-Costind = 'PASS'.
+        totalcostbasepass = totalcostbasepass + <costbase>-hsl.
+      ELSE.
+        totalcostbasevalueadd = totalcostbasevalueadd + <costbase>-hsl.
+      ENDIF.
+      DATA(localcurr) = <costbase>-localcurr.
+    ENDLOOP.
+
+    totalcostbase = totalcostbasepass + totalcostbasevalueadd.
+    LOOP AT lt_receiver ASSIGNING FIELD-SYMBOL(<receiver>).
+      costabsolutepass     = ( <receiver>-sharepercent / 100 ) * totalcostbasepass.
+      costabsolutevalueadd = ( <receiver>-sharepercent / 100 ) * totalcostbasevalueadd.
+
+      <receiver>-costabsolute = costabsolutepass + costabsolutevalueadd.
+      IF <costbase>-Legalentity <> <receiver>-legalentity.
+        <receiver>-markup = ( ls_param-interpassthroughmarkup / 100 ) * costabsolutepass.
+        <receiver>-markup = <receiver>-markup + ( ls_param-intervalueaddmarkup / 100 ) * costabsolutevalueadd.
+      ELSE.
+        <receiver>-markup = ( ls_param-intrapassthroughmarkup / 100 ) * costabsolutepass.
+        <receiver>-markup = <receiver>-markup + ( ls_param-intravalueaddmarkup / 100 ) * costabsolutevalueadd.
+      ENDIF.
+      <receiver>-chargout = <receiver>-costabsolute + <receiver>-markup.
+
+    ENDLOOP.
+
+    DATA(lv_json_string) = xco_cp_json=>data->from_abap( lt_receiver )->apply( VALUE #(
+                           ( xco_cp_json=>transformation->underscore_to_pascal_case )
+                           ) )->to_string( ).
+
+    result = VALUE #( ( %cid = keys[ 1 ]-%cid
+                        %param   = VALUE #( Serviceproduct = ls_param-Serviceproduct
+                                            rule_id = ls_param-rule_id
+                                            receivers = lv_json_string
+                                            localcurr = localcurr
+*                                            totalcostbase = totalcostbase
+                                           ) ) ).
 
   ENDMETHOD.
 

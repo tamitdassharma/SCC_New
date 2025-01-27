@@ -41,17 +41,34 @@ annotate view /ESRCC/C_SrvPro with
     parentId: '/ESRCC/I_SrvPro'
   } ]
 
-  @UI.lineItem: [ { position: 2 } ]
+  @UI.lineItem: [ { position: 1 } ]
   Serviceproduct;
-  
-  @UI.identification: [ { position: 1 } ]
-  @UI.lineItem: [ { position: 4, cssDefault.width: '15rem' } ]
+
+  @UI.lineItem: [ { position: 2 } ]
+  Description;
+
+  @UI.identification: [ {  position: 3  } ]
+  @UI.lineItem: [ {  position: 3  } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{entity: {name: '/ESRCC/I_SERVICETYPE_F4', element: 'ServiceType' }, useForValidation: true }]
+  Servicetype;
+
+  @UI.identification: [ {  position: 4  } ]
+  @UI.lineItem: [ {  position: 4  } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{entity: { name: '/ESRCC/I_TRANSACTIONGROUP_F4', element: 'Transactiongroup'}, useForValidation: true }]
+  Transactiongroup;
+
+  @UI.identification: [ { position: 5 } ]
+  @UI.lineItem: [ { position: 5, cssDefault.width: '15rem' } ]
   @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_OECD', element: 'OECD' } } ]
   @UI.textArrangement: #TEXT_LAST
   OecdTpg;
 
-  @UI.lineItem: [ { position: 3 } ]
-  Description;
+  @UI.identification: [ {  position: 6  } ]
+  @UI.lineItem: [ {  position: 6 } ]
+  @EndUserText.label: 'IP Owner'
+  IpOwner;
 
   @UI.lineItem: [ { position: 7 } ]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 10 }]
@@ -68,4 +85,11 @@ annotate view /ESRCC/C_SrvPro with
   @UI.lineItem: [ { position: 10, cssDefault.width: '9.5rem'  } ]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 40 }]
   LastChangedAt;
+
+  @UI.hidden: true
+  ServiceTypeDescription;
+  @UI.hidden: true
+  TransGroupDescription;
+  @UI.hidden: true
+  OecdDescription;
 }

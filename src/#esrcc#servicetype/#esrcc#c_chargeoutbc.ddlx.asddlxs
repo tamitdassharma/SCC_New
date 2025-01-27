@@ -1,0 +1,95 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Service Product Charge-out Configuration',
+    typeNamePlural: 'Service Product Charge-out Configuration',
+    title: {
+      type: #STANDARD,
+      value: 'Serviceproduct'
+    }
+  }
+}
+annotate view /ESRCC/C_ChargeoutBc with
+{
+  @UI.facet: [ {
+    id: 'CE',
+    purpose: #STANDARD,
+    type: #COLLECTION,
+    position: 1
+  },
+  {
+    id: '/ESRCC/I_ChargeoutBc',
+    purpose: #STANDARD,
+    type: #IDENTIFICATION_REFERENCE,
+    label: 'General Information',
+    parentId: 'CE',
+    position: 10
+  },
+  {
+    type: #FIELDGROUP_REFERENCE,
+    purpose: #STANDARD,
+    label: 'Validity',
+    targetQualifier: 'ValidityGroup',
+    parentId: 'CE',
+    position : 20
+  },
+  {
+    type: #FIELDGROUP_REFERENCE,
+    purpose: #STANDARD,
+    label: 'Admin Information',
+    targetQualifier: 'AdminGroup',
+    parentId: 'CE',
+    position: 30
+  }]
+  
+  @UI.hidden: true
+  Uuid;
+
+  @UI.lineItem: [ { position: 1 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
+                                       useForValidation: true }]
+  Serviceproduct;
+
+  @UI.lineItem: [ { position: 2 } ]
+  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 10 }]
+  Validfrom;
+
+  @UI.lineItem: [ { position: 3 } ]
+  @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 20 }]
+  Validto;
+  
+  @UI.identification: [ { position: 4 } ]
+  @UI.lineItem: [ { position: 4 } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_ChargeoutRule_F4', element: 'RuleId' },
+                                       additionalBinding: [{ element: 'ChargeoutMethod', localElement: 'ChargeoutMethod' }],
+                                       useForValidation: true }]
+  ChargeoutRuleId;
+  
+  @UI.identification: [ { position: 5 } ]
+  @UI.lineItem: [ { position: 5 } ]
+  ChargeoutMethod;
+
+  @UI.lineItem: [ { position: 6 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 10 }]
+  CreatedBy;
+
+  @UI.lineItem: [ { position: 7, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 20 }]
+  CreatedAt;
+
+  @UI.lineItem: [{ position: 8 }]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 30 }]
+  LastChangedBy;
+
+  @UI.lineItem: [{ position: 9, cssDefault.width: '9.5rem' }]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 40 }]
+  LastChangedAt;
+
+  @UI.hidden
+  ServiceProductDescription;
+  
+  @UI.hidden
+  ChargeoutMethodDescription;
+}

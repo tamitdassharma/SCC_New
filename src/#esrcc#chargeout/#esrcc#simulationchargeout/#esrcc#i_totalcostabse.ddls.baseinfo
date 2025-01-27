@@ -3,10 +3,7 @@
 {
 "FROM":
 [
-"/ESRCC/I_CB_LI",
-"/ESRCC/COSCEN",
-"/ESRCC/LE_CCODE",
-"/ESRCC/LE_CCTR"
+"/ESRCC/I_CB_LI"
 ],
 "ASSOCIATED":
 [],

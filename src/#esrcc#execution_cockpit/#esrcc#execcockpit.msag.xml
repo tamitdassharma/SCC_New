@@ -30,7 +30,7 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
      <MSGNR>003</MSGNR>
-     <TEXT>Allocation Keys for Service not maintained</TEXT>
+     <TEXT>Service Charge out Configuration for Service not maintained</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>

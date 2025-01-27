@@ -40,7 +40,7 @@ CLASS /ESRCC/CL_APPLICATION_LOGS IMPLEMENTATION.
         IF sy-subrc NE 0.
           DATA(message) = VALUE /esrcc/log_item(
               BASE CORRESPONDING #( log_message EXCEPT log_uuid )
-              log_uuid        = cl_system_uuid=>create_uuid_c32_static( )
+              log_uuid        = COND #( WHEN log_message-log_uuid IS INITIAL THEN cl_system_uuid=>create_uuid_c32_static( ) ELSE log_message-log_uuid )
               log_header_uuid = _logs-header-log_header_uuid
               created_at      = COND #( WHEN log_message-created_at IS INITIAL THEN timestamp ELSE log_message-created_at )  ).
           APPEND message TO _logs-items.

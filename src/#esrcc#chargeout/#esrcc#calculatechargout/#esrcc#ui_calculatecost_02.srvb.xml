@@ -6,7 +6,7 @@
     <METADATA>
      <NAME>/ESRCC/UI_CALCULATECOST_02</NAME>
      <TYPE>SRVB/SVB</TYPE>
-     <DESCRIPTION>ChargeOut by Service Providers</DESCRIPTION>
+     <DESCRIPTION>ChargeOut by Service Provider</DESCRIPTION>
      <LINKS>
       <item>
        <HREF>versions</HREF>

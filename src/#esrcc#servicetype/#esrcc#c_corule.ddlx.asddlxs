@@ -1,0 +1,146 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Standard Charge-out Rule',
+    typeNamePlural: 'Standard Charge-out Rules',
+    title: {
+      type: #STANDARD,
+      value: 'RuleId'
+    },
+    description: { value: 'Description' }
+  }
+}
+annotate view /ESRCC/C_CoRule with
+{
+  @UI.facet: [ {
+    id: 'CE',
+    purpose: #STANDARD,
+    type: #COLLECTION,
+    position: 1
+  },
+  {
+    id: '/ESRCC/I_CoRule',
+    purpose: #STANDARD,
+    type: #IDENTIFICATION_REFERENCE,
+    label: 'General Information',
+    parentId: 'CE',
+    position: 10
+  },
+  {
+   type: #FIELDGROUP_REFERENCE,
+   purpose: #STANDARD,
+   label: 'Admin Information',
+   targetQualifier: 'AdminGroup',
+   parentId: 'CE',
+   position: 20
+  },
+  {
+    id: '/ESRCC/I_CoRuleText',
+    type: #LINEITEM_REFERENCE,
+    parentId: 'CE',
+    position: 20,
+    targetElement: '_RuleText'
+  },
+  {
+    id: 'Weightage',
+    type: #LINEITEM_REFERENCE,
+    parentId: 'CE',
+    hidden: #(HideWeightageTab),
+    position: 30,
+    targetElement: '_Weightage'
+  } ]
+
+  @UI.lineItem: [ { position: 1 } ]
+  RuleId;
+
+  @UI.identification: [ { hidden: true, position: 2 } ]
+  @UI.lineItem: [ { position: 2 } ]
+  Description;
+
+  @UI.lineItem: [ { position: 3, cssDefault.width: '10rem' } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{entity: { name: '/ESRCC/I_CHGOUT', element: 'Chargeout' }, useForValidation: true }]
+  ChargeoutMethod;
+
+  @UI.identification: [ { position: 4, hidden: #(HideCostVersion) } ]
+  @UI.lineItem: [{ hidden: true }]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_COST_VERSION', element: 'CostVersion' } } ]
+  CostVersion;
+
+  @UI.identification: [ { position: 5, hidden: #(HideCapacityVersion) } ]
+  @UI.lineItem: [ { position: 5, cssDefault.width: '13rem', hidden: true } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_CAPACITY_VERSION', element: 'CapacityVersion' } } ]
+  CapacityVersion;
+
+  @UI.identification: [ { position: 6, hidden: #(HideConsumptionVersion) } ]
+  @UI.lineItem: [ { position: 6, cssDefault.width: '11.5rem', hidden: true } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_CONSUMPTION_VERSION', element: 'ConsumptionVersion' } } ]
+  ConsumptionVersion;
+
+  @UI.identification: [ { position: 7, hidden: #(HideKeyVersion) } ]
+  @UI.lineItem: [ { position: 7, cssDefault.width: '11.5rem', hidden: true } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_KEY_VERSION', element: 'KeyVersion' } } ]
+  KeyVersion;
+
+  @UI.identification: [ { position: 8, hidden: #(HideUom) } ]
+  @UI.lineItem: [ { position: 8, hidden: true } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'I_UnitOfMeasure', element: 'UnitOfMeasure' } } ]
+  @EndUserText.label: 'Unit of Measure'
+  Uom;
+
+  @UI.identification: [ { position: 9, hidden: #(HideAdhocAllocationKey) } ]
+  @UI.lineItem: [ { position: 9, hidden: true } ]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCKEYS', element: 'Allockey' } } ]
+  AdhocAllocationKey;
+
+  @UI.lineItem: [ { position: 10 } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 10 }]
+  CreatedBy;
+
+  @UI.lineItem: [ { position: 11, cssDefault.width: '9.5rem' } ]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 20 }]
+  CreatedAt;
+
+  @UI.lineItem: [{ position: 12 }]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 30 }]
+  LastChangedBy;
+
+  @UI.lineItem: [{ position: 13, cssDefault.width: '9.5rem' }]
+  @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 40 }]
+  LastChangedAt;
+
+  @UI.hidden
+  ChargeoutMethodDescription;
+  @UI.hidden
+  UomDescription;
+  @UI.hidden
+  CapacityVersionDescription;
+  @UI.hidden
+  ConsumptionVersionDescription;
+  @UI.hidden
+  CostVersionDescription;
+  @UI.hidden
+  KeyVersionDescription;
+  @UI.hidden: true
+  AllocationKeyDescription;
+  @UI.hidden: true
+  HideCostVersion;
+  @UI.hidden: true
+  HideCapacityVersion;
+  @UI.hidden: true
+  HideConsumptionVersion;
+  @UI.hidden: true
+  HideKeyVersion;
+  @UI.hidden: true
+  HideUom;
+  @UI.hidden: true
+  HideAdhocAllocationKey;
+  @UI.hidden: true
+  HideWeightageTab;
+}

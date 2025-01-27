@@ -10,11 +10,13 @@
 define view entity /ESRCC/I_TOTALCB_ALLOC
   as select from /ESRCC/I_TOTALCB_LI as totalcb_li
 
-  association [0..1] to /esrcc/srvaloc               as srvalloc  on srvalloc.serviceproduct =       totalcb_li.serviceproduct
-                                                                  and srvalloc.cost_version   =       totalcb_li.fplv
-                                                                  and totalcb_li.validon      between srvalloc.validfrom and srvalloc.validto
+  association [0..1] to /ESRCC/I_ServiceChargeout as srvalloc  
+    on srvalloc.Serviceproduct = $projection.ServiceProduct
+   and srvalloc.CostVersion   = $projection.fplv
+   and $projection.validon between srvalloc.Validfrom and srvalloc.Validto
  
 {
+  key cc_uuid,
   key ryear,
   key poper,
   key fplv,
@@ -23,34 +25,15 @@ define view entity /ESRCC/I_TOTALCB_ALLOC
   key ccode,
   key costobject,
   key costcenter,
-  key serviceproduct,
-      profitcenter,
-      businessdivision,
-      controllingarea,
-      billfrequency,
-      srvalloc.chargeout,    
-      srvalloc.capacity_version,
-      srvalloc.cost_version,
-      srvalloc.consumption_version,
-      srvalloc.key_version,
-      srvalloc.uom,
+  key ServiceProduct,
+      srvalloc.ChargeoutMethod as chargeout,    
+      srvalloc.CapacityVersion as capacity_version,
+      srvalloc.CostVersion as cost_version,
+      srvalloc.ConsumptionVersion as consumption_version,
+      srvalloc.KeyVersion as key_version,
+      srvalloc.Uom,
       validon,
       localcurr,
       groupcurr,
-      excludedtotalcost_l,
-      origtotalcost_l,
-      passtotalcost_l,
-      excludedtotalcost_g,
-      origtotalcost_g,
-      passtotalcost_g,
-      remainingorigcostbase_l,
-      remainingpasscostbase_l,
-      remainingorigcostbase_g,
-      remainingpasscostbase_g,
-      srvcostshareL,
-      valueaddshareL,
-      passthroughshareL,
-      srvcostshareG,
-      valueaddshareG,
-      passthroughshareG
+      ShareOfCost
 }

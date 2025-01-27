@@ -5,63 +5,78 @@ define root view entity /ESRCC/C_RECEIVER_WORKFLOW
 provider contract transactional_query
 as projection on /ESRCC/I_RECCOST_WORKFLOW
 {   
-    @ObjectModel.filter.enabled: false
-    @ObjectModel.text.element: [ 'costdatasetdescription' ]
-    key Fplv,
-    @ObjectModel.filter.enabled: false
-    key Ryear,
-    @ObjectModel.filter.enabled: false
-    key Poper,
-    @ObjectModel.filter.enabled: false
-    key Sysid,
-    @ObjectModel.filter.enabled: false
-    @ObjectModel.text.element: [ 'legalentitydescription' ]
-    key Legalentity,
-    @ObjectModel.filter.enabled: false
-    @ObjectModel.text.element: [ 'ccodedescription' ]
-    key Ccode,
-    @ObjectModel.filter.enabled: false
-    @ObjectModel.text.element: [ 'costobjectdescription' ]
-    key Costobject,
-    @ObjectModel.filter.enabled: false
-    @ObjectModel.text.element: [ 'costcenterdescription' ]
-    key Costcenter,
-    @ObjectModel.text.element: [ 'Serviceproductdescription' ]
-    key Serviceproduct,
-    @ObjectModel.filter.enabled: false
-    @ObjectModel.text.element: [ 'receivingentitydescription' ]
-    key Receivingentity,
+    key UUID,
+    key ParentUUID,
+    key RootUUID,
     key Currencytype,
     @ObjectModel.filter.enabled: false
-    @ObjectModel.text.element: [ 'billingfrequencydescription' ]
-    key Billingfrequqncy,
+    @ObjectModel.text.element: [ 'costdatasetdescription' ]
+    Fplv,
     @ObjectModel.filter.enabled: false
-    @ObjectModel.text.element: [ 'billingperioddescription' ]
-    key Billingperiod,
+    Ryear,
+    @ObjectModel.filter.enabled: false
+    Poper,
+    @ObjectModel.filter.enabled: false
+    Sysid,
+    @ObjectModel.filter.enabled: false
+    @ObjectModel.text.element: [ 'legalentitydescription' ]
+    Legalentity,
+    @ObjectModel.filter.enabled: false
+    @ObjectModel.text.element: [ 'ccodedescription' ]
+    Ccode,
+    @ObjectModel.filter.enabled: false
+    @ObjectModel.text.element: [ 'costobjectdescription' ]
+    Costobject,
+    @ObjectModel.filter.enabled: false
+    @ObjectModel.text.element: [ 'costcenterdescription' ]
+    Costcenter,
+    @ObjectModel.text.element: [ 'Serviceproductdescription' ]
+    Serviceproduct,
+    @ObjectModel.filter.enabled: false
+    @ObjectModel.text.element: [ 'receivingentitydescription' ]
+    Receivingentity,
+//    @ObjectModel.filter.enabled: false
+//    @ObjectModel.text.element: [ 'costdatasetdescription' ]
+    ReceiverSysId,
+    @ObjectModel.filter.enabled: false
+    @ObjectModel.text.element: [ 'Reccodedescription' ]
+    ReceiverCompanyCode,
+    @ObjectModel.filter.enabled: false
+    @ObjectModel.text.element: [ 'Reccostobjectdescription' ]
+    ReceiverCostObject,
+    @ObjectModel.filter.enabled: false
+    @ObjectModel.text.element: [ 'Reccostcenterdescription' ]
+    ReceiverCostCenter,
+//    @ObjectModel.filter.enabled: false
+//    @ObjectModel.text.element: [ 'billingfrequencydescription' ]
+//    Billingfrequqncy,
+//    @ObjectModel.filter.enabled: false
+//    @ObjectModel.text.element: [ 'billingperioddescription' ]
+//    Billingperiod,
     Reckpi,
     @ObjectModel.filter.enabled: false
     Currency,
+//    @DefaultAggregation: #SUM
+//    @Semantics.amount.currencyCode: 'Currency'
+//    onvalueaddedmarkupabs,
+//    @DefaultAggregation: #SUM
+//    @Semantics.amount.currencyCode: 'Currency'
+//    onvpassthrudmarkupabs,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
-    onvalueaddedmarkupabs,
+    TotalRecMarkup, 
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
-    onvpassthrudmarkupabs,
+    RecCostShare,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
-    totaludmarkupabs,
+    RecValueadded,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
-    totalcostbaseabs,
+    RecPassthrough,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
-    valuaddabs,
-    @DefaultAggregation: #SUM
-    @Semantics.amount.currencyCode: 'Currency'
-    passthruabs,
-    @DefaultAggregation: #SUM
-    @Semantics.amount.currencyCode: 'Currency'
-    chargeoutforservice,
+    TotalChargeout,
     Workflowid,
     @ObjectModel.filter.enabled: false
     @ObjectModel.text.element: [ 'statusdescription' ]
@@ -85,9 +100,15 @@ as projection on /ESRCC/I_RECCOST_WORKFLOW
     @Semantics.text: true
     receivingentitydescription,
     @Semantics.text: true
-    billingfrequencydescription,
+    Reccodedescription,
     @Semantics.text: true
-    billingperioddescription,
+    Reccostcenterdescription,
+    @Semantics.text: true
+    Reccostobjectdescription,
+//    @Semantics.text: true
+//    billingfrequencydescription,
+//    @Semantics.text: true
+//    billingperioddescription,
     @ObjectModel.text.element: [ 'reccountryname' ]
     receivingentitycountry,
     @ObjectModel.text.element: [ 'legalcountryname' ]

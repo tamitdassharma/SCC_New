@@ -18,7 +18,7 @@ authorization master ( global )
   draft action Discard;
   draft action Resume;
   draft determine action Prepare;
-//  action ( features : instance ) SelectCustomizingTransptReq parameter D_SelectCustomizingTransptReqP result [1] $self;
+  //  action ( features : instance ) SelectCustomizingTransptReq parameter D_SelectCustomizingTransptReqP result [1] $self;
 
   association _ServiceProduct { create ( features : instance, precheck ); with draft; }
 }
@@ -32,7 +32,10 @@ authorization dependent by _ServiceProductAll
 
 {
   field ( mandatory : create )
-  Serviceproduct, OecdTpg;
+  Serviceproduct;
+
+  field( mandatory )
+  Servicetype, OecdTpg;
 
   field ( readonly )
   SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
@@ -47,7 +50,10 @@ authorization dependent by _ServiceProductAll
   mapping for /ESRCC/SRVPRO
   {
     Serviceproduct = SERVICEPRODUCT;
+    Servicetype = SERVICETYPE;
+    Transactiongroup = TRANSACTIONGROUP;
     OecdTpg = OECDTPG;
+    IpOwner = IP_OWNER;
     CreatedBy = CREATED_BY;
     CreatedAt = CREATED_AT;
     LastChangedBy = LAST_CHANGED_BY;
@@ -58,7 +64,7 @@ authorization dependent by _ServiceProductAll
   association _ServiceProductAll { with draft; }
   association _ServiceProductText { create ( features : global ); with draft; }
 
-//  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+  //  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
 }
 
 define behavior for /ESRCC/I_SrvProText alias ServiceProductText
@@ -96,5 +102,5 @@ authorization dependent by _ServiceProductAll
   association _ServiceProductAll { with draft; }
   association _ServiceProduct { with draft; }
 
-//  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+  //  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
 }

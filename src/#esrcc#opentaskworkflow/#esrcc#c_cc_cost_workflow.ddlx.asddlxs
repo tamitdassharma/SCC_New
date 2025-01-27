@@ -226,7 +226,21 @@ annotate view /ESRCC/C_CC_COST_WORKFLOW with
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CURR', element: 'Currencytype' }}]
   @Consumption.filter.defaultValue: 'L'
   Currencytype;
-
+  @UI.lineItem: [ {
+    position: 75 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '10rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #MEDIUM,
+    position: 75,
+    qualifier: 'OrgData'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_FunctionalArea_F4', element: 'FunctionalArea' }}]
+  @UI.textArrangement: #TEXT_LAST
+  FunctionalArea;
   @UI.lineItem: [ {
     position: 80 ,
     importance: #MEDIUM,
@@ -452,5 +466,9 @@ annotate view /ESRCC/C_CC_COST_WORKFLOW with
   Currency;
   @UI.hidden: true
   countryname;
+  @UI.hidden: true
+  UUID;
+  @UI.hidden: true
+  functionalareadescription;
 
 }

@@ -1,0 +1,45 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Maintain Cost Objects & Numbers",
+    "originalLanguage": "en"
+  },
+  "serviceConfiguration": {
+    "serviceBinding": "/ESRCC/UI_CST_OBJCT_V4",
+    "serviceName": "/ESRCC/UI_CST_OBJCT_V4",
+    "serviceVersion": "0001",
+    "rootEntitySet": "CostObjectAll",
+    "name": "Maintain Cost Objects & Numbers",
+    "configurationGroup": "",
+    "skipRootEntity": true
+  },
+  "appConfiguration": {
+    "listReport": {},
+    "objectPages": [
+      {
+        "entitySet": "CostObject"
+      },
+      {
+        "entitySet": "CostObjectText"
+      }
+    ],
+    "tableSettings": [
+      {
+        "entitySet": "CostObject",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true,
+        "rowCountMode": "auto"
+      },
+      {
+        "entitySet": "CostObjectAll"
+      },
+      {
+        "entitySet": "CostObjectText",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true
+      }
+    ]
+  }
+}

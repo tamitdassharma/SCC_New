@@ -11,11 +11,16 @@
 define view entity /ESRCC/I_INDALLOCVALUES
 as select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
-  association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
-                                                          and indwght.ryear           = periodindalloc.ryear
-                                                          and indwght.Allockey        = periodindalloc.allocationkey
-                                                          and indwght.KeyVersion      = periodindalloc.fplv
-                                                          and indwght.poper           >= periodindalloc.poper
+  association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+            on indwght.ReceiverSysId = periodindalloc.ReceiverSysId
+           and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+           and indwght.ReceivingEntity = periodindalloc.ReceivingEntity
+           and indwght.ReceiverCostObject = periodindalloc.ReceiverCostObject
+           and indwght.ReceiverCostCenter = periodindalloc.ReceiverCostCenter
+           and indwght.ryear           = periodindalloc.Ryear
+           and indwght.Allockey        = periodindalloc.AllocationKey
+           and indwght.KeyVersion      = periodindalloc.Fplv
+           and indwght.poper           >= periodindalloc.Poper
 
                                                                                          
 
@@ -29,21 +34,17 @@ as select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
   key costobject,
   key costcenter,
   key serviceproduct,
-  key receivingentity,
+  key indwght.ReceiverSysId,
+  key indwght.ReceiverCompanyCode,
+  key indwght.ReceivingEntity,
+  key indwght.ReceiverCostObject,
+  key indwght.ReceiverCostCenter,
   key KeyVersion,
   key Allockey,
-//  key AllocType,
   key AllocationPeriod,
   key RefPeriod,
-  key periodindalloc.poper as refpoper,
+  key periodindalloc.Poper as refpoper,
       periodindalloc.value as reckpivalue
-//      case AllocType
-//        when 'A' then   /*average*/ 
-//         case when cast(Poper as abap.int1) > 0 then
-//         periodindalloc.value else 0 end
-//        when 'C' then   /*cumulative*/
-//        periodindalloc.value
-//        else 0 end as reckpivalue
 
 } where AllocationPeriod = '01'  /*YTD*/
 
@@ -51,12 +52,16 @@ union
 
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
-  association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
-                                                          and indwght.ryear           = periodindalloc.ryear
-                                                          and indwght.Allockey        = periodindalloc.allocationkey
-                                                          and indwght.KeyVersion      = periodindalloc.fplv
-                                                          and indwght.poper           = periodindalloc.poper
-                                                          
+  association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+        on indwght.ReceiverSysId       = periodindalloc.ReceiverSysId
+       and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+       and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
+       and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
+       and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
+       and indwght.ryear               = periodindalloc.Ryear
+       and indwght.Allockey            = periodindalloc.AllocationKey
+       and indwght.KeyVersion          = periodindalloc.Fplv
+       and indwght.poper               = periodindalloc.Poper                                                    
                                                                                          
 
 {
@@ -69,13 +74,16 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
   key costobject,
   key costcenter,
   key serviceproduct,
-  key receivingentity,
+  key indwght.ReceiverSysId,
+  key indwght.ReceiverCompanyCode,
+  key indwght.ReceivingEntity,
+  key indwght.ReceiverCostObject,
+  key indwght.ReceiverCostCenter,
   key KeyVersion,
   key Allockey,
-//  key AllocType,
   key AllocationPeriod,
   key RefPeriod,
-  key periodindalloc.poper as refpoper,
+  key periodindalloc.Poper as refpoper,
       periodindalloc.value as reckpivalue
 
 } where AllocationPeriod = '02'   /*current Month*/
@@ -84,12 +92,16 @@ union
 
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
-  association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
-                                                          and indwght.ryear           = periodindalloc.ryear
-                                                          and indwght.Allockey        = periodindalloc.allocationkey
-                                                          and indwght.KeyVersion      = periodindalloc.fplv                                                          
-                                                          and indwght.RefPeriod      >= periodindalloc.poper
-                                                                                         
+  association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+               on indwght.ReceiverSysId        = periodindalloc.ReceiverSysId
+               and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+               and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
+               and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
+               and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
+               and indwght.ryear               = periodindalloc.Ryear
+               and indwght.Allockey            = periodindalloc.AllocationKey
+               and indwght.KeyVersion          = periodindalloc.Fplv                                                          
+               and indwght.RefPeriod          >= periodindalloc.Poper                                                                                      
 
 {
   key fplv,
@@ -101,21 +113,17 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
   key costobject,
   key costcenter,
   key serviceproduct,
-  key receivingentity,
+  key indwght.ReceiverSysId,
+  key indwght.ReceiverCompanyCode,
+  key indwght.ReceivingEntity,
+  key indwght.ReceiverCostObject,
+  key indwght.ReceiverCostCenter,
   key KeyVersion,
   key Allockey,
-//  key AllocType,
   key AllocationPeriod,
   key RefPeriod,
-  key periodindalloc.poper as refpoper,
+  key periodindalloc.Poper as refpoper,
       periodindalloc.value as reckpivalue
-//       case AllocType
-//        when 'A' then   /*average*/ 
-//         case when cast(RefPeriod as abap.int1) <> 0 then
-//         periodindalloc.value  else 0  end
-//        when 'C' then   /*cumulative*/
-//        periodindalloc.value
-//        else 0 end as reckpivalue
 
 } where AllocationPeriod = '03'  /*No. Of months*/
 
@@ -123,12 +131,17 @@ union
 
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
-  association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
-                                                          and indwght.ryear           = periodindalloc.ryear
-                                                          and indwght.Allockey        = periodindalloc.allocationkey
-                                                          and indwght.KeyVersion      = periodindalloc.fplv                                                                                                                                                                   
-                                                          and indwght.poper          >= periodindalloc.poper  
-                                                          and periodindalloc.poper    > indwght.fromRefperiod                           
+ association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+            on indwght.ReceiverSysId       = periodindalloc.ReceiverSysId
+           and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+           and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
+           and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
+           and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
+           and indwght.ryear               = periodindalloc.Ryear
+           and indwght.Allockey            = periodindalloc.AllocationKey
+           and indwght.KeyVersion          = periodindalloc.Fplv                                                                                                                                                                   
+           and indwght.poper              >= periodindalloc.Poper  
+           and periodindalloc.Poper        > indwght.fromRefperiod                       
 {
   key fplv,
   key ryear,
@@ -139,22 +152,17 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
   key costobject,
   key costcenter,
   key serviceproduct,
-  key receivingentity,
+  key indwght.ReceiverSysId,
+  key indwght.ReceiverCompanyCode,
+  key indwght.ReceivingEntity,
+  key indwght.ReceiverCostObject,
+  key indwght.ReceiverCostCenter,
   key KeyVersion,
   key Allockey,
-//  key AllocType,
   key AllocationPeriod,
   key RefPeriod,
-  key periodindalloc.poper as refpoper,
+  key periodindalloc.Poper as refpoper,
       periodindalloc.value as reckpivalue
-//       case AllocType
-//        when 'A' then   /*average*/ 
-//         case when cast(Poper as abap.int1) - cast(RefPeriod as abap.int1) > 0   then  
-//         periodindalloc.value else 0 end
-//        when 'C' then   /*cumulative*/
-//        case when cast(Poper as abap.int1) - cast(RefPeriod as abap.int1) > 0   then
-//        periodindalloc.value else 0 end
-//        else 0 end as reckpivalue
 
 } where AllocationPeriod = '04' /*Last months*/
 
@@ -162,13 +170,17 @@ union
 
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
-  association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
-                                                          and indwght.ryear           = periodindalloc.ryear
-                                                          and indwght.Allockey        = periodindalloc.allocationkey
-                                                          and indwght.KeyVersion      = periodindalloc.fplv
-                                                          and indwght.poper           > periodindalloc.poper  
-                                                          and periodindalloc.poper    >= indwght.fromRefperiod    
-                                                          
+  association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+                on indwght.ReceiverSysId       = periodindalloc.ReceiverSysId
+               and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+               and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
+               and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
+               and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
+               and indwght.ryear               = periodindalloc.Ryear
+               and indwght.Allockey            = periodindalloc.AllocationKey
+               and indwght.KeyVersion          = periodindalloc.Fplv
+               and indwght.poper               > periodindalloc.Poper  
+               and periodindalloc.Poper       >= indwght.fromRefperiod                           
                                                                                          
 
 {
@@ -181,13 +193,16 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
   key costobject,
   key costcenter,
   key serviceproduct,
-  key receivingentity,
+  key indwght.ReceiverSysId,
+  key indwght.ReceiverCompanyCode,
+  key indwght.ReceivingEntity,
+  key indwght.ReceiverCostObject,
+  key indwght.ReceiverCostCenter,
   key KeyVersion,
   key Allockey,
-//  key AllocType,
   key AllocationPeriod,
   key RefPeriod,
-  key periodindalloc.poper as refpoper,
+  key periodindalloc.Poper as refpoper,
       periodindalloc.value as reckpivalue
 
 } where AllocationPeriod = '05'   /*preevious Month*/
@@ -197,12 +212,16 @@ union
 
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
-  association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
-                                                          and indwght.ryear           = periodindalloc.ryear
-                                                          and indwght.Allockey        = periodindalloc.allocationkey
-                                                          and indwght.KeyVersion      = periodindalloc.fplv
-                                                          and indwght.RefPeriod       = periodindalloc.poper
-                                                          
+ association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+               on indwght.ReceiverSysId        = periodindalloc.ReceiverSysId
+               and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+               and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
+               and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
+               and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
+               and indwght.ryear               = periodindalloc.Ryear
+               and indwght.Allockey            = periodindalloc.AllocationKey
+               and indwght.KeyVersion          = periodindalloc.Fplv
+               and indwght.RefPeriod           = periodindalloc.Poper
                                                                                          
 
 {
@@ -215,13 +234,16 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
   key costobject,
   key costcenter,
   key serviceproduct,
-  key receivingentity,
+  key indwght.ReceiverSysId,
+  key indwght.ReceiverCompanyCode,
+  key indwght.ReceivingEntity,
+  key indwght.ReceiverCostObject,
+  key indwght.ReceiverCostCenter,
   key KeyVersion,
   key Allockey,
-//  key AllocType,
   key AllocationPeriod,
   key RefPeriod,
-  key periodindalloc.poper as refpoper,
+  key periodindalloc.Poper as refpoper,
       periodindalloc.value as reckpivalue
 
 } where AllocationPeriod = '06'   /*Reference Month*/

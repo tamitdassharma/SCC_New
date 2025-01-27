@@ -19,72 +19,91 @@ define view entity /ESRCC/I_MULTIDIM_REPORT
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
       @AnalyticsDetails.query.variableSequence: 2
       @Semantics.fiscal.year: true
-  key ryear,
+  key Ryear,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #ROWS
       @Semantics.fiscal.period: true
       @Consumption.filter: { selectionType : #INTERVAL, multipleSelections: false, mandatory: false }
       @AnalyticsDetails.query.variableSequence: 3
-  key poper,
+  key Poper,
       @AnalyticsDetails.query.display: #TEXT
       @AnalyticsDetails.query.axis: #ROWS
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: false, mandatory: false }
       @AnalyticsDetails.query.variableSequence: 1
-  key fplv,
+  key Fplv,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-  key sysid,
+  key Sysid,
       @AnalyticsDetails.query.display: #KEY_TEXT
       @AnalyticsDetails.query.axis: #ROWS
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
       @AnalyticsDetails.query.variableSequence: 4
-  key legalentity,
+  key Legalentity,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #ROWS
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
       @AnalyticsDetails.query.variableSequence: 5
-  key ccode,
+  key Ccode,
       @AnalyticsDetails.query.display: #TEXT
       @AnalyticsDetails.query.axis: #ROWS
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
       @AnalyticsDetails.query.variableSequence: 6
       @Consumption.semanticObject: 'BusinessConfiguration'
-  key costobject,
+  key Costobject,
 
       @AnalyticsDetails.query.axis: #ROWS
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
       @AnalyticsDetails.query.variableSequence: 7
       @AnalyticsDetails.query.display: #KEY_TEXT
-  key costcenter,
+  key Costcenter,
       @AnalyticsDetails.query.display: #KEY_TEXT
       @AnalyticsDetails.query.axis: #ROWS
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
       @AnalyticsDetails.query.variableSequence: 8
-  key serviceproduct,
+  key Serviceproduct,
       @AnalyticsDetails.query.display: #KEY_TEXT
       @AnalyticsDetails.query.axis: #FREE
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
       @AnalyticsDetails.query.variableSequence: 9
-  key receivingentity,
+  key Receivingentity,
+  @AnalyticsDetails.query.display: #KEY_TEXT
+      @AnalyticsDetails.query.axis: #FREE
+      @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
+      @AnalyticsDetails.query.variableSequence: 9
+  key ReceiverSysId,
+  @AnalyticsDetails.query.display: #KEY_TEXT
+      @AnalyticsDetails.query.axis: #FREE
+      @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
+      @AnalyticsDetails.query.variableSequence: 9
+  key ReceiverCostObject,
+  @AnalyticsDetails.query.display: #KEY_TEXT
+      @AnalyticsDetails.query.axis: #FREE
+      @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
+      @AnalyticsDetails.query.variableSequence: 9
+  key ReceiverCostCenter,
       @AnalyticsDetails.query.display: #KEY_TEXT
       @AnalyticsDetails.query.axis: #FREE
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
-      servicetype,
+      Servicetype,
       @AnalyticsDetails.query.display: #KEY_TEXT
       @AnalyticsDetails.query.axis: #FREE
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
-      transactiongroup,
+      Transactiongroup,
       @AnalyticsDetails.query.display: #KEY_TEXT
       @AnalyticsDetails.query.axis: #FREE
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
-      businessdivision,
+      FunctionalArea,
       @AnalyticsDetails.query.display: #KEY_TEXT
       @AnalyticsDetails.query.axis: #FREE
       @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
-      profitcenter,
+      Businessdivision,
+      @AnalyticsDetails.query.display: #KEY_TEXT
+      @AnalyticsDetails.query.axis: #FREE
+      @Consumption.filter: { selectionType : #SINGLE, multipleSelections: true, mandatory: false }
+      Profitcenter,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      localcurr,
+      Currency,
 //      @AnalyticsDetails.query.display: #KEY
 //      @AnalyticsDetails.query.axis: #FREE
 //      groupcurr,
@@ -93,55 +112,55 @@ define view entity /ESRCC/I_MULTIDIM_REPORT
       //    Measures
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      rectotalcostl,
+      @Semantics.amount.currencyCode: 'Currency'
+      RecTotalCost,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      recexcludedcostl,
+      @Semantics.amount.currencyCode: 'Currency'
+      RecExcludedCost,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      Recincludedcostl,
+      @Semantics.amount.currencyCode: 'Currency'
+      RecIncludedCost,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      recorigtotalcostl,
+      @Semantics.amount.currencyCode: 'Currency'
+      RecOrigTotalCost,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      recpasstotalcostl,
+      @Semantics.amount.currencyCode: 'Currency'
+      RecPassTotalCost,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      Stewardshipl,
+      @Semantics.amount.currencyCode: 'Currency'
+      RecStewardship,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      Reccostsharel,
+      @Semantics.amount.currencyCode: 'Currency'
+      RecCostShare,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      recvalueaddedl,
+      @Semantics.amount.currencyCode: 'Currency'
+      RecValueadded,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      recpassthroughl,
+      @Semantics.amount.currencyCode: 'Currency'
+      RecPassthrough,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      Rectotalmarkupabsl,
+      @Semantics.amount.currencyCode: 'Currency'
+      TotalRecMarkup,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      recvalueaddmarkupabsl,
+      @Semantics.amount.currencyCode: 'Currency'
+      RecValueaddMarkup,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      recpassthrumarkupabsl,
+      @Semantics.amount.currencyCode: 'Currency'
+      RecPassthroughMarkup,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
-      @Semantics.amount.currencyCode: 'Localcurr'
-      reckpishareabsl
+      @Semantics.amount.currencyCode: 'Currency'
+      TotalChargeout
       
 }

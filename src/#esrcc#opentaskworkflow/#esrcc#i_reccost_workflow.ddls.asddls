@@ -9,48 +9,55 @@
 }
 @Metadata.allowExtensions: true
 define root view entity /ESRCC/I_RECCOST_WORKFLOW 
-            as select from /ESRCC/I_REC_COST as reccost     
+            as select from /ESRCC/I_ReceiverChargeout as reccost     
             
-  association [0..1] to I_CountryText as _legalCountryText
-  on _legalCountryText.Country = $projection.legalentitycountry
-  and _legalCountryText.Language = $session.system_language                                               
+//  association [0..1] to I_CountryText as _legalCountryText
+//  on _legalCountryText.Country = $projection.legalentitycountry
+//  and _legalCountryText.Language = $session.system_language                                               
 
 {
-    key Fplv as Fplv,
-    key Ryear as Ryear,
-    key Poper as Poper,
-    key Sysid as Sysid,
-    key Legalentity as Legalentity,
-    key Ccode as Ccode,
-    key Costobject as Costobject,
-    key Costcenter as Costcenter,
-    key Serviceproduct as Serviceproduct,
-    key Receivingentity as Receivingentity,
+    key UUID,
+    key ParentUUID,
+    key RootUUID,
     key Currencytype,
-    key Billingfrequqncy,
-    key Billingperiod,
+    _ServiceCost._CostCenterCost.Fplv,
+    _ServiceCost._CostCenterCost.Ryear,
+    _ServiceCost._CostCenterCost.Poper,
+    _ServiceCost._CostCenterCost.Sysid,
+    _ServiceCost._CostCenterCost.Legalentity,
+    _ServiceCost._CostCenterCost.Ccode,
+    _ServiceCost._CostCenterCost.Costobject,
+    _ServiceCost._CostCenterCost.Costcenter,
+    _ServiceCost.Serviceproduct,
+    ReceiverSysId,
+    ReceiverCompanyCode,
+    Receivingentity,
+    ReceiverCostObject,
+    ReceiverCostCenter,
+    _ServiceCost._CostCenterCost.Billingfrequqncy,
+    _ServiceCost._CostCenterCost.Billingperiod,
     Reckpi as Reckpi,  
     Reckpishare as Reckpishare,
-    Chargeout as Chargeout,
+    _ServiceCost.Chargeout as Chargeout,
   //Direct Allocation   
-    transferprice,
-    Servicecostperunit,
-    Valueaddcostperunit,
-    Passthrucostperunit,  
+    TransferPrice,
+    _ServiceCost.Servicecostperunit,
+    _ServiceCost.Valueaddcostperunit,
+    _ServiceCost.Passthrucostperunit,  
         
-    tp_totalsrvmarkupabs,   
-    tp_valueaddmarkupabs,    
-    tp_passthrumarkupabs,
+    TotalRecMarkup,   
+    Valueaddmarkup,    
+    Passthrumarkup,
     
-    onvalueaddedmarkupabs,
-    onvpassthrudmarkupabs,
-    totaludmarkupabs,
+//    onvalueaddedmarkupabs,
+//    onvpassthrudmarkupabs,
+//    totaludmarkupabs,
     
-    totalcostbaseabs,
+    RecCostShare,
     
-    valuaddabs,
-    passthruabs,
-    chargeoutforservice,
+    RecValueadded,
+    RecPassthrough,
+    TotalChargeout,
     
     Status,
     Workflowid, 
@@ -60,22 +67,25 @@ define root view entity /ESRCC/I_RECCOST_WORKFLOW
     LastChangedBy,
     
     Currency,
-    Costshare,
-    Stewardship,
-    costdatasetdescription,   
-    legalentitydescription,
+//    Costshare,
+//    Stewardship,
+    _ServiceCost._CostCenterCost.costdatasetdescription,   
+    _ServiceCost._CostCenterCost.legalentitydescription,
     ccodedescription,
     costobjectdescription,
     costcenterdescription,
-    Serviceproductdescription,
-    Servicetypedescription,
+    _ServiceCost.Serviceproductdescription,
+    _ServiceCost.Servicetypedescription,
     statusdescription,
     receivingentitydescription,
-    billingfrequencydescription,
-    billingperioddescription,
+    ccodedescription as Reccodedescription,
+    costobjectdescription as Reccostobjectdescription,
+    costcenterdescription as Reccostcenterdescription,
+//    billingfrequencydescription,
+//    billingperioddescription,
     Country as receivingentitycountry,
-    legalentitycountry,
+    _ServiceCost._CostCenterCost.Country as legalentitycountry,
     //association
     _ReceivingCountryText,
-    _legalCountryText
+    _ServiceCost._CostCenterCost._legalCountryText
 }

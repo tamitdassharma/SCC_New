@@ -109,6 +109,16 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   label: '',
   cssDefault:{width: '10rem'}
   } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_FunctionalArea_F4', element: 'FunctionalArea' }}]
+  @UI.selectionField: [{ position: 65 }]
+  @UI.textArrangement: #TEXT_LAST
+  FunctionalArea;
+  @UI.lineItem: [ {
+  position: 75 ,
+  importance: #MEDIUM,
+  label: '',
+  cssDefault:{width: '10rem'}
+  } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BUSINESSDIV_F4', element: 'BusinessDivision' }}]
   @UI.selectionField: [{ position: 65 }]
   @UI.textArrangement: #TEXT_LAST
@@ -146,6 +156,22 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   @UI.lineItem: [ {
   position: 110 ,
   importance: #MEDIUM,
+  label: 'Receiver System Id',
+  cssDefault:{width: '10rem'}
+  } ]
+  @UI.selectionField: [{ position: 63 }]
+  ReceiverSysId;
+  @UI.lineItem: [ {
+  position: 110 ,
+  importance: #MEDIUM,
+  label: 'Receiver Company Code',
+  cssDefault:{width: '10rem'}
+  } ]
+  @UI.selectionField: [{ position: 63 }]
+  ReceiverCompanyCode;
+  @UI.lineItem: [ {
+  position: 110 ,
+  importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
@@ -154,6 +180,22 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   @EndUserText.label: 'Receiving Entity'
   @UI.textArrangement: #TEXT_LAST
   Receivingentity;
+  @UI.lineItem: [ {
+  position: 110 ,
+  importance: #MEDIUM,
+  label: 'Receiver Cost Object',
+  cssDefault:{width: '10rem'}
+  } ]
+  @UI.selectionField: [{ position: 63 }]
+  ReceiverCostObject;
+  @UI.lineItem: [ {
+  position: 110 ,
+  importance: #MEDIUM,
+  label: 'Receiver Cost Number',
+  cssDefault:{width: '10rem'}
+  } ]
+  @UI.selectionField: [{ position: 63 }]
+  ReceiverCostCenter;
   @UI.lineItem: [ {
   position: 130 ,
   importance: #MEDIUM,
@@ -167,183 +209,91 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Rectotalcostl;
+  RecTotalCost;
   @UI.lineItem: [ {
   position: 150 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Localcurr;
-  @UI.lineItem: [ {
-  position: 20 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Rectotalcostg;
-  @UI.lineItem: [ {
-  position: 170 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Groupcurr;
+  Currency;
   @UI.lineItem: [ {
   position: 180 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Recexcludedcostl;
+  RecExcludedCost;
   @UI.lineItem: [ {
   position: 190 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Recincludedcostl;
+  RecIncludedCost;
   @UI.lineItem: [ {
   position: 200 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Recorigtotalcostl;
+  RecOrigTotalCost;
   @UI.lineItem: [ {
   position: 210 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Recpasstotalcostl;
-  @UI.lineItem: [ {
-  position: 220 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Recexcludedcostg;
-  @UI.lineItem: [ {
-  position: 230 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Recincludedcostg;
-  @UI.lineItem: [ {
-  position: 240 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Recorigtotalcostg;
-  @UI.lineItem: [ {
-  position: 250 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Recpasstotalcostg;
+  RecPassTotalCost;
   @UI.lineItem: [ {
   position: 255,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Stewardshipl;
-  @UI.lineItem: [ {
-  position: 255,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Stewardshipg;
-
+  RecStewardship;
   @UI.lineItem: [ {
   position: 300 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Reccostsharel;
-  @UI.lineItem: [ {
-  position: 300 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Reccostshareg;
+  RecCostShare;
   @UI.lineItem: [ {
   position: 310 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Recvalueaddedl;
-  @UI.lineItem: [ {
-  position: 310 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Recvalueaddedg;
+  RecValueadded;
   @UI.lineItem: [ {
   position: 320 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Recpassthroughl;
-  @UI.lineItem: [ {
-  position: 320 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Recpassthroughg;
+  RecPassthrough;
   @UI.lineItem: [ {
   position: 350 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Recvalueaddmarkupabsl;
-  @UI.lineItem: [ {
-  position: 350 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Recvalueaddmarkupabsg;
+  RecValueaddMarkup;
   @UI.lineItem: [ {
   position: 360 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Recpassthrumarkupabsl;
-  @UI.lineItem: [ {
-  position: 360 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Recpassthrumarkupabsg;
+  RecPassthroughMarkup;
   @UI.lineItem: [ {
   position: 370 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '10rem'}
   } ]
-  Rectotalmarkupabsl;
-  @UI.lineItem: [ {
-  position: 370 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Rectotalmarkupabsg;
+  TotalRecMarkup;
   @UI.lineItem: [ {
   position: 390 ,
   importance: #MEDIUM,
@@ -352,20 +302,6 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   } ]
   Reckpishare;
   @UI.lineItem: [ {
-  position: 400 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Reckpishareabsl;
-  @UI.lineItem: [ {
-  position: 400 ,
-  importance: #MEDIUM,
-  label: '',
-  cssDefault:{width: '10rem'}
-  } ]
-  Reckpishareabsg;
-  @UI.lineItem: [ {
   position: 410 ,
   importance: #MEDIUM
   } ]
@@ -373,7 +309,7 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   @UI.selectionField: [{ position: 100 }]
   @UI.textArrangement: #TEXT_ONLY
   @EndUserText.label: 'Charge-Out Status'
-  status;
+  Status;
 
   //hidden fields
   @UI.hidden: true
@@ -383,13 +319,11 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   @UI.hidden: true
   costcenterdescription;
   @UI.hidden: true
-  receivingentitydescription;
+  Serviceproductdescription;
   @UI.hidden: true
-  serviceproductdescription;
+  Transactiongroupdescription;
   @UI.hidden: true
-  transactiongroupdescription;
-  @UI.hidden: true
-  servicetypedescription;
+  Servicetypedescription;
   @UI.hidden: true
   ccodedescription;
   @UI.hidden: true
@@ -402,5 +336,15 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   statusdescription;
   @UI.hidden: true
   oecdDescription;
+  @UI.hidden: true
+  receivingentitydescription;
+  @UI.hidden: true
+  RecCcodedescription;
+  @UI.hidden: true
+  RecCostObjectdescription;
+  @UI.hidden: true
+  RecCostCenterdescription;
+  @UI.hidden: true
+  functionalareadescription;
 
 }

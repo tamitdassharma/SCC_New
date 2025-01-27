@@ -2,6 +2,6 @@
 @MappingRole: true
 define role /ESRCC/C_CC_COST_WORKFLOW {
     grant select on /ESRCC/C_CC_COST_WORKFLOW
-     where inheriting conditions from entity /ESRCC/I_CC_COST;  
+     where inheriting conditions from entity /ESRCC/I_COSTBASESTEWARDSHIP;  
                         
 }

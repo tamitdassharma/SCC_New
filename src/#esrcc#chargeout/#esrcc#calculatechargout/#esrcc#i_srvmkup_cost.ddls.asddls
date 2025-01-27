@@ -62,7 +62,7 @@ define view entity /ESRCC/I_SRVMKUP_COST
     srvcost.Servicetype as Servicetype,
     srvcost.Transactiongroup as Transactiongroup, 
     CapacityVersion,  
-    Costshare as Costshare,    
+    Costshare,    
     Srvcostshare,  
     Valueaddshare,     
     Passthroughshare,   

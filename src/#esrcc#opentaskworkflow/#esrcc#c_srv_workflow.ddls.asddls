@@ -5,32 +5,33 @@ define root view entity /ESRCC/C_SRV_WORKFLOW
 provider contract transactional_query
 as projection on /ESRCC/I_SRV_WORKFLOW
 {
-    
+    key UUID,
+    key ParentUUID,
+    @ObjectModel.text.element: [ 'currencytypetext' ]
+    key Currencytype,    
     @ObjectModel.text.element: [ 'costdatasetdescription' ]
-    key Fplv,
+    Fplv,
     
-    key Ryear,
+    Ryear,
     
-    key Poper,
+    Poper,
     
-    key Sysid,
+    Sysid,
     
     @ObjectModel.text.element: [ 'legalentitydescription' ]
-    key Legalentity,
+    Legalentity,
     
     @ObjectModel.text.element: [ 'ccodedescription' ]
-    key Ccode,
+    Ccode,
     
     @ObjectModel.text.element: [ 'costobjectdescription' ]
-    key Costobject,
+    Costobject,
     
     @ObjectModel.text.element: [ 'costcenterdescription' ]
-    key Costcenter,
+    Costcenter,
     
     @ObjectModel.text.element: [ 'Serviceproductdescription' ]
-    key Serviceproduct,
-    @ObjectModel.text.element: [ 'currencytypetext' ]
-    key Currencytype,
+    Serviceproduct,   
     
     @ObjectModel.text.element: [ 'Servicetypedescription' ]
     Servicetype,
@@ -49,10 +50,6 @@ as projection on /ESRCC/I_SRV_WORKFLOW
     @Semantics.amount.currencyCode: 'Currency'
     Passthroughshare,
     
-    Valueaddmarkup,
-    
-    Passthroughmarkup,
-    
     @ObjectModel.text.element: [ 'chargeoutdescription' ]
     Chargeout,
     
@@ -68,31 +65,25 @@ as projection on /ESRCC/I_SRV_WORKFLOW
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
     Passthrucostperunit,
-    @DefaultAggregation: #SUM
-    @Semantics.amount.currencyCode: 'Currency'
-    Valueaddmarkupabs,
-    @DefaultAggregation: #SUM
-    @Semantics.amount.currencyCode: 'Currency'
-    Passthrumarkupabs,
-    @DefaultAggregation: #SUM
-    @Semantics.amount.currencyCode: 'Currency'
-    totalsrvmarkupabs,
-    @DefaultAggregation: #SUM
-    @Semantics.amount.currencyCode: 'Currency'
-    transferprice,
-    @DefaultAggregation: #SUM
-    @Semantics.amount.currencyCode: 'Currency'
-    totalchargeoutamount, 
-    
+    @Semantics.text: true
     costdatasetdescription,
+    @Semantics.text: true
     legalentitydescription,
+    @Semantics.text: true
     ccodedescription,
+    @Semantics.text: true
     costobjectdescription,
+    @Semantics.text: true
     costcenterdescription,
+    @Semantics.text: true
     Serviceproductdescription,
+    @Semantics.text: true
     Servicetypedescription,
+    @Semantics.text: true
     Transactiongroupdescription,
+    @Semantics.text: true
     statusdescription,
+    @Semantics.text: true
     chargeoutdescription,
     @ObjectModel.text.element: [ 'legalcountryname' ]
     Country,

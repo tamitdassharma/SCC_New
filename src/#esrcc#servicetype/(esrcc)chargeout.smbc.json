@@ -1,0 +1,37 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Service Product Charge-out Configuration",
+    "originalLanguage": "en"
+  },
+  "serviceConfiguration": {
+    "serviceBinding": "/ESRCC/UI_CHARGEOUT_O4",
+    "serviceName": "/ESRCC/UI_CHARGEOUT_O4",
+    "serviceVersion": "0001",
+    "rootEntitySet": "ChargeoutAll",
+    "name": "Service Product Charge-out Configuration",
+    "configurationGroup": "",
+    "skipRootEntity": true
+  },
+  "appConfiguration": {
+    "listReport": {},
+    "objectPages": [
+      {
+        "entitySet": "Chargeout"
+      }
+    ],
+    "tableSettings": [
+      {
+        "entitySet": "Chargeout",
+        "tableType": "gridTable",
+        "creationModeName": "creationRow",
+        "enableFullScreen": true,
+        "rowCountMode": "auto"
+      },
+      {
+        "entitySet": "ChargeoutAll",
+        "tableType": "gridTable"
+      }
+    ]
+  }
+}

@@ -37,7 +37,11 @@ association [0..*] to /ESRCC/I_INDALLOC as TOTALINDALLOC
                  and weightage.costobject = TOTALINDALLOC.costobject
                  and weightage.costcenter = TOTALINDALLOC.costcenter
                  and weightage.serviceproduct = TOTALINDALLOC.serviceproduct
-                 and weightage.receivingentity = TOTALINDALLOC.receivingentity
+                 and weightage.ReceiverSysId = TOTALINDALLOC.ReceiverSysId
+                 and weightage.ReceiverCompanyCode = TOTALINDALLOC.ReceiverCompanyCode
+                 and weightage.ReceivingEntity = TOTALINDALLOC.ReceivingEntity
+                 and weightage.ReceiverCostObject = TOTALINDALLOC.ReceiverCostObject
+                 and weightage.ReceiverCostCenter = TOTALINDALLOC.ReceiverCostCenter
                  and weightage.KeyVersion = TOTALINDALLOC.KeyVersion                             
                  and weightage.Allockey = TOTALINDALLOC.Allockey
 //                 and weightage.AllocType = TOTALINDALLOC.AllocType
@@ -55,7 +59,11 @@ association [0..*] to /ESRCC/I_INDALLOC as TOTALINDALLOC
  key costobject,
  key costcenter,
  key serviceproduct,
- key receivingentity,
+ key ReceiverSysId,
+ key ReceiverCompanyCode,
+ key ReceivingEntity,
+ key ReceiverCostObject,
+ key ReceiverCostCenter,
  key KeyVersion,
  key Allockey,
 // key AllocType,

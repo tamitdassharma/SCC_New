@@ -7,7 +7,7 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Maintain Allocation Weightage Distribution</DDTEXT>
+    <DDTEXT>[Obsolete]Maintain Allocation Weightage Distribution</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
@@ -69,6 +69,7 @@
      <CHECKTABLE>/ESRCC/ALLOCKEYS</CHECKTABLE>
      <ADMINFIELD>0</ADMINFIELD>
      <NOTNULL>X</NOTNULL>
+     <VALEXI>X</VALEXI>
      <SHLPORIGIN>P</SHLPORIGIN>
      <COMPTYPE>E</COMPTYPE>
     </DD03P>

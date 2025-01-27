@@ -6,7 +6,7 @@
     <METADATA>
      <NAME>/ESRCC/UI_RECEIVERCOST_V2</NAME>
      <TYPE>SRVB/SVB</TYPE>
-     <DESCRIPTION>Charge Out for Receivers</DESCRIPTION>
+     <DESCRIPTION>ChargeOut ro Receiver</DESCRIPTION>
      <LINKS>
       <item>
        <HREF>versions</HREF>
@@ -38,7 +38,7 @@
        <TITLE>SemanticVersion</TITLE>
       </item>
      </LINKS>
-     <RESPONSIBLE>HARSHITV</RESPONSIBLE>
+     <RESPONSIBLE>VARUNA</RESPONSIBLE>
      <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
      <ABAP_LANGU_VERSION>5</ABAP_LANGU_VERSION>
     </METADATA>

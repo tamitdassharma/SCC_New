@@ -12,15 +12,17 @@ etag master LocalLastChangedAt
   delete;
 
   field ( mandatory )
-   Comments;
+  Comments;
 
   field (readonly : update)
-   WorkflowId, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+  WorkflowId, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
 
   action ( features : instance, precheck, authorization : update ) changevalueadd parameter /ESRCC/C_COSTIND result [1] $self;
   action ( features : instance, precheck, authorization : update ) changeitems parameter /ESRCC/C_USAGECALCULATION result [1] $self;
   action ( features : instance, precheck, authorization : update ) discardall result [1] $self;
   action ( features : instance, precheck, authorization : update ) submit parameter /ESRCC/C_COMMENT result [1] $self;
+  action ( features : instance, precheck, authorization : update ) adhocchargeout parameter /ESRCC/C_ADHOCCHARGEOUT;
+  static action simulatechargout parameter /ESRCC/C_SIMULATECHARGEOUT result [1] /ESRCC/C_SIMCHARGOUT_OUTPUT;
 
   determination triggerWorkflow on save { field Status; }
 

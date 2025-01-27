@@ -1,19 +1,21 @@
-interface /ESRCC/IF_EXECCOCKPIT
-  public .
-  INTERFACES: IF_BADI_INTERFACE.
+INTERFACE /esrcc/if_execcockpit
+  PUBLIC .
+  INTERFACES: if_badi_interface.
 
-  methods CALCULATE_COSTBASE_STEWARDSHIP
+  METHODS calculate_costbase_stewardship
     CHANGING ct_cc_cost TYPE /esrcc/tt_cc_cost.
-  methods CALCULATE_SERVICESHARE_MARKUP
+  METHODS calculate_serviceshare_markup
     CHANGING ct_srv_cost TYPE /esrcc/tt_srv_cost.
-  methods CALCULATE_CHARGEOUT
+  METHODS calculate_chargeout
     CHANGING ct_rec_cost TYPE /esrcc/tt_rec_cost.
-  methods CALCULATE_ALLOCATION
+  METHODS calculate_allocation
     CHANGING ct_srv_alloc TYPE /esrcc/tt_srvalloc.
-  methods FINALIZE_COSTBASE .
-  methods FINALIZE_SERVICECOSTSHARE .
-  methods FINALIZE_CHARGEOUT.
-  methods REOPEN_COSTBASE .
-  methods REOPEN_SERVICESHARE .
-  methods REOPEN_CHARGEOUT .
-endinterface.
+  METHODS finalize_costbase .
+  METHODS finalize_servicecostshare .
+  METHODS finalize_chargeout.
+  METHODS reopen_costbase .
+  METHODS reopen_serviceshare .
+  METHODS reopen_chargeout .
+  METHODS virtual_posting_recharge
+    IMPORTING it_rec_chg TYPE /esrcc/tt_rec_cost.
+ENDINTERFACE.

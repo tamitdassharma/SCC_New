@@ -5,46 +5,60 @@ define root view entity /ESRCC/C_CHGINVOICE
   provider contract transactional_query
   as projection on /ESRCC/I_CHGINVOICE
 {
-          @ObjectModel.text.element: [ 'costdatasetdescription' ]
-  key     Fplv,
-  key     Ryear,
-  key     Poper,
-  key     Sysid,
-          @ObjectModel.text.element: [ 'legalentitydescription' ]
-  key     Legalentity,
-          @ObjectModel.text.element: [ 'ccodedescription' ]
-  key     Ccode,
-          @ObjectModel.text.element: [ 'costobjectdescription' ]
-  key     Costobject,
-          @ObjectModel.text.element: [ 'costcenterdescription' ]
-  key     Costcenter,
-          @ObjectModel.text.element: [ 'Serviceproductdescription' ]
-  key     Serviceproduct,
-          @ObjectModel.text.element: [ 'receivingentitydescription' ]
-  key     Receivingentity,
-          @ObjectModel.text.element: [ 'currencytypedescription' ]
+  key     UUID,
+  key     ParentUUID,
+  key     RootUUID,
+//          @ObjectModel.text.element: [ 'currenytext' ]
   key     Currencytype,
-          Currency,
+          @ObjectModel.text.element: [ 'costdatasetdescription' ]
+          Fplv,
+          Ryear,
+          Poper,
+          Sysid,
+          @ObjectModel.text.element: [ 'legalentitydescription' ]
+          Legalentity,
+          @ObjectModel.text.element: [ 'ccodedescription' ]
+          Ccode,
+          @ObjectModel.text.element: [ 'costobjectdescription' ]
+          Costobject,
+          @ObjectModel.text.element: [ 'costcenterdescription' ]
+          Costcenter,
+          @ObjectModel.text.element: [ 'serviceproductdescription' ]
+          Serviceproduct,
+          ReceiverSysId,
+          @ObjectModel.text.element: [ 'RecCcodedescription' ]
+          ReceiverCompanyCode,
+          @ObjectModel.text.element: [ 'receivingentitydescription' ]
+          Receivingentity,
+          @ObjectModel.text.element: [ 'RecCostObjectdescription' ]
+          ReceiverCostObject,
+          @ObjectModel.text.element: [ 'RecCostCenterdescription' ]
+          ReceiverCostCenter,
+          //    @ObjectModel.text.element: [ 'currenytext' ]
+          //    Currencytype,
           @ObjectModel.text.element: [ 'billingfrequencydescription' ]
-          BillingFrequency,
+          Billingfrequqncy,
           @ObjectModel.text.element: [ 'billingperioddescription' ]
-          BillingPeriod,
+          Billingperiod,
           @ObjectModel.text.element: [ 'chargeoutdescription' ]
-          chargeout,
+          Chargeout,
+          @ObjectModel.text.element: [ 'servicetypedescription' ]
+          Servicetype,
+          @ObjectModel.text.element: [ 'transactiongroupdescription' ]
+          Transactiongroup,
           @Semantics.amount.currencyCode: 'Currency'
-          Transferprice,
-          //      @Semantics.quantity.unitOfMeasure: 'Uom'
+          TransferPrice,
+          @Semantics.quantity.unitOfMeasure: 'Uom'
           Reckpi,
+          Uom,
+          Currency,
           Reckpishare,
           @Semantics.amount.currencyCode: 'Currency'
-          Reckpishareabs,
-          Uom,
+          TotalChargeout,
           InvoiceUUID,
-          Invoicenumber,
+          InvoiceNumber,
           @ObjectModel.text.element: [ 'invoicestatusdescription' ]
-          Invoicestatus,
-          @ObjectModel.text.element: [ 'servicetypedescription' ]
-          ServiceType,
+          InvoiceStatus,
           Filename,
           Mimetype,
           @Semantics.largeObject: {
@@ -53,30 +67,54 @@ define root view entity /ESRCC/C_CHGINVOICE
              contentDispositionPreference: #INLINE }
           @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/DEFAULT_VIRTUAL_ELEMENT'
   virtual Stream : abap.rawstring(0),
-          legalentitycountry,
-          receivingentitycountry,
+          //          legalentitycountry,
+
           CreatedBy,
           CreatedAt,
           LastChangedBy,
           LastChangedAt,
 
           //descriptions
-          ccodedescription,
+          @Semantics.text: true
+          billingfrequencydescription,
+          @Semantics.text: true
+          billingperioddescription,
+          @Semantics.text: true
           legalentitydescription,
+          @Semantics.text: true
           costobjectdescription,
+          @Semantics.text: true
           costcenterdescription,
-          costdatasetdescription,
+          @Semantics.text: true
           Serviceproductdescription,
-          //   _srvtyp.Description         as Servicetypedescription,
+          @Semantics.text: true
+          Transactiongroupdescription,
+          @Semantics.text: true
+          Servicetypedescription,
+          @Semantics.text: true
+          ccodedescription,
+          @Semantics.text: true
+          oecdDescription,
+          @Semantics.text: true
+          costdatasetdescription,
+          @Semantics.text: true
+          RecCcodedescription,
+          @Semantics.text: true
           receivingentitydescription,
+          @Semantics.text: true
+          RecCostCenterdescription,
+          @Semantics.text: true
+          RecCostObjectdescription,
+          @Semantics.text: true
           chargeoutdescription,
-          currencytypedescription,
+          @Semantics.text: true
           invoicestatusdescription,
           invoicestatuscriticallity,
-          servicetypedescription,
-          legalentitycountryname,
-          receivingentitycountryname,
-          billingfrequencydescription,
-          billingperioddescription
 
+          @ObjectModel.text.element: [ 'legalentitycountryname' ]
+          LECountry as legalentitycountry,
+          @ObjectModel.text.element: [ 'receivingcountryname' ]
+          receivingentitycountry,
+          _legalCountryText.CountryName as legalentitycountryname,
+          _ReceivingCountryText.CountryName as receivingcountryname
 }
