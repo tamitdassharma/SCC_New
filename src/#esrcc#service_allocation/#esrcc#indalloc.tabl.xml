@@ -12,7 +12,6 @@
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>A</CONTFLAG>
     <EXCLASS>3</EXCLASS>
-    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD02V>
    <DD09L>
     <TABNAME>/ESRCC/INDALLOC</TABNAME>
@@ -65,8 +64,6 @@
      <ROLLNAME>/ESRCC/ALLOCKEY</ROLLNAME>
      <ADMINFIELD>0</ADMINFIELD>
      <NOTNULL>X</NOTNULL>
-     <VALEXI>X</VALEXI>
-     <SHLPORIGIN>F</SHLPORIGIN>
      <COMPTYPE>E</COMPTYPE>
     </DD03P>
     <DD03P>
@@ -135,6 +132,12 @@
      <DDTEXT>Indirekte Verrechnung Serviceverbrauch</DDTEXT>
     </item>
    </DD02_TEXTS>
+   <TABL_EXTRAS>
+    <TDDAT>
+     <TABNAME>/ESRCC/INDALLOC</TABNAME>
+     <CCLASS>CUS_DEV_SUP_DA</CCLASS>
+    </TDDAT>
+   </TABL_EXTRAS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Configuration for Workflow Approval",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_WFCUST_O4",
@@ -24,12 +25,15 @@
       {
         "entitySet": "RoleAssignment",
         "tableType": "gridTable",
+        "selectionMode": "auto",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
-        "entitySet": "RoleAssignmentAll"
+        "entitySet": "RoleAssignmentAll",
+        "selectionMode": "auto",
+        "selectAll": true
       }
     ]
   }

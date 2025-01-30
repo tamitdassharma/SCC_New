@@ -47,6 +47,148 @@
 
 //UI Chart Annotation
 @UI.chart: [
+//{
+//    qualifier: 'ChargeoutsByYear',
+//    chartType: #BAR,
+//    dimensions:  [ 'Ryear' ],
+//    measures:  [ 'Totalcost_g' ],
+//    dimensionAttributes: [{
+//        dimension: 'Ryear',
+//        role: #CATEGORY
+//    }],
+//    measureAttributes: [{
+//        measure: 'Totalcost_g',
+//        role: #AXIS_1
+//    }]
+//},
+//
+//
+//{
+//    qualifier: 'ChargeoutsByLE',
+//    chartType: #COLUMN,
+//    dimensions:  [ 'Legalentity' ],
+//    measures:  [ 'Totalcost_g' ],
+//    dimensionAttributes: [{
+//        dimension: 'Legalentity',
+//        role: #CATEGORY
+//    }],
+//
+//    measureAttributes: [{
+//        measure: 'Totalcost_g',
+//        role: #AXIS_1
+//
+//    }]
+//},
+//
+//{
+//    qualifier: 'ChargeoutsByCC',
+//    chartType: #COLUMN,
+//    dimensions:  [ 'Costcenter' ],
+//    measures:  [ 'Totalcost_g' ],
+//    dimensionAttributes: [{
+//        dimension: 'Costcenter',
+//        role: #CATEGORY
+//    }],
+//
+//    measureAttributes: [{
+//        measure: 'Totalcost_g',
+//        role: #AXIS_1
+//    }]
+//},
+//{
+//    qualifier: 'ChargeoutsByServiceType',
+//    chartType: #BAR,
+//    dimensions:  [ 'servicetype' ],
+//    measures:  [ 'Totalcost_g' ],
+//    dimensionAttributes: [{
+//        dimension: 'servicetype',
+//        role: #CATEGORY
+//    }],
+//    measureAttributes: [{
+//        measure: 'Totalcost_g',
+//        role: #AXIS_1
+//    }]
+//},
+//
+//
+//{
+//    qualifier: 'ChargeoutsByTG',
+//    chartType: #LINE,
+//    dimensions:  [ 'transactiongroup' ],
+//    measures:  [ 'Totalcost_g' ],
+//    dimensionAttributes: [{
+//        dimension: 'transactiongroup',
+//        role: #CATEGORY
+//    }],
+//    measureAttributes: [{
+//        measure: 'Totalcost_g',
+//        role: #AXIS_1
+//    }]
+//},
+//
+//{
+//    qualifier: 'ChargeoutsBySerProduct',
+//    chartType: #LINE,
+//    dimensions:  [ 'serviceproduct' ],
+//    measures:  [ 'Totalcost_g' ],
+//    dimensionAttributes: [{
+//        dimension: 'serviceproduct',
+//        role: #CATEGORY
+//    }],
+//    measureAttributes: [{
+//        measure: 'Totalcost_g',
+//        role: #AXIS_1
+//    }]
+//},
+//
+//{
+//    qualifier: 'ChargeoutsByRecEntity',
+//    chartType: #LINE,
+//    dimensions:  [ 'Receivingentity' ],
+//    measures:  [ 'Totalcost_g' ],
+//    dimensionAttributes: [{
+//        dimension: 'Receivingentity',
+//        role: #CATEGORY
+//    }],
+//    measureAttributes: [{
+//        measure: 'Totalcost_g',
+//        role: #AXIS_1
+//    }]
+//},
+//{
+//    qualifier: 'ChargeoutsByFplv',
+//    chartType: #BAR,
+//    dimensions:  [ 'Fplv' ],
+//    measures:  [ 'Totalcost_g' ],
+//    dimensionAttributes: [{
+//        dimension: 'Fplv',
+//        role: #CATEGORY
+//    }],
+//    measureAttributes: [{
+//        measure: 'Totalcost_g',
+//        role: #AXIS_1
+//    }]
+//},
+//
+//
+//{
+//    qualifier: 'StewardShipByLE',
+//    chartType: #BAR,
+//    dimensions:  [ 'Ryear', 'Fplv' ],
+//    measures:  [ 'Stewardship' ],
+//    dimensionAttributes: [{
+//        dimension: 'Ryear',
+//        role: #CATEGORY
+//    },
+//    {
+//        dimension: 'Fplv',
+//        role: #CATEGORY
+//    }],
+//    measureAttributes: [{
+//        measure: 'Stewardship',
+//        role: #AXIS_1
+//    }]
+//},
 {
     qualifier: 'KPI1ExcludedCost',
     chartType: #BAR,
@@ -93,11 +235,14 @@
     }]
 },
 
+
+
+
 {
     qualifier: 'ChartDefault',
     chartType: #COLUMN,
     dimensions:  ['Legalentity','Ryear','Fplv' ],
-    measures:  [ 'TotalChargeOutAmount' ],
+    measures:  [ 'Totalcost_g' ],
     dimensionAttributes: [
      {
         dimension: 'Fplv',
@@ -114,7 +259,7 @@
 
     ],
     measureAttributes: [{
-        measure: 'TotalChargeOutAmount',
+        measure: 'Totalcost_g',
         role: #AXIS_1
     }]
 }]
@@ -158,7 +303,68 @@
     }
     ]
 },
-
+//
+//{
+//    qualifier: 'FilterChargeoutsByYear',
+//    text: 'Filter: Chargeouts by Year',
+//    visualizations: [{
+//        type: #AS_CHART,
+//        qualifier: 'ChargeoutsByYear'
+//    }]
+//},
+//{
+//    qualifier: 'FilterChargeoutsByFplv',
+//    text: 'Filter: Chargeouts by Dataset',
+//    visualizations: [{
+//        type: #AS_CHART,
+//        qualifier: 'ChargeoutsByFplv'
+//    }]
+//},
+//{
+//    qualifier: 'FilterChargeoutsByLE',
+//    text: 'Filter: Chargeouts by Legal Entity',
+//    visualizations: [{
+//        type: #AS_CHART,
+//        qualifier: 'ChargeoutsByLE'
+//    }]
+//},
+//
+//{
+//    qualifier: 'FilterChargeoutsByCC',
+//    text: 'Filter: Chargeouts by Cost Center',
+//    visualizations: [{
+//        type: #AS_CHART,
+//        qualifier: 'ChargeoutsByCC'
+//    }]
+//},
+//
+//
+//{
+//    qualifier: 'FilterChargeoutsBySerProduct',
+//    text: 'Filter: Chargeouts by Service Product',
+//    visualizations: [{
+//        type: #AS_CHART,
+//        qualifier: 'ChargeoutsBySerProduct'
+//    }]
+//},
+//
+//{
+//    qualifier: 'FilterChargeoutsByServiceType',
+//    text: 'Filter: Chargeouts by Service Type',
+//    visualizations: [{
+//        type: #AS_CHART,
+//        qualifier: 'ChargeoutsByServiceType'
+//    }]
+//},
+//
+//{
+//    qualifier: 'FilterChargeoutsByTG',
+//    text: 'Filter: Chargeouts by TG',
+//    visualizations: [{
+//        type: #AS_CHART,
+//        qualifier: 'ChargeoutsByTG'
+//    }]
+//},
 {
     qualifier: 'Default',
     visualizations: [{
@@ -241,38 +447,13 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @UI.textArrangement: #TEXT_LAST
   Serviceproduct;
 
-  @UI.lineItem: [{ position: 81 } ]
-  @UI.textArrangement: #TEXT_LAST
-  @EndUserText.label: 'System Id (Receiver)'
-  ReceiverSysId;
-  
-  @UI.lineItem: [{ position: 82 } ]
-  @UI.textArrangement: #TEXT_LAST
-  @EndUserText.label: 'Company Code (Receiver)'
-  ReceiverCompanyCode;
-  
-  @UI.lineItem: [{ position: 83 } ]
+
+  @UI.lineItem: [{ position: 85 } ]
   @UI.selectionField: [{position: 65}]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RECEIVINGENTITY_F4', element: 'Receivingentity' } }]
   Receivingentity;
-  
-  @UI.lineItem: [{ position: 84 } ]
-  @UI.textArrangement: #TEXT_LAST
-  @EndUserText.label: 'Cost Object Type (Receiver)'
-  ReceiverCostObject;
-  
-  @UI.lineItem: [{ position: 85 } ]
-  @UI.textArrangement: #TEXT_LAST
-  @EndUserText.label: 'Cost Object Number (Receiver)'
-  ReceiverCostCenter;
-  
-  @UI.lineItem: [{ position: 110 } ]
-  @UI.selectionField: [{position: 65}]
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_FunctionalArea_F4', element: 'FunctionalArea' }}]
-  @UI.textArrangement: #TEXT_LAST
-  FunctionalArea;
-  
+
   @UI.lineItem: [{ position: 110 } ]
   @UI.selectionField: [{position: 65}]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BUSINESSDIV_F4', element: 'BusinessDivision' }}]
@@ -282,7 +463,7 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @UI.lineItem: [{ position: 130 }]
   @UI.dataPoint: { title: 'Charge-Out Amount', valueFormat.numberOfFractionalDigits: 2 }
   @EndUserText.label: 'Charge-Out Amount'
-  TotalChargeOutAmount;
+  Totalcost_g;
 
   @UI.lineItem: [{ position: 140 }]
   @UI.dataPoint: { title: 'Total Cost (Initial)', valueFormat.numberOfFractionalDigits: 2 }
@@ -328,7 +509,7 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @UI.lineItem: [{ position: 210}]
   @UI.textArrangement: #TEXT_ONLY
   @EndUserText.label: 'Charge-Out Status'
-  Status;
+  status;
 
   @UI.lineItem: [{ position: 999 }]
   @EndUserText.label: 'Legal Entity Country'
@@ -350,11 +531,11 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @UI.hidden: true
   costdatasetdescription;
   @UI.hidden: true
-  Transactiongroupdescription;
+  transactiongroupdescription;
   @UI.hidden: true
-  Serviceproductdescription;
+  serviceproductdescription;
   @UI.hidden: true
-  Servicetypedescription;
+  servicetypedescription;
   @UI.hidden: true
   receivingentitydescription;
   @UI.hidden: true
@@ -364,7 +545,7 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @UI.hidden: true
   businessdescription;
   @UI.hidden: true
-  Currency;
+  Groupcurr;
   @UI.hidden: true
   legalcountryname;
   @UI.hidden: true
@@ -373,13 +554,6 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   statusdescription;
   @UI.hidden: true
   oecdDescription;
-  @UI.hidden: true
-  RecCcodedescription;
-  @UI.hidden: true
-  RecCostObjectdescription;
-  @UI.hidden: true
-  RecCostCenterdescription;
-  @UI.hidden: true
-  functionalareadescription;
+
 
 }

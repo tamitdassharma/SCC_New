@@ -7,9 +7,9 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <HEADLEN>55</HEADLEN>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Intercompany Mark-up on Origin Cost (%)</DDTEXT>
-    <REPTEXT>Intercompany Mark-up on Origin Cost (%)</REPTEXT>
-    <SCRTEXT_L>Intercompany Mark-up on Origin Cost (%)</SCRTEXT_L>
+    <DDTEXT>Mark-up on Origin Cost (%)</DDTEXT>
+    <REPTEXT>Mark-up on Origin Cost (%)</REPTEXT>
+    <SCRTEXT_L>Mark-up on Origin Cost (%)</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>DEC</DATATYPE>
     <LENG>000005</LENG>

@@ -32,10 +32,7 @@ as select from /ESRCC/I_CC_COST_UNION as cc_cost
   
   association [0..1] to /ESRCC/I_BUSINESSDIV_F4 as businessdiv
   on businessdiv.BusinessDivision = cc_cost.Businessdivision
-
-  association [0..1] to /ESRCC/I_FunctionalArea_F4 as functionalarea
-  on functionalarea.FunctionalArea = $projection.FunctionalArea
-    
+  
   association [0..1] to /ESRCC/I_BILLINGFREQ as billingfreq
   on billingfreq.Billingfreq = cc_cost.Billfrequency
   
@@ -61,7 +58,6 @@ as select from /ESRCC/I_CC_COST_UNION as cc_cost
     key Currencytype,
     cc_cost.Billfrequency as Billingfrequqncy,
     cc_cost.Businessdivision as Businessdivision,
-    cc_cost.FunctionalArea as FunctionalArea,
     cc_cost.Profitcenter as Profitcenter,
     Controllingarea as Controllingarea,    
     cc_cost.Billingperiod as Billingperiod,
@@ -87,7 +83,6 @@ as select from /ESRCC/I_CC_COST_UNION as cc_cost
     costcenter.Description as costcenterdescription,
     costdataset.text as costdatasetdescription,
     businessdiv.Description as businessdescription,
-    functionalarea.Description as functionalareadescription,
     profitcenter.profitcenterdescription,
     billingfreq.text as billingfrequencydescription,
     billingperiod.text as billingperioddescription,

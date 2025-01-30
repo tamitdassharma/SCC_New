@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Tax Information",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_LETAXINFO_O4",
@@ -24,12 +25,15 @@
       {
         "entitySet": "TaxInformation",
         "tableType": "gridTable",
+        "selectionMode": "auto",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
-        "entitySet": "TaxInformationAll"
+        "entitySet": "TaxInformationAll",
+        "selectionMode": "auto",
+        "selectAll": true
       }
     ]
   }

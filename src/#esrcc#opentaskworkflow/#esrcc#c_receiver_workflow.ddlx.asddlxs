@@ -13,7 +13,7 @@
   }
 }
 
-@UI.presentationVariant: [{ groupBy: [ 'Receivingentity' ] }]
+@UI.presentationVariant: [{ groupBy: [ 'Serviceproduct' ] }]
 
 annotate view /ESRCC/C_RECEIVER_WORKFLOW with
 {
@@ -42,56 +42,14 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
   @UI.textArrangement: #TEXT_LAST
   Receivingentity;
   @UI.lineItem: [
-   {  position: 6 ,
+   {  position: 5 ,
     importance: #MEDIUM,
     label: ''
   } ]
   @UI.fieldGroup: [
   {
     importance: #HIGH,
-    position: 6 ,
-    qualifier: 'OrgData'
-  } ]
-//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RECEIVINGENTITY_F4', element: 'Receivingentity' } }]
-  @UI.textArrangement: #TEXT_LAST
-  ReceiverCompanyCode;
-  @UI.lineItem: [
-   {  position: 7 ,
-    importance: #MEDIUM,
-    label: ''
-  } ]
-  @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 7 ,
-    qualifier: 'OrgData'
-  } ]
-//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RECEIVINGENTITY_F4', element: 'Receivingentity' } }]
-  @UI.textArrangement: #TEXT_LAST
-  ReceiverCostObject;
-  @UI.lineItem: [
-   {  position: 8 ,
-    importance: #MEDIUM,
-    label: ''
-  } ]
-  @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 8 ,
-    qualifier: 'OrgData'
-  } ]
-//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RECEIVINGENTITY_F4', element: 'Receivingentity' } }]
-  @UI.textArrangement: #TEXT_LAST
-  ReceiverCostCenter;
-  @UI.lineItem: [
-   {  position: 9 ,
-    importance: #MEDIUM,
-    label: ''
-  } ]
-  @UI.fieldGroup: [
-  {
-    importance: #HIGH,
-    position: 9 ,
+    position: 5 ,
     qualifier: 'OrgData'
   } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' }}]
@@ -99,7 +57,7 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
   Serviceproduct;
   
   @UI.lineItem: [
-   {  position: 1 ,
+   {  position: 5 ,
     importance: #MEDIUM,
     label: '',
     cssDefault:{width: '5rem'}
@@ -107,7 +65,7 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
   @UI.fieldGroup: [
   {
     importance: #HIGH,
-    position: 1 ,
+    position: 5 ,
     qualifier: 'OrgData'
   } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTDATASET', element: 'costdataset' } }]
@@ -128,37 +86,37 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
   } ]
   @Consumption.valueHelpDefinition: [{distinctValues: true },{ entity: { name: '/ESRCC/I_RYEAR', element: 'ryear' }}]
   Ryear;
-//  @UI.lineItem: [ {
-//    position:   15 ,
-//    importance: #MEDIUM,
-//    label: '',
-//    cssDefault:{width: '5rem'}
-//  } ]
-//  @UI.fieldGroup: [
-//  {
-//    importance: #HIGH,
-//    position: 15 ,
-//    qualifier: 'OrgData'
-//  } ]
-//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BILLINGFREQ', element: 'Billingfreq' } }]
-//  @UI.textArrangement: #TEXT_ONLY
-//  Billingfrequqncy;
-//  @UI.lineItem: [ {
-//    position: 16 ,
-//    importance: #MEDIUM,
-//    label: '',
-//    cssDefault:{width: '5rem'}
-//  } ]
-//  @UI.fieldGroup: [
-//  {
-//    importance: #HIGH,
-//    position: 16 ,
-//    qualifier: 'OrgData'
-//  } ]
-//  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BILLINGFREQUENCY_F4', element: 'Billingperiod' },
-//                                          additionalBinding: [{ element: 'Billingfreq', localElement: 'Billingfrequqncy' }] }]
-//  @UI.textArrangement: #TEXT_ONLY
-//  Billingperiod;
+  @UI.lineItem: [ {
+    position:   15 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '5rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 15 ,
+    qualifier: 'OrgData'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BILLINGFREQ', element: 'Billingfreq' } }]
+  @UI.textArrangement: #TEXT_ONLY
+  Billingfrequqncy;
+  @UI.lineItem: [ {
+    position: 16 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '5rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+    importance: #HIGH,
+    position: 16 ,
+    qualifier: 'OrgData'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BILLINGFREQUENCY_F4', element: 'Billingperiod' },
+                                          additionalBinding: [{ element: 'Billingfreq', localElement: 'Billingfrequqncy' }] }]
+  @UI.textArrangement: #TEXT_ONLY
+  Billingperiod;
   @UI.lineItem: [ {
     position: 20 ,
     importance: #MEDIUM,
@@ -207,7 +165,7 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
   @UI.textArrangement: #TEXT_LAST
   Ccode;
   @UI.lineItem: [ {
-  position: 60 ,
+  position: 10 ,
   importance: #MEDIUM,
   label: ''
   } ]
@@ -218,7 +176,7 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTOBJECTS', element: 'Costobject' }}]
   Costobject;
   @UI.lineItem: [ {
-  position: 70 ,
+  position: 20 ,
   importance: #MEDIUM,
   label: '',
   cssDefault:{width: '15rem'}
@@ -243,7 +201,7 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
     label: ''
   } ]
   @EndUserText.label: 'Total Charge-Out Received'
-  TotalChargeout;
+  chargeoutforservice;
 
   @UI.lineItem: [ {
   position: 95 ,
@@ -255,7 +213,7 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
     label: ''
   } ]
   @EndUserText.label: 'Total Mark-up'
-  TotalRecMarkup;
+  totaludmarkupabs;
 
   @UI.lineItem: [ {
   position: 100 ,
@@ -267,7 +225,7 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
     label: ''
   } ]
   @EndUserText.label: 'Total Cost (Initial)'
-  RecCostShare;
+  totalcostbaseabs;
 
   @UI.lineItem: [ {
   position: 110 ,
@@ -279,7 +237,7 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
     label: ''
   } ]
   @EndUserText.label: 'Thereof Value-Add'
-  RecValueadded;
+  valuaddabs;
 
   @UI.lineItem: [ {
   position: 120 ,
@@ -291,7 +249,7 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
     label: ''
   } ]
   @EndUserText.label: 'Thereof Pass-Through'
-  RecPassthrough;
+  passthruabs;
   @UI.lineItem: [ {
   position: 130 ,
   importance: #MEDIUM,
@@ -342,6 +300,10 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
   @UI.hidden: true
   statusdescription;
   @UI.hidden: true
+  onvalueaddedmarkupabs;
+  @UI.hidden: true
+  onvpassthrudmarkupabs;
+  @UI.hidden: true
   legalcountryname;
   @UI.hidden: true
   reccountryname;
@@ -363,18 +325,6 @@ annotate view /ESRCC/C_RECEIVER_WORKFLOW with
   @EndUserText.quickInfo: 'Legal Entity Country'
   @UI.textArrangement: #TEXT_LAST
   legalentitycountry;
-  @UI.hidden: true
-  UUID;
-  @UI.hidden: true
-  ParentUUID;
-  @UI.hidden: true
-  RootUUID;
-  @UI.hidden: true
-  Reccodedescription;
-  @UI.hidden: true
-  Reccostcenterdescription;
-  @UI.hidden: true
-  Reccostobjectdescription;
 
 
 

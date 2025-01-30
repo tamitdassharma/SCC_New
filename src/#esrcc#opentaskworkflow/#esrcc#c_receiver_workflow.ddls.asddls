@@ -5,78 +5,63 @@ define root view entity /ESRCC/C_RECEIVER_WORKFLOW
 provider contract transactional_query
 as projection on /ESRCC/I_RECCOST_WORKFLOW
 {   
-    key UUID,
-    key ParentUUID,
-    key RootUUID,
-    key Currencytype,
     @ObjectModel.filter.enabled: false
     @ObjectModel.text.element: [ 'costdatasetdescription' ]
-    Fplv,
+    key Fplv,
     @ObjectModel.filter.enabled: false
-    Ryear,
+    key Ryear,
     @ObjectModel.filter.enabled: false
-    Poper,
+    key Poper,
     @ObjectModel.filter.enabled: false
-    Sysid,
+    key Sysid,
     @ObjectModel.filter.enabled: false
     @ObjectModel.text.element: [ 'legalentitydescription' ]
-    Legalentity,
+    key Legalentity,
     @ObjectModel.filter.enabled: false
     @ObjectModel.text.element: [ 'ccodedescription' ]
-    Ccode,
+    key Ccode,
     @ObjectModel.filter.enabled: false
     @ObjectModel.text.element: [ 'costobjectdescription' ]
-    Costobject,
+    key Costobject,
     @ObjectModel.filter.enabled: false
     @ObjectModel.text.element: [ 'costcenterdescription' ]
-    Costcenter,
+    key Costcenter,
     @ObjectModel.text.element: [ 'Serviceproductdescription' ]
-    Serviceproduct,
+    key Serviceproduct,
     @ObjectModel.filter.enabled: false
     @ObjectModel.text.element: [ 'receivingentitydescription' ]
-    Receivingentity,
-//    @ObjectModel.filter.enabled: false
-//    @ObjectModel.text.element: [ 'costdatasetdescription' ]
-    ReceiverSysId,
+    key Receivingentity,
+    key Currencytype,
     @ObjectModel.filter.enabled: false
-    @ObjectModel.text.element: [ 'Reccodedescription' ]
-    ReceiverCompanyCode,
+    @ObjectModel.text.element: [ 'billingfrequencydescription' ]
+    key Billingfrequqncy,
     @ObjectModel.filter.enabled: false
-    @ObjectModel.text.element: [ 'Reccostobjectdescription' ]
-    ReceiverCostObject,
-    @ObjectModel.filter.enabled: false
-    @ObjectModel.text.element: [ 'Reccostcenterdescription' ]
-    ReceiverCostCenter,
-//    @ObjectModel.filter.enabled: false
-//    @ObjectModel.text.element: [ 'billingfrequencydescription' ]
-//    Billingfrequqncy,
-//    @ObjectModel.filter.enabled: false
-//    @ObjectModel.text.element: [ 'billingperioddescription' ]
-//    Billingperiod,
+    @ObjectModel.text.element: [ 'billingperioddescription' ]
+    key Billingperiod,
     Reckpi,
     @ObjectModel.filter.enabled: false
     Currency,
-//    @DefaultAggregation: #SUM
-//    @Semantics.amount.currencyCode: 'Currency'
-//    onvalueaddedmarkupabs,
-//    @DefaultAggregation: #SUM
-//    @Semantics.amount.currencyCode: 'Currency'
-//    onvpassthrudmarkupabs,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
-    TotalRecMarkup, 
+    onvalueaddedmarkupabs,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
-    RecCostShare,
+    onvpassthrudmarkupabs,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
-    RecValueadded,
+    totaludmarkupabs,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
-    RecPassthrough,
+    totalcostbaseabs,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
-    TotalChargeout,
+    valuaddabs,
+    @DefaultAggregation: #SUM
+    @Semantics.amount.currencyCode: 'Currency'
+    passthruabs,
+    @DefaultAggregation: #SUM
+    @Semantics.amount.currencyCode: 'Currency'
+    chargeoutforservice,
     Workflowid,
     @ObjectModel.filter.enabled: false
     @ObjectModel.text.element: [ 'statusdescription' ]
@@ -100,15 +85,9 @@ as projection on /ESRCC/I_RECCOST_WORKFLOW
     @Semantics.text: true
     receivingentitydescription,
     @Semantics.text: true
-    Reccodedescription,
+    billingfrequencydescription,
     @Semantics.text: true
-    Reccostcenterdescription,
-    @Semantics.text: true
-    Reccostobjectdescription,
-//    @Semantics.text: true
-//    billingfrequencydescription,
-//    @Semantics.text: true
-//    billingperioddescription,
+    billingperioddescription,
     @ObjectModel.text.element: [ 'reccountryname' ]
     receivingentitycountry,
     @ObjectModel.text.element: [ 'legalcountryname' ]

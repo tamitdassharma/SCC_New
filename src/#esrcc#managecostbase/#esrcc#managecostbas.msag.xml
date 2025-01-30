@@ -18,43 +18,25 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
      <MSGNR>001</MSGNR>
-     <TEXT>Line item (Doc : &amp;1) is Finalized and cannot be changed</TEXT>
+     <TEXT>Line item (Doc : &amp;1) is &apos;Finalized&apos; and cannot be changed</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
      <MSGNR>002</MSGNR>
-     <TEXT>Line item (Doc : &amp;1) is in Approval Pending and cannot be changed</TEXT>
+     <TEXT>Line item (Doc : &amp;1) is in &apos;Approval Pending&apos; and cannot be changed</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
      <MSGNR>003</MSGNR>
-     <TEXT>Only Line items (Doc : &amp;1) with status Draft are allowed for Submit</TEXT>
+     <TEXT>Only Line items (Doc : &amp;1) with status &apos;Draft&apos; are allowed for Submit</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
      <MSGNR>004</MSGNR>
-     <TEXT>Only Line items (Doc : &amp;1) with status Draft can be discarded</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
-     <MSGNR>005</MSGNR>
-     <TEXT>Selceted line item is already  &apos;Finalized&apos; and cannot be charged out</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
-     <MSGNR>006</MSGNR>
-     <TEXT>Charge out completely successfully</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
-     <MSGNR>007</MSGNR>
-     <TEXT>Selceted line item  is in Approval Pending and cannot be charged out</TEXT>
+     <TEXT>Only Line items (Doc : &amp;1) with status &apos;Draft&apos; can be discarded</TEXT>
     </T100>
    </T100>
   </asx:values>

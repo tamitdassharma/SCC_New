@@ -7,12 +7,11 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>[Obsolete]Maintain Cost Element</DDTEXT>
+    <DDTEXT>Maintain Cost Element</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
     <EXCLASS>3</EXCLASS>
-    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD02V>
    <DD09L>
     <TABNAME>/ESRCC/COSTELE</TABNAME>
@@ -89,6 +88,12 @@
      <DDTEXT>Kostenart bearbeiten</DDTEXT>
     </item>
    </DD02_TEXTS>
+   <TABL_EXTRAS>
+    <TDDAT>
+     <TABNAME>/ESRCC/COSTELE</TABNAME>
+     <CCLASS>CUS_DEV_SUP_RO</CCLASS>
+    </TDDAT>
+   </TABL_EXTRAS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -7,12 +7,11 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>[Obsolete]Maintain Source Cost Objects</DDTEXT>
+    <DDTEXT>Maintain Source Cost Objects</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
     <EXCLASS>3</EXCLASS>
-    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD02V>
    <DD09L>
     <TABNAME>/ESRCC/COSCEN</TABNAME>
@@ -107,6 +106,12 @@
      <DDTEXT>Quell-Kostenträger bearbeiten</DDTEXT>
     </item>
    </DD02_TEXTS>
+   <TABL_EXTRAS>
+    <TDDAT>
+     <TABNAME>/ESRCC/COSCEN</TABNAME>
+     <CCLASS>CUS_DEV_SUP_RO</CCLASS>
+    </TDDAT>
+   </TABL_EXTRAS>
   </asx:values>
  </asx:abap>
 </abapGit>

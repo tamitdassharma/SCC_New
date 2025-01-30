@@ -1,8 +1,8 @@
 @Metadata.layer: #CORE
 @UI: {
   headerInfo: {
-    typeName: 'Service Product Costing with Receivers',
-    typeNamePlural: 'Service Product Costing with Receivers',
+    typeName: 'Service Charge-Out',
+    typeNamePlural: 'Service Charge-Outs',
     title: {
       type: #STANDARD,
       value: 'Serviceproduct'
@@ -18,9 +18,9 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
   {
   id: 'general',
   type: #COLLECTION,
-  label: 'Service Product Costing with Receivers',
+  label: 'Sevice Cost Share & Markup',
   purpose: #STANDARD,
-  position: 10
+  position: 20
   },
   {
     label: 'Service Details',
@@ -45,6 +45,14 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
   },
   {type: #DATAPOINT_REFERENCE,
   targetQualifier: 'shareofcostabs',
+   purpose: #HEADER
+  },
+  {type: #DATAPOINT_REFERENCE,
+  targetQualifier: 'markup',
+   purpose: #HEADER
+  },
+  {type: #DATAPOINT_REFERENCE,
+  targetQualifier: 'finalamount',
    purpose: #HEADER
   },
   {type: #DATAPOINT_REFERENCE,
@@ -220,6 +228,88 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
  } ]
   @EndUserText.label: 'Thereof Pass Through per unit'
   Passthrucostperunit;
+  @UI.lineItem: [ {
+  position: 150 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 80,
+   qualifier: 'ChgData'
+ } ]
+  @EndUserText.label: 'Mark-up on Value-Add (%)'
+  Valueaddmarkup;
+  @UI.lineItem: [ {
+  position: 160 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 90 ,
+   qualifier: 'ChgData'
+ } ]
+  @EndUserText.label: 'Mark-up on Pass-Through (%)'
+  Passthroughmarkup;
+  @UI.lineItem: [ {
+  position: 170 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 95 ,
+   qualifier: 'ChgData'
+ } ]
+  @EndUserText.label: 'Transfer Price per unit'
+  transferprice;
+  @UI.lineItem: [ {
+  position: 180 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 110 ,
+   qualifier: 'ChgData'
+ } ]
+  @EndUserText.label: 'Total Mark-up on Value-Add'
+  Valueaddmarkupabs;
+  @UI.lineItem: [ {
+  position: 190 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.fieldGroup: [
+ {
+   importance: #HIGH,
+   position: 120 ,
+   qualifier: 'ChgData'
+ } ]
+  @EndUserText.label: 'Total Mark-up Pass-Through'
+  Passthrumarkupabs;
+  @UI.lineItem: [ {
+  position: 200 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.dataPoint: { qualifier: 'markup', title: 'Total Mark-up' }
+  @EndUserText.label: 'Total Mark-up'
+  totalsrvmarkupabs;
+  @UI.lineItem: [ {
+  position: 210 ,
+  importance: #MEDIUM,
+  label: ''
+  } ]
+  @UI.dataPoint: { qualifier: 'finalamount', title: 'Total Charge-Out Amount' }
+  @EndUserText.label: 'Total Charge-Out Amount'
+  totalchargeoutamount;
+
   @UI.textArrangement: #TEXT_ONLY@UI.lineItem: [ {
   position: 220 ,
   importance: #MEDIUM,
@@ -443,9 +533,5 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
   unitname;
   @UI.hidden: true
   legalcountryname;
-  @UI.hidden: true
-  UUID;
-  @UI.hidden: true
-  ParentUUID;
 
 }

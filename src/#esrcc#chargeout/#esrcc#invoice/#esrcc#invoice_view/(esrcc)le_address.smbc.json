@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Legal Entity Address",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_LE_ADDRESS_O4",
@@ -24,12 +25,15 @@
       {
         "entitySet": "LeAddress",
         "tableType": "gridTable",
+        "selectionMode": "auto",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
-        "entitySet": "LeAddressAll"
+        "entitySet": "LeAddressAll",
+        "selectionMode": "auto",
+        "selectAll": true
       }
     ]
   }

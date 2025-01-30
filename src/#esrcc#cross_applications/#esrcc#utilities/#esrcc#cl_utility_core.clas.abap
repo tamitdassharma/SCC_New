@@ -27,6 +27,11 @@ ENDCLASS.
 CLASS /ESRCC/CL_UTILITY_CORE IMPLEMENTATION.
 
 
+  METHOD get_group_configuration.
+    SELECT SINGLE * FROM /esrcc/group INTO @group.
+  ENDMETHOD.
+
+
   METHOD get_last_day_of_month.
     IF date IS NOT INITIAL.
       end_date = |{ date+0(6) }{ SWITCH #( date+4(2)
@@ -52,10 +57,5 @@ CLASS /ESRCC/CL_UTILITY_CORE IMPLEMENTATION.
     " Provide date and time interpreting the UTC timestamp for central use.
     CONVERT TIME STAMP time_stamp
     TIME ZONE 'UTC' INTO DATE date TIME time.
-  ENDMETHOD.
-
-
-  METHOD get_group_configuration.
-    SELECT SINGLE * FROM /esrcc/group INTO @group.
   ENDMETHOD.
 ENDCLASS.

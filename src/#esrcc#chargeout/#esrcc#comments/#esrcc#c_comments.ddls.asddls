@@ -6,6 +6,7 @@ define custom entity /ESRCC/C_COMMENTS
   @UI.selectionField: [{ position: 10 }]
   key workflow_id   : /esrcc/workflowid;
   key approverlevel : /esrcc/approvallevel;
+  taskid            : /esrcc/taskid;
   status            : /esrcc/status_de;
   wfcomment         : abap.rawstring(0);
   wfcommenttext     : abap.string;

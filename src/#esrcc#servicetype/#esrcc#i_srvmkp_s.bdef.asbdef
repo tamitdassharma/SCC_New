@@ -58,8 +58,6 @@ authorization dependent by _ServiceMarkupAll
     Validfrom = VALIDFROM;
     Origcost = ORIGCOST;
     Passcost = PASSCOST;
-    IntraOrigcost = INTRA_ORIGCOST;
-    IntraPasscost = INTRA_PASSCOST;
     Validto = VALIDTO;
     CreatedBy = CREATED_BY;
     CreatedAt = CREATED_AT;

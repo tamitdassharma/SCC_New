@@ -12,6 +12,7 @@ define root view entity /ESRCC/I_REC_INDKPISHARE
   as select from /esrcc/recshare as weightage
 
   composition [0..*] of /ESRCC/I_RECALLOCVALUE      as _ReceiverAllocation
+//  composition [0..*] of /ESRCC/I_AVGRECALLOCVALUE   as _AverageReceiverAllocation
 
   association [0..1] to /ESRCC/I_LEGALENTITY_F4     as _legalentity     on  _legalentity.Legalentity = weightage.legalentity
 
@@ -32,6 +33,7 @@ define root view entity /ESRCC/I_REC_INDKPISHARE
   association [0..1] to /ESRCC/I_KEY_VERSION        as _KeyVersionText  on  _KeyVersionText.KeyVersion = $projection.keyversion
   association [0..1] to /ESRCC/I_ALLOCATION_KEY_F4  as _AllocKeyText    on  _AllocKeyText.Allocationkey = $projection.allockey
 
+//  association [0..1] to /ESRCC/I_ALLOCATIONTYPE     as _AllocTypeText   on  _AllocTypeText.AllocType = $projection.alloctype
   association [0..1] to /ESRCC/I_ALLOCATIONPERIOD   as _AllocPeriodText on  _AllocPeriodText.AllocationPeriod = $projection.allocationperiod
 
   association [0..1] to I_CountryText as _legalCountryText

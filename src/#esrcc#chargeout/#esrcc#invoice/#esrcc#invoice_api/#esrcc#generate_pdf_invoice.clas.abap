@@ -7,6 +7,7 @@ CLASS /esrcc/generate_pdf_invoice DEFINITION PUBLIC FINAL CREATE PRIVATE.
     CLASS-METHODS:
       create RETURNING VALUE(instance) TYPE REF TO /esrcc/generate_invoice.
 
+protected section.
   PRIVATE SECTION.
     DATA:
       _chargeouts_for_invoice TYPE STANDARD TABLE OF /esrcc/c_chginvoice WITH DEFAULT KEY,

@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Allocation Keys for Indirect Charges",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_ALLOCKEYS_O4",
@@ -27,16 +28,20 @@
       {
         "entitySet": "AllocationKey",
         "tableType": "gridTable",
+        "selectionMode": "auto",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
-        "entitySet": "AllocationKeyAll"
+        "entitySet": "AllocationKeyAll",
+        "selectionMode": "auto",
+        "selectAll": true
       },
       {
         "entitySet": "AllocationKeyText",
         "tableType": "gridTable",
+        "selectionMode": "auto",
         "creationModeName": "creationRow",
         "enableFullScreen": true
       }

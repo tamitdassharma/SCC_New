@@ -3,7 +3,7 @@
 {
 "FROM":
 [
-"/ESRCC/I_CHG_ANALYTICS"
+"/ESRCC/REC_COST"
 ],
 "ASSOCIATED":
 [

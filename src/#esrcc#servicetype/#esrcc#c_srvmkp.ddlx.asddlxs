@@ -16,30 +16,13 @@ annotate view /ESRCC/C_SrvMkp with
     type: #COLLECTION,
     position: 1
   },
-//  {
-//    id: '/ESRCC/I_SrvMkp',
-//    purpose: #STANDARD,
-////    type: #IDENTIFICATION_REFERENCE,
-//    type: #COLLECTION,
-//    parentId: 'CE',
-//    label: 'General Information',
-//    position: 1
-//  },
   {
-    id: 'Intercompany',
-    type: #FIELDGROUP_REFERENCE,
+    id: '/ESRCC/I_SrvMkp',
+    purpose: #STANDARD,
+    type: #IDENTIFICATION_REFERENCE,
     parentId: 'CE',
-    targetQualifier: 'IntercompanyGroup',
-    label: 'Intercompany Mark-ups',
-    position: 10
-  },
-  {
-    id: 'Intracompany',
-    type: #FIELDGROUP_REFERENCE,
-    parentId: 'CE',
-    targetQualifier: 'IntracompanyGroup',
-    label: 'Intracompany Mark-ups',
-    position: 20
+    label: 'General Information',
+    position: 1
   },
   {
     id: 'Validity',
@@ -47,7 +30,7 @@ annotate view /ESRCC/C_SrvMkp with
     parentId: 'CE',
     targetQualifier: 'ValidityGroup',
     label: 'Validity',
-    position: 30
+    position: 2
   },
   {
     id: 'Admin',
@@ -55,7 +38,7 @@ annotate view /ESRCC/C_SrvMkp with
     parentId: 'CE',
     targetQualifier: 'AdminGroup',
     label: 'Admin Information',
-    position: 40
+    position: 3
   } ]
 
   @UI.lineItem: [ { position: 2 } ]
@@ -64,21 +47,13 @@ annotate view /ESRCC/C_SrvMkp with
                                        useForValidation: true }]
   Serviceproduct;
 
+  @UI.identification: [ { position: 5 } ]
   @UI.lineItem: [ { position: 5, cssDefault.width: '14.5rem' } ]
-  @UI.fieldGroup: [{ label: 'Origin Cost (%)', qualifier: 'IntercompanyGroup', position: 10 }]
   Origcost;
 
+  @UI.identification: [ { position: 6 } ]
   @UI.lineItem: [ { position: 6, cssDefault.width: '16rem' } ]
-  @UI.fieldGroup: [{ label: 'Pass Through Cost (%)', qualifier: 'IntercompanyGroup', position: 20 }]
   Passcost;
-  
-  @UI.lineItem: [ { position: 7, cssDefault.width: '14.5rem' } ]
-  @UI.fieldGroup: [{ label: 'Origin Cost (%)', qualifier: 'IntracompanyGroup', position: 10 }]
-  IntraOrigcost;
-
-  @UI.lineItem: [ { position: 8, cssDefault.width: '16rem' } ]
-  @UI.fieldGroup: [{ label: 'Pass Through Cost (%)', qualifier: 'IntracompanyGroup', position: 20 }]
-  IntraPasscost;
   
   @UI.lineItem: [ { position: 3 } ]
   @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 1 }]

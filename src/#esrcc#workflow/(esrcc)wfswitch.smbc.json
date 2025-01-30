@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Control Switch for Workflows",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_WFSWITCH_O4",
@@ -24,12 +25,15 @@
       {
         "entitySet": "WorkflowSwitch",
         "tableType": "gridTable",
+        "selectionMode": "auto",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
-        "entitySet": "WorkflowSwitchAll"
+        "entitySet": "WorkflowSwitchAll",
+        "selectionMode": "auto",
+        "selectAll": true
       }
     ]
   }

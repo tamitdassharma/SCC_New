@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain System Information",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_SYSINFO_O4",
@@ -27,16 +28,20 @@
       {
         "entitySet": "SystemInfo",
         "tableType": "gridTable",
+        "selectionMode": "auto",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
-        "entitySet": "SystemInfoAll"
+        "entitySet": "SystemInfoAll",
+        "selectionMode": "auto",
+        "selectAll": true
       },
       {
         "entitySet": "SystemInfoText",
         "tableType": "gridTable",
+        "selectionMode": "auto",
         "creationModeName": "creationRow",
         "enableFullScreen": true
       }

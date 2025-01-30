@@ -3,12 +3,10 @@ CLASS lcl_custom_validation DEFINITION.
     TYPES:
       ts_markup TYPE STRUCTURE FOR READ RESULT /esrcc/i_srvmkp_s\\servicemarkup,
       BEGIN OF ts_control,
-        origcost      TYPE if_abap_behv=>t_xflag,
-        passcost      TYPE if_abap_behv=>t_xflag,
-        intraorigcost TYPE if_abap_behv=>t_xflag,
-        intrapasscost TYPE if_abap_behv=>t_xflag,
-        validfrom     TYPE if_abap_behv=>t_xflag,
-        validto       TYPE if_abap_behv=>t_xflag,
+        origcost  TYPE if_abap_behv=>t_xflag,
+        passcost  TYPE if_abap_behv=>t_xflag,
+        validfrom TYPE if_abap_behv=>t_xflag,
+        validto   TYPE if_abap_behv=>t_xflag,
       END OF ts_control.
 
     METHODS:
@@ -41,10 +39,8 @@ CLASS lcl_custom_validation IMPLEMENTATION.
       ).
     ENDIF.
 
-    IF control-origcost      = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'ORIGCOST' ) TO fields. ENDIF.
-    IF control-passcost      = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'PASSCOST' ) TO fields. ENDIF.
-    IF control-intraorigcost = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'INTRAORIGCOST' ) TO fields. ENDIF.
-    IF control-intrapasscost = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'INTRAPASSCOST' ) TO fields. ENDIF.
+    IF control-origcost = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'ORIGCOST' ) TO fields. ENDIF.
+    IF control-passcost = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'PASSCOST' ) TO fields. ENDIF.
 
     config_util_ref->validate_percentage(
       fields = fields
@@ -271,11 +267,9 @@ CLASS lhc_/esrcc/i_srvmkp IMPLEMENTATION.
     LOOP AT entities INTO DATA(entity).
       lo_validation->validate_service_markup(
         entity  = entity
-        control = VALUE #( origcost      = if_abap_behv=>mk-on
-                           passcost      = if_abap_behv=>mk-on
-                           intraorigcost = if_abap_behv=>mk-on
-                           intrapasscost = if_abap_behv=>mk-on
-                           validto       = if_abap_behv=>mk-on )
+        control = VALUE #( origcost = if_abap_behv=>mk-on
+                           passcost = if_abap_behv=>mk-on
+                           validto  = if_abap_behv=>mk-on )
       ).
 
       LOOP AT draft_entities ASSIGNING FIELD-SYMBOL(<draft>)
@@ -303,21 +297,17 @@ CLASS lhc_/esrcc/i_srvmkp IMPLEMENTATION.
         reported_entity    = reported-servicemarkup
         failed_entity      = failed-servicemarkup ) ).
 
-    LOOP AT entities INTO DATA(entity) WHERE %control-origcost      = if_abap_behv=>mk-on
-                                          OR %control-passcost      = if_abap_behv=>mk-on
-                                          OR %control-intraorigcost = if_abap_behv=>mk-on
-                                          OR %control-intrapasscost = if_abap_behv=>mk-on
-                                          OR %control-validfrom     = if_abap_behv=>mk-on
-                                          OR %control-validto       = if_abap_behv=>mk-on.
+    LOOP AT entities INTO DATA(entity) WHERE %control-origcost  = if_abap_behv=>mk-on
+                                          OR %control-passcost  = if_abap_behv=>mk-on
+                                          OR %control-validfrom = if_abap_behv=>mk-on
+                                          OR %control-validto   = if_abap_behv=>mk-on.
       lo_validation->validate_service_markup(
         EXPORTING
           entity  = CORRESPONDING #( entity )
-          control = VALUE #( origcost      = entity-%control-origcost
-                             passcost      = entity-%control-passcost
-                             intraorigcost = entity-%control-IntraOrigcost
-                             intrapasscost = entity-%control-IntraPasscost
-                             validfrom     = entity-%control-validfrom
-                             validto       = entity-%control-validto )
+          control = VALUE #( origcost  = entity-%control-origcost
+                             passcost  = entity-%control-passcost
+                             validfrom = entity-%control-validfrom
+                             validto   = entity-%control-validto )
       ).
     ENDLOOP.
   ENDMETHOD.

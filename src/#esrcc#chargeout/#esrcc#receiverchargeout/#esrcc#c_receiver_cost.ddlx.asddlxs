@@ -379,9 +379,19 @@ annotate view /ESRCC/C_RECEIVER_COST with
   receivingentitydescription;
   @UI.hidden: true
   chargeoutdescription;
-  @UI.hidden: true
+  @UI.lineItem: [ {
+    position: 999 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @EndUserText.label: 'Hide Direct'
   hidedirect;
-  @UI.hidden: true
+  @UI.lineItem: [ {
+    position: 999 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @EndUserText.label: 'Hide Indirect'
   hideindirect;
   @UI.hidden: true
   Servicetype;

@@ -9,8 +9,6 @@ define view entity /ESRCC/C_SrvMkp
   key Validfrom,
       Origcost,
       Passcost,
-      IntraOrigcost,
-      IntraPasscost,
       Validto,
       CreatedBy,
       CreatedAt,

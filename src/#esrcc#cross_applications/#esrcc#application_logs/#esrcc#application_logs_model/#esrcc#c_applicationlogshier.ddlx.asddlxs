@@ -112,10 +112,8 @@ annotate view /ESRCC/C_ApplicationLogsHier with
   @UI.hidden: true
   MessageId;
   @UI.lineItem: [{ position: 10 }]
-  @Consumption.filter.hidden: true
   MessageNumber;
   @UI.lineItem: [{ position: 20, criticality: 'MessageTypeCriticality', criticalityRepresentation: #WITH_ICON }]
-  @Consumption.filter.hidden: true
   MessageType;
   @UI.lineItem: [{ hidden: true }]
   @UI.hidden: true
@@ -134,77 +132,54 @@ annotate view /ESRCC/C_ApplicationLogsHier with
   MessageV4;
   @EndUserText.label: 'Message Text'
   @UI.lineItem: [{ position: 30 }]
-  @Consumption.filter.hidden: true
   MessageText;
   @UI.selectionField: [{ position: 120 }]
   @UI.lineItem: [{ position: 50 }]
   CreatedAt;
   @UI.lineItem: [{ hidden: true }]
   @UI.hidden: true
-  @Consumption.filter.hidden: true
   LogHeaderUuid;
   @UI.lineItem: [{ position: 120 }]
-  @Consumption.filter.hidden: true
   Ryear;
   @UI.lineItem: [{ position: 130 }]
-  @Consumption.filter.hidden: true
   Poper;
   @UI.lineItem: [{ position: 140 }]
-  @Consumption.filter.hidden: true
   Fplv;
   @UI.lineItem: [{ position: 150 }]
-  @Consumption.filter.hidden: true
   Sysid;
   @UI.lineItem: [{ position: 160 }]
-  @Consumption.filter.hidden: true
   InvalidRecordLegalentity;
   @UI.lineItem: [{ position: 170 }]
-  @Consumption.filter.hidden: true
   Ccode;
   @UI.lineItem: [{ position: 180 }]
-  @Consumption.filter.hidden: true
   Belnr;
   @UI.lineItem: [{ position: 190 }]
-  @Consumption.filter.hidden: true
   Buzei;
   @UI.lineItem: [{ position: 200 }]
-  @Consumption.filter.hidden: true
   Costobject;
   @UI.lineItem: [{ position: 210 }]
-  @Consumption.filter.hidden: true
   Costcenter;
   @UI.lineItem: [{ position: 220 }]
-  @Consumption.filter.hidden: true
   Costelement;
   @UI.lineItem: [{ position: 230 }]
-  @Consumption.filter.hidden: true
   Businessdivision;
   @UI.lineItem: [{ position: 240 }]
-  @Consumption.filter.hidden: true
   Profitcenter;
   @UI.lineItem: [{ position: 250 }]
-  @Consumption.filter.hidden: true
   Hsl;
   @UI.lineItem: [{ position: 260 }]
-  @Consumption.filter.hidden: true
   Localcurr;
   @UI.lineItem: [{ position: 270 }]
-  @Consumption.filter.hidden: true
   Ksl;
   @UI.lineItem: [{ position: 280 }]
-  @Consumption.filter.hidden: true
   Groupcurr;
   @UI.lineItem: [{ position: 290 }]
-  @Consumption.filter.hidden: true
   Vendor;
   @UI.lineItem: [{ position: 300 }]
-  @Consumption.filter.hidden: true
   Postingtype;
   @UI.lineItem: [{ position: 310 }]
-  @Consumption.filter.hidden: true
   Costind;
   @UI.lineItem: [{ position: 320 }]
-  @Consumption.filter.hidden: true
   Usagecal;
 
   @UI.hidden: true

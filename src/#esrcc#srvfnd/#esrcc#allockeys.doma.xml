@@ -8,19 +8,9 @@
     <DATATYPE>CHAR</DATATYPE>
     <LENG>000020</LENG>
     <OUTPUTLEN>000020</OUTPUTLEN>
-    <VALEXI>X</VALEXI>
     <DDTEXT>Allocation Keys</DDTEXT>
     <DOMMASTER>E</DOMMASTER>
-    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD01V>
-   <DD07V_TAB>
-    <DD07V>
-     <VALPOS>0001</VALPOS>
-     <DDLANGUAGE>E</DDLANGUAGE>
-     <DOMVALUE_L>MPERC</DOMVALUE_L>
-     <DDTEXT>Manual Percentage (%)</DDTEXT>
-    </DD07V>
-   </DD07V_TAB>
   </asx:values>
  </asx:abap>
 </abapGit>

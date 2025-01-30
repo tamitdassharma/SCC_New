@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Group Configuration",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_GROUPCONFIG_O4",
@@ -23,10 +24,14 @@
     "tableSettings": [
       {
         "entitySet": "GroupConfig",
+        "selectionMode": "auto",
+        "selectAll": true,
         "rowCountMode": "auto"
       },
       {
-        "entitySet": "GroupConfigAll"
+        "entitySet": "GroupConfigAll",
+        "selectionMode": "auto",
+        "selectAll": true
       }
     ]
   }

@@ -128,24 +128,6 @@
      <MSGNR>020</MSGNR>
      <TEXT>&apos;&amp;1&apos; is mandatory for Indirect Charge Out</TEXT>
     </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
-     <MSGNR>021</MSGNR>
-     <TEXT>Deletion restricted as the &apos;&amp;1&apos; are defined for this entry</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
-     <MSGNR>022</MSGNR>
-     <TEXT>Update restricted as the &apos;&amp;1&apos; are defined for this entry</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
-     <MSGNR>023</MSGNR>
-     <TEXT>The key value is already in use. Please enter a different one.</TEXT>
-    </T100>
    </T100>
   </asx:values>
  </asx:abap>

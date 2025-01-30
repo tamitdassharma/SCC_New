@@ -7,8 +7,9 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <HEADLEN>55</HEADLEN>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Intercompany Mark-up on Pass Through Cost (%)</DDTEXT>
-    <REPTEXT>Intercompany Mark-up on Pass Through Cost (%)</REPTEXT>
+    <DDTEXT>Mark-up on Pass Through Cost (%)</DDTEXT>
+    <REPTEXT>Mark-up on Pass Through Cost (%)</REPTEXT>
+    <SCRTEXT_L>Mark-up on Pass Through Cost (%)</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>DEC</DATATYPE>
     <LENG>000005</LENG>

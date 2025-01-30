@@ -10,6 +10,4 @@ define behavior for /ESRCC/C_MANAGECOSTBASE alias managecostbase
   use action changeitems;
   use action discardall;
   use action submit;
-  use action adhocchargeout;
-  use action simulatechargout;
 }

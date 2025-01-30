@@ -17,7 +17,7 @@ CLASS lhc_I_CHGINVOICE DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR ACTION /esrcc/i_chginvoice~finalizeInvoice RESULT result.
 
     METHODS DiscardInvoice FOR MODIFY
-      IMPORTING keys FOR ACTION /esrcc/i_chginvoice~DiscardInvoice RESULT result.
+      IMPORTING keys FOR ACTION /ESRCC/I_CHGINVOICE~DiscardInvoice RESULT result.
 
 ENDCLASS.
 
@@ -34,69 +34,69 @@ CLASS lhc_I_CHGINVOICE IMPLEMENTATION.
 
   METHOD createInvoice.
 
-    DATA legtmp   TYPE /esrcc/legalentity.
+    DATA legtmp TYPE /esrcc/legalentity.
     DATA ccodetmp TYPE /esrcc/ccode_de.
-    DATA rectmp   TYPE /esrcc/receivingntity.
+    DATA rectmp TYPE /esrcc/receivingntity.
 
     " Return result to UI
     READ TABLE keys ASSIGNING FIELD-SYMBOL(<key>) INDEX 1.
     IF sy-subrc = 0.
-      SELECT * FROM /esrcc/rec_chg
-               FOR ALL ENTRIES IN @keys
-               WHERE rec_uuid = @keys-uuid
-                 AND srv_uuid = @keys-ParentUUID
-                 AND cc_uuid  = @keys-RootUUID
-               INTO TABLE @DATA(lt_chargeouts).
+      SELECT * FROM /esrcc/rec_cost FOR ALL ENTRIES IN @keys WHERE fplv = @keys-Fplv
+                                                               AND ryear = @keys-ryear
+                                                               AND poper = @keys-poper
+                                                               AND legalentity = @keys-Legalentity
+                                                               AND ccode = @keys-Ccode
+                                                               AND serviceproduct = @keys-Serviceproduct
+                                                               AND receivingentity = @keys-Receivingentity
+                                                               INTO TABLE @DATA(lt_chargeouts).
 
-*      SORT lt_chargeouts BY cc_uuid receivingentity.
+      SORT lt_chargeouts BY legalentity ccode receivingentity.
 
       LOOP AT lt_chargeouts ASSIGNING FIELD-SYMBOL(<ls_chargeout>).
         IF <ls_chargeout>-invoicestatus = '01'.
           <ls_chargeout>-invoicestatus = '03'.
 
-*          IF legtmp <> <ls_chargeout>-legalentity OR
-*             ccodetmp <> <ls_chargeout>-ccode OR
-*             rectmp <> <ls_chargeout>-receivingentity OR
-*             <key>-%param-InvoiceOption = 2.
+          IF legtmp <> <ls_chargeout>-legalentity OR
+             ccodetmp <> <ls_chargeout>-ccode OR
+             rectmp <> <ls_chargeout>-receivingentity OR
+             <key>-%param-InvoiceOption = 2.
 
-          TRY.
-              CALL METHOD cl_numberrange_runtime=>number_get
-                EXPORTING
-                  nr_range_nr = '01'
-                  object      = '/ESRCC/INV'
-                IMPORTING
-                  number      = DATA(number)
-                  returncode  = DATA(lv_rcode).
-            CATCH cx_nr_object_not_found
-                  cx_number_ranges INTO DATA(cx_numberrange).
-              DATA(error) = cx_numberrange->get_longtext(  ).
-          ENDTRY.
+            TRY.
+                CALL METHOD cl_numberrange_runtime=>number_get
+                  EXPORTING
+                    nr_range_nr = '01'
+                    object      = '/ESRCC/INV'
+                  IMPORTING
+                    number      = DATA(number)
+                    returncode  = DATA(lv_rcode).
+              CATCH cx_nr_object_not_found
+                    cx_number_ranges INTO DATA(cx_numberrange).
+                DATA(error) = cx_numberrange->get_longtext(  ).
+            ENDTRY.
 
-          TRY.
-              DATA(guid) = cl_system_uuid=>create_uuid_c32_static( ).
-            CATCH cx_uuid_error INTO DATA(cx_uuid).
-              error = cx_uuid->get_longtext(  ).
-          ENDTRY.
+            TRY.
+                DATA(guid) = cl_system_uuid=>create_uuid_c32_static( ).
+              CATCH cx_uuid_error INTO DATA(cx_uuid).
+                error = cx_uuid->get_longtext(  ).
+            ENDTRY.
 
-*            legtmp = <ls_chargeout>-legalentity.
-*            ccodetmp = <ls_chargeout>-ccode.
-*            rectmp = <ls_chargeout>-receivingentity.
-*          ENDIF.
+            legtmp = <ls_chargeout>-legalentity.
+            ccodetmp = <ls_chargeout>-ccode.
+            rectmp = <ls_chargeout>-receivingentity.
+          ENDIF.
 
           <ls_chargeout>-invoicenumber = number.
           <ls_chargeout>-invoicestatus = '02'.
           <ls_chargeout>-invoiceuuid = guid.
 
         ELSE.
-          READ TABLE keys ASSIGNING FIELD-SYMBOL(<keys>)
-                          WITH KEY uuid = <ls_chargeout>-rec_uuid.
-*                                  ryear = <ls_chargeout>-ryear
-*                                  poper = <ls_chargeout>-poper
-*                            legalentity = <ls_chargeout>-Legalentity
-*                                  ccode = <ls_chargeout>-Ccode
-*                         serviceproduct = <ls_chargeout>-Serviceproduct
-*                        receivingentity = <ls_chargeout>-Receivingentity.
-*
+          READ TABLE keys ASSIGNING FIELD-SYMBOL(<keys>) WITH KEY fplv = <ls_chargeout>-Fplv
+                                                                 ryear = <ls_chargeout>-ryear
+                                                                 poper = <ls_chargeout>-poper
+                                                                 legalentity = <ls_chargeout>-Legalentity
+                                                                 ccode = <ls_chargeout>-Ccode
+                                                                 serviceproduct = <ls_chargeout>-Serviceproduct
+                                                                 receivingentity = <ls_chargeout>-Receivingentity.
           IF sy-subrc = 0.
             IF <ls_chargeout>-invoicestatus = '02'.
               APPEND VALUE #(
@@ -115,6 +115,7 @@ CLASS lhc_I_CHGINVOICE IMPLEMENTATION.
                               %msg = new_message(
                               id   = '/ESRCC/INVOICE'
                               number = '001'
+*                        v1   = <costbase>-belnr
                               severity  = if_abap_behv_message=>severity-error )
                              ) TO reported-/esrcc/i_chginvoice.
               APPEND VALUE #( %tky = <keys>-%tky ) TO
@@ -124,7 +125,7 @@ CLASS lhc_I_CHGINVOICE IMPLEMENTATION.
         ENDIF.
       ENDLOOP.
 
-      MODIFY /esrcc/rec_chg FROM TABLE @lt_chargeouts.
+      MODIFY /esrcc/rec_cost FROM TABLE @lt_chargeouts.
     ENDIF.
 
   ENDMETHOD.
@@ -134,26 +135,26 @@ CLASS lhc_I_CHGINVOICE IMPLEMENTATION.
     " Return result to UI
     READ TABLE keys ASSIGNING FIELD-SYMBOL(<key>) INDEX 1.
     IF sy-subrc = 0.
-      SELECT * FROM /esrcc/rec_chg
-             FOR ALL ENTRIES IN @keys
-             WHERE rec_uuid = @keys-uuid
-               AND srv_uuid = @keys-ParentUUID
-               AND cc_uuid  = @keys-RootUUID
-             INTO TABLE @DATA(lt_chargeouts).
+      SELECT * FROM /esrcc/rec_cost FOR ALL ENTRIES IN @keys WHERE fplv = @keys-Fplv
+                                                               AND ryear = @keys-ryear
+                                                               AND poper = @keys-poper
+                                                               AND legalentity = @keys-Legalentity
+                                                               AND ccode = @keys-Ccode
+                                                               AND serviceproduct = @keys-Serviceproduct
+                                                               AND receivingentity = @keys-Receivingentity
+                                                               INTO TABLE @DATA(lt_chargeouts).
 
       LOOP AT lt_chargeouts ASSIGNING FIELD-SYMBOL(<ls_chargeout>).
         IF <ls_chargeout>-invoicestatus = '02'.
           <ls_chargeout>-invoicestatus = '03'.
         ELSE.
-          READ TABLE keys ASSIGNING FIELD-SYMBOL(<keys>)
-                          WITH KEY uuid = <ls_chargeout>-rec_uuid.
-*                                  ryear = <ls_chargeout>-ryear
-*                                  poper = <ls_chargeout>-poper
-*                            legalentity = <ls_chargeout>-Legalentity
-*                                  ccode = <ls_chargeout>-Ccode
-*                         serviceproduct = <ls_chargeout>-Serviceproduct
-*                        receivingentity = <ls_chargeout>-Receivingentity.
-*
+          READ TABLE keys ASSIGNING FIELD-SYMBOL(<keys>) WITH KEY fplv = <ls_chargeout>-Fplv
+                                                                  ryear = <ls_chargeout>-ryear
+                                                                  poper = <ls_chargeout>-poper
+                                                                  legalentity = <ls_chargeout>-Legalentity
+                                                                  ccode = <ls_chargeout>-Ccode
+                                                                  serviceproduct = <ls_chargeout>-Serviceproduct
+                                                                  receivingentity = <ls_chargeout>-Receivingentity.
           IF sy-subrc = 0.
             APPEND VALUE #(
                             %tky = <keys>-%tky
@@ -169,37 +170,37 @@ CLASS lhc_I_CHGINVOICE IMPLEMENTATION.
         ENDIF.
       ENDLOOP.
 
-      MODIFY /esrcc/rec_chg FROM TABLE @lt_chargeouts.
+      MODIFY /esrcc/rec_cost FROM TABLE @lt_chargeouts.
     ENDIF.
 
   ENDMETHOD.
 
   METHOD DiscardInvoice.
 
-    " Return result to UI
+  " Return result to UI
     READ TABLE keys ASSIGNING FIELD-SYMBOL(<key>) INDEX 1.
     IF sy-subrc = 0.
-      SELECT * FROM /esrcc/rec_chg
-               FOR ALL ENTRIES IN @keys
-               WHERE rec_uuid = @keys-uuid
-                 AND srv_uuid = @keys-ParentUUID
-                 AND cc_uuid  = @keys-RootUUID
-               INTO TABLE @DATA(lt_chargeouts).
-
+      SELECT * FROM /esrcc/rec_cost FOR ALL ENTRIES IN @keys WHERE fplv = @keys-Fplv
+                                                               AND ryear = @keys-ryear
+                                                               AND poper = @keys-poper
+                                                               AND legalentity = @keys-Legalentity
+                                                               AND ccode = @keys-Ccode
+                                                               AND serviceproduct = @keys-Serviceproduct
+                                                               AND receivingentity = @keys-Receivingentity
+                                                               INTO TABLE @DATA(lt_chargeouts).
 
       LOOP AT lt_chargeouts ASSIGNING FIELD-SYMBOL(<ls_chargeout>).
         IF <ls_chargeout>-invoicestatus = '02'.
           <ls_chargeout>-invoicestatus = '01'.
           CLEAR <ls_chargeout>-invoicenumber.
         ELSE.
-          READ TABLE keys ASSIGNING FIELD-SYMBOL(<keys>)
-                          WITH KEY uuid = <ls_chargeout>-rec_uuid.
-*                                  ryear = <ls_chargeout>-ryear
-*                                  poper = <ls_chargeout>-poper
-*                            legalentity = <ls_chargeout>-Legalentity
-*                                  ccode = <ls_chargeout>-Ccode
-*                         serviceproduct = <ls_chargeout>-Serviceproduct
-*                        receivingentity = <ls_chargeout>-Receivingentity.
+          READ TABLE keys ASSIGNING FIELD-SYMBOL(<keys>) WITH KEY fplv = <ls_chargeout>-Fplv
+                                                                  ryear = <ls_chargeout>-ryear
+                                                                  poper = <ls_chargeout>-poper
+                                                                  legalentity = <ls_chargeout>-Legalentity
+                                                                  ccode = <ls_chargeout>-Ccode
+                                                                  serviceproduct = <ls_chargeout>-Serviceproduct
+                                                                  receivingentity = <ls_chargeout>-Receivingentity.
           IF sy-subrc = 0.
             APPEND VALUE #(
                             %tky = <keys>-%tky
@@ -214,7 +215,7 @@ CLASS lhc_I_CHGINVOICE IMPLEMENTATION.
         ENDIF.
       ENDLOOP.
 
-      MODIFY /esrcc/rec_chg FROM TABLE @lt_chargeouts.
+      MODIFY /esrcc/rec_cost FROM TABLE @lt_chargeouts.
     ENDIF.
 
   ENDMETHOD.

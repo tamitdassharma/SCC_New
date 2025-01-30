@@ -2,5 +2,6 @@
 @MappingRole: true
 define role /ESRCC/C_SRV_WORKFLOW {
     grant select on /ESRCC/C_SRV_WORKFLOW
-     where inheriting conditions from entity /ESRCC/I_SRV_WORKFLOW;                        
+     where inheriting conditions from entity /ESRCC/I_SRV_WORKFLOW;   
+                        
 }

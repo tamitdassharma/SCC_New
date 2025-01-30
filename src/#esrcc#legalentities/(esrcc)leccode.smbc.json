@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Company Code & Assign to Legal Entity",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_LECCODE_O4",
@@ -27,18 +28,22 @@
       {
         "entitySet": "CompanyCodeText",
         "tableType": "gridTable",
+        "selectionMode": "auto",
         "creationModeName": "creationRow",
         "enableFullScreen": true
       },
       {
         "entitySet": "LeToCompanyCode",
         "tableType": "gridTable",
+        "selectionMode": "auto",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
-        "entitySet": "LeToCompanyCodeAll"
+        "entitySet": "LeToCompanyCodeAll",
+        "selectionMode": "auto",
+        "selectAll": true
       }
     ]
   }

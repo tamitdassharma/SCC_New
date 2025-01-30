@@ -9,21 +9,25 @@
 }
 @Metadata.allowExtensions: true
 define root view entity /ESRCC/I_SRV_WORKFLOW
-  as select from /ESRCC/I_ServiceProductShare as srvcost
+  as select from /ESRCC/I_SRVMKUP_COST as srvcost
+  
+  association [0..1] to I_CountryText as _legalCountryText
+  on _legalCountryText.Country = srvcost.Country
+  and _legalCountryText.Language = $session.system_language  
 
 {
-  key UUID,
-  key ParentUUID,
-  key Currencytype,
-      _CostCenterCost.Fplv,
-      _CostCenterCost.Ryear,
-      _CostCenterCost.Poper,
-      _CostCenterCost.Sysid,
-      _CostCenterCost.Legalentity,
-      _CostCenterCost.Ccode,
-      _CostCenterCost.Costobject,
-      _CostCenterCost.Costcenter,
-      Serviceproduct,
+  key Fplv                     as Fplv,
+  key Ryear                    as Ryear,
+  key Poper                    as Poper,
+  key Sysid                    as Sysid,
+  key Legalentity              as Legalentity,
+  key Ccode                    as Ccode,
+  key Costobject               as Costobject,
+  key Costcenter               as Costcenter,
+  key srvcost.Serviceproduct   as Serviceproduct,
+  key srvcost.Currencytype,
+      Billingfrequqncy,
+      Billingperiod,
       Servicetype,
       Transactiongroup,
       CapacityVersion,
@@ -31,37 +35,56 @@ define root view entity /ESRCC/I_SRV_WORKFLOW
       Srvcostshare,
       Valueaddshare,
       Passthroughshare,
+      Valueaddmarkup,
+      Passthroughmarkup,
       Chargeout,
       Planning,
       Uom,
       Servicecostperunit,
       Valueaddcostperunit,
       Passthrucostperunit,
+      tp_totalsrvmarkupabs,
+      tp_valueaddmarkupabs,
+      tp_passthrumarkupabs,
+      //Markups
+      Valueaddmarkupabs,
+      Passthrumarkupabs,
+
+      //Totals
+      totalsrvmarkupabs,
+      transferprice,
+      totalchargeoutamount,
       srvcost.Status,
       Workflowid,
       hidedirectalloc,
       statuscriticallity,
-      _CostCenterCost.costdatasetdescription,
-      _CostCenterCost.legalentitydescription,
-      _CostCenterCost.ccodedescription,
-      _CostCenterCost.costobjectdescription,
-      _CostCenterCost.costcenterdescription,
+      Remainingcostbase,
+      Includetotalcost,
+      Origtotalcost,
+      Passtotalcost,
+      costdatasetdescription,
+      billingfrequencydescription,
+      billingperioddescription,
+      legalentitydescription,
+      ccodedescription,
+      costobjectdescription,
+      costcenterdescription,
       Serviceproductdescription,
       Servicetypedescription,
       Transactiongroupdescription,
       statusdescription,
-      _CostCenterCost.Stewardship,
+      Stewardship,
       Currency,
-      _CostCenterCost.Country,
+      Country,
       chargeoutdescription,
       CreatedBy,
       CreatedAt,
       LastChangedAt,
       LastChangedBy,
-
-      //      associations
+      
+//      associations
       _UoM,
       _CurrencyTypeText,
-      _CostCenterCost._legalCountryText
+      _legalCountryText
 
 }

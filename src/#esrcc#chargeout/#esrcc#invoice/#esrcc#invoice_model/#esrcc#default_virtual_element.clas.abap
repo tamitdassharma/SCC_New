@@ -2,6 +2,8 @@ CLASS /esrcc/default_virtual_element DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES if_sadl_exit_calc_element_read.
+protected section.
+private section.
 ENDCLASS.
 
 

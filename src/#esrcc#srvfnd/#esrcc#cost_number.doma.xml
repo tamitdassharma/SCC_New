@@ -9,7 +9,6 @@
     <LENG>000024</LENG>
     <OUTPUTLEN>000024</OUTPUTLEN>
     <DDTEXT>Cost Number</DDTEXT>
-    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD01V>
   </asx:values>
  </asx:abap>

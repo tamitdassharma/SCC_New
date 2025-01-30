@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_SKTD" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <KTD_OBJECT>
+    <NAME>/ESRCC/COSCEN</NAME>
+    <TYPE>GENERAL_TEXT</TYPE>
+    <SOURCE_CONTENT_TYPE>02</SOURCE_CONTENT_TYPE>
+    <REF_OBJ_TYPE>SMBC</REF_OBJ_TYPE>
+    <REF_OBJ_NAME>/ESRCC/COSCEN</REF_OBJ_NAME>
+    <ABAP_LANGUAGE_VERSION>X</ABAP_LANGUAGE_VERSION>
+    <CONTENT>
+     <item>
+      <NAME>/ESRCC/COSCEN</NAME>
+      <LANGU>E</LANGU>
+      <COMPONENT_UUID>UjqsxXB5Ht+Kk3A2V2rKuA==</COMPONENT_UUID>
+      <SOURCE_CONTENT>VGVzdCBLbm93bGVkZ2UgVHJhbnNmZXIgRG9jdW1lbnQ=</SOURCE_CONTENT>
+     </item>
+    </CONTENT>
+   </KTD_OBJECT>
+  </asx:values>
+ </asx:abap>
+</abapGit>

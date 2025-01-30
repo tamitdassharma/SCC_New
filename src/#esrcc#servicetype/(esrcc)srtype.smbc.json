@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Service Types",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_SRTYPE_O4",
@@ -27,17 +28,20 @@
       {
         "entitySet": "ServiceType",
         "tableType": "gridTable",
+        "selectionMode": "auto",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
         "entitySet": "ServiceTypeAll",
-        "tableType": "gridTable"
+        "tableType": "gridTable",
+        "selectionMode": "auto"
       },
       {
         "entitySet": "ServiceTypeText",
         "tableType": "gridTable",
+        "selectionMode": "auto",
         "creationModeName": "creationRow",
         "enableFullScreen": true
       }

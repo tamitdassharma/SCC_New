@@ -31,12 +31,7 @@ CLASS lhc_managecostbase DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR ACTION managecostbase~submit.
     METHODS triggerworkflow FOR DETERMINE ON SAVE
       IMPORTING keys FOR managecostbase~triggerworkflow.
-    METHODS adhocchargeout FOR MODIFY
-      IMPORTING keys FOR ACTION managecostbase~adhocchargeout.
-    METHODS precheck_adhocchargeout FOR PRECHECK
-      IMPORTING keys FOR ACTION managecostbase~adhocchargeout.
-    METHODS simulatechargout FOR MODIFY
-      IMPORTING keys FOR ACTION managecostbase~simulatechargout RESULT result.
+
 
 ENDCLASS.
 
@@ -175,8 +170,8 @@ CLASS lhc_managecostbase IMPLEMENTATION.
               WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'D' )
                               (
                                  %key = costbase-%key
-                                 costind = COND #( WHEN costbase-oldcostind IS INITIAL THEN costbase-costind ELSE costbase-oldcostind )
-                                 usagecal = COND #( WHEN costbase-oldusagecal IS INITIAL THEN costbase-usagecal ELSE costbase-oldusagecal )
+                                 costind = COND #( when costbase-oldcostind is INITIAL then costbase-costind else costbase-oldcostind )
+                                 usagecal = COND #( when costbase-oldusagecal is INITIAL then costbase-usagecal else costbase-oldusagecal )
                                  status = 'U'
                                  oldcostind = ''
                                  oldcostdataset = ''
@@ -358,17 +353,17 @@ CLASS lhc_managecostbase IMPLEMENTATION.
         WITH CORRESPONDING #( keys )
         RESULT DATA(costbases).
 
-    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>) WHERE Status <> 'D'.
+    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>) where Status <> 'D'.
 
-      APPEND VALUE #( %tky = <costbase>-%tky
-                      %msg = new_message(
-                      id   = '/ESRCC/MANAGECOSTBAS'
-                      number = '004'
-                      v1   = <costbase>-belnr
-                      severity  = if_abap_behv_message=>severity-error )
-                     ) TO reported-managecostbase.
-      APPEND VALUE #( %tky = <costbase>-%tky ) TO
-                      failed-managecostbase.
+        APPEND VALUE #( %tky = <costbase>-%tky
+                        %msg = new_message(
+                        id   = '/ESRCC/MANAGECOSTBAS'
+                        number = '004'
+                        v1   = <costbase>-belnr
+                        severity  = if_abap_behv_message=>severity-error )
+                       ) TO reported-managecostbase.
+        APPEND VALUE #( %tky = <costbase>-%tky ) TO
+                        failed-managecostbase.
 
     ENDLOOP.
 
@@ -383,17 +378,17 @@ CLASS lhc_managecostbase IMPLEMENTATION.
         WITH CORRESPONDING #( keys )
         RESULT DATA(costbases).
 
-    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>) WHERE status <> 'D'.
+    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>) where status <> 'D'.
 
-      APPEND VALUE #( %tky = <costbase>-%tky
-                      %msg = new_message(
-                      id   = '/ESRCC/MANAGECOSTBAS'
-                      number = '003'
-                      v1   = <costbase>-belnr
-                      severity  = if_abap_behv_message=>severity-error )
-                     ) TO reported-managecostbase.
-      APPEND VALUE #( %tky = <costbase>-%tky ) TO
-                      failed-managecostbase.
+        APPEND VALUE #( %tky = <costbase>-%tky
+                        %msg = new_message(
+                        id   = '/ESRCC/MANAGECOSTBAS'
+                        number = '003'
+                        v1   = <costbase>-belnr
+                        severity  = if_abap_behv_message=>severity-error )
+                       ) TO reported-managecostbase.
+        APPEND VALUE #( %tky = <costbase>-%tky ) TO
+                        failed-managecostbase.
 
     ENDLOOP.
 
@@ -401,123 +396,9 @@ CLASS lhc_managecostbase IMPLEMENTATION.
 
   METHOD triggerWorkflow.
 
-*  DATA: CpWfHandle TYPE /esrcc/sww_wiid.
-*    DATA: costbase_tmp TYPE /esrcc/i_managecostbase.
-*    DATA: costbases_tmp TYPE TABLE OF /esrcc/i_managecostbase.
-*
-*    " Return result to UI
-*    READ ENTITIES OF /esrcc/i_managecostbase IN LOCAL MODE
-*        ENTITY managecostbase
-*        ALL FIELDS
-*        WITH CORRESPONDING #( keys )
-*        RESULT DATA(costbases).
-*
-*    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>) WHERE status = 'P'
-*                                                           AND WorkflowId IS INITIAL.
-*
-*
-*
-*
-*
-*
-*
-*      READ TABLE costbases_tmp ASSIGNING FIELD-SYMBOL(<costbases_tmp>) WITH KEY fplv = <costbase>-fplv
-*                                                                               ryear = <costbase>-ryear
-*                                                                               Legalentity = <costbase>-Legalentity
-*                                                                               ccode = <costbase>-ccode
-*                                                                               sysid = <costbase>-sysid
-*                                                                               costobject = <costbase>-costobject
-*                                                                               Costcenter = <costbase>-costcenter.
-*      IF sy-subrc <> 0.
-*
-*        TRY.
-*          CALL METHOD cl_numberrange_runtime=>number_get
-*            EXPORTING
-*              nr_range_nr = '01'
-*              object      = '/ESRCC/WF'
-*            IMPORTING
-*              number      = DATA(number)
-*              returncode  = DATA(lv_rcode).
-*        CATCH cx_number_ranges         .
-*      ENDTRY.
-*
-*       <costbase>-WorkflowId = number.
-*
-*        DATA(wf_context) = VALUE /esrcc/s_wf_bpa_object(
-*               fplv = <costbase>-fplv
-*               ryear = <costbase>-ryear
-*               sysid = <costbase>-sysid
-*               legalentity = <costbase>-legalentity
-*               ccode = <costbase>-ccode
-*               costobject = <costbase>-costobject
-*               costnumber = <costbase>-costcenter
-*               application = 'CBL'
-*               workflowid = <costbase>-WorkflowId
-*             ).
-*
-*        MODIFY ENTITIES OF i_cpwf_inst
-*             ENTITY CPWFInstance
-*             EXECUTE registerWorkflowStart
-*             FROM VALUE #( (
-*                             %key-CpWfHandle = <costbase>-WorkflowId
-*                             %param-RetentionTime = '30'
-*                             %param-PaWfDefId = 'eu10.dev-abap-cloud.sccworkflow1.SCCWorkflow'
-*                             %param-CallbackClass = '/ESRCC/CL_SWF_CPWF_CALLBACK'
-*                             %param-Consumer = 'DEFAULT' ) ).
-*
-*        TRY.
-*            DATA(cpwf_api_instance) = cl_swf_cpwf_api_factory_a4c=>get_api_instance( ).
-*          CATCH cx_swf_cpwf_api.
-*        ENDTRY.
-*
-*        DATA(lo_json) = cpwf_api_instance->get_json_converter(
-**                              it_name_mapping              =
-*                                    iv_camel_case                = abap_false
-*                                    iv_capital_letter            = abap_false
-**                              it_uppercase_word            =
-*                                    iv_suppress_empty_components = abap_true
-*                                    iv_uppercase                 = abap_false
-*                                  ).
-*
-*        DATA(wf_context_json) = lo_json->serialize( wf_context ).
-*
-*
-*        MODIFY ENTITIES OF i_cpwf_inst
-*             ENTITY CPWFInstance
-*             EXECUTE setPayload
-*             FROM VALUE #( ( %key-CpWfHandle = <costbase>-WorkflowId
-*                             %param-context = wf_context_json ) ).
-*
-*        costbase_tmp = CORRESPONDING #( <costbase> ).
-*        APPEND costbase_tmp TO costbases_tmp.
-*
-*      ELSE.
-*        <costbase>-WorkflowId = <costbases_tmp>-WorkflowId.
-*      ENDIF.
-*
-*    ENDLOOP.
-*
-*    MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
-*       ENTITY managecostbase
-*        UPDATE FIELDS ( WorkflowId Status )
-*             WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'P' )
-*                             (
-*                                %key = costbase-%key
-*                                WorkflowId = costbase-WorkflowId
-*                                status = 'W'
-*                              ) )
-*                             FAILED   FINAL(fail_mod)
-*                              REPORTED FINAL(rep_mod)
-*                              MAPPED FINAL(map_mod).
-
-
-  ENDMETHOD.
-
-  METHOD adhocchargeout.
-
-    DATA ls_param    TYPE /esrcc/c_adhocchargeout.
-    DATA lt_receiver TYPE /esrcc/tt_receivers.
-    DATA lt_cbli     TYPE TABLE OF /esrcc/cb_li.
+  DATA: CpWfHandle TYPE /esrcc/sww_wiid.
+    DATA: costbase_tmp TYPE /esrcc/i_managecostbase.
+    DATA: costbases_tmp TYPE TABLE OF /esrcc/i_managecostbase.
 
     " Return result to UI
     READ ENTITIES OF /esrcc/i_managecostbase IN LOCAL MODE
@@ -526,130 +407,104 @@ CLASS lhc_managecostbase IMPLEMENTATION.
         WITH CORRESPONDING #( keys )
         RESULT DATA(costbases).
 
-    lt_cbli = CORRESPONDING #( costbases ).
+    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>) WHERE status = 'P'
+                                                           AND WorkflowId IS INITIAL.
 
-    ls_param = CORRESPONDING #( keys[ 1 ]-%param ).
 
-    xco_cp_json=>data->from_string( ls_param-receivers )->apply( VALUE #(
-      ( xco_cp_json=>transformation->pascal_case_to_underscore )
-      ( xco_cp_json=>transformation->boolean_to_abap_bool )
-        ) )->write_to( REF #( lt_receiver ) ).
 
-    /esrcc/cl_calculate_chargeout=>calculate_adhocchargeout(
-      it_cbli       = lt_cbli
-      is_parameters = ls_param
-      it_receivers  = lt_receiver
-    ).
 
-    READ TABLE costbases ASSIGNING FIELD-SYMBOL(<costbase>) INDEX 1.
-    IF sy-subrc = 0.
-      APPEND VALUE #(     %tky = <costbase>-%tky
-                          %msg = new_message(
-                          id   = '/ESRCC/MANAGECOSTBAS'
-                          number = '006'
-                          severity  = if_abap_behv_message=>severity-information )
-                         ) TO reported-managecostbase.
-    ENDIF.
-*        APPEND VALUE #( ) TO
-*                        reported-managecostbase.
 
-  ENDMETHOD.
 
-  METHOD precheck_adhocchargeout.
 
-    " Return result to UI
-    READ ENTITIES OF /esrcc/i_managecostbase IN LOCAL MODE
-        ENTITY managecostbase
-        ALL FIELDS
-        WITH CORRESPONDING #( keys )
-        RESULT DATA(costbases).
+      READ TABLE costbases_tmp ASSIGNING FIELD-SYMBOL(<costbases_tmp>) WITH KEY fplv = <costbase>-fplv
+                                                                               ryear = <costbase>-ryear
+                                                                               Legalentity = <costbase>-Legalentity
+                                                                               ccode = <costbase>-ccode
+                                                                               sysid = <costbase>-sysid
+                                                                               costobject = <costbase>-costobject
+                                                                               Costcenter = <costbase>-costcenter.
+      IF sy-subrc <> 0.
 
-    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
+        TRY.
+          CALL METHOD cl_numberrange_runtime=>number_get
+            EXPORTING
+              nr_range_nr = '01'
+              object      = '/ESRCC/WF'
+            IMPORTING
+              number      = DATA(number)
+              returncode  = DATA(lv_rcode).
+        CATCH cx_number_ranges         .
+      ENDTRY.
 
-      IF <costbase>-status = 'F'.
-        APPEND VALUE #( %tky = <costbase>-%tky
-                        %msg = new_message(
-                        id   = '/ESRCC/MANAGECOSTBAS'
-                        number = '005'
-                        severity  = if_abap_behv_message=>severity-error )
-                       ) TO reported-managecostbase.
-        APPEND VALUE #( %tky = <costbase>-%tky ) TO
-                        failed-managecostbase.
-      ENDIF.
+       <costbase>-WorkflowId = number.
 
-      IF <costbase>-status = 'W'.
-        APPEND VALUE #( %tky = <costbase>-%tky
-                        %msg = new_message(
-                        id   = '/ESRCC/MANAGECOSTBAS'
-                        number = '007'
-                        severity  = if_abap_behv_message=>severity-error )
-                       ) TO reported-managecostbase.
-        APPEND VALUE #( %tky = <costbase>-%tky ) TO
-                        failed-managecostbase.
-      ENDIF.
-    ENDLOOP.
+        DATA(wf_context) = VALUE /esrcc/s_wf_bpa_object(
+               fplv = <costbase>-fplv
+               ryear = <costbase>-ryear
+               sysid = <costbase>-sysid
+               legalentity = <costbase>-legalentity
+               ccode = <costbase>-ccode
+               costobject = <costbase>-costobject
+               costnumber = <costbase>-costcenter
+               application = 'CBL'
+               workflowid = <costbase>-WorkflowId
+             ).
 
-  ENDMETHOD.
+        MODIFY ENTITIES OF i_cpwf_inst
+             ENTITY CPWFInstance
+             EXECUTE registerWorkflowStart
+             FROM VALUE #( (
+                             %key-CpWfHandle = <costbase>-WorkflowId
+                             %param-RetentionTime = '30'
+                             %param-PaWfDefId = 'eu10.dev-abap-cloud.sccworkflow1.SCCWorkflow'
+                             %param-CallbackClass = '/ESRCC/CL_SWF_CPWF_CALLBACK'
+                             %param-Consumer = 'DEFAULT' ) ).
 
-  METHOD simulatechargout.
+        TRY.
+            DATA(cpwf_api_instance) = cl_swf_cpwf_api_factory_a4c=>get_api_instance( ).
+          CATCH cx_swf_cpwf_api.
+        ENDTRY.
 
-    DATA ls_param    TYPE /esrcc/c_adhocchargeout.
-    DATA lt_receiver TYPE /esrcc/tt_receivers.
-    DATA totalcostbase         TYPE /esrcc/hsl.
-    DATA totalcostbasepass     TYPE /esrcc/hsl.
-    DATA totalcostbasevalueadd TYPE /esrcc/hsl.
-    DATA costabsolutepass      TYPE /esrcc/hsl.
-    DATA costabsolutevalueadd  TYPE /esrcc/hsl.
+        DATA(lo_json) = cpwf_api_instance->get_json_converter(
+*                              it_name_mapping              =
+                                    iv_camel_case                = abap_false
+                                    iv_capital_letter            = abap_false
+*                              it_uppercase_word            =
+                                    iv_suppress_empty_components = abap_true
+                                    iv_uppercase                 = abap_false
+                                  ).
 
-    SELECT * FROM /esrcc/cb_li FOR ALL ENTRIES IN @keys
-                               WHERE belnr = @keys-%param-belnr
-                                 AND buzei = @keys-%param-buzei
-                                 INTO TABLE @DATA(costbases).
+        DATA(wf_context_json) = lo_json->serialize( wf_context ).
 
-    ls_param = CORRESPONDING #( keys[ 1 ]-%param ).
 
-    xco_cp_json=>data->from_string( ls_param-receivers )->apply( VALUE #(
-      ( xco_cp_json=>transformation->pascal_case_to_underscore )
-      ( xco_cp_json=>transformation->boolean_to_abap_bool )
-        ) )->write_to( REF #( lt_receiver ) ).
+        MODIFY ENTITIES OF i_cpwf_inst
+             ENTITY CPWFInstance
+             EXECUTE setPayload
+             FROM VALUE #( ( %key-CpWfHandle = <costbase>-WorkflowId
+                             %param-context = wf_context_json ) ).
 
-    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
-      IF <costbase>-Costind = 'PASS'.
-        totalcostbasepass = totalcostbasepass + <costbase>-hsl.
+        costbase_tmp = CORRESPONDING #( <costbase> ).
+        APPEND costbase_tmp TO costbases_tmp.
+
       ELSE.
-        totalcostbasevalueadd = totalcostbasevalueadd + <costbase>-hsl.
+        <costbase>-WorkflowId = <costbases_tmp>-WorkflowId.
       ENDIF.
-      DATA(localcurr) = <costbase>-localcurr.
-    ENDLOOP.
-
-    totalcostbase = totalcostbasepass + totalcostbasevalueadd.
-    LOOP AT lt_receiver ASSIGNING FIELD-SYMBOL(<receiver>).
-      costabsolutepass     = ( <receiver>-sharepercent / 100 ) * totalcostbasepass.
-      costabsolutevalueadd = ( <receiver>-sharepercent / 100 ) * totalcostbasevalueadd.
-
-      <receiver>-costabsolute = costabsolutepass + costabsolutevalueadd.
-      IF <costbase>-Legalentity <> <receiver>-legalentity.
-        <receiver>-markup = ( ls_param-interpassthroughmarkup / 100 ) * costabsolutepass.
-        <receiver>-markup = <receiver>-markup + ( ls_param-intervalueaddmarkup / 100 ) * costabsolutevalueadd.
-      ELSE.
-        <receiver>-markup = ( ls_param-intrapassthroughmarkup / 100 ) * costabsolutepass.
-        <receiver>-markup = <receiver>-markup + ( ls_param-intravalueaddmarkup / 100 ) * costabsolutevalueadd.
-      ENDIF.
-      <receiver>-chargout = <receiver>-costabsolute + <receiver>-markup.
 
     ENDLOOP.
 
-    DATA(lv_json_string) = xco_cp_json=>data->from_abap( lt_receiver )->apply( VALUE #(
-                           ( xco_cp_json=>transformation->underscore_to_pascal_case )
-                           ) )->to_string( ).
+    MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
+       ENTITY managecostbase
+        UPDATE FIELDS ( WorkflowId Status )
+             WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'P' )
+                             (
+                                %key = costbase-%key
+                                WorkflowId = costbase-WorkflowId
+                                status = 'W'
+                              ) )
+                             FAILED   FINAL(fail_mod)
+                              REPORTED FINAL(rep_mod)
+                              MAPPED FINAL(map_mod).
 
-    result = VALUE #( ( %cid = keys[ 1 ]-%cid
-                        %param   = VALUE #( Serviceproduct = ls_param-Serviceproduct
-                                            rule_id = ls_param-rule_id
-                                            receivers = lv_json_string
-                                            localcurr = localcurr
-*                                            totalcostbase = totalcostbase
-                                           ) ) ).
 
   ENDMETHOD.
 

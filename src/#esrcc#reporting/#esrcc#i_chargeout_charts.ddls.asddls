@@ -14,102 +14,117 @@ define view entity /ESRCC/I_CHARGEOUT_CHARTS
   as select from /ESRCC/I_CHG_ANALYTICS
 {
       @AnalyticsDetails.query.display: #KEY
+
       @ObjectModel.text.element: [ 'costdatasetdescription' ]
   key Fplv,
+
+
       @AnalyticsDetails.query.display: #KEY
+
   key Ryear,
+
   key Sysid,
+
   key Poper,
+
+
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'ccodedescription' ]      
   key Ccode,
+
+
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'legalentitydescription' ]
   key Legalentity,
+
       @ObjectModel.text.element: [ 'costobjectdescription' ]
       @AnalyticsDetails.query.display: #KEY
   key Costobject,
+
+
+
+
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'costcenterdescription' ]
+
   key Costcenter,
+
+
+
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'transactiongroupdescription' ]
   key Transactiongroup,
+
+
+
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'serviceproductdescription' ]
   key Serviceproduct,
+
+
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'servicetypedescription' ]
   key Servicetype,
-      @AnalyticsDetails.query.display: #KEY
-  key ReceiverSysId,
-      @AnalyticsDetails.query.display: #KEY
-      @ObjectModel.text.element: [ 'RecCcodedescription' ]
-  key ReceiverCompanyCode,
+
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'receivingentitydescription' ]
   key Receivingentity,
-      @AnalyticsDetails.query.display: #KEY
-      @ObjectModel.text.element: [ 'RecCostObjectdescription' ]
-  key ReceiverCostObject,
-      @AnalyticsDetails.query.display: #KEY
-      @ObjectModel.text.element: [ 'RecCostCenterdescription' ]
-  key ReceiverCostCenter, 
- 
-      @AnalyticsDetails.query.display: #KEY
-      @ObjectModel.text.element: [ 'functionalareadescription' ]
-      FunctionalArea,
       
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'businessdescription' ]
       Businessdivision,
 
       @DefaultAggregation: #SUM
-      @Semantics.amount.currencyCode: 'Currency'
-      TotalChargeout       as TotalChargeOutAmount,
-
-      @DefaultAggregation: #SUM
-      @Semantics.amount.currencyCode: 'Currency'
-      RecExcludedCost      as ExcludedTotalCost,
-
-      @DefaultAggregation: #SUM
-      @Semantics.amount.currencyCode: 'Currency'
-      RecIncludedCost      as IncludedTotalCost,
-
-      @DefaultAggregation: #SUM
-      @Semantics.amount.currencyCode: 'Currency'
-      RecTotalCost    as TotalCostBase,
-
-      @DefaultAggregation: #SUM
-      @Semantics.amount.currencyCode: 'Currency'
-      RecCostShare         as TotalCostBaseRemaining,
-
-      @DefaultAggregation: #SUM
-      @Semantics.amount.currencyCode: 'Currency'
-      TotalRecMarkup    as SrvTotalMarkup,
+      @Semantics.amount.currencyCode: 'Groupcurr'
+      Reckpishareabsg       as Totalcost_g,
 
 
       @DefaultAggregation: #SUM
-      @Semantics.amount.currencyCode: 'Currency'
-      RecValueaddMarkup as ValueAddMarkup,
+      @Semantics.amount.currencyCode: 'Groupcurr'
+      Recexcludedcostg      as ExcludedTotalCost,
+
+      //   @UI.lineItem: [{ position: 150 }]
+
+      @DefaultAggregation: #SUM
+      @Semantics.amount.currencyCode: 'Groupcurr'
+      Recincludedcostg      as IncludedTotalCost,
+
+      //  @UI.lineItem: [{ position: 160 }]
+
+      @DefaultAggregation: #SUM
+      @Semantics.amount.currencyCode: 'Groupcurr'
+      Rectotalcostg         as TotalCostBase,
+
+      @DefaultAggregation: #SUM
+      @Semantics.amount.currencyCode: 'Groupcurr'
+      ( Recincludedcostg - Stewardshipg )         as TotalCostBaseRemaining,
+
+      @DefaultAggregation: #SUM
+      @Semantics.amount.currencyCode: 'Groupcurr'
+      Rectotalmarkupabsg    as SrvTotalMarkup,
 
 
       @DefaultAggregation: #SUM
-      @Semantics.amount.currencyCode: 'Currency'
-      RecPassthroughMarkup as PassThruMarkup,
+      @Semantics.amount.currencyCode: 'Groupcurr'
+      Recvalueaddmarkupabsg as ValueAddMarkup,
+
+
+      @DefaultAggregation: #SUM
+      @Semantics.amount.currencyCode: 'Groupcurr'
+      Recpassthrumarkupabsg as PassThruMarkup,
       
       @ObjectModel.text.element: [ 'statusdescription' ]
       @AnalyticsDetails.query.display: #KEY
-      Status,      
+      status,      
       
       @ObjectModel.text.element: [ 'oecdDescription' ] 
       @AnalyticsDetails.query.display: #KEY
       OECD,
       
-      Currency,
+      Groupcurr,
       @DefaultAggregation: #SUM
-      @Semantics.amount.currencyCode: 'Currency'
-      RecStewardship          as Stewardship,
+      @Semantics.amount.currencyCode: 'Groupcurr'
+      Stewardshipg          as Stewardship,
       @Semantics.text: true
       ccodedescription,
       @Semantics.text: true
@@ -117,27 +132,19 @@ define view entity /ESRCC/I_CHARGEOUT_CHARTS
       @Semantics.text: true
       costdatasetdescription,
       @Semantics.text: true
-      Transactiongroupdescription,
+      transactiongroupdescription,
       @Semantics.text: true
-      Serviceproductdescription,
+      serviceproductdescription,
       @Semantics.text: true
-      Servicetypedescription,
+      servicetypedescription,
+      @Semantics.text: true
+      receivingentitydescription,
       @Semantics.text: true
       costobjectdescription,
       @Semantics.text: true
       costcenterdescription,
       @Semantics.text: true
-      functionalareadescription,
-      @Semantics.text: true
       businessdescription,
-      @Semantics.text: true
-      receivingentitydescription,
-      @Semantics.text: true
-      RecCcodedescription,
-      @Semantics.text: true
-      RecCostObjectdescription,
-      @Semantics.text: true
-      RecCostCenterdescription,
       @ObjectModel.text.element: [ 'legalcountryname' ]
       legalentitycountry,
       @ObjectModel.text.element: [ 'receivingcountryname' ]
@@ -149,5 +156,7 @@ define view entity /ESRCC/I_CHARGEOUT_CHARTS
       @Semantics.text: true
       _legalCountryText.CountryName as legalcountryname,
       @Semantics.text: true
-      _ReceivingCountryText.CountryName as receivingcountryname
+      _RecCountryText.CountryName as receivingcountryname
+      
+
 }

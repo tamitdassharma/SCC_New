@@ -7,11 +7,10 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>[Obsolete]Maintain Receivers for Service Product</DDTEXT>
+    <DDTEXT>Maintain Receivers for Service Product</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <CONTFLAG>C</CONTFLAG>
     <EXCLASS>4</EXCLASS>
-    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD02V>
    <DD09L>
     <TABNAME>/ESRCC/SRV_PR_LE</TABNAME>
@@ -147,6 +146,12 @@
      <DDTEXT>Empfänger für Serviceprodukte bearbeiten</DDTEXT>
     </item>
    </DD02_TEXTS>
+   <TABL_EXTRAS>
+    <TDDAT>
+     <TABNAME>/ESRCC/SRV_PR_LE</TABNAME>
+     <CCLASS>CUS_DEV_SUP_RO</CCLASS>
+    </TDDAT>
+   </TABL_EXTRAS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -1,7 +1,7 @@
 CLASS /esrcc/cl_config_util DEFINITION PUBLIC
   INHERITING FROM cl_abap_behv
-*  CREATE PRIVATE .
-  CREATE PROTECTED.
+  FINAL
+  CREATE PRIVATE .
 
   PUBLIC SECTION.
     CONSTANTS c_config_msg TYPE symsgid VALUE '/ESRCC/CONFIG_MSG' ##NO_TEXT.
@@ -28,7 +28,6 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
         child_mandatory,
         child_non_mandatory,
         no_authorization,
-        duplicate,
       END OF ENUM validation_type,
 
       BEGIN OF ts_field,
@@ -44,57 +43,11 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
         legal_entity TYPE abp_field_name,
         cost_object  TYPE abp_field_name,
         cost_number  TYPE abp_field_name,
-      END OF ts_field_mapping_auth,
-
-      BEGIN OF ts_uuid_16,
-        uuid      TYPE sysuuid_x16,
-        serv_con  TYPE abap_boolean,
-        serv_cap  TYPE abap_boolean,
-        alloc_key TYPE abap_boolean,
-      END OF ts_uuid_16,
-
-      BEGIN OF ts_operation,
-        create TYPE abap_boolean,
-        update TYPE abap_boolean,
-        delete TYPE abap_boolean,
-      END OF ts_operation,
-
-      BEGIN OF ts_foreign_check,
-        serv_consumption TYPE abap_boolean,
-        serv_capacity    TYPE abap_boolean,
-        alloc_key        TYPE abap_boolean,
-      END OF ts_foreign_check,
-
-      BEGIN OF ts_co_rule_config,
-        chargeout_method     TYPE /esrcc/chargout,
-        cost_version         TYPE abap_boolean,
-        capacity_version     TYPE abap_boolean,
-        consumption_version  TYPE abap_boolean,
-        key_version          TYPE abap_boolean,
-        uom                  TYPE abap_boolean,
-        adhoc_allocation_key TYPE abap_boolean,
-        weightage_tab        TYPE abap_boolean,
-      END OF ts_co_rule_config,
-
-
-      BEGIN OF ts_field_metadata,
-        fieldname      TYPE abp_field_name,
-        is_not_initial TYPE abap_boolean,
-        is_virtual_key TYPE abap_boolean,
-        cds_fieldname  TYPE abp_field_name,
-      END OF ts_field_metadata,
-      BEGIN OF ts_table_metadata,
-        tab_name       TYPE string,
-        class_name     TYPE string,
-        field_metadata TYPE SORTED TABLE OF ts_field_metadata WITH UNIQUE KEY fieldname,
-      END OF ts_table_metadata.
+      END OF ts_field_mapping_auth.
 
     TYPES:
-      tt_fields         TYPE STANDARD TABLE OF ts_field,
-      tt_path           TYPE STANDARD TABLE OF ts_path,
-      tt_uuid_16        TYPE STANDARD TABLE OF ts_uuid_16 WITH EMPTY KEY,
-      tt_co_rule_config TYPE STANDARD TABLE OF ts_co_rule_config WITH KEY chargeout_method,
-      tt_table_metadata TYPE SORTED TABLE OF ts_table_metadata WITH UNIQUE KEY tab_name.
+      tt_fields TYPE STANDARD TABLE OF ts_field,
+      tt_path   TYPE STANDARD TABLE OF ts_path.
 
     CLASS-METHODS
       create
@@ -107,14 +60,6 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
     CLASS-METHODS
       create_for_authorization
         RETURNING VALUE(instance) TYPE REF TO /esrcc/cl_config_util.
-
-    CLASS-METHODS get_db_metadata
-      RETURNING
-        VALUE(metadata) TYPE tt_table_metadata.
-
-    CLASS-METHODS get_co_rule_config
-      RETURNING
-        VALUE(co_rule_config) TYPE tt_co_rule_config.
 
     METHODS validate_initial
       IMPORTING
@@ -196,28 +141,7 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
         delete                 TYPE abap_boolean
       RETURNING
         VALUE(is_unauthorized) TYPE abap_boolean.
-    METHODS foreign_check_cost_object
-      IMPORTING
-        entities           TYPE STANDARD TABLE
-        uuid_fieldname     TYPE abp_field_name
-        cost_object_uuids  TYPE tt_uuid_16
-        operation          TYPE ts_operation
-        foreign_check      TYPE ts_foreign_check
-      RETURNING
-        VALUE(foreign_ref) TYPE abap_boolean.
-
-  PROTECTED SECTION.
-    METHODS constructor
-      IMPORTING
-        paths              TYPE /esrcc/cl_config_util=>tt_path OPTIONAL
-        source_entity_name TYPE sxco_cds_object_name OPTIONAL
-        is_transition      TYPE abap_boolean OPTIONAL.
-
-    METHODS set_entity
-      CHANGING
-        reported_entity TYPE STANDARD TABLE
-        failed_entity   TYPE STANDARD TABLE.
-
+protected section.
   PRIVATE SECTION.
 
     CONSTANTS c_singletonid TYPE abp_field_name VALUE 'SINGLETONID' ##NO_TEXT.
@@ -295,218 +219,6 @@ ENDCLASS.
 
 
 CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
-
-
-  METHOD extract_field_label.
-    DATA(field) = VALUE ts_field( fieldname = fieldname
-                                  fieldtext = go_abap_dictionary->derive_field_label(
-                                                EXPORTING
-                                                  iv_entity_name  = gv_source_entity_name
-                                                  iv_data_element = data_element
-                                                  iv_field_name   = fieldname
-                                              ) ).
-
-    text = field-fieldtext.
-
-    INSERT field INTO TABLE gt_fields.
-  ENDMETHOD.
-
-
-  METHOD create.
-    instance = NEW /esrcc/cl_config_util(
-        paths              = paths
-        source_entity_name = source_entity_name
-        is_transition      = is_transition
-    ).
-
-    instance->set_entity(
-      CHANGING
-        reported_entity = reported_entity
-        failed_entity   = failed_entity
-    ).
-
-*    instance->gt_paths = paths.
-*    instance->gv_source_entity_name = source_entity_name.
-*    instance->gv_is_transition = is_transition.
-*    instance->gr_reported = REF #( reported_entity ).
-*    instance->gr_failed = REF #( failed_entity ).
-*    instance->go_abap_dictionary = NEW /esrcc/cl_abap_dictionary( ).
-  ENDMETHOD.
-
-
-  METHOD validate_percentage.
-    gv_state_area = percentage.
-    gv_first = abap_true.
-
-    LOOP AT fields INTO gs_active_field.
-      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE entity TO FIELD-SYMBOL(<value>).
-      IF sy-subrc <> 0.
-        CONTINUE.
-      ENDIF.
-
-      IF <value> NOT BETWEEN 0 AND 100.
-        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
-        set_message(
-          EXPORTING
-            entity = entity
-            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '005' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
-      ENDIF.
-    ENDLOOP.
-  ENDMETHOD.
-
-
-  METHOD validate_start_end_of_month.
-    gv_state_area = start_end_of_month.
-    gv_first = abap_true.
-
-    IF start_date IS NOT INITIAL AND start_date+6(2) <> '01'.
-      gs_active_field-fieldname = 'VALIDFROM'.
-      start_date+6(2) = '01'.
-
-      gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = start_date ).
-
-      set_message(
-        EXPORTING
-          entity = entity
-          msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '006' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
-    ENDIF.
-
-    IF end_date IS NOT INITIAL.
-      DATA(lv_date) = /esrcc/cl_utility_core=>get_last_day_of_month( EXPORTING date = end_date ).
-      IF end_date <> lv_date.
-        gs_active_field-fieldname = 'VALIDTO'.
-        end_date = lv_date.
-        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = end_date ).
-
-        set_message(
-          EXPORTING
-            entity = entity
-            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '007' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
-      ENDIF.
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD set_element_field_error.
-    IF gs_active_field-fieldname IS INITIAL OR gv_is_transition = abap_true.
-      RETURN.
-    ENDIF.
-
-    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-element OF STRUCTURE reported TO FIELD-SYMBOL(<elements>).
-    IF sy-subrc = 0.
-      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE <elements> TO FIELD-SYMBOL(<field>).
-      IF sy-subrc = 0.
-        <field> = if_abap_behv=>mk-on.
-      ENDIF.
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD validate_validity.
-    gv_state_area = validity.
-    gv_first = abap_true.
-
-    IF from IS NOT INITIAL AND to IS NOT INITIAL AND from > to.
-      gs_active_field-fieldname = 'VALIDTO'.
-      set_message(
-        EXPORTING
-          entity = entity
-          msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '002' severity = cl_abap_behv=>ms-error ) ).
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD set_state_message.
-    gv_state_area = state_area.
-    gv_first = abap_true.
-    gs_active_field-fieldname = fieldname.
-
-    set_message(
-      entity = entity
-      msg    = msg
-    ).
-  ENDMETHOD.
-
-
-  METHOD set_message.
-    FIELD-SYMBOLS:
-      <reported_entities> TYPE STANDARD TABLE,
-      <failed_entities>   TYPE STANDARD TABLE.
-
-*   Set reported information with message
-    ASSIGN gr_reported->* TO <reported_entities>.
-
-    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-tky OF STRUCTURE entity TO FIELD-SYMBOL(<tky>).
-    IF sy-subrc <> 0.
-      RETURN.
-    ENDIF.
-
-*   Reset the state area
-    IF gv_first = abap_true AND gv_is_transition = abap_false. " To be set only once
-      APPEND INITIAL LINE TO <reported_entities> ASSIGNING FIELD-SYMBOL(<reported_entity>).
-      ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-tky OF STRUCTURE <reported_entity> TO FIELD-SYMBOL(<tky_r>).
-      IF sy-subrc = 0.
-        <tky_r> = <tky>.
-      ENDIF.
-
-      ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-state_area OF STRUCTURE <reported_entity> TO FIELD-SYMBOL(<state_area>).
-      IF sy-subrc = 0.
-        <state_area> = gv_state_area.
-      ENDIF.
-
-      CLEAR gv_first.
-    ENDIF.
-
-    APPEND INITIAL LINE TO <reported_entities> ASSIGNING <reported_entity>.
-    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-tky OF STRUCTURE <reported_entity> TO <tky_r>.
-    IF sy-subrc = 0.
-      <tky_r> = <tky>.
-    ENDIF.
-
-    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-msg OF STRUCTURE <reported_entity> TO FIELD-SYMBOL(<msg>).
-    IF sy-subrc = 0.
-      <msg> = msg.
-    ENDIF.
-
-    IF gv_is_transition = abap_false.
-      ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-state_area OF STRUCTURE <reported_entity> TO <state_area>.
-      IF sy-subrc = 0.
-        <state_area> = gv_state_area.
-      ENDIF.
-    ENDIF.
-
-    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-path OF STRUCTURE <reported_entity> TO FIELD-SYMBOL(<path>).
-    IF sy-subrc = 0.
-      LOOP AT gt_paths INTO DATA(path).
-        TRANSLATE path-path TO UPPER CASE.
-        ASSIGN COMPONENT path-path OF STRUCTURE <path> TO FIELD-SYMBOL(<path_entity>).
-        IF sy-subrc = 0.
-          <path_entity> = CORRESPONDING #( entity ).
-
-          ASSIGN COMPONENT c_singletonid OF STRUCTURE <path_entity> TO FIELD-SYMBOL(<singletonid>).
-          IF sy-subrc = 0 AND <singletonid> IS INITIAL.
-            ASSIGN COMPONENT c_singletonid OF STRUCTURE entity TO FIELD-SYMBOL(<singletonid_entity>).
-            IF sy-subrc = 0.
-              <singletonid> = <singletonid_entity>.
-            ELSE.
-              <singletonid> = 1.
-            ENDIF.
-          ENDIF.
-        ENDIF.
-      ENDLOOP.
-    ENDIF.
-
-    set_element_field_error( CHANGING reported = <reported_entity> ).
-
-*   Set failed information
-    ASSIGN gr_failed->* TO <failed_entities>.
-
-    APPEND INITIAL LINE TO <failed_entities> ASSIGNING FIELD-SYMBOL(<failed>).
-    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-tky OF STRUCTURE <failed> TO FIELD-SYMBOL(<tky_f>).
-    IF sy-subrc = 0.
-      <tky_f> = <tky>.
-    ENDIF.
-  ENDMETHOD.
 
 
   METHOD check_authorization.
@@ -595,8 +307,45 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD create.
+    instance = NEW /esrcc/cl_config_util( ).
+
+    instance->gt_paths = paths.
+    instance->gv_source_entity_name = source_entity_name.
+    instance->gv_is_transition = is_transition.
+    instance->gr_failed = REF #( failed_entity ).
+    instance->gr_reported = REF #( reported_entity ).
+    instance->go_abap_dictionary = NEW /esrcc/cl_abap_dictionary( ).
+  ENDMETHOD.
+
+
   METHOD create_for_authorization.
     instance = NEW /esrcc/cl_config_util( ).
+  ENDMETHOD.
+
+
+  METHOD extract_field_label.
+*    DATA(field) = VALUE ts_field( fieldname = gs_active_field-fieldname ).
+*
+*    field-fieldname = gs_active_field-fieldname.
+*    field-fieldtext = go_abap_dictionary->derive_field_label(
+*      EXPORTING
+*        iv_entity_name  = gv_source_entity_name
+*        iv_data_element = gv_data_element
+*        iv_field_name   = gs_active_field-fieldname
+*    ).
+
+    DATA(field) = VALUE ts_field( fieldname = fieldname
+                                  fieldtext = go_abap_dictionary->derive_field_label(
+                                                EXPORTING
+                                                  iv_entity_name  = gv_source_entity_name
+                                                  iv_data_element = data_element
+                                                  iv_field_name   = fieldname
+                                              ) ).
+
+    text = field-fieldtext.
+
+    INSERT field INTO TABLE gt_fields.
   ENDMETHOD.
 
 
@@ -642,6 +391,21 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
     ).
 
     is_unauthorized = SWITCH #( is_authorized WHEN abap_true THEN abap_false ELSE abap_true ).
+  ENDMETHOD.
+
+
+  METHOD set_element_field_error.
+    IF gs_active_field-fieldname IS INITIAL OR gv_is_transition = abap_true.
+      RETURN.
+    ENDIF.
+
+    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-element OF STRUCTURE reported TO FIELD-SYMBOL(<elements>).
+    IF sy-subrc = 0.
+      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE <elements> TO FIELD-SYMBOL(<field>).
+      IF sy-subrc = 0.
+        <field> = if_abap_behv=>mk-on.
+      ENDIF.
+    ENDIF.
   ENDMETHOD.
 
 
@@ -784,6 +548,99 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD set_message.
+    FIELD-SYMBOLS:
+      <reported_entities> TYPE STANDARD TABLE,
+      <failed_entities>   TYPE STANDARD TABLE.
+
+*   Set reported information with message
+    ASSIGN gr_reported->* TO <reported_entities>.
+
+    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-tky OF STRUCTURE entity TO FIELD-SYMBOL(<tky>).
+    IF sy-subrc <> 0.
+      RETURN.
+    ENDIF.
+
+*   Reset the state area
+    IF gv_first = abap_true AND gv_is_transition = abap_false. " To be set only once
+      APPEND INITIAL LINE TO <reported_entities> ASSIGNING FIELD-SYMBOL(<reported_entity>).
+      ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-tky OF STRUCTURE <reported_entity> TO FIELD-SYMBOL(<tky_r>).
+      IF sy-subrc = 0.
+        <tky_r> = <tky>.
+      ENDIF.
+
+      ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-state_area OF STRUCTURE <reported_entity> TO FIELD-SYMBOL(<state_area>).
+      IF sy-subrc = 0.
+        <state_area> = gv_state_area.
+      ENDIF.
+
+      CLEAR gv_first.
+    ENDIF.
+
+    APPEND INITIAL LINE TO <reported_entities> ASSIGNING <reported_entity>.
+    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-tky OF STRUCTURE <reported_entity> TO <tky_r>.
+    IF sy-subrc = 0.
+      <tky_r> = <tky>.
+    ENDIF.
+
+    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-msg OF STRUCTURE <reported_entity> TO FIELD-SYMBOL(<msg>).
+    IF sy-subrc = 0.
+      <msg> = msg.
+    ENDIF.
+
+    IF gv_is_transition = abap_false.
+      ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-state_area OF STRUCTURE <reported_entity> TO <state_area>.
+      IF sy-subrc = 0.
+        <state_area> = gv_state_area.
+      ENDIF.
+    ENDIF.
+
+    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-path OF STRUCTURE <reported_entity> TO FIELD-SYMBOL(<path>).
+    IF sy-subrc = 0.
+      LOOP AT gt_paths INTO DATA(path).
+        TRANSLATE path-path TO UPPER CASE.
+        ASSIGN COMPONENT path-path OF STRUCTURE <path> TO FIELD-SYMBOL(<path_entity>).
+        IF sy-subrc = 0.
+          <path_entity> = CORRESPONDING #( entity ).
+
+          ASSIGN COMPONENT c_singletonid OF STRUCTURE <path_entity> TO FIELD-SYMBOL(<singletonid>).
+          IF sy-subrc = 0 AND <singletonid> IS INITIAL.
+            ASSIGN COMPONENT c_singletonid OF STRUCTURE entity TO FIELD-SYMBOL(<singletonid_entity>).
+            IF sy-subrc = 0.
+              <singletonid> = <singletonid_entity>.
+            ELSE.
+              <singletonid> = 1.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+
+    set_element_field_error( CHANGING reported = <reported_entity> ).
+
+*   Set failed information
+    ASSIGN gr_failed->* TO <failed_entities>.
+
+    APPEND INITIAL LINE TO <failed_entities> ASSIGNING FIELD-SYMBOL(<failed>).
+    ASSIGN COMPONENT cl_abap_behv=>co_techfield_name-tky OF STRUCTURE <failed> TO FIELD-SYMBOL(<tky_f>).
+    IF sy-subrc = 0.
+      <tky_f> = <tky>.
+    ENDIF.
+  ENDMETHOD.
+
+
+  METHOD set_state_message.
+    gv_state_area = state_area.
+    gv_first = abap_true.
+    gs_active_field-fieldname = fieldname.
+
+    set_message(
+      entity = entity
+      msg    = msg
+    ).
+  ENDMETHOD.
+
+
   METHOD validate_initial.
     gv_state_area = mandatory.
     gv_first = abap_true.
@@ -849,6 +706,27 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD validate_percentage.
+    gv_state_area = percentage.
+    gv_first = abap_true.
+
+    LOOP AT fields INTO gs_active_field.
+      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE entity TO FIELD-SYMBOL(<value>).
+      IF sy-subrc <> 0.
+        CONTINUE.
+      ENDIF.
+
+      IF <value> NOT BETWEEN 0 AND 100.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
+        set_message(
+          EXPORTING
+            entity = entity
+            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '005' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
+
   METHOD validate_poper.
     gv_state_area = period.
     gv_first = abap_true.
@@ -870,175 +748,48 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD constructor.
-    super->constructor( ).
-    gt_paths = paths.
-    gv_source_entity_name = source_entity_name.
-    gv_is_transition = is_transition.
-    go_abap_dictionary = NEW /esrcc/cl_abap_dictionary( ).
-  ENDMETHOD.
-
-
-  METHOD foreign_check_cost_object.
-    IF cost_object_uuids IS INITIAL OR operation IS INITIAL OR foreign_check IS INITIAL.
-      RETURN.
-    ENDIF.
-
-    DATA(uuid_usage_tab) = cost_object_uuids.
-
-    IF foreign_check-serv_consumption = abap_true.
-      SELECT DISTINCT
-            uuid~uuid,
-            CASE WHEN srv_con~cost_object_uuid IS NOT NULL THEN @abap_true ELSE @abap_false END AS serv_con,
-            serv_cap,
-            alloc_key
-        FROM @uuid_usage_tab AS uuid
-        LEFT OUTER JOIN /esrcc/consumptn AS srv_con
-            ON srv_con~cost_object_uuid = uuid~uuid
-        INTO TABLE @uuid_usage_tab.
-    ENDIF.
-
-    IF foreign_check-serv_capacity = abap_true.
-    ENDIF.
-
-    IF foreign_check-alloc_key = abap_true.
-      SELECT DISTINCT
-            uuid~uuid,
-            serv_con,
-            serv_cap,
-            CASE WHEN ind_alloc~cost_object_uuid IS NOT NULL THEN @abap_true ELSE @abap_false END AS alloc_key
-        FROM @uuid_usage_tab AS uuid
-        LEFT OUTER JOIN /esrcc/indtalloc AS ind_alloc
-            ON ind_alloc~cost_object_uuid = uuid~uuid
-        INTO TABLE @uuid_usage_tab.
-    ENDIF.
-
-    IF NOT line_exists( uuid_usage_tab[ serv_con  = abap_true ] ) AND
-       NOT line_exists( uuid_usage_tab[ serv_cap  = abap_true ] ) AND
-       NOT line_exists( uuid_usage_tab[ alloc_key = abap_true ] ).
-      RETURN.
-    ENDIF.
-
-    foreign_ref = abap_true.
-
-    " Raise message
-    gv_state_area = mandatory.
+  METHOD validate_start_end_of_month.
+    gv_state_area = start_end_of_month.
     gv_first = abap_true.
-    gs_active_field-fieldname = uuid_fieldname.
 
-    LOOP AT entities ASSIGNING FIELD-SYMBOL(<entity>).
-      ASSIGN COMPONENT uuid_fieldname OF STRUCTURE <entity> TO FIELD-SYMBOL(<uuid>).
-      IF sy-subrc <> 0.
-        RETURN.
-      ENDIF.
+    IF start_date IS NOT INITIAL AND start_date+6(2) <> '01'.
+      gs_active_field-fieldname = 'VALIDFROM'.
+      start_date+6(2) = '01'.
 
-      DATA(uuid_usage) = VALUE #( uuid_usage_tab[ uuid = <uuid> ] OPTIONAL ).
-      IF uuid_usage-serv_con = abap_true.
-        DATA(app_usage) = CONV string( TEXT-001 ).
-      ENDIF.
+      gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = start_date ).
 
-      IF uuid_usage-serv_cap = abap_true.
-        app_usage = COND #( WHEN app_usage IS INITIAL THEN TEXT-002 ELSE |{ app_usage } & { TEXT-002 }| ).
-      ENDIF.
+      set_message(
+        EXPORTING
+          entity = entity
+          msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '006' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
+    ENDIF.
 
-      IF uuid_usage-alloc_key = abap_true.
-        app_usage = COND #( WHEN app_usage IS INITIAL THEN TEXT-003 ELSE |{ app_usage } & { TEXT-003 }| ).
-      ENDIF.
+    IF end_date IS NOT INITIAL.
+      DATA(lv_date) = /esrcc/cl_utility_core=>get_last_day_of_month( EXPORTING date = end_date ).
+      IF end_date <> lv_date.
+        gs_active_field-fieldname = 'VALIDTO'.
+        end_date = lv_date.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = end_date ).
 
-      IF app_usage IS NOT INITIAL.
         set_message(
-            EXPORTING
-              entity = <entity>
-              msg    = NEW cl_abap_behv( )->new_message( id       = c_config_msg
-                                                         number   = COND #( WHEN operation-update = abap_true THEN '022'
-                                                                            WHEN operation-delete = abap_true THEN '021' )
-                                                         severity = cl_abap_behv=>ms-error
-                                                         v1 = app_usage ) ).
+          EXPORTING
+            entity = entity
+            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '007' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
       ENDIF.
-
-      CLEAR app_usage.
-    ENDLOOP.
+    ENDIF.
   ENDMETHOD.
 
 
-  METHOD get_co_rule_config.
-    APPEND VALUE #( chargeout_method     = 'D'
-                    cost_version         = abap_true
-                    capacity_version     = abap_true
-                    consumption_version  = abap_true
-                    uom                  = abap_true
-                    key_version          = abap_false
-                    adhoc_allocation_key = abap_false
-                    weightage_tab        = abap_false ) TO co_rule_config.
+  METHOD validate_validity.
+    gv_state_area = validity.
+    gv_first = abap_true.
 
-    APPEND VALUE #( chargeout_method     = 'I'
-                    cost_version         = abap_true
-                    capacity_version     = abap_false
-                    consumption_version  = abap_false
-                    uom                  = abap_false
-                    key_version          = abap_true
-                    adhoc_allocation_key = abap_false
-                    weightage_tab        = abap_true ) TO co_rule_config.
-
-
-    APPEND VALUE #( chargeout_method     = 'A'
-                    cost_version         = abap_false
-                    capacity_version     = abap_false
-                    consumption_version  = abap_false
-                    uom                  = abap_false
-                    key_version          = abap_false
-                    adhoc_allocation_key = abap_true
-                    weightage_tab        = abap_false ) TO co_rule_config.
-  ENDMETHOD.
-
-
-  METHOD get_db_metadata.
-    metadata = VALUE #(
-        ( tab_name       = '/ESRCC/CST_ELMNT'
-          class_name     = '/ESRCC/CL_CONFIG_COST_ELEMENT'
-          field_metadata = VALUE #( ( fieldname      = 'SYSID'
-                                      is_not_initial = abap_true
-                                      is_virtual_key = abap_true
-                                      cds_fieldname  = 'SYSID' )
-                                    ( fieldname      = 'LEGAL_ENTITY'
-                                      is_not_initial = abap_true
-                                      is_virtual_key = abap_true
-                                      cds_fieldname  = 'LEGALENTITY' )
-                                    ( fieldname      = 'COMPANY_CODE'
-                                      is_not_initial = abap_true
-                                      is_virtual_key = abap_true
-                                      cds_fieldname  = 'COMPANYCODE' )
-                                    ( fieldname      = 'COST_ELEMENT'
-                                      is_not_initial = abap_true
-                                      is_virtual_key = abap_true
-                                      cds_fieldname  = 'COSTELEMENT' ) ) )
-
-*        ( tab_name       = '/ESRCC/CST_ELEMNT'
-*          class_name     = '/ESRCC/CL_CONFIG_COST_ELEMENT'
-*          field_metadata = VALUE #( ( fieldname      = 'SYSID'
-*                                      is_not_initial = abap_true
-*                                      is_virtual_key = abap_true
-*                                      cds_fieldname  = 'SYSID' ) ) )
-*
-*        ( tab_name       = '/ESRCC/CST_ELEMNT'
-*          class_name     = '/ESRCC/CL_CONFIG_COST_ELEMENT'
-*          field_metadata = VALUE #( ( fieldname      = 'SYSID'
-*                                      is_not_initial = abap_true
-*                                      is_virtual_key = abap_true
-*                                      cds_fieldname  = 'SYSID' ) ) )
-*
-*        ( tab_name       = '/ESRCC/CST_ELEMNT'
-*          class_name     = '/ESRCC/CL_CONFIG_COST_ELEMENT'
-*          field_metadata = VALUE #( ( fieldname      = 'SYSID'
-*                                      is_not_initial = abap_true
-*                                      is_virtual_key = abap_true
-*                                      cds_fieldname  = 'SYSID' ) ) )
-    ).
-  ENDMETHOD.
-
-
-  METHOD set_entity.
-    me->gr_reported = REF #( reported_entity ).
-    me->gr_failed = REF #( failed_entity ).
+    IF from IS NOT INITIAL AND to IS NOT INITIAL AND from > to.
+      gs_active_field-fieldname = 'VALIDTO'.
+      set_message(
+        EXPORTING
+          entity = entity
+          msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '002' severity = cl_abap_behv=>ms-error ) ).
+    ENDIF.
   ENDMETHOD.
 ENDCLASS.

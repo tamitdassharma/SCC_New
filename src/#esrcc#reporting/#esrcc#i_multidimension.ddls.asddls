@@ -10,128 +10,120 @@
 @Analytics.dataCategory: #CUBE
 
 define view entity /ESRCC/I_MultiDimension
-  as select from /ESRCC/I_CHG_ANALYTICS as ReceiverShare
+  as select from /esrcc/rec_cost as ReceiverShare
   
-  association  [0..1] to /ESRCC/I_RYEAR as _ryear on _ryear.ryear = $projection.Ryear 
+  association  [0..1] to /ESRCC/I_RYEAR as _ryear on _ryear.ryear = $projection.ryear 
   
-  association [0..1] to /ESRCC/I_LEGALENTITY_F4 as _legalentity on _legalentity.Legalentity = $projection.Legalentity
+  association [0..1] to /ESRCC/I_LEGALENTITY_F4 as _legalentity on _legalentity.Legalentity = $projection.legalentity
   
   association [0..1] to /ESRCC/I_RECEIVINGENTITY_F4 as _receivingentity
-  on _receivingentity.Receivingentity = $projection.Receivingentity
+  on _receivingentity.Receivingentity = $projection.receivingentity
   
   association [0..1] to /ESRCC/I_COSNUMBER_F4 as _costcenter
-  on _costcenter.Costcenter = ReceiverShare.Costcenter
+  on _costcenter.Costcenter = ReceiverShare.costcenter
   
   association [0..1] to /ESRCC/I_PROFITCENTER_F4 as _profitcenter
-  on _profitcenter.ProfitCenter = $projection.Profitcenter
+  on _profitcenter.ProfitCenter = $projection.profitcenter
   
   association [0..1] to /ESRCC/I_BUSINESSDIV_F4 as _businessdiv
-  on _businessdiv.BusinessDivision = $projection.Businessdivision
+  on _businessdiv.BusinessDivision = $projection.businessdivision
   
   association [0..1] to /ESRCC/I_SERVICEPRD_F4   as _serviceproduct         
-  on _serviceproduct.ServiceProduct = $projection.Serviceproduct
+  on _serviceproduct.ServiceProduct = $projection.serviceproduct
   
   association [0..1] to /ESRCC/I_SERVICETYPE_F4      as _srvtyp                
-  on  _srvtyp.ServiceType = $projection.Servicetype
+  on  _srvtyp.ServiceType = $projection.servicetype
 
   association [0..1] to /ESRCC/I_TRANSACTIONGROUP_F4 as _srvtransactiongroup    
-  on  _srvtransactiongroup.Transactiongroup = ReceiverShare.Transactiongroup
+  on  _srvtransactiongroup.Transactiongroup = ReceiverShare.transactiongroup
 {
 
       /** DIMENSIONS **/
       @ObjectModel.foreignKey.association: '_ryear'
-  key Ryear,
-  key Poper,
-  key Fplv,
-  key Sysid,
+  key ryear,
+  key poper,
+  key fplv,
+  key sysid,
       @ObjectModel.foreignKey.association: '_legalentity'
-  key Legalentity,
-  key Ccode,
-  key Costobject,
+  key ReceiverShare.legalentity,
+  key ReceiverShare.ccode,
+  key ReceiverShare.costobject,
       @ObjectModel.foreignKey.association: '_costcenter'
-  key Costcenter,
+  key ReceiverShare.costcenter,
       @ObjectModel.foreignKey.association: '_serviceproduct'
-  key Serviceproduct,
+  key ReceiverShare.serviceproduct,
       @ObjectModel.foreignKey.association: '_receivingentity'
-  key Receivingentity,  
-      @EndUserText.label: 'System Id (Receiver)'   
-  key ReceiverSysId,
-      @EndUserText.label: 'Cost Object Type (Receiver)'
-  key ReceiverCostObject,
-      @EndUserText.label: 'Cost Object Number (Receiver)'
-  key ReceiverCostCenter,
+  key ReceiverShare.receivingentity,
       @ObjectModel.foreignKey.association: '_srvtyp'
-      Servicetype,
+      ReceiverShare.servicetype,
       @ObjectModel.foreignKey.association: '_srvtransactiongroup'
-      Transactiongroup,
-//      localcurr,
-//      groupcurr, 
-      Currency,   
-      FunctionalArea,
+      ReceiverShare.transactiongroup,
+      localcurr,
+      groupcurr,    
       @ObjectModel.foreignKey.association: '_businessdiv'
-      Businessdivision,
+      ReceiverShare.businessdivision,
       @ObjectModel.foreignKey.association: '_profitcenter'
-      ReceiverShare.Profitcenter,
-      Controllingarea,      
-      Chargeout,
+      ReceiverShare.profitcenter,
+      controllingarea,      
+      chargeout,
 
       /** Additional Fields**/
-      Reckpi,
-      Reckpishare,
+      reckpi,
+      reckpishare,
 
       /** MEASURES **/
       @EndUserText.label: 'Total Cost (Initial)'
       @DefaultAggregation: #SUM
-      RecTotalCost,
+      rectotalcostl,
       
       @EndUserText.label: 'Total Included Cost'
       @DefaultAggregation: #SUM
-      RecIncludedCost,
+      recorigtotalcostl + recpasstotalcostl as Recincludedcostl,
 
       @EndUserText.label: 'Excluded Cost'
       @DefaultAggregation: #SUM
-      RecExcludedCost,
+      recexcludedcostl,
 
       @EndUserText.label: 'Thereof Value-Add'
       @DefaultAggregation: #SUM
-      RecOrigTotalCost,
+      recorigtotalcostl,
 
       @EndUserText.label: 'Thereof Pass-Through'
       @DefaultAggregation: #SUM
-      RecPassTotalCost,
+      recpasstotalcostl,
       
       @EndUserText.label: 'Total Stewardship'
       @DefaultAggregation: #SUM
-      RecStewardship,      
+      ( recorigtotalcostl + recpasstotalcostl ) - ( recvalueaddedl + recpassthroughl ) as Stewardshipl,      
 
       @EndUserText.label: 'Total Service Cost'
       @DefaultAggregation: #SUM
-      RecCostShare,
+      recvalueaddedl + recpassthroughl as Reccostsharel,
 
       @EndUserText.label: 'Thereof Value-Add Service Cost'
       @DefaultAggregation: #SUM
-      RecValueadded,
+      recvalueaddedl,
 
       @EndUserText.label: 'Thereof Pass-Through Service Cost'
       @DefaultAggregation: #SUM
-      RecPassthrough,
+      recpassthroughl,
       
       @EndUserText.label: 'Total Mark-up'
       @DefaultAggregation: #SUM
-      TotalRecMarkup,
+      recvalueaddmarkupabsl + recpassthrumarkupabsl as Rectotalmarkupabsl,
       
       @EndUserText.label: 'Thereof Value-Add Mark-up'
       @DefaultAggregation: #SUM
-      RecValueaddMarkup,
+      recvalueaddmarkupabsl,
 
       @EndUserText.label: 'Thereof Pass-Through Mark-up'
       @DefaultAggregation: #SUM
-      RecPassthroughMarkup,
+      recpassthrumarkupabsl,
       
 
       @EndUserText.label: 'Total Charge-Out Amount'
       @DefaultAggregation: #SUM
-      TotalChargeout,
+      reckpishareabsl,
       
       _ryear,
       _legalentity,

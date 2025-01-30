@@ -72,7 +72,7 @@ annotate view /ESRCC/C_SysInfo with
   SignForCogs;
 
   @UI.identification: [ { position: 8 } ]
-  @UI.lineItem: [ { position: 8, cssDefault.width: '4rem' } ]
+  @UI.lineItem: [ { position: 8, cssDefault.width: '3.5rem' } ]
   IsActive;
 
   @UI.lineItem: [ { position: 9 } ]

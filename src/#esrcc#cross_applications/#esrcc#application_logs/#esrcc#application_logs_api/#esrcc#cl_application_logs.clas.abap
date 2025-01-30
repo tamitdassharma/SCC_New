@@ -10,6 +10,7 @@ CLASS /esrcc/cl_application_logs DEFINITION PUBLIC FINAL CREATE PUBLIC.
       reuse_instance IMPORTING log_header_id   TYPE sysuuid_c32
                      RETURNING VALUE(instance) TYPE REF TO /esrcc/if_application_logs.
 
+protected section.
   PRIVATE SECTION.
     TYPES:
       BEGIN OF _log_model_type,
@@ -40,7 +41,7 @@ CLASS /ESRCC/CL_APPLICATION_LOGS IMPLEMENTATION.
         IF sy-subrc NE 0.
           DATA(message) = VALUE /esrcc/log_item(
               BASE CORRESPONDING #( log_message EXCEPT log_uuid )
-              log_uuid        = COND #( WHEN log_message-log_uuid IS INITIAL THEN cl_system_uuid=>create_uuid_c32_static( ) ELSE log_message-log_uuid )
+              log_uuid        = cl_system_uuid=>create_uuid_c32_static( )
               log_header_uuid = _logs-header-log_header_uuid
               created_at      = COND #( WHEN log_message-created_at IS INITIAL THEN timestamp ELSE log_message-created_at )  ).
           APPEND message TO _logs-items.
@@ -105,12 +106,12 @@ CLASS /ESRCC/CL_APPLICATION_LOGS IMPLEMENTATION.
         ELSE.
 *     Long Text
           DATA: texts TYPE string_table.
-          CALL FUNCTION '/ESRCC/STRING_TO_TABLE'
-            EXPORTING
-              long_text           = log_message_text
-              length_of_each_line = 38
-            TABLES
-              table_of_texts      = texts.
+*          CALL FUNCTION '/ESRCC/STRING_TO_TABLE'
+*            EXPORTING
+*              long_text           = log_message_text
+*              length_of_each_line = 38
+*            TABLES
+*              table_of_texts      = texts.
           DATA(number_of_lines) = lines( texts ).
           LOOP AT texts ASSIGNING FIELD-SYMBOL(<text>).
             DATA(table_index) = sy-tabix.
@@ -184,7 +185,7 @@ CLASS /ESRCC/CL_APPLICATION_LOGS IMPLEMENTATION.
   METHOD /esrcc/if_application_logs~save_header.
     MODIFY /esrcc/log_hdr FROM @_logs-header.
     " Need to uncomment if LUW does not trigger implicit commits
-    COMMIT WORK.
+*    COMMIT WORK.
   ENDMETHOD.
 
 
@@ -192,7 +193,7 @@ CLASS /ESRCC/CL_APPLICATION_LOGS IMPLEMENTATION.
     /esrcc/if_application_logs~save_header( ).
     /esrcc/if_application_logs~save_messages( ).
     " Need to uncomment if LUW does not trigger implicit commits
-    COMMIT WORK.
+*    COMMIT WORK.
   ENDMETHOD.
 
 
@@ -200,7 +201,7 @@ CLASS /ESRCC/CL_APPLICATION_LOGS IMPLEMENTATION.
     MODIFY /esrcc/log_item FROM TABLE @_logs-items.
     MODIFY /esrcc/inv_rcrds FROM TABLE @_logs-invalid_records.
     " Need to uncomment if LUW does not trigger implicit commits
-    COMMIT WORK.
+*    COMMIT WORK.
   ENDMETHOD.
 
 

@@ -88,7 +88,7 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
 
     DATA ls_comment TYPE /esrcc/comments.
 
-    SELECT * FROM /esrcc/cb_stw   FOR ALL ENTRIES IN @it_leading_data
+    SELECT * FROM /esrcc/cc_cost   FOR ALL ENTRIES IN @it_leading_data
           WHERE
                 fplv  = @it_leading_data-fplv AND
                 ryear = @it_leading_data-ryear AND
@@ -109,7 +109,7 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
         ENDIF.
         <fs_cc_cost>-workflowid = iv_wi_id.
       ENDLOOP.
-      UPDATE /esrcc/cb_stw FROM TABLE @lt_cc_cost.
+      UPDATE /esrcc/cc_cost FROM TABLE @lt_cc_cost.
 
       IF iv_comment IS NOT INITIAL.
         ls_comment-worfklow_id = iv_wi_id.
@@ -130,13 +130,7 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
 
     DATA ls_comment TYPE /esrcc/comments.
 
-    SELECT recchg~* FROM /esrcc/cb_stw as cb
-             INNER JOIN /esrcc/srv_share as srvshare
-               on cb~cc_uuid = srvshare~cc_uuid
-             INNER JOIN /esrcc/rec_chg as recchg
-               on cb~cc_uuid = recchg~cc_uuid
-              and srvshare~srv_uuid = recchg~srv_uuid
-                FOR ALL ENTRIES IN @it_leading_data
+    SELECT * FROM /esrcc/rec_cost   FOR ALL ENTRIES IN @it_leading_data
           WHERE
                 fplv  = @it_leading_data-fplv AND
                 ryear = @it_leading_data-ryear AND
@@ -159,7 +153,7 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
         ENDIF.
         <fs_rec_cost>-workflowid = iv_wi_id.
       ENDLOOP.
-      UPDATE /esrcc/rec_chg FROM TABLE @lt_rec_cost.
+      UPDATE /esrcc/rec_cost FROM TABLE @lt_rec_cost.
 
       IF iv_comment IS NOT INITIAL.
         ls_comment-worfklow_id = iv_wi_id.
@@ -180,9 +174,7 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
 
     DATA ls_comment TYPE /esrcc/comments.
 
-    SELECT srvshare~* FROM /esrcc/cb_stw as cb
-             INNER JOIN /esrcc/srv_share as srvshare
-               on cb~cc_uuid = srvshare~cc_uuid FOR ALL ENTRIES IN @it_leading_data
+    SELECT * FROM /esrcc/srv_cost   FOR ALL ENTRIES IN @it_leading_data
           WHERE
                 fplv  = @it_leading_data-fplv AND
                 ryear = @it_leading_data-ryear AND
@@ -193,6 +185,7 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
                 costobject = @it_leading_data-costobject  AND
                 costcenter = @it_leading_data-costcenter AND
                 serviceproduct = @it_leading_data-serviceproduct
+
                 INTO TABLE @DATA(lt_srv_cost).
 
 
@@ -204,7 +197,7 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
         ENDIF.
         <fs_srv_cost>-workflowid = iv_wi_id.
       ENDLOOP.
-      UPDATE /esrcc/srv_share FROM TABLE @lt_srv_cost.
+      UPDATE /esrcc/srv_cost FROM TABLE @lt_srv_cost.
 
       IF iv_comment IS NOT INITIAL.
         ls_comment-worfklow_id = iv_wi_id.
