@@ -33,9 +33,9 @@ authorization master ( global )
   LocalLastChangedAt;
 
 
-  create;
-  update;
-  delete;
+  create ( precheck );
+  update ( precheck );
+  delete ( precheck );
 
   //  draft action Edit;
   //  draft action Activate;

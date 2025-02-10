@@ -22,6 +22,7 @@ as select from /esrcc/srvpro as srvpro
      
     association [0..1] to /esrcc/co_rule as rule
       on rule.rule_id = $projection.chargeoutruleid
+      and rule.workflow_status = 'F'
       
     association [0..1] to /esrcc/co_rulet as rulet
       on rulet.rule_id = $projection.chargeoutruleid

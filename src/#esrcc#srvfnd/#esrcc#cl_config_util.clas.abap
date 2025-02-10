@@ -20,6 +20,7 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
         non_mandatory,
         validity,
         overlapping_validity,
+        overlapping_sequence,
         start_end_of_month,
         period,
         percentage,
@@ -29,6 +30,7 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
         child_non_mandatory,
         no_authorization,
         duplicate,
+        not_exists,
       END OF ENUM validation_type,
 
       BEGIN OF ts_field,
@@ -75,7 +77,6 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
         adhoc_allocation_key TYPE abap_boolean,
         weightage_tab        TYPE abap_boolean,
       END OF ts_co_rule_config,
-
 
       BEGIN OF ts_field_metadata,
         fieldname      TYPE abp_field_name,
@@ -152,6 +153,9 @@ CLASS /esrcc/cl_config_util DEFINITION PUBLIC
       IMPORTING
         fields  TYPE tt_fields
         !entity TYPE any.
+    METHODS set_duplicate_error
+      IMPORTING
+        entity TYPE any.
     METHODS set_state_message
       IMPORTING
         fieldname  TYPE abp_field_name OPTIONAL
@@ -880,6 +884,7 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
 
 
   METHOD foreign_check_cost_object.
+*   If Cost Object is used in Service Consumption, Capacity or Allocation Key apps, the requested action is restricted.
     IF cost_object_uuids IS INITIAL OR operation IS INITIAL OR foreign_check IS INITIAL.
       RETURN.
     ENDIF.
@@ -899,6 +904,15 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
     ENDIF.
 
     IF foreign_check-serv_capacity = abap_true.
+      SELECT DISTINCT
+            uuid~uuid,
+            serv_con,
+            CASE WHEN srv_cap~cost_object_uuid IS NOT NULL THEN @abap_true ELSE @abap_false END AS serv_cap,
+            alloc_key
+        FROM @uuid_usage_tab AS uuid
+        LEFT OUTER JOIN /esrcc/srv_cpcty AS srv_cap
+            ON srv_cap~cost_object_uuid = uuid~uuid
+        INTO TABLE @uuid_usage_tab.
     ENDIF.
 
     IF foreign_check-alloc_key = abap_true.
@@ -934,18 +948,18 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
 
       DATA(uuid_usage) = VALUE #( uuid_usage_tab[ uuid = <uuid> ] OPTIONAL ).
       IF uuid_usage-serv_con = abap_true.
-        DATA(app_usage) = CONV string( TEXT-001 ).
+        DATA(v1) = CONV symsgv( TEXT-001 ).
       ENDIF.
 
       IF uuid_usage-serv_cap = abap_true.
-        app_usage = COND #( WHEN app_usage IS INITIAL THEN TEXT-002 ELSE |{ app_usage } & { TEXT-002 }| ).
+        v1 = COND #( WHEN v1 IS INITIAL THEN TEXT-002 ELSE |{ v1 }{ COND #( WHEN uuid_usage-alloc_key = abap_true THEN ',' ELSE ' &' ) } { TEXT-002 }| ).
       ENDIF.
 
       IF uuid_usage-alloc_key = abap_true.
-        app_usage = COND #( WHEN app_usage IS INITIAL THEN TEXT-003 ELSE |{ app_usage } & { TEXT-003 }| ).
+        DATA(v2) = COND symsgv( WHEN v1 IS INITIAL THEN TEXT-003 ELSE |& { TEXT-003 }| ).
       ENDIF.
 
-      IF app_usage IS NOT INITIAL.
+      IF v1 IS NOT INITIAL OR v2 IS NOT INITIAL.
         set_message(
             EXPORTING
               entity = <entity>
@@ -953,10 +967,11 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
                                                          number   = COND #( WHEN operation-update = abap_true THEN '022'
                                                                             WHEN operation-delete = abap_true THEN '021' )
                                                          severity = cl_abap_behv=>ms-error
-                                                         v1 = app_usage ) ).
+                                                         v1       = v1
+                                                         v2       = v2 ) ).
       ENDIF.
 
-      CLEAR app_usage.
+      CLEAR: v1, v2.
     ENDLOOP.
   ENDMETHOD.
 
@@ -1040,5 +1055,18 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
   METHOD set_entity.
     me->gr_reported = REF #( reported_entity ).
     me->gr_failed = REF #( failed_entity ).
+  ENDMETHOD.
+
+
+  METHOD set_duplicate_error.
+    set_state_message(
+      entity     = entity
+      msg        = new_message(
+                         id       = /esrcc/cl_config_util=>c_config_msg
+                         number   = '023'
+                         severity = if_abap_behv_message=>severity-error
+                       )
+      state_area = CONV #( /esrcc/cl_config_util=>duplicate )
+    ).
   ENDMETHOD.
 ENDCLASS.

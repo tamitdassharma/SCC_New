@@ -80,6 +80,7 @@ define root view entity /ESRCC/I_MANAGECOSTBASE
       oldcostdataset,
       oldusagecal,
       comments                   as Comments,
+      cc_guid                    as UniqueId,
       @Semantics.user.createdBy: true
       created_by                 as CreatedBy,
       @Semantics.systemDateTime.createdAt: true

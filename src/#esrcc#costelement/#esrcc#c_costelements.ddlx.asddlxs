@@ -8,7 +8,15 @@
       value: 'CostElement'
     },
     description: { value: 'Description' }
-  }
+  },
+  presentationVariant: [{
+//    requestAtLeast: [ 'Sysid', 'LegalEntity', 'CompanyCode', 'CostElement' ],
+    sortOrder: [{ by: 'Sysid' }],
+                --{ by: 'LegalEntity', direction: #ASC },
+                --{ by: 'CompanyCode', direction: #ASC },
+                --{ by: 'CostElement', direction: #ASC }],
+    visualizations: [{type: #AS_LINEITEM }]
+  }]
 }
 annotate view /ESRCC/C_CostElements with
 {

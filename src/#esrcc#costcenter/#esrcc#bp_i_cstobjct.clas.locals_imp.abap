@@ -1,14 +1,9 @@
 CLASS lcl_custom_validation DEFINITION.
   PUBLIC SECTION.
     TYPES:
-      ts_cost_object TYPE STRUCTURE FOR READ RESULT /ESRCC/I_CstObjct_S\\CostObject,
+      ts_cost_object TYPE STRUCTURE FOR READ RESULT /esrcc/i_cstobjct_s\\costobject,
 
       BEGIN OF ts_control,
-        sysid         TYPE if_abap_behv=>t_xflag,
-        legalentity   TYPE if_abap_behv=>t_xflag,
-        companycode   TYPE if_abap_behv=>t_xflag,
-        costobject    TYPE if_abap_behv=>t_xflag,
-        costcenter    TYPE if_abap_behv=>t_xflag,
         billfrequency TYPE if_abap_behv=>t_xflag,
       END OF ts_control.
 
@@ -35,11 +30,6 @@ CLASS lcl_custom_validation IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF control-sysid         = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'SYSID' ) TO fields. ENDIF.
-    IF control-legalentity   = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'LEGALENTITY' ) TO fields. ENDIF.
-    IF control-companycode   = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'COMPANYCODE' ) TO fields. ENDIF.
-    IF control-costobject    = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'COSTOBJECT' ) TO fields. ENDIF.
-    IF control-costcenter    = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'COSTCENTER' ) TO fields. ENDIF.
     IF control-billfrequency = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'BILLINGFREQUENCY' ) TO fields. ENDIF.
 
     config_util_ref->validate_initial(
@@ -71,16 +61,16 @@ CLASS lhc_/esrcc/i_cstobjct_s DEFINITION INHERITING FROM cl_abap_behavior_handle
     METHODS:
       get_instance_features FOR INSTANCE FEATURES
         IMPORTING
-                  keys   REQUEST requested_features FOR CostObjectAll
+                  keys   REQUEST requested_features FOR costobjectall
         RESULT    result,
       get_global_authorizations FOR GLOBAL AUTHORIZATION
         IMPORTING
-        REQUEST requested_authorizations FOR CostObjectAll
+        REQUEST requested_authorizations FOR costobjectall
         RESULT result,
       edit FOR MODIFY
-        IMPORTING keys FOR ACTION CostObjectAll~edit,
-      precheck_cba_Costobject FOR PRECHECK
-        IMPORTING entities FOR CREATE CostObjectAll\_Costobject.
+        IMPORTING keys FOR ACTION costobjectall~edit,
+      precheck_cba_costobject FOR PRECHECK
+        IMPORTING entities FOR CREATE costobjectall\_costobject.
 ENDCLASS.
 
 CLASS lhc_/esrcc/i_cstobjct_s IMPLEMENTATION.
@@ -99,8 +89,8 @@ CLASS lhc_/esrcc/i_cstobjct_s IMPLEMENTATION.
     IF transport_service->is_transport_allowed( ) = abap_false.
       selecttransport_flag = if_abap_behv=>fc-o-disabled.
     ENDIF.
-    READ ENTITIES OF /ESRCC/I_CstObjct_S IN LOCAL MODE
-    ENTITY CostObjectAll
+    READ ENTITIES OF /esrcc/i_cstobjct_s IN LOCAL MODE
+    ENTITY costobjectall
       ALL FIELDS WITH CORRESPONDING #( keys )
       RESULT DATA(all).
     IF all[ 1 ]-%is_draft = if_abap_behv=>mk-off.
@@ -109,25 +99,25 @@ CLASS lhc_/esrcc/i_cstobjct_s IMPLEMENTATION.
     result = VALUE #( (
                %tky = all[ 1 ]-%tky
                %action-edit = edit_flag
-               %assoc-_CostObject = edit_flag ) ).
+               %assoc-_costobject = edit_flag ) ).
   ENDMETHOD.
   METHOD get_global_authorizations.
     AUTHORITY-CHECK OBJECT 'S_TABU_NAM' ID 'TABLE' FIELD '/ESRCC/I_CSTOBJCT' ID 'ACTVT' FIELD '02'.
     DATA(is_authorized) = COND #( WHEN sy-subrc = 0 THEN if_abap_behv=>auth-allowed
                                   ELSE if_abap_behv=>auth-unauthorized ).
     result-%update      = is_authorized.
-    result-%action-Edit = is_authorized.
+    result-%action-edit = is_authorized.
   ENDMETHOD.
 
   METHOD edit.
     DATA(lo_util) = /esrcc/cl_config_util=>create_for_authorization( ).
-    SELECT DISTINCT LegalEntity, costobject FROM /ESRCC/I_CstObjct INTO TABLE @DATA(cost_objects). "#EC CI_NOWHERE
+    SELECT DISTINCT legalentity, costobject FROM /esrcc/i_cstobjct INTO TABLE @DATA(cost_objects). "#EC CI_NOWHERE
 
     LOOP AT cost_objects INTO DATA(cost_object).
       DATA(is_unauthorized) = lo_util->is_unauthorized(
         EXPORTING
-          legal_entity = cost_object-LegalEntity
-          cost_object  = cost_object-CostObject
+          legal_entity = cost_object-legalentity
+          cost_object  = cost_object-costobject
           create       = abap_true
           update       = abap_true
           delete       = abap_true
@@ -145,8 +135,8 @@ CLASS lhc_/esrcc/i_cstobjct_s IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-  METHOD precheck_cba_Costobject.
-    TYPES ts_cost_object TYPE STRUCTURE FOR READ RESULT /ESRCC/I_CstObjct_S\\CostObject.
+  METHOD precheck_cba_costobject.
+    TYPES ts_cost_object TYPE STRUCTURE FOR READ RESULT /esrcc/i_cstobjct_s\\costobject.
 
     DATA(lo_cost_object) = /esrcc/cl_config_util=>create(
       EXPORTING
@@ -160,23 +150,44 @@ CLASS lhc_/esrcc/i_cstobjct_s IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_cost_object ).
 
-    LOOP AT entities[ 1 ]-%target INTO DATA(entity).
-*      lo_cost_center->check_authorization(
-*        EXPORTING
-*          entity      = CORRESPONDING ts_cost_center( entity )
-*          cost_object = entity-costobject
-*          activity    = /esrcc/cl_config_util=>c_authorization_activity-create
-*      ).
+    DATA(target_entities) = VALUE #( entities[ 1 ]-%target ).
+    SELECT DISTINCT
+           cobj~sysid,
+           cobj~legalentity,
+           cobj~companycode,
+           cobj~costobject,
+           cobj~costcenter
+        FROM /esrcc/d_cstobj AS cobj
+        INNER JOIN @target_entities AS tent
+            ON  tent~sysid       = cobj~sysid
+            AND tent~legalentity = cobj~legalentity
+            AND tent~companycode = cobj~companycode
+            AND tent~costobject  = cobj~costobject
+            AND tent~costcenter  = cobj~costcenter
+        WHERE cobj~draftentityoperationcode NOT IN ( 'D', 'L' )
+        INTO TABLE @DATA(duplicate_entities).
 
-      lo_validation->validate_cost_object(
-        entity  = CORRESPONDING #( entity )
-        control = VALUE #( sysid         = if_abap_behv=>mk-on
-                           legalentity   = if_abap_behv=>mk-on
-                           companycode   = if_abap_behv=>mk-on
-                           costobject    = if_abap_behv=>mk-on
-                           costcenter    = if_abap_behv=>mk-on
-                           billfrequency = if_abap_behv=>mk-on )
+    LOOP AT target_entities INTO DATA(entity) GROUP BY ( sysid       = entity-sysid
+                                                         legalentity = entity-legalentity
+                                                         companycode = entity-companycode
+                                                         costobject  = entity-costobject
+                                                         costcenter  = entity-costcenter
+                                                         size        = GROUP SIZE )
+        ASCENDING REFERENCE INTO DATA(group_ref).
+      lo_cost_object->check_authorization(
+        EXPORTING
+          entity      = CORRESPONDING ts_cost_object( entity )
+          cost_object = entity-costobject
+          activity    = /esrcc/cl_config_util=>c_authorization_activity-create
       ).
+
+      IF line_exists( duplicate_entities[ sysid       = entity-sysid
+                                          legalentity = entity-legalentity
+                                          companycode = entity-companycode
+                                          costobject  = entity-costobject
+                                          costcenter  = entity-costcenter ] ) OR group_ref->size > 1.
+        lo_cost_object->set_duplicate_error( entity = CORRESPONDING ts_cost_object( group_ref->* ) ).
+      ENDIF.
     ENDLOOP.
   ENDMETHOD.
 
@@ -190,10 +201,10 @@ ENDCLASS.
 
 CLASS lsc_/esrcc/i_cstobjct_s IMPLEMENTATION.
   METHOD save_modified.
-    READ TABLE update-CostObjectAll INDEX 1 INTO DATA(all).
-    IF all-TransportRequestID IS NOT INITIAL.
+    READ TABLE update-costobjectall INDEX 1 INTO DATA(all).
+    IF all-transportrequestid IS NOT INITIAL.
       lhc_rap_tdat_cts=>get( )->record_changes(
-                                  transport_request = all-TransportRequestID
+                                  transport_request = all-transportrequestid
                                   create            = REF #( create )
                                   update            = REF #( update )
                                   delete            = REF #( delete ) ).
@@ -206,13 +217,13 @@ CLASS lhc_/esrcc/i_cstobjct DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
     METHODS:
       precheck_update FOR PRECHECK
-        IMPORTING entities FOR UPDATE CostObject,
+        IMPORTING entities FOR UPDATE costobject,
       get_instance_features FOR INSTANCE FEATURES
-        IMPORTING keys REQUEST requested_features FOR CostObject RESULT result.
-    METHODS ValidateData FOR VALIDATE ON SAVE
-      IMPORTING keys FOR CostObject~ValidateData.
+        IMPORTING keys REQUEST requested_features FOR costobject RESULT result.
+    METHODS validatedata FOR VALIDATE ON SAVE
+      IMPORTING keys FOR costobject~validatedata.
     METHODS precheck_delete FOR PRECHECK
-      IMPORTING keys FOR DELETE CostObject.
+      IMPORTING keys FOR DELETE costobject.
 ENDCLASS.
 
 CLASS lhc_/esrcc/i_cstobjct IMPLEMENTATION.
@@ -229,7 +240,7 @@ CLASS lhc_/esrcc/i_cstobjct IMPLEMENTATION.
       EXPORTING
         entities          = entities
         uuid_fieldname    = 'COSTOBJECTUUID'
-        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = CostObjectUuid )
+        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = costobjectuuid )
         operation         = VALUE #( update = abap_true )
         foreign_check     = VALUE #( serv_consumption = abap_true alloc_key = abap_true )
     ) = abap_true.
@@ -238,20 +249,10 @@ CLASS lhc_/esrcc/i_cstobjct IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_cost_object ).
 
-    LOOP AT entities INTO DATA(entity) WHERE %control-Sysid            = if_abap_behv=>mk-on
-                                          OR %control-LegalEntity      = if_abap_behv=>mk-on
-                                          OR %control-CompanyCode      = if_abap_behv=>mk-on
-                                          OR %control-CostObject       = if_abap_behv=>mk-on
-                                          OR %control-CostCenter       = if_abap_behv=>mk-on
-                                          OR %control-BillingFrequency = if_abap_behv=>mk-on.
+    LOOP AT entities INTO DATA(entity) WHERE %control-billingfrequency = if_abap_behv=>mk-on.
       lo_validation->validate_cost_object(
         entity  = CORRESPONDING #( entity )
-        control = VALUE #( sysid         = entity-%control-Sysid
-                           legalentity   = entity-%control-LegalEntity
-                           companycode   = entity-%control-CompanyCode
-                           costobject    = entity-%control-CostObject
-                           costcenter    = entity-%control-CostCenter
-                           billfrequency = entity-%control-BillingFrequency )
+        control = VALUE #( billfrequency = entity-%control-billingfrequency )
       ).
     ENDLOOP.
   ENDMETHOD.
@@ -272,9 +273,9 @@ CLASS lhc_/esrcc/i_cstobjct IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-  METHOD ValidateData.
+  METHOD validatedata.
     READ ENTITIES OF /esrcc/i_cstobjct_s IN LOCAL MODE
-        ENTITY CostObject
+        ENTITY costobject
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(entities).
 
@@ -291,34 +292,24 @@ CLASS lhc_/esrcc/i_cstobjct IMPLEMENTATION.
       EXPORTING
         entities          = entities
         uuid_fieldname    = 'COSTOBJECTUUID'
-        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = CostObjectUuid )
+        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = costobjectuuid )
         operation         = VALUE #( delete = abap_true )
-        foreign_check     = VALUE #( serv_consumption = abap_true alloc_key = abap_true )
+        foreign_check     = VALUE #( serv_consumption = abap_true serv_capacity = abap_true alloc_key = abap_true )
     ).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_cost_object ).
 
-    LOOP AT entities ASSIGNING FIELD-SYMBOL(<entity>) WHERE Sysid IS INITIAL
-                                                         OR LegalEntity IS INITIAL
-                                                         OR CompanyCode IS INITIAL
-                                                         OR CostObject IS INITIAL
-                                                         OR CostCenter IS INITIAL
-                                                         OR BillingFrequency IS INITIAL.
+    LOOP AT entities ASSIGNING FIELD-SYMBOL(<entity>) WHERE billingfrequency IS INITIAL.
       lo_validation->validate_cost_object(
         entity  = <entity>
-        control = VALUE #( sysid         = if_abap_behv=>mk-on
-                           legalentity   = if_abap_behv=>mk-on
-                           companycode   = if_abap_behv=>mk-on
-                           costobject    = if_abap_behv=>mk-on
-                           costcenter    = if_abap_behv=>mk-on
-                           billfrequency = if_abap_behv=>mk-on )
+        control = VALUE #( billfrequency = if_abap_behv=>mk-on )
       ).
     ENDLOOP.
   ENDMETHOD.
 
   METHOD precheck_delete.
-    READ ENTITIES OF /ESRCC/I_CstObjct_S IN LOCAL MODE
-        ENTITY CostObject
+    READ ENTITIES OF /esrcc/i_cstobjct_s IN LOCAL MODE
+        ENTITY costobject
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(entities).
 
@@ -336,9 +327,9 @@ CLASS lhc_/esrcc/i_cstobjct IMPLEMENTATION.
       EXPORTING
         entities          = entities
         uuid_fieldname    = 'COSTOBJECTUUID'
-        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = CostObjectUuid )
+        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = costobjectuuid )
         operation         = VALUE #( delete = abap_true )
-        foreign_check     = VALUE #( serv_consumption = abap_true alloc_key = abap_true )
+        foreign_check     = VALUE #( serv_consumption = abap_true serv_capacity = abap_true alloc_key = abap_true )
     ).
   ENDMETHOD.
 
@@ -347,7 +338,7 @@ CLASS lhc_/esrcc/i_cstobjcttext DEFINITION INHERITING FROM cl_abap_behavior_hand
   PRIVATE SECTION.
     METHODS:
       get_instance_features FOR INSTANCE FEATURES
-        IMPORTING keys REQUEST requested_features FOR CostObjectText RESULT result.
+        IMPORTING keys REQUEST requested_features FOR costobjecttext RESULT result.
 ENDCLASS.
 
 CLASS lhc_/esrcc/i_cstobjcttext IMPLEMENTATION.

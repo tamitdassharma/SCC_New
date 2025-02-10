@@ -1,7 +1,7 @@
 CLASS lcl_custom_validation DEFINITION.
   PUBLIC SECTION.
     TYPES:
-      ts_ce_char TYPE STRUCTURE FOR READ RESULT /ESRCC/I_CostElmenetCharacte_S\\CostElementChar,
+      ts_ce_char TYPE STRUCTURE FOR READ RESULT /esrcc/i_costelmenetcharacte_s\\costelementchar,
       BEGIN OF ts_control,
         validfrom      TYPE if_abap_behv=>t_xflag,
         validto        TYPE if_abap_behv=>t_xflag,
@@ -31,7 +31,8 @@ CLASS lcl_custom_validation IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF control-validto = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'VALIDTO' ) TO fields. ENDIF.
+    IF control-validfrom      = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'VALIDFROM' ) TO fields. ENDIF.
+    IF control-validto        = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'VALIDTO' ) TO fields. ENDIF.
     IF control-cost_indicator = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'COSTINDICATOR' ) TO fields. ENDIF.
 
     config_util_ref->validate_initial(
@@ -80,22 +81,22 @@ CLASS lhc_/esrcc/i_costelmenetcharac DEFINITION INHERITING FROM cl_abap_behavior
     METHODS:
       get_instance_features FOR INSTANCE FEATURES
         IMPORTING
-                  keys   REQUEST requested_features FOR CostElementCharAll
+                  keys   REQUEST requested_features FOR costelementcharall
         RESULT    result,
       get_global_authorizations FOR GLOBAL AUTHORIZATION
         IMPORTING
-        REQUEST requested_authorizations FOR CostElementCharAll
+        REQUEST requested_authorizations FOR costelementcharall
         RESULT result,
       get_global_features FOR GLOBAL FEATURES
         IMPORTING
-        REQUEST requested_features FOR CostElementChar
+        REQUEST requested_features FOR costelementchar
         RESULT result,
-      precheck_cba_Costelementchar FOR PRECHECK
-        IMPORTING entities FOR CREATE CostElementCharAll\_Costelementchar,
-      ValidateData FOR VALIDATE ON SAVE
-        IMPORTING keys FOR CostElementChar~ValidateData,
+      precheck_cba_costelementchar FOR PRECHECK
+        IMPORTING entities FOR CREATE costelementcharall\_costelementchar,
+      validatedata FOR VALIDATE ON SAVE
+        IMPORTING keys FOR costelementchar~validatedata,
       precheck_update FOR PRECHECK
-        IMPORTING entities FOR UPDATE CostElementChar.
+        IMPORTING entities FOR UPDATE costelementchar.
 ENDCLASS.
 
 CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
@@ -114,8 +115,8 @@ CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
     IF transport_service->is_transport_allowed( ) = abap_false.
       selecttransport_flag = if_abap_behv=>fc-o-disabled.
     ENDIF.
-    READ ENTITIES OF /ESRCC/I_CostElmenetCharacte_S IN LOCAL MODE
-    ENTITY CostElementCharAll
+    READ ENTITIES OF /esrcc/i_costelmenetcharacte_s IN LOCAL MODE
+    ENTITY costelementcharall
       ALL FIELDS WITH CORRESPONDING #( keys )
       RESULT DATA(all).
     IF all[ 1 ]-%is_draft = if_abap_behv=>mk-off.
@@ -124,14 +125,14 @@ CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
     result = VALUE #( (
                %tky = all[ 1 ]-%tky
                %action-edit = edit_flag
-               %assoc-_CostElementChar = edit_flag ) ).
+               %assoc-_costelementchar = edit_flag ) ).
   ENDMETHOD.
   METHOD get_global_authorizations.
     AUTHORITY-CHECK OBJECT 'S_TABU_NAM' ID 'TABLE' FIELD '/ESRCC/I_COSTELMENETCHARACTE' ID 'ACTVT' FIELD '02'.
     DATA(is_authorized) = COND #( WHEN sy-subrc = 0 THEN if_abap_behv=>auth-allowed
                                   ELSE if_abap_behv=>auth-unauthorized ).
     result-%update      = is_authorized.
-    result-%action-Edit = is_authorized.
+    result-%action-edit = is_authorized.
   ENDMETHOD.
   METHOD get_global_features.
     DATA edit_flag TYPE abp_behv_flag VALUE if_abap_behv=>fc-o-enabled.
@@ -144,18 +145,8 @@ CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
     result-%delete = edit_flag.
   ENDMETHOD.
 
-  METHOD precheck_cba_Costelementchar.
-    TYPES ts_ce_char TYPE STRUCTURE FOR READ RESULT /ESRCC/I_CostElmenetCharacte_S\\CostElementChar.
-
-    DATA(target) = entities[ 1 ]-%target.
-
-**   Validate System ID
-*    SELECT DISTINCT ele~sysid, ele~costelement
-*      FROM /ESRCC/I_CostElmenetCharacte AS ele
-*      INNER JOIN @target AS target
-*        ON  target~sysid = ele~sysid
-*        AND target~costelement = ele~costelement
-*      INTO TABLE @DATA(cost_elements).
+  METHOD precheck_cba_costelementchar.
+    TYPES ts_ce_char TYPE STRUCTURE FOR READ RESULT /esrcc/i_costelmenetcharacte_s\\costelementchar.
 
     DATA(lo_config_util) = /esrcc/cl_config_util=>create(
       EXPORTING
@@ -167,33 +158,44 @@ CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
         failed_entity      = failed-costelementchar ).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_config_util ).
+    DATA(target_entities) = VALUE #( entities[ 1 ]-%target ).
 
-    LOOP AT target INTO DATA(entity).
+    SELECT DISTINCT
+           celem~costelementuuid
+        FROM /esrcc/d_cstelmt AS celem
+        INNER JOIN @target_entities AS tent
+            ON  tent~costelementuuid = celem~costelementuuid
+            AND tent~validfrom       = celem~validfrom
+        WHERE celem~draftentityoperationcode NOT IN ( 'D', 'L' )
+        INTO TABLE @DATA(duplicate_entities).
+
+    LOOP AT target_entities INTO DATA(entity) GROUP BY ( costelementuuid = entity-costelementuuid
+                                                         validfrom       = entity-validfrom
+                                                         size            = GROUP SIZE )
+        ASCENDING REFERENCE INTO DATA(group_ref).
       lo_validation->validate_ce_char(
-        entity  = CORRESPONDING #( entity )
+        entity  = CORRESPONDING #( group_ref->* )
         control = VALUE #( validfrom = if_abap_behv=>mk-on )
       ).
 
-*      IF NOT line_exists( cost_elements[ sysid = entity-sysid costelement = entity-costelement ] ).
-*        lo_config_util->set_state_message(
-*          entity     = CORRESPONDING ts_ce_char( entity )
-*          msg        = new_message( id       = /esrcc/cl_config_util=>c_config_msg
-*                                    number   = '008'
-*                                    severity = cl_abap_behv=>ms-error
-*                                    v1       = lo_config_util->get_field_text( fieldname = 'COSTELEMENT' data_element = '/ESRCC/COSTELEMENT' )
-*                                    v2       = entity-costelement
-*                                    v3       = entity-sysid )
-*          state_area = CONV #( /esrcc/cl_config_util=>invalid_data )
-*        ).
-*      ENDIF.
+      IF line_exists( duplicate_entities[ costelementuuid = group_ref->costelementuuid ] ) OR group_ref->size > 1.
+        lo_config_util->set_state_message(
+          entity     = CORRESPONDING ts_ce_char( entity )
+          msg        = new_message(
+                         id       = /esrcc/cl_config_util=>c_config_msg
+                         number   = '023'
+                         severity = if_abap_behv_message=>severity-error
+                       )
+          state_area = CONV #( /esrcc/cl_config_util=>duplicate ) ).
+      ENDIF.
     ENDLOOP.
   ENDMETHOD.
 
-  METHOD ValidateData.
-    DATA: draft TYPE STRUCTURE FOR READ RESULT /ESRCC/C_CostElmenetCharacte_S\\CostElementChar.
+  METHOD validatedata.
+    DATA: draft TYPE STRUCTURE FOR READ RESULT /esrcc/c_costelmenetcharacte_s\\costelementchar.
 
-    READ ENTITIES OF /ESRCC/I_CostElmenetCharacte_S IN LOCAL MODE
-         ENTITY CostElementChar
+    READ ENTITIES OF /esrcc/i_costelmenetcharacte_s IN LOCAL MODE
+         ENTITY costelementchar
          ALL FIELDS WITH CORRESPONDING #( keys )
          RESULT DATA(entities).
 
@@ -252,11 +254,11 @@ CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
           reported_entity    = reported-costelementchar
           failed_entity      = failed-costelementchar ) ).
 
-    LOOP AT entities INTO DATA(entity) WHERE %control-CostIndicator = if_abap_behv=>mk-on
+    LOOP AT entities INTO DATA(entity) WHERE %control-costindicator = if_abap_behv=>mk-on
                                           OR %control-validto = if_abap_behv=>mk-on.
       lo_validation->validate_ce_char(
         entity  = CORRESPONDING #( entity )
-        control = VALUE #( validto = entity-%control-validto cost_indicator = entity-%control-CostIndicator )
+        control = VALUE #( validto = entity-%control-validto cost_indicator = entity-%control-costindicator )
       ).
     ENDLOOP.
   ENDMETHOD.
@@ -271,10 +273,10 @@ ENDCLASS.
 
 CLASS lsc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
   METHOD save_modified.
-    READ TABLE update-CostElementCharAll INDEX 1 INTO DATA(all).
-    IF all-TransportRequestID IS NOT INITIAL.
+    READ TABLE update-costelementcharall INDEX 1 INTO DATA(all).
+    IF all-transportrequestid IS NOT INITIAL.
       lhc_rap_tdat_cts=>get( )->record_changes(
-                                  transport_request = all-TransportRequestID
+                                  transport_request = all-transportrequestid
                                   create            = REF #( create )
                                   update            = REF #( update )
                                   delete            = REF #( delete ) ).

@@ -12,7 +12,7 @@ define view entity /ESRCC/I_COSTBASE_STEWARDSHIP
    
     association [0..1] to /ESRCC/I_Stewardship as cc2le
     on  cc2le.LegalEntity = totalcb_li.Legalentity
-    and cc2le.sysid = totalcb_li.Sysid
+    and cc2le.Sysid = totalcb_li.Sysid
     and cc2le.CompanyCode = totalcb_li.Ccode
     and cc2le.CostObject = totalcb_li.Costobject
     and cc2le.CostCenter = totalcb_li.Costcenter
@@ -43,12 +43,16 @@ define view entity /ESRCC/I_COSTBASE_STEWARDSHIP
     Localcurr,
     Groupcurr,
     cc2le.stewardship,
-//cost center cost evaluation
+//cost center cost evaluation   
+    virtualtotalcost_l,
+    erptotalcost_l,
     ( origtotalcost_l + passtotalcost_l + excludedtotalcost_l ) as Totalcost_l,
     excludedtotalcost_l,
     ( origtotalcost_l + passtotalcost_l) as includetotalcost_l, 
     origtotalcost_l,
     passtotalcost_l,
+    virtualtotalcost_g,
+    erptotalcost_g,
     ( origtotalcost_g + passtotalcost_g + excludedtotalcost_g ) as Totalcost_g,
     excludedtotalcost_g,
     ( origtotalcost_g + passtotalcost_g) as includetotalcost_g,    

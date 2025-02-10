@@ -21,6 +21,8 @@ association [0..*] to /ESRCC/I_SRVPRODUCT_RECEIVERS as srvallocreceivers
                    and services.validon between srvallocreceivers.StewardshipValidFrom and srvallocreceivers.StewardshipValidTo
                    and services.validon between srvallocreceivers.ServiceValidFrom and srvallocreceivers.ServiceValidTo
 
+association [0..1] to /ESRCC/I_LE as _legalentity
+            on _legalentity.Legalentity = $projection.Legalentity
 {
     key cc_uuid,
     key srv_uuid,
@@ -42,5 +44,12 @@ association [0..*] to /ESRCC/I_SRVPRODUCT_RECEIVERS as srvallocreceivers
     key_version,
     uom,
     chargeout, 
-    validon
+    validon,
+    case when srvallocreceivers.InvoicingCurrency = '' then
+    _legalentity.LocalCurr
+    else
+    srvallocreceivers.InvoicingCurrency 
+    end as InvoicingCurrency
+  
+    
 }

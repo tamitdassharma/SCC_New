@@ -8,7 +8,7 @@ define root view entity /ESRCC/C_CHGINVOICE
   key     UUID,
   key     ParentUUID,
   key     RootUUID,
-//          @ObjectModel.text.element: [ 'currenytext' ]
+          @ObjectModel.text.element: [ 'currencytypetext' ]
   key     Currencytype,
           @ObjectModel.text.element: [ 'costdatasetdescription' ]
           Fplv,
@@ -23,6 +23,8 @@ define root view entity /ESRCC/C_CHGINVOICE
           Costobject,
           @ObjectModel.text.element: [ 'costcenterdescription' ]
           Costcenter,
+          @ObjectModel.text.element: [ 'ProcessTypedescription' ]
+          ProcessType,
           @ObjectModel.text.element: [ 'serviceproductdescription' ]
           Serviceproduct,
           ReceiverSysId,
@@ -34,8 +36,6 @@ define root view entity /ESRCC/C_CHGINVOICE
           ReceiverCostObject,
           @ObjectModel.text.element: [ 'RecCostCenterdescription' ]
           ReceiverCostCenter,
-          //    @ObjectModel.text.element: [ 'currenytext' ]
-          //    Currencytype,
           @ObjectModel.text.element: [ 'billingfrequencydescription' ]
           Billingfrequqncy,
           @ObjectModel.text.element: [ 'billingperioddescription' ]
@@ -48,7 +48,7 @@ define root view entity /ESRCC/C_CHGINVOICE
           Transactiongroup,
           @Semantics.amount.currencyCode: 'Currency'
           TransferPrice,
-          @Semantics.quantity.unitOfMeasure: 'Uom'
+//          @Semantics.quantity.unitOfMeasure: 'Uom'
           Reckpi,
           Uom,
           Currency,
@@ -109,12 +109,15 @@ define root view entity /ESRCC/C_CHGINVOICE
           chargeoutdescription,
           @Semantics.text: true
           invoicestatusdescription,
+          @Semantics.text: true
+          ProcessTypedescription,
           invoicestatuscriticallity,
-
+          @Semantics.text: true
+          _CurrencyTypeText.text as currencytypetext,    
           @ObjectModel.text.element: [ 'legalentitycountryname' ]
           LECountry as legalentitycountry,
-          @ObjectModel.text.element: [ 'receivingcountryname' ]
+          @ObjectModel.text.element: [ 'receivingentitycountryname' ]
           receivingentitycountry,
           _legalCountryText.CountryName as legalentitycountryname,
-          _ReceivingCountryText.CountryName as receivingcountryname
+          _ReceivingCountryText.CountryName as receivingentitycountryname
 }

@@ -2,5 +2,6 @@
 @MappingRole: true
 define role /ESRCC/I_CHARGEOUTRECEIVED {
     grant select on /ESRCC/I_CHARGEOUTRECEIVED
-      where (Receivingentity) = aspect pfcg_auth('/ESRCC/LE', /ESRCC/LE, ACTVT = '03');       
+      where (Receivingentity) = aspect pfcg_auth('/ESRCC/LE', /ESRCC/LE, ACTVT = '03') AND
+      (ReceiverCostObject,ReceiverCostCenter) = aspect pfcg_auth('/ESRCC/CO', /ESRCC/OBJ, /ESRCC/CN, ACTVT = '03');        
 }

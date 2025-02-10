@@ -13,6 +13,7 @@ define view entity /ESRCC/I_ChargeoutRule_F4
   association [0..1] to /ESRCC/I_CAPACITY_VERSION    as _CapacityVersionText    on  _CapacityVersionText.CapacityVersion = $projection.CapacityVersion
   association [0..1] to /ESRCC/I_CONSUMPTION_VERSION as _ConsumptionVersionText on  _ConsumptionVersionText.ConsumptionVersion = $projection.ConsumptionVersion
   association [0..1] to /ESRCC/I_KEY_VERSION         as _KeyVersionText         on  _KeyVersionText.KeyVersion = $projection.KeyVersion
+  association [0..1] to /ESRCC/I_ALLOCATION_KEY_F4   as _AdhocKeyText           on  _AdhocKeyText.Allocationkey = $projection.AdhocAllocationKey
   association        to I_UnitOfMeasureText          as _UoM                    on  _UoM.UnitOfMeasure_E = $projection.Uom
                                                                                 and _UoM.Language        = $session.system_language
 {
@@ -20,77 +21,90 @@ define view entity /ESRCC/I_ChargeoutRule_F4
       @UI.textArrangement: #TEXT_LAST
       @ObjectModel.text: { element: ['RuleDescription'] }
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
-  key rule_id                      as RuleId,
+  key rule_id                                as RuleId,
 
       @UI.lineItem: [{ position: 20 }]
       @UI.textArrangement: #TEXT_LAST
       @ObjectModel.text: { element: ['ChargeoutMethodDescription'] }
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
       @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CHGOUT', element: 'Chargeout' } }]
-      chargeout_method             as ChargeoutMethod,
+      chargeout_method                       as ChargeoutMethod,
 
       @UI.lineItem: [{ position: 30 }]
       @UI.textArrangement: #TEXT_LAST
       @ObjectModel.text: { element: ['CostVersionDescription'] }
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
       @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_COST_VERSION', element: 'CostVersion' } } ]
-      cost_version                 as CostVersion,
+      cost_version                           as CostVersion,
 
       @UI.lineItem: [{ position: 40 }]
       @UI.textArrangement: #TEXT_LAST
       @ObjectModel.text: { element: ['CapacityVersionDescription'] }
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
       @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_CAPACITY_VERSION', element: 'CapacityVersion' } } ]
-      capacity_version             as CapacityVersion,
+      capacity_version                       as CapacityVersion,
 
       @UI.lineItem: [{ position: 50 }]
       @UI.textArrangement: #TEXT_LAST
       @ObjectModel.text: { element: ['ConsumptionVersionDescription'] }
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
       @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_CONSUMPTION_VERSION', element: 'ConsumptionVersion' } } ]
-      consumption_version          as ConsumptionVersion,
+      consumption_version                    as ConsumptionVersion,
 
       @UI.lineItem: [{ position: 60 }]
       @UI.textArrangement: #TEXT_LAST
       @ObjectModel.text: { element: ['KeyVersionDescription'] }
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
       @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_KEY_VERSION', element: 'KeyVersion' } } ]
-      key_version                  as KeyVersion,
+      key_version                            as KeyVersion,
 
       @UI.lineItem: [{ position: 70 }]
+      @UI.textArrangement: #TEXT_LAST
+      @ObjectModel.text: { element: ['AdhocKeyDescription'] }
+      @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+      @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATION_KEY_F4', element: 'Allocationkey' } } ]
+      adhoc_allocation_key                   as AdhocAllocationKey,
+
+      @UI.lineItem: [{ position: 80 }]
       @UI.textArrangement: #TEXT_LAST
       @ObjectModel.text: { element: ['UomDescription'] }
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
       @Consumption.valueHelpDefinition: [ { entity: { name: 'I_UnitOfMeasure', element: 'UnitOfMeasure' } } ]
       @EndUserText.label: 'Unit of Measure'
-      uom                          as Uom,
+      uom                                    as Uom,
 
       @UI.hidden: true
       @Semantics.text: true
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
-      _Text.description            as RuleDescription,
+      _Text.description                      as RuleDescription,
 
       @UI.hidden: true
       @Semantics.text: true
-      _ChargeOut.text              as ChargeoutMethodDescription,
+      _ChargeOut.text                        as ChargeoutMethodDescription,
 
       @UI.hidden: true
       @Semantics.text: true
-      _CostVersionText.text        as CostVersionDescription,
+      _CostVersionText.text                  as CostVersionDescription,
 
       @UI.hidden: true
       @Semantics.text: true
-      _CapacityVersionText.text    as CapacityVersionDescription,
+      _CapacityVersionText.text              as CapacityVersionDescription,
 
       @UI.hidden: true
       @Semantics.text: true
-      _ConsumptionVersionText.text as ConsumptionVersionDescription,
+      _ConsumptionVersionText.text           as ConsumptionVersionDescription,
 
       @UI.hidden: true
       @Semantics.text: true
-      _KeyVersionText.text         as KeyVersionDescription,
+      _KeyVersionText.text                   as KeyVersionDescription,
 
       @UI.hidden: true
       @Semantics.text: true
-      _UoM.UnitOfMeasureLongName   as UomDescription
+      _AdhocKeyText.AllocationKeyDescription as AdhocKeyDescription,
+
+      @UI.hidden: true
+      @Semantics.text: true
+      _UoM.UnitOfMeasureLongName             as UomDescription
 }
+where
+  workflow_status = 'F' -- Finalized

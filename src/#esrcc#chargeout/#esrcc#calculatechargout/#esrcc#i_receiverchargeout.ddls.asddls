@@ -50,7 +50,7 @@ define view entity /ESRCC/I_ReceiverChargeout
       ReceiverCostObject,
       ReceiverCostCenter,
       _ServiceCost.Currency,
-
+      InvoicingCurrency,
       Reckpishare,
       Valueaddmarkup,
       Passthrumarkup,

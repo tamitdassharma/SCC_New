@@ -39,9 +39,9 @@ authorization master ( global )
   field ( numbering : managed )
   DirectAllocationUUID;
 
-  create;
+  create ( precheck );
   update ( precheck );
-  delete;
+  delete ( precheck );
 
   //  draft action Edit;
   //  draft action Activate;

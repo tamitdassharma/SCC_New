@@ -42,19 +42,49 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
      <MSGNR>005</MSGNR>
-     <TEXT>Selceted line item is already  &apos;Finalized&apos; and cannot be charged out</TEXT>
+     <TEXT>Only Approved Items can be charged-out</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
      <MSGNR>006</MSGNR>
-     <TEXT>Charge out completely successfully</TEXT>
+     <TEXT>Charge-out completely successfully</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
      <MSGNR>007</MSGNR>
-     <TEXT>Selceted line item  is in Approval Pending and cannot be charged out</TEXT>
+     <TEXT>Year, poper, dataset, entity &amp; cost object are not same for all items</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Excluded items cannot be charged-out</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Charge-out is already in Progress, Please review in Execution Cockpit</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>No receivers added</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>No Authorization to Perform Ad-hoc Charge-out for legal entity &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>No Authorization to Discard Changes for Legal Entity &amp;1</TEXT>
     </T100>
    </T100>
   </asx:values>

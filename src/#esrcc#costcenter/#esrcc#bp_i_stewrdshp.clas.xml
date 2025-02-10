@@ -13,6 +13,14 @@
     <UNICODE>5</UNICODE>
     <CLSDEFINT>/ESRCC/I_STEWRDSHP_S</CLSDEFINT>
    </VSEOCLASS>
+   <TPOOL>
+    <item>
+     <ID>I</ID>
+     <KEY>001</KEY>
+     <ENTRY>Service Product Receivers</ENTRY>
+     <LENGTH>50</LENGTH>
+    </item>
+   </TPOOL>
   </asx:values>
  </asx:abap>
 </abapGit>

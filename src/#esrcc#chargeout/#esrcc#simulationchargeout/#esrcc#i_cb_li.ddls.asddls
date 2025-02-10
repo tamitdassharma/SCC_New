@@ -29,12 +29,25 @@ define view entity /ESRCC/I_CB_LI
     
     costind as Costind,
     usagecal as Usagecal,
+    value_source as ValueSource,
     
     @Semantics.amount.currencyCode: 'Localcurr'
-    case when usagecal = 'I' then
+    case when value_source = 'SCC' then
     sum(cast( hsl as abap.dec(23,2)))
     else
-    0 end as includedcost_l,
+    0 end as virtualcost_l,
+    
+    @Semantics.amount.currencyCode: 'Localcurr'
+    case when value_source <> 'SCC' then
+    sum(cast( hsl as abap.dec(23,2)))
+    else
+    0 end as erpcost_l,
+    
+//    @Semantics.amount.currencyCode: 'Localcurr'
+//    case when usagecal = 'I' then
+//    sum(cast( hsl as abap.dec(23,2)))
+//    else
+//    0 end as includedcost_l,
     
     @Semantics.amount.currencyCode: 'Localcurr' 
     case when usagecal = 'E' then
@@ -54,11 +67,23 @@ define view entity /ESRCC/I_CB_LI
     else
     0 end as passcost_l,
     
-    @Semantics.amount.currencyCode: 'Groupcurr' 
-    case when usagecal = 'I' then
-     sum(cast( ksl as abap.dec(23,2)))
+//    @Semantics.amount.currencyCode: 'Groupcurr' 
+//    case when usagecal = 'I' then
+//     sum(cast( ksl as abap.dec(23,2)))
+//    else
+//    0  end as includedcost_g,
+    
+    @Semantics.amount.currencyCode: 'Localcurr'
+    case when value_source = 'SCC' then
+    sum(cast( ksl as abap.dec(23,2)))
     else
-    0  end as includedcost_g,
+    0 end as virtualcost_g,
+    
+    @Semantics.amount.currencyCode: 'Localcurr'
+    case when value_source <> 'SCC' then
+    sum(cast( ksl as abap.dec(23,2)))
+    else
+    0 end as erpcost_g,
     
     @Semantics.amount.currencyCode: 'Groupcurr'  
     case when usagecal = 'E' then
@@ -78,7 +103,7 @@ define view entity /ESRCC/I_CB_LI
     else
     0  end as passcost_g      
       
-} 
+} where status <> 'F'
 group by
 ryear,
 poper,
@@ -91,4 +116,5 @@ costcenter,
 localcurr,
 groupcurr,
 usagecal,
-costind
+costind,
+value_source

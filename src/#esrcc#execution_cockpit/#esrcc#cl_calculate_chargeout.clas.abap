@@ -11,18 +11,32 @@ CLASS /esrcc/cl_calculate_chargeout DEFINITION
                approved               TYPE /esrcc/chargeoutstatus     VALUE 'A',
                draft                  TYPE /esrcc/chargeoutstatus     VALUE 'D',
                finalized              TYPE /esrcc/chargeoutstatus     VALUE 'F',
-               approval_pending       TYPE /esrcc/chargeoutstatus   VALUE 'W',
-               rejected               TYPE /esrcc/chargeoutstatus   VALUE 'R',
-               chargeout_approved     TYPE /esrcc/process_status_de VALUE '04',
-               chargeout_inprocess    TYPE /esrcc/process_status_de VALUE '02',
-               chargeout_finalized    TYPE /esrcc/process_status_de VALUE '05',
-               costbase_approved      TYPE /esrcc/process_status_de VALUE '07',
-               costbase_inprocess     TYPE /esrcc/process_status_de VALUE '05',
-               costbase_finalized     TYPE /esrcc/process_status_de VALUE '08',
-               serviceshare_approved  TYPE /esrcc/process_status_de VALUE '04',
-               serviceshare_inprocess TYPE /esrcc/process_status_de VALUE '02',
-               serviceshare_finalized TYPE /esrcc/process_status_de VALUE '05',
-               scc_valuesource        TYPE /esrcc/ce_value_source   VALUE 'SCC'.
+               approval_pending       TYPE /esrcc/chargeoutstatus     VALUE 'W',
+               rejected               TYPE /esrcc/chargeoutstatus     VALUE 'R',
+               chargeout_approved     TYPE /esrcc/process_status_de   VALUE '04',
+               chargeout_inprocess    TYPE /esrcc/process_status_de   VALUE '02',
+               chargeout_finalized    TYPE /esrcc/process_status_de   VALUE '05',
+               costbase_approved      TYPE /esrcc/process_status_de   VALUE '07',
+               costbase_inprocess     TYPE /esrcc/process_status_de   VALUE '05',
+               costbase_finalized     TYPE /esrcc/process_status_de   VALUE '08',
+               serviceshare_approved  TYPE /esrcc/process_status_de   VALUE '04',
+               serviceshare_inprocess TYPE /esrcc/process_status_de   VALUE '02',
+               serviceshare_finalized TYPE /esrcc/process_status_de   VALUE '05',
+               scc_valuesource        TYPE /esrcc/ce_value_source     VALUE 'SCC',
+               adhocprocesstype       TYPE /esrcc/process_type        VALUE 'A',
+               standardprocesstype    TYPE /esrcc/process_type        VALUE 'S'.
+
+    CONSTANTS: action_calculate_costbase      TYPE /esrcc/actions VALUE '01',
+               action_finalize_costbase       TYPE /esrcc/actions VALUE '02',
+               action_reopen_costbase         TYPE /esrcc/actions VALUE '03',
+               action_calculat_serviceproduct TYPE /esrcc/actions VALUE '04',
+               action_finalize_serviceproduct TYPE /esrcc/actions VALUE '05',
+               action_reopen_serviceproduct   TYPE /esrcc/actions VALUE '06',
+               action_calculat_chargeout      TYPE /esrcc/actions VALUE '07',
+               action_finalize_chargeout      TYPE /esrcc/actions VALUE '08',
+               action_reopen_chargeout        TYPE /esrcc/actions VALUE '09',
+               action_sequential_chargeout    TYPE /esrcc/actions VALUE '10',
+               action_reopenseq_chargeout     TYPE /esrcc/actions VALUE '11'.
 
     CLASS-METHODS: calculate_costbase
       IMPORTING
@@ -39,12 +53,15 @@ CLASS /esrcc/cl_calculate_chargeout DEFINITION
     CLASS-METHODS: finalize_costbase
       IMPORTING
         !it_keys TYPE /esrcc/tt_keys.
+
     CLASS-METHODS: finalize_servicecostshare
       IMPORTING
         !it_keys TYPE /esrcc/tt_keys.
+
     CLASS-METHODS: finalize_chargeout
       IMPORTING
         !it_keys TYPE /esrcc/tt_keys.
+
     CLASS-METHODS: reopen_costbase
       IMPORTING
         !it_keys TYPE /esrcc/tt_keys.
@@ -64,6 +81,21 @@ CLASS /esrcc/cl_calculate_chargeout DEFINITION
         !it_cbli       TYPE /esrcc/tt_cbli
         !is_parameters TYPE /esrcc/c_adhocchargeout
         !it_receivers  TYPE /esrcc/tt_receivers.
+
+    CLASS-METHODS: sequentialchargeout
+      IMPORTING
+        !it_keys           TYPE /esrcc/tt_keys
+        !iv_costbasereopen TYPE abap_boolean OPTIONAL.
+
+    CLASS-METHODS: reopnesequentialchargeout
+      IMPORTING
+        !it_keys           TYPE /esrcc/tt_keys
+        !iv_costbasereopen TYPE abap_boolean OPTIONAL.
+
+    CLASS-METHODS: create_processlogs
+      IMPORTING
+        !iv_action TYPE /esrcc/actions OPTIONAL
+        !it_keys   TYPE /esrcc/tt_keys.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -117,11 +149,14 @@ CLASS /esrcc/cl_calculate_chargeout DEFINITION
       EXPORTING
         !et_poper TYPE /esrcc/tt_poper_range.
 
+
+
+
 ENDCLASS.
 
 
 
-CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
+CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 
 
   METHOD calculate_adhocchargeout.
@@ -129,6 +164,9 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
     DATA lt_cb_stw   TYPE TABLE OF /esrcc/cb_stw.
     DATA lt_srvshare TYPE TABLE OF /esrcc/srv_share.
     DATA lt_recchg   TYPE TABLE OF /esrcc/rec_chg.
+    DATA lt_allocationshare TYPE TABLE OF /esrcc/alocshare.
+    DATA lt_allocationvalue TYPE TABLE OF /esrcc/alcvalues.
+    DATA lt_proctrl         TYPE TABLE OF /esrcc/procctrl.
 
     SELECT fplv,
            ryear,
@@ -159,6 +197,37 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
            localcurr,
            groupcurr
            INTO CORRESPONDING FIELDS OF TABLE @lt_cb_stw.
+
+    SELECT fplv,
+           ryear,
+           poper,
+           sysid,
+           legalentity,
+           ccode,
+           costobject,
+           costcenter,
+           businessdivision,
+           profitcenter,
+           localcurr,
+           groupcurr,
+           SUM( hsl ) AS virtualcost_l,
+           SUM( ksl ) AS virtualcost_g
+           FROM @it_cbli AS cbli
+           WHERE value_source = 'SCC'
+           GROUP BY
+           fplv,
+           ryear,
+           poper,
+           sysid,
+           legalentity,
+           ccode,
+           costobject,
+           costcenter,
+           businessdivision,
+           profitcenter,
+           localcurr,
+           groupcurr
+           INTO TABLE @DATA(lt_cb_stw_scc).
 
     SELECT fplv,
            ryear,
@@ -222,15 +291,33 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
           groupcurr
           INTO TABLE @DATA(lt_cb_stw_pass).
 
+* Derive the share % based on the share value
+    SELECT SUM( sharevalue ) FROM @it_receivers AS receievers INTO @DATA(totalvalue).
+
     SELECT SINGLE * FROM /esrcc/srvpro WHERE serviceproduct = @is_parameters-Serviceproduct
                                 INTO @DATA(ls_serviceproduct).
 
     SELECT SINGLE * FROM /esrcc/co_rule WHERE rule_id = @is_parameters-rule_id
+                                          AND workflow_status = 'F'
                                 INTO @DATA(ls_rule).
 
     DATA(lo_uuid) = cl_uuid_factory=>create_system_uuid( ).
 
     LOOP AT lt_cb_stw ASSIGNING FIELD-SYMBOL(<ls_cbstw>).
+
+      READ TABLE lt_cb_stw_scc ASSIGNING FIELD-SYMBOL(<ls_cb_stw_scc>)
+                                    WITH KEY fplv         = <ls_cbstw>-fplv
+                                              ryear       = <ls_cbstw>-ryear
+                                              poper       = <ls_cbstw>-poper
+                                              sysid       = <ls_cbstw>-sysid
+                                              legalentity = <ls_cbstw>-legalentity
+                                              ccode       = <ls_cbstw>-ccode
+                                              costobject  = <ls_cbstw>-costobject
+                                              costcenter  = <ls_cbstw>-costcenter.
+      IF sy-subrc = 0.
+        <ls_cbstw>-virtualtotalcost_l = <ls_cb_stw_scc>-virtualcost_l.
+        <ls_cbstw>-virtualtotalcost_g = <ls_cb_stw_scc>-virtualcost_g.
+      ENDIF.
 
       READ TABLE lt_cb_stw_orig ASSIGNING FIELD-SYMBOL(<ls_cb_stw_orig>)
                                     WITH KEY fplv         = <ls_cbstw>-fplv
@@ -260,6 +347,7 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
         <ls_cbstw>-passtotalcost_g = <ls_cb_stw_pass>-passtotalcost_g.
       ENDIF.
       <ls_cbstw>-billfrequency = 'M'.
+      <ls_cbstw>-billingperiod = <ls_cbstw>-poper+1(2).
 * Assign the 16 digit unique identifier
       IF lo_uuid IS BOUND.
         TRY.
@@ -272,6 +360,7 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
       DATA(localcurr) = <ls_cbstw>-localcurr.
       DATA(groupcurr) = <ls_cbstw>-groupcurr.
       <ls_cbstw>-status = finalized.
+      <ls_cbstw>-processtype = adhocprocesstype.   "adhoc chargeout process
       determine_last_day(
        EXPORTING
          iv_ryear    = <ls_cbstw>-ryear
@@ -290,6 +379,18 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
         IMPORTING
           time_stamp = <ls_cbstw>-last_changed_at
       ).
+
+*Create process log entry
+      CLEAR lt_proctrl.
+      APPEND INITIAL LINE TO lt_proctrl ASSIGNING FIELD-SYMBOL(<ls_proctrl>).
+      MOVE-CORRESPONDING <ls_cbstw> to <ls_proctrl>.
+      <ls_proctrl>-billingfreq = <ls_cbstw>-billfrequency.  "Adhoc
+      <ls_proctrl>-process = 'ADH'.  "Adhoc
+       create_processlogs(
+         iv_action = '12'
+         it_keys   = lt_proctrl
+       ).
+
 **************************************************************************
 *Determine Service Cost Share
 **************************************************************************
@@ -347,7 +448,12 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
         <ls_recchg>-receivingentity     = <ls_receivers>-legalentity.
         <ls_recchg>-receivercostobject  = <ls_receivers>-costobject.
         <ls_recchg>-receivercostcenter  = <ls_receivers>-costcenter.
-        <ls_recchg>-reckpishare         = <ls_receivers>-sharepercent.
+        IF totalvalue > 0.
+          <ls_recchg>-reckpishare =  ( <ls_receivers>-sharevalue / totalvalue ) * 100.
+        ELSE.
+          <ls_recchg>-reckpishare         = <ls_receivers>-sharepercent.
+        ENDIF.
+        <ls_recchg>-invoicingcurrency   = <ls_receivers>-invoicingcurrency.
         IF <ls_cbstw>-legalentity <> <ls_receivers>-legalentity.
           <ls_recchg>-valueaddmarkup      = is_parameters-intervalueaddmarkup.
           <ls_recchg>-passthrumarkup      = is_parameters-interpassthroughmarkup.
@@ -368,14 +474,95 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
           IMPORTING
             time_stamp = <ls_recchg>-last_changed_at
         ).
+
+**************************************************************************
+*Determine Allocation share for traceability
+**************************************************************************
+        APPEND INITIAL LINE TO lt_allocationshare ASSIGNING FIELD-SYMBOL(<allocationshare>).
+* Assign the 16 digit unique identifier
+        IF lo_uuid IS BOUND.
+          <allocationshare>-parentuuid  = <ls_recchg>-rec_uuid.
+          TRY.
+              <allocationshare>-uuid = lo_uuid->create_uuid_x16( ).
+            CATCH cx_uuid_error.
+              "handle exception
+          ENDTRY.
+        ENDIF.
+
+        <allocationshare>-allockey = is_parameters-allocationkey.
+        <allocationshare>-weightage = 100.
+        <allocationshare>-initialreckpishare = ( <ls_receivers>-sharepercent / 100 ).
+        <allocationshare>-reckpishare = ( <ls_receivers>-sharepercent / 100 ).
+        <allocationshare>-reckpivalue = <ls_receivers>-sharevalue.
+
+* Admin data
+        <allocationshare>-created_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = <allocationshare>-created_at
+        ).
+        <allocationshare>-last_changed_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = <allocationshare>-last_changed_at
+        ).
+
+**************************************************************************
+*Determine Allocation values for traceability
+**************************************************************************
+        APPEND INITIAL LINE TO lt_allocationvalue ASSIGNING FIELD-SYMBOL(<allocationvalue>).
+* Assign the 16 digit unique identifier
+        IF lo_uuid IS BOUND.
+          <allocationvalue>-parentuuid  = <allocationshare>-uuid.
+          TRY.
+              <allocationvalue>-uuid = lo_uuid->create_uuid_x16( ).
+            CATCH cx_uuid_error.
+              "handle exception
+          ENDTRY.
+        ENDIF.
+
+        <allocationvalue>-ryear     = <ls_cbstw>-ryear.
+        <allocationvalue>-allockey  = is_parameters-allocationkey.
+*        <allocationshare>-initialreckpishare = <ls_receivers>-sharepercent.
+        <allocationvalue>-reckpivalue = <ls_receivers>-sharevalue.
+
+* Admin data
+        <allocationvalue>-created_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = <allocationvalue>-created_at
+        ).
+        <allocationvalue>-last_changed_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = <allocationvalue>-last_changed_at
+        ).
+
       ENDLOOP.
+
+
+
     ENDLOOP.
 
-    DATA(lt_cbli) = it_cbli.
+**************************************************************************
+*Update Respective Line items with relevant information
+**************************************************************************
+    SELECT * FROM /esrcc/cb_li FOR ALL ENTRIES IN @it_cbli WHERE belnr       = @it_cbli-belnr
+                                                            AND  ryear       = @it_cbli-ryear
+                                                            AND  poper       = @it_cbli-poper
+                                                            AND  legalentity = @it_cbli-legalentity
+                                                            AND  sysid       = @it_cbli-sysid
+                                                            AND  fplv        = @it_cbli-fplv
+                                                            AND ccode        = @it_cbli-ccode
+                                                            AND buzei        = @it_cbli-buzei
+                                                            AND costobject   = @it_cbli-costobject
+                                                            AND costelement  = @it_cbli-costelement
+                                                            INTO TABLE @DATA(lt_cbli).
     LOOP AT lt_cbli ASSIGNING FIELD-SYMBOL(<ls_cbli>).
-      <ls_cbli>-usagecal = 'E'.
+*      <ls_cbli>-usagecal = 'E'.
       <ls_cbli>-status = finalized.
-      <ls_cbli>-reasonid = 7.
+*      <ls_cbli>-reasonid = 7.
+      <ls_cbli>-cc_guid = lv_ccuuid.
 * Admin data
       <ls_cbli>-last_changed_by = sy-uname.
       /esrcc/cl_utility_core=>get_utc_date_time_ts(
@@ -388,7 +575,8 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
     MODIFY /esrcc/srv_share FROM TABLE @lt_srvshare.
     MODIFY /esrcc/rec_chg   FROM TABLE @lt_recchg.
     MODIFY /esrcc/cb_li     FROM TABLE @lt_cbli.
-
+    MODIFY /esrcc/alocshare FROM TABLE @lt_allocationshare.
+    MODIFY /esrcc/alcvalues FROM TABLE @lt_allocationvalue.
   ENDMETHOD.
 
 
@@ -615,6 +803,12 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
       APPEND ls_procctrl TO lt_procctrl.
     ENDLOOP.
 
+*Add process logs for traceability
+    create_processlogs(
+      iv_action = action_calculat_chargeout
+      it_keys   = lt_procctrl
+    ).
+
     MODIFY /esrcc/procctrl  FROM TABLE @lt_procctrl.
     MODIFY /esrcc/rec_chg   FROM TABLE @lt_rec_chg.
     MODIFY /esrcc/alocshare FROM TABLE @lt_rec_share.
@@ -652,7 +846,19 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
                                                   AND costcenter = @it_keys-costcenter
                                          INTO CORRESPONDING FIELDS OF TABLE @lt_cc_cost.
 
-*
+*get all cost base line items used to calculate costbase
+    SELECT * FROM /esrcc/cb_li FOR ALL ENTRIES IN @it_keys
+                               WHERE fplv       = @it_keys-fplv
+                                 AND ryear      = @it_keys-ryear
+                                 AND sysid      = @it_keys-sysid
+                                 AND poper     IN @_poper
+                                 AND legalentity = @it_keys-legalentity
+                                 AND ccode      = @it_keys-ccode
+                                 AND costobject = @it_keys-costobject
+                                 AND costcenter = @it_keys-costcenter
+                                 AND status     <> @finalized
+                                 INTO TABLE @DATA(lt_cb_li).
+
     /esrcc/cl_wf_utility=>is_wf_on(
       EXPORTING
         iv_apptype   = costbase
@@ -677,6 +883,7 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
       ENDIF.
 
       <ls_cc_cost>-billingperiod = it_keys[ 1 ]-billingperiod.
+      <ls_cc_cost>-processtype = standardprocesstype.
 * Admin data
       <ls_cc_cost>-created_by = sy-uname.
       /esrcc/cl_utility_core=>get_utc_date_time_ts(
@@ -696,6 +903,20 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
       ELSE.
         <ls_cc_cost>-status = approved.   "Approval
       ENDIF.
+
+* update guids in respective cost line items to create link between costbase line items and costbase
+      LOOP AT lt_cb_li ASSIGNING FIELD-SYMBOL(<cbli>) WHERE fplv        = <ls_cc_cost>-fplv
+                                                        AND ryear       = <ls_cc_cost>-ryear
+                                                        AND sysid       = <ls_cc_cost>-sysid
+                                                        AND poper       = <ls_cc_cost>-poper
+                                                        AND legalentity = <ls_cc_cost>-legalentity
+                                                        AND ccode       = <ls_cc_cost>-ccode
+                                                        AND costobject  = <ls_cc_cost>-costobject
+                                                        AND costcenter  = <ls_cc_cost>-costcenter
+                                                        AND status      <> finalized.
+        <cbli>-cc_guid =  <ls_cc_cost>-cc_uuid.
+      ENDLOOP.
+
     ENDLOOP.
 
 
@@ -732,14 +953,23 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
       APPEND ls_procctrl TO lt_procctrl.
     ENDLOOP.
 
+*Add process logs for traceability
+    create_processlogs(
+      iv_action = action_calculate_costbase
+      it_keys   = lt_procctrl
+    ).
+
 *  Delete old as user might have re-triggered costbase & stewardship calculation
     delete_costbase(
       it_keys  = it_keys
       it_poper = _poper
     ).
 
+
+
     MODIFY /esrcc/procctrl FROM TABLE @lt_procctrl.
     MODIFY /esrcc/cb_stw FROM TABLE @lt_cc_cost.
+    MODIFY /esrcc/cb_li FROM TABLE @lt_cb_li.
 
   ENDMETHOD.
 
@@ -869,6 +1099,12 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
       APPEND ls_procctrl TO lt_procctrl.
     ENDLOOP.
 
+*Add process logs for traceability
+    create_processlogs(
+      iv_action = action_calculat_serviceproduct
+      it_keys   = lt_procctrl
+    ).
+
 *delete old service product share as user might re-trigger calculations again
 *  Delete service cost
     delete_servicecostshare(
@@ -954,8 +1190,14 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
            cc_uuid,
            srv_uuid
            INTO TABLE @DATA(lt_totalconsumption).
+
     CLEAR lt_recshare.
     DATA(lo_uuid) = cl_uuid_factory=>create_system_uuid( ).
+
+* get dummy cost object details
+    SELECT SINGLE * FROM /esrcc/cst_objct WHERE legal_entity = 'REST'
+                    INTO @DATA(dummyreceiver).
+
     LOOP AT lt_srvshare ASSIGNING FIELD-SYMBOL(<ls_srvshare>).
       READ TABLE lt_totalconsumption ASSIGNING FIELD-SYMBOL(<totalconsumption>)
                                      WITH KEY cc_uuid = <ls_srvshare>-srv_share-cc_uuid
@@ -974,7 +1216,19 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
               "handle exception
           ENDTRY.
         ENDIF.
-        <recshare>-receivingentity = 'REST'.
+        IF dummyreceiver IS NOT INITIAL.
+          <recshare>-receivingentity = dummyreceiver-legal_entity.
+          <recshare>-receiversysid = dummyreceiver-sysid.
+          <recshare>-receivercompanycode = dummyreceiver-company_code.
+          <recshare>-receivercostobject = dummyreceiver-cost_object.
+          <recshare>-receivercostcenter = dummyreceiver-cost_center.
+        ELSE.
+          <recshare>-receivingentity = 'REST'.
+          <recshare>-receiversysid = 'RS'.
+          <recshare>-receivercompanycode = 'RS01'.
+          <recshare>-receivercostobject = 'CC'.
+          <recshare>-receivercostcenter = 'DUMMY'.
+        ENDIF.
         <recshare>-reckpi = <ls_srvshare>-srv_share-planning - <totalconsumption>-totalconsumption.
         <recshare>-consumptionuom = <ls_srvshare>-srv_share-planninguom.
         <recshare>-uom = <recshare>-consumptionuom.
@@ -1092,6 +1346,12 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
 
     ENDLOOP.
 
+*Add process logs for traceability
+    create_processlogs(
+      iv_action = action_finalize_chargeout
+      it_keys   = lt_procctrl
+    ).
+
 *Handling of delta for direct chargeout Scenario
     determine_delta_chargeout(
       it_keys  = it_keys
@@ -1157,6 +1417,7 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
                                  AND ccode      = @it_keys-ccode
                                  AND costobject = @it_keys-costobject
                                  AND costcenter = @it_keys-costcenter
+                                 AND status     <> @finalized
                                  INTO TABLE @DATA(lt_cb_li).
 
     LOOP AT lt_cb_li ASSIGNING FIELD-SYMBOL(<ls_cb_li>).
@@ -1195,6 +1456,12 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
       ).
 
     ENDLOOP.
+
+*Add process logs for traceability
+    create_processlogs(
+      iv_action = action_finalize_costbase
+      it_keys   = lt_procctrl
+    ).
 
     MODIFY /esrcc/procctrl FROM TABLE @lt_procctrl.
     MODIFY /esrcc/cb_li    FROM TABLE @lt_cb_li.
@@ -1269,6 +1536,12 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
 
     ENDLOOP.
 
+*Add process logs for traceability
+    create_processlogs(
+      iv_action = action_finalize_serviceproduct
+      it_keys   = lt_procctrl
+    ).
+
     MODIFY /esrcc/procctrl  FROM TABLE @lt_procctrl.
     MODIFY /esrcc/srv_share FROM TABLE @lt_srvshare.
 
@@ -1302,8 +1575,15 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
                                  AND serviceproduct IS NOT INITIAL.
       ls_procctrl = CORRESPONDING #( <key> ).
       ls_procctrl-process = chargeout.    "Costbase
+      ls_procctrl-status = '04'.    "CalculateCostbase
       APPEND ls_procctrl TO lt_procctrl.
     ENDLOOP.
+
+*Add process logs for traceability
+    create_processlogs(
+      iv_action = action_reopen_chargeout
+      it_keys   = lt_procctrl
+    ).
 
 * Delete receiver cost
 **Reopen Virtual posting in case done during finalizing chargeouts.
@@ -1367,13 +1647,19 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
                                  AND ccode       = @it_keys-ccode
                                  AND costobject  = @it_keys-costobject
                                  AND costcenter  = @it_keys-costcenter
-                                 AND value_source = 'ERP'
+                                 AND value_source <> 'SCC'
                                  INTO TABLE @DATA(lt_cb_li).
 
     LOOP AT lt_cb_li ASSIGNING FIELD-SYMBOL(<ls_cb_li>).
       <ls_cb_li>-status = approved.
+      CLEAR <ls_cb_li>-cc_guid.
     ENDLOOP.
 
+*Add process logs for traceability
+    create_processlogs(
+      iv_action = action_reopen_costbase
+      it_keys   = lt_procctrl
+    ).
 *  reopen service cost share
     /esrcc/cl_calculate_chargeout=>reopen_serviceshare( it_keys = it_keys
                                                         iv_costbasereopen = abap_true ).
@@ -1422,8 +1708,15 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
 
       ls_procctrl = CORRESPONDING #( <key> ).
       ls_procctrl-process = chargeout.
+      ls_procctrl-status  = '01'. "calculate service product costing
       APPEND ls_procctrl TO lt_procctrl.
     ENDLOOP.
+
+*Add process logs for traceability
+    create_processlogs(
+      iv_action = action_reopen_serviceproduct
+      it_keys   = lt_procctrl
+    ).
 
 *  Reopen chargeout
     /esrcc/cl_calculate_chargeout=>reopen_chargeout( it_keys = it_keys
@@ -1553,7 +1846,7 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
           ls_cbli-groupcurr           = <ls_receiverchargeout>-currency.
           ls_cbli-ksl                 = <ls_receiverchargeout>-TotalChargeoutAmount.
           ls_cbli-vendor              = <ls_receiverchargeout>-Legalentity.
-          ls_cbli-status              = 'V'.   "Virtual Postings
+          ls_cbli-status              = approved.   "Approved
           ls_cbli-posting_sysid       = <ls_receiverchargeout>-Sysid.
           ls_cbli-posting_ccode       = <ls_receiverchargeout>-ccode.
           ls_cbli-posting_legalentity = <ls_receiverchargeout>-Legalentity.
@@ -1713,5 +2006,206 @@ CLASS /esrcc/cl_calculate_chargeout IMPLEMENTATION.
             INTO CORRESPONDING FIELDS OF TABLE @et_poper.
     ENDIF.
 
+  ENDMETHOD.
+
+
+  METHOD create_processlogs.
+
+    DATA processlog TYPE /esrcc/proclogs.
+    DATA processlogs TYPE TABLE OF /esrcc/proclogs.
+
+    DATA(lo_uuid) = cl_uuid_factory=>create_system_uuid( ).
+
+    LOOP AT it_keys ASSIGNING FIELD-SYMBOL(<procctrl>).
+      MOVE-CORRESPONDING <procctrl> TO processlog.
+* Assign the 16 digit unique identifier
+      IF lo_uuid IS BOUND.
+        TRY.
+            processlog-uuid = lo_uuid->create_uuid_x16( ).
+          CATCH cx_uuid_error.
+            "handle exception
+        ENDTRY.
+      ENDIF.
+
+      processlog-action = iv_action.
+
+* Admin data
+      processlog-created_by = sy-uname.
+      /esrcc/cl_utility_core=>get_utc_date_time_ts(
+        IMPORTING
+          time_stamp = processlog-created_at
+      ).
+      processlog-last_changed_by = sy-uname.
+      /esrcc/cl_utility_core=>get_utc_date_time_ts(
+        IMPORTING
+          time_stamp = processlog-last_changed_at
+      ).
+
+      APPEND processlog TO processlogs.
+
+    ENDLOOP.
+
+    MODIFY /esrcc/proclogs FROM TABLE @processlogs.
+
+  ENDMETHOD.
+
+
+  METHOD reopnesequentialchargeout.
+
+    DATA ls_key TYPE /esrcc/procctrl.
+    DATA lt_keys TYPE /esrcc/tt_keys.
+    DATA lv_validon TYPE /esrcc/validfrom.
+
+*Derive poper from billing frequency customizing
+    derive_poper(
+      EXPORTING
+        it_keys  = it_keys
+      IMPORTING
+        et_poper = DATA(_poper)
+    ).
+
+    SORT _poper BY low.
+
+*get the chain and sequence.
+    IF it_keys IS NOT INITIAL.
+      SELECT * FROM /ESRCC/I_Stewardship FOR ALL ENTRIES IN @it_keys
+                                         WHERE sysid       = @it_keys-sysid
+                                           AND legalentity = @it_keys-legalentity
+                                           AND CompanyCode = @it_keys-ccode
+                                           AND costobject  = @it_keys-costobject
+                                           AND costcenter  = @it_keys-costcenter
+                                           INTO TABLE @DATA(lt_stewardship).
+
+      IF lt_stewardship IS NOT INITIAL.
+        SELECT * FROM /ESRCC/I_Stewardship FOR ALL ENTRIES IN @lt_stewardship
+                                           WHERE chain_id    = @lt_stewardship-chain_id
+                                           INTO TABLE @DATA(lt_chain_stw).
+
+        SELECT * FROM /esrcc/i_stw_serviceproduct FOR ALL ENTRIES IN @lt_chain_stw
+                                           WHERE CostObjectUuid = @lt_chain_stw-CostObjectUuid
+                                           INTO TABLE @DATA(lt_stw_serviceproduct).
+
+
+      ENDIF.
+    ENDIF.
+
+    SORT lt_chain_stw DESCENDING BY chain_id chain_sequence.
+*   it could be billing frequency used quarterly or half yearly
+    LOOP AT _poper ASSIGNING FIELD-SYMBOL(<poper>).
+
+* each cost object could be providing multiple services
+      READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<keys>) INDEX 1.
+      IF sy-subrc = 0.
+
+        LOOP AT lt_chain_stw ASSIGNING FIELD-SYMBOL(<ls_chain_stw>). "WHERE ValidFrom <= lv_validon
+          " AND Validto >= lv_validon.
+          CLEAR: ls_key, lt_keys.
+
+
+          MOVE-CORRESPONDING <ls_chain_stw> TO ls_key.
+          ls_key-billingfreq = <keys>-billingfreq.
+          ls_key-billingperiod = <keys>-billingperiod.
+          ls_key-ryear = <keys>-ryear.
+          ls_key-fplv = <keys>-fplv.
+          ls_key-ccode = <ls_chain_stw>-CompanyCode.
+          APPEND ls_key TO lt_keys.
+
+          reopen_costbase( it_keys = lt_keys ).
+
+        ENDLOOP.
+      ENDIF.
+    ENDLOOP.
+
+  ENDMETHOD.
+
+
+  METHOD sequentialchargeout.
+
+    DATA ls_key TYPE /esrcc/procctrl.
+    DATA lt_keys TYPE /esrcc/tt_keys.
+    DATA lt_key_serviceproduct TYPE /esrcc/tt_keys.
+    DATA lv_validon TYPE /esrcc/validfrom.
+
+*Derive poper from billing frequency customizing
+    derive_poper(
+      EXPORTING
+        it_keys  = it_keys
+      IMPORTING
+        et_poper = DATA(_poper)
+    ).
+
+    SORT _poper BY low.
+
+*get the chain and sequence.
+    IF it_keys IS NOT INITIAL.
+      SELECT * FROM /ESRCC/I_Stewardship FOR ALL ENTRIES IN @it_keys
+                                         WHERE sysid       = @it_keys-sysid
+                                           AND legalentity = @it_keys-legalentity
+                                           AND CompanyCode = @it_keys-ccode
+                                           AND costobject  = @it_keys-costobject
+                                           AND costcenter  = @it_keys-costcenter
+                                           INTO TABLE @DATA(lt_stewardship).
+
+      IF lt_stewardship IS NOT INITIAL.
+        SELECT * FROM /ESRCC/I_Stewardship FOR ALL ENTRIES IN @lt_stewardship
+                                           WHERE chain_id    = @lt_stewardship-chain_id
+                                           INTO TABLE @DATA(lt_chain_stw).
+
+        SELECT * FROM /esrcc/i_stw_serviceproduct FOR ALL ENTRIES IN @lt_chain_stw
+                                           WHERE CostObjectUuid = @lt_chain_stw-CostObjectUuid
+                                           INTO TABLE @DATA(lt_stw_serviceproduct).
+
+
+      ENDIF.
+    ENDIF.
+
+    SORT lt_chain_stw BY chain_id chain_sequence.
+*   it could be billing frequency used quarterly or half yearly
+    LOOP AT _poper ASSIGNING FIELD-SYMBOL(<poper>).
+
+* each cost object could be providing multiple services
+      READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<keys>) INDEX 1.
+      IF sy-subrc = 0.
+        CLEAR lv_validon.
+        CONCATENATE <keys>-ryear <poper>-low+1(2) '01' INTO lv_validon.
+
+        LOOP AT lt_chain_stw ASSIGNING FIELD-SYMBOL(<ls_chain_stw>) WHERE ValidFrom <= lv_validon
+                                                                      AND Validto >= lv_validon.
+          CLEAR: ls_key, lt_keys, lt_key_serviceproduct.
+
+
+          MOVE-CORRESPONDING <ls_chain_stw> TO ls_key.
+          ls_key-billingfreq = <keys>-billingfreq.
+          ls_key-billingperiod = <keys>-billingperiod.
+          ls_key-ryear = <keys>-ryear.
+          ls_key-fplv = <keys>-fplv.
+          ls_key-ccode = <ls_chain_stw>-CompanyCode.
+          APPEND ls_key TO lt_keys.
+
+          LOOP AT lt_stw_serviceproduct ASSIGNING FIELD-SYMBOL(<ls_serviceproduct>)
+                                        WHERE CostObjectUuid = <ls_chain_stw>-CostObjectUuid.
+
+
+
+            ls_key-serviceproduct = <ls_serviceproduct>-ServiceProduct.
+            APPEND ls_key TO lt_key_serviceproduct.
+          ENDLOOP.
+
+* Step 1:
+          calculate_costbase( it_keys = lt_keys ).
+* Step 2:
+          finalize_costbase( it_keys = lt_keys ).
+* Step 3:
+          calculate_servicecostshare( it_keys = lt_key_serviceproduct ).
+* Step 4:
+          finalize_servicecostshare( it_keys = lt_key_serviceproduct ).
+* Step 5:
+          calculate_chargeout( it_keys = lt_key_serviceproduct ).
+* Step 6:
+          finalize_chargeout( it_keys = lt_key_serviceproduct ).
+
+        ENDLOOP.
+      ENDIF.
+    ENDLOOP.
   ENDMETHOD.
 ENDCLASS.

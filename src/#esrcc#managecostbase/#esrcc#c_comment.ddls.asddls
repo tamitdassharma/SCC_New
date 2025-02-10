@@ -1,5 +1,5 @@
 @EndUserText.label: 'Comment'
-define abstract entity /ESRCC/C_COMMENT  
+define root abstract entity /ESRCC/C_COMMENT  
 {   
     
     @EndUserText.label: 'Comment'

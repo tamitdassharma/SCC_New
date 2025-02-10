@@ -20,14 +20,16 @@ CLASS /ESRCC/DEFAULT_VIRTUAL_ELEMENT IMPLEMENTATION.
                                               ( VALUE #(
                                                     BASE <data>
                                                     Stream   = /esrcc/generate_pdf_invoice=>create( )->generate_invoice(
-                                                                                <data>-InvoiceUUID ) ) ) ) ).
+                                                                   invoice_reference_id = <data>-InvoiceUUID
+                                                                   invoice_currency_type = <data>-Currencytype ) ) ) ) ).
   ENDMETHOD.
 
 
   METHOD if_sadl_exit_calc_element_read~get_calculation_info.
     IF iv_entity = '/ESRCC/C_CHGINVOICE'.
       APPEND LINES OF VALUE if_sadl_exit_calc_element_read=>tt_elements( ( CONV #( 'INVOICEUUID' ) )
-                                                                         ( CONV #( 'INVOICESTATUS' ) ) )
+                                                                         ( CONV #( 'INVOICESTATUS' ) )
+                                                                         ( CONV #( 'CURRENCYTYPE' ) ) )
              TO et_requested_orig_elements.
     ENDIF.
   ENDMETHOD.

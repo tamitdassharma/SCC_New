@@ -117,6 +117,25 @@
         measure: 'TotalChargeOutAmount',
         role: #AXIS_1
     }]
+},
+
+{
+    qualifier: 'StewardShipByLE',
+    chartType: #BAR,
+    dimensions:  [ 'Ryear' ],
+    measures:  [ 'Stewardship' ],
+    dimensionAttributes: [{
+        dimension: 'Ryear',
+        role: #CATEGORY
+    }],
+//    {
+//        dimension: 'Legalentit',
+//        role: #CATEGORY
+//    }
+    measureAttributes: [{
+        measure: 'Stewardship',
+        role: #AXIS_1
+    }]
 }]
 
 //UI Presention Annotation
@@ -222,6 +241,10 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   Costobject;
 
   @UI.lineItem: [{ position: 70 }]
+  @UI.textArrangement: #TEXT_ONLY
+  ProcessType;
+  
+  @UI.lineItem: [{ position: 75 }]
   @UI.selectionField: [{position: 50 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_F4', element: 'Costcenter' },
                                        additionalBinding: [{ element: 'Costobject', localElement: 'Costobject'}]}]
@@ -381,5 +404,7 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   RecCostCenterdescription;
   @UI.hidden: true
   functionalareadescription;
+  @UI.hidden: true
+  ProcessTypedescription;
 
 }

@@ -51,6 +51,9 @@ as select from /ESRCC/I_CostBaseData as cc_cost
   on _legalCountryText.Country = $projection.country
   and _legalCountryText.Language = $session.system_language  
   
+  association [0..1] to /ESRCC/I_PROCESSTYPE as _Processtype
+  on _Processtype.ProcessType = $projection.ProcessType
+  
 {
     key UUID,
     key Currencytype,
@@ -68,7 +71,10 @@ as select from /ESRCC/I_CostBaseData as cc_cost
     cc_cost.Profitcenter as Profitcenter,
     Controllingarea as Controllingarea,    
     cc_cost.Billingperiod as Billingperiod,
+    ProcessType as ProcessType,
     Currency,
+    VirtualCost,
+    ERPCost,
     Totalcost,
     Excludedtotalcost,
     ( Totalcost - Excludedtotalcost ) as Includetotalcost,
@@ -98,6 +104,7 @@ as select from /ESRCC/I_CostBaseData as cc_cost
     legalentity.Region,
     legalentity.RegionDesc,
     _legalCountryText,
+    _Processtype.text as ProcessTypedescription,
     // Make association public   
     _ServiceMarkup
     

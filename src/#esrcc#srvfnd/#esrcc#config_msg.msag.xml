@@ -132,19 +132,43 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
      <MSGNR>021</MSGNR>
-     <TEXT>Deletion restricted as the &apos;&amp;1&apos; are defined for this entry</TEXT>
+     <TEXT>Deletion restricted as the &apos;&amp;1 &amp;2&apos; are defined for this entry</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
      <MSGNR>022</MSGNR>
-     <TEXT>Update restricted as the &apos;&amp;1&apos; are defined for this entry</TEXT>
+     <TEXT>Update restricted as the &apos;&amp;1 &amp;2&apos; are defined for this entry</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
      <MSGNR>023</MSGNR>
      <TEXT>The key value is already in use. Please enter a different one.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
+     <MSGNR>024</MSGNR>
+     <TEXT>Overlapping &apos;&amp;1&apos; for same &apos;&amp;2&apos; &apos;&amp;3&apos; is not allowed</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
+     <MSGNR>025</MSGNR>
+     <TEXT>Service Product is not assigned to this Stewardship</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
+     <MSGNR>026</MSGNR>
+     <TEXT>Service Provider and Service Receiver cannot be same</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
+     <MSGNR>027</MSGNR>
+     <TEXT>Service Provider and Service Receiver should be defined before &apos;Submit&apos;</TEXT>
     </T100>
    </T100>
   </asx:values>

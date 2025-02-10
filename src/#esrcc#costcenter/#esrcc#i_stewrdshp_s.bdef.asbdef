@@ -13,24 +13,30 @@ authorization master ( global )
   internal create;
   internal delete;
 
-  draft action ( features : instance ) Edit;
+  draft action ( features : instance ) Edit with additional implementation;
   draft action Activate;
   draft action Discard;
   draft action Resume;
-  draft determine action Prepare;
+  draft determine action Prepare
+  {
+    validation Stewardship~ValidateData;
+    validation ServiceProduct~ValidateData;
+    validation ServiceReceiver~ValidateData;
+  }
 
-  association _Stewardship { create ( features : instance ); with draft; }
+  association _Stewardship { create ( features : instance, precheck ); with draft; }
 }
 
 define behavior for /ESRCC/I_Stewrdshp alias Stewardship
 persistent table /esrcc/stewrdshp
-draft table /esrcc/d_stewrds
+draft table /esrcc/d_stewrds query /ESRCC/I_Stewrdshp_D
 etag master LocalLastChangedAt
 lock dependent by _StewardshipAll
 authorization dependent by _StewardshipAll
 {
   field ( readonly )
-  StewardshipUuid, SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+  StewardshipUuid, SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy,
+  WorkflowId, WorkflowStatus, Comments;
 
   field ( numbering : managed )
   StewardshipUuid;
@@ -41,8 +47,8 @@ authorization dependent by _StewardshipAll
   field ( mandatory : create, readonly : update )
   Sysid, LegalEntity, CompanyCode, CostObject, CostCenter, ValidFrom;
 
-  update ( features : global );
-  delete ( features : global );
+  update ( features : instance, precheck );
+  delete ( features : instance );
 
   mapping for /ESRCC/STEWRDSHP
   {
@@ -51,6 +57,11 @@ authorization dependent by _StewardshipAll
     Validto = VALID_TO;
     Stewardship = STEWARDSHIP;
     CostObjectUuid = COST_OBJECT_UUID;
+    ChainId = CHAIN_ID;
+    ChainSequence = CHAIN_SEQUENCE;
+    WorkflowId = WORKFLOW_ID;
+    WorkflowStatus = WORKFLOW_STATUS;
+    Comments = COMMENTS;
     CreatedBy = CREATED_BY;
     CreatedAt = CREATED_AT;
     LastChangedBy = LAST_CHANGED_BY;
@@ -58,9 +69,17 @@ authorization dependent by _StewardshipAll
     LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
   }
 
+  action ( features : instance ) Submit parameter /ESRCC/C_COMMENT result [1] $self;
+  action ( features : instance ) Finalize result [1] $self;
+  action ( features : instance ) Comments parameter /ESRCC/C_COMMENT result [1] $self;
+
+  determination UpdateWorkflowStatus on modify { field Validto, Stewardship, ChainId, ChainSequence; }
+  determination TriggerWorkflow on save { field WorkflowStatus; }
+  validation ValidateData on save { create; update; }
+
   association _StewardshipAll { with draft; }
-  association _ServiceProduct { create ( features : instance ); with draft; }
-  association _ServiceReceiver { create ( features : instance ); with draft; }
+  association _ServiceProduct { create ( features : instance, precheck ); with draft; }
+  association _ServiceReceiver { create ( features : instance, precheck ); with draft; }
 }
 
 define behavior for /ESRCC/I_StwdSp alias ServiceProduct
@@ -85,8 +104,8 @@ authorization dependent by _StewardshipAll
   field ( readonly : update )
   StewardshipUuid, ServiceProduct, ValidFrom;
 
-  update ( features : instance );
-  delete ( features : instance );
+  update ( features : instance, precheck );
+  delete ( features : instance, precheck );
 
   mapping for /ESRCC/stwd_sp
   {
@@ -108,7 +127,9 @@ authorization dependent by _StewardshipAll
   association _StewardshipAll { with draft; }
   association _Stewardship { with draft; }
 
-  //  validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
+  determination UpdateWorkflowStatus on modify { create; update; delete; }
+
+  validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
 }
 
 define behavior for /ESRCC/I_StwdSpRec alias ServiceReceiver
@@ -132,7 +153,7 @@ authorization dependent by _StewardshipAll
 
   field ( mandatory ) InvoiceCurrency;
 
-  update ( features : instance );
+  update ( features : instance, precheck );
   delete ( features : instance );
 
   mapping for /esrcc/stwdsprec
@@ -152,4 +173,8 @@ authorization dependent by _StewardshipAll
 
   association _StewardshipAll { with draft; }
   association _Stewardship { with draft; }
+
+  determination UpdateWorkflowStatus on modify { create; update; delete; }
+
+  validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
 }

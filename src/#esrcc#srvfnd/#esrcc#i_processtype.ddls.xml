@@ -3,9 +3,9 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DDLS>
-    <DDLNAME>/ESRCC/I_PROVIDERCHARGEOUT</DDLNAME>
+    <DDLNAME>/ESRCC/I_PROCESSTYPE</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <DDTEXT>Chargeout Details by Service Provider</DDTEXT>
+    <DDTEXT>Application Type (General)</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
    </DDLS>
   </asx:values>

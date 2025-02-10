@@ -40,9 +40,11 @@ define view entity /ESRCC/C_LeCcode
       @Semantics.text: true
       _LegalEntity.RegionDesc,
       @Semantics.text: true
-      CountryDescription,
+      _LegalEntity.CountryName    as CountryDescription,
+      //      CountryDescription,
       @Semantics.text: true
-      LocalCurrDescription,
+      _LegalEntity.CurrencyName   as LocalCurrDescription,
+      //      LocalCurrDescription,
       _LeToCompanyCodeAll : redirected to parent /ESRCC/C_LeCcode_S,
       _CompanyCodeText    : redirected to composition child /ESRCC/C_CcodeText,
       _CompanyCodeText.Description : localized

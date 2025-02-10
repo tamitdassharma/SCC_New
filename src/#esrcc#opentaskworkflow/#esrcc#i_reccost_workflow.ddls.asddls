@@ -9,11 +9,7 @@
 }
 @Metadata.allowExtensions: true
 define root view entity /ESRCC/I_RECCOST_WORKFLOW 
-            as select from /ESRCC/I_ReceiverChargeout as reccost     
-            
-//  association [0..1] to I_CountryText as _legalCountryText
-//  on _legalCountryText.Country = $projection.legalentitycountry
-//  and _legalCountryText.Language = $session.system_language                                               
+            as select from /ESRCC/I_ReceiverChargeout as reccost                                                           
 
 {
     key UUID,
@@ -47,12 +43,8 @@ define root view entity /ESRCC/I_RECCOST_WORKFLOW
         
     TotalRecMarkup,   
     Valueaddmarkup,    
-    Passthrumarkup,
-    
-//    onvalueaddedmarkupabs,
-//    onvpassthrudmarkupabs,
-//    totaludmarkupabs,
-    
+    Passthrumarkup,   
+   
     RecCostShare,
     
     RecValueadded,
@@ -67,8 +59,6 @@ define root view entity /ESRCC/I_RECCOST_WORKFLOW
     LastChangedBy,
     
     Currency,
-//    Costshare,
-//    Stewardship,
     _ServiceCost._CostCenterCost.costdatasetdescription,   
     _ServiceCost._CostCenterCost.legalentitydescription,
     ccodedescription,
@@ -81,8 +71,6 @@ define root view entity /ESRCC/I_RECCOST_WORKFLOW
     ccodedescription as Reccodedescription,
     costobjectdescription as Reccostobjectdescription,
     costcenterdescription as Reccostcenterdescription,
-//    billingfrequencydescription,
-//    billingperioddescription,
     Country as receivingentitycountry,
     _ServiceCost._CostCenterCost.Country as legalentitycountry,
     //association

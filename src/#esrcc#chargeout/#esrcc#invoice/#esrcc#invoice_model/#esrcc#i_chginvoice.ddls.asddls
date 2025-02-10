@@ -2,6 +2,8 @@
 @EndUserText.label: 'Invoice Chargeout'
 define root view entity /ESRCC/I_CHGINVOICE
   as select from /ESRCC/I_ReceiverChargeout as ReceiverChargeout
+  association [0..1] to /ESRCC/I_CURR as _CurrencyTypeText
+  on _CurrencyTypeText.Currencytype = $projection.Currencytype
 {
   key UUID,
   key ParentUUID,
@@ -15,6 +17,7 @@ define root view entity /ESRCC/I_CHGINVOICE
       _ServiceCost._CostCenterCost.Ccode,
       _ServiceCost._CostCenterCost.Costobject,
       _ServiceCost._CostCenterCost.Costcenter,
+      _ServiceCost._CostCenterCost.ProcessType,
       _ServiceCost.Serviceproduct,
       ReceiverSysId,
       ReceiverCompanyCode,
@@ -26,12 +29,34 @@ define root view entity /ESRCC/I_CHGINVOICE
       _ServiceCost.Chargeout,
       _ServiceCost.Servicetype,
       _ServiceCost.Transactiongroup,
-      Currency,
-      TransferPrice,
+      case Currencytype
+      when 'I' then
+       InvoicingCurrency
+      else
+      Currency end as Currency,  
+      @Semantics.amount.currencyCode: 'Currency'
+      case when Currencytype = 'I' and Currency <> InvoicingCurrency then
+      currency_conversion( client => $session.client,
+                         amount => cast(TransferPrice as abap.curr(23,2)),
+                         source_currency => Currency,
+                         round => 'X',
+                         target_currency => InvoicingCurrency,
+                         exchange_rate_date => Exchdate,                         
+                         error_handling => 'SET_TO_NULL' ) 
+      else cast(TransferPrice as abap.curr(23,2)) end as TransferPrice,
       Reckpi,
       Uom,
       Reckpishare,
-      TotalChargeout,
+      @Semantics.amount.currencyCode: 'Currency'
+      case when Currencytype = 'I' and Currency <> InvoicingCurrency then
+      currency_conversion( client => $session.client,
+                         amount => cast(TotalChargeout as abap.curr(23,2)),
+                         source_currency => Currency,
+                         round => 'X',
+                         target_currency => InvoicingCurrency,
+                         exchange_rate_date => Exchdate,                         
+                         error_handling => 'SET_TO_NULL' ) 
+      else cast(TotalChargeout as abap.curr(23,2)) end as TotalChargeout,
       InvoiceUUID,
       InvoiceNumber,
       InvoiceStatus,
@@ -47,6 +72,8 @@ define root view entity /ESRCC/I_CHGINVOICE
       _ServiceCost._CostCenterCost.Country as LECountry,
       Country                              as receivingentitycountry,
       //descriptions
+//      @Semantics.text: true
+      _CurrencyTypeText,
       @Semantics.text: true
       _ServiceCost._CostCenterCost.billingfrequencydescription,
       @Semantics.text: true
@@ -87,6 +114,8 @@ define root view entity /ESRCC/I_CHGINVOICE
       costobjectdescription                as RecCostObjectdescription,
       @Semantics.text: true
       invoicestatusdescription,
+      @Semantics.text: true
+      _ServiceCost._CostCenterCost.ProcessTypedescription,
       //    _association_name // Make association public
       //  status color
       case ReceiverChargeout.InvoiceStatus

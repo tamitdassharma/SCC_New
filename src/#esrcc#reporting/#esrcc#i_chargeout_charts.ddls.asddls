@@ -55,7 +55,11 @@ define view entity /ESRCC/I_CHARGEOUT_CHARTS
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'RecCostCenterdescription' ]
   key ReceiverCostCenter, 
- 
+  
+      @AnalyticsDetails.query.display: #KEY
+      @ObjectModel.text.element: [ 'ProcessTypedescription' ]
+      ProcessType,
+      
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'functionalareadescription' ]
       FunctionalArea,
@@ -146,6 +150,8 @@ define view entity /ESRCC/I_CHARGEOUT_CHARTS
       statusdescription,
       @Semantics.text: true
       oecdDescription,
+      @Semantics.text: true
+      ProcessTypedescription,
       @Semantics.text: true
       _legalCountryText.CountryName as legalcountryname,
       @Semantics.text: true

@@ -54,27 +54,33 @@ annotate view /ESRCC/C_CostElmenetCharacte with
   @UI.identification: [ { position: 1 } ]
   @UI.lineItem: [ { position: 1 } ]
   @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Sysid' },
-                                       additionalBinding: [{ element: 'Legalentity', localElement: 'LegalEntity' },
-                                                           { element: 'Ccode', localElement: 'CompanyCode' }],
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTELEMENT_F4', element: 'Sysid' },
+                                       additionalBinding: [{ element: 'LegalEntity', localElement: 'LegalEntity' },
+                                                           { element: 'CompanyCode', localElement: 'CompanyCode' },
+                                                           { element: 'Costelement', localElement: 'Costelement' },
+                                                           { element: 'Uuid', localElement: 'CostElementUuid', usage: #RESULT }],
                                        useForValidation: true }]
   Sysid;
 
   @UI.identification: [ { position: 2 } ]
   @UI.lineItem: [ { position: 2 } ]
   @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Legalentity' },
-                                       additionalBinding: [{ element: 'Ccode', localElement: 'CompanyCode' },
-                                                           { element: 'Sysid', localElement: 'Sysid' }],
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTELEMENT_F4', element: 'LegalEntity' },
+                                       additionalBinding: [{ element: 'Sysid', localElement: 'Sysid' },
+                                                           { element: 'CompanyCode', localElement: 'CompanyCode' },
+                                                           { element: 'Costelement', localElement: 'Costelement' },
+                                                           { element: 'Uuid', localElement: 'CostElementUuid', usage: #RESULT }],
                                        useForValidation: true }]
   LegalEntity;
 
   @UI.identification: [ { position: 3 } ]
   @UI.lineItem: [ { position: 3 } ]
   @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LEGALENTITY_CCODE_F4', element: 'Ccode' },
-                                       additionalBinding: [{ element: 'Legalentity', localElement: 'LegalEntity' },
-                                                           { element: 'Sysid', localElement: 'Sysid' }],
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTELEMENT_F4', element: 'CompanyCode' },
+                                       additionalBinding: [{ element: 'Sysid', localElement: 'Sysid' },
+                                                           { element: 'LegalEntity', localElement: 'LegalEntity' },
+                                                           { element: 'Costelement', localElement: 'Costelement' },
+                                                           { element: 'Uuid', localElement: 'CostElementUuid', usage: #RESULT }],
                                        useForValidation: true }]
   CompanyCode;
 
@@ -82,8 +88,10 @@ annotate view /ESRCC/C_CostElmenetCharacte with
   @UI.lineItem: [ { position: 4 } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTELEMENT_F4', element: 'Costelement' },
-                                       additionalBinding: [{ element: 'Sysid', localElement: 'Sysid', usage: #FILTER },
-                                                           { element: 'Uuid', localElement: 'CostElementUuid' }],
+                                       additionalBinding: [{ element: 'Sysid', localElement: 'Sysid'},
+                                                           { element: 'LegalEntity', localElement: 'LegalEntity' },
+                                                           { element: 'CompanyCode', localElement: 'CompanyCode' },
+                                                           { element: 'Uuid', localElement: 'CostElementUuid', usage: #RESULT }],
                                        useForValidation: true }]
   Costelement;
 

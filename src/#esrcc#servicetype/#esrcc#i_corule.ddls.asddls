@@ -10,7 +10,8 @@ define view entity /ESRCC/I_CoRule
   association [0..1] to /ESRCC/I_COST_VERSION        as _CostVersionText        on  _CostVersionText.CostVersion = $projection.CostVersion
   association [0..1] to /ESRCC/I_CONSUMPTION_VERSION as _ConsumptionVersionText on  _ConsumptionVersionText.ConsumptionVersion = $projection.ConsumptionVersion
   association [0..1] to /ESRCC/I_KEY_VERSION         as _KeyVersionText         on  _KeyVersionText.KeyVersion = $projection.KeyVersion
-  association [0..1] to /ESRCC/I_ALLOCKEYS           as _AllocationKeyText      on  _AllocationKeyText.Allockey = $projection.AdhocAllocationKey
+  association [0..1] to /ESRCC/I_ALLOCATION_KEY_F4   as _AllocationKeyText      on  _AllocationKeyText.Allocationkey = $projection.AdhocAllocationKey
+  association [1..1] to /ESRCC/I_STATUS              as _WorkflowStatusText     on  _WorkflowStatusText.Status = $projection.WorkflowStatus
 
   composition [0..*] of /ESRCC/I_CoRuleText          as _RuleText
   composition [0..*] of /ESRCC/I_AllocWeightage      as _Weightage
@@ -23,6 +24,9 @@ define view entity /ESRCC/I_CoRule
       key_version                                as KeyVersion,
       uom                                        as Uom,
       adhoc_allocation_key                       as AdhocAllocationKey,
+      workflow_id                                as WorkflowId,
+      workflow_status                            as WorkflowStatus,
+      comments                                   as Comments,
       @Semantics.user.createdBy: true
       created_by                                 as CreatedBy,
       @Semantics.systemDateTime.createdAt: true
@@ -34,7 +38,21 @@ define view entity /ESRCC/I_CoRule
       @Semantics.systemDateTime.localInstanceLastChangedAt: true
       local_last_changed_at                      as LocalLastChangedAt,
       1                                          as SingletonID,
-      
+
+      case workflow_status
+        when 'D' then 2
+        when 'P' then 2
+        when 'W' then 2
+        when 'U' then 3
+        when 'E' then 3
+        when 'A' then 3
+        when 'F' then 3
+        when 'R' then 1
+        when 'C' then 1
+        else 0
+      end                                        as WorkflowStatusCriticality,
+      cast('' as abap_boolean)                   as TriggerWorkflow,
+
       cast( '' as abap_boolean preserving type ) as HideCostVersion,
       cast( '' as abap_boolean preserving type ) as HideCapacityVersion,
       cast( '' as abap_boolean preserving type ) as HideConsumptionVersion,
@@ -52,6 +70,7 @@ define view entity /ESRCC/I_CoRule
       _ConsumptionVersionText,
       _KeyVersionText,
       _Weightage,
-      _AllocationKeyText
+      _AllocationKeyText,
+      _WorkflowStatusText
 
 }

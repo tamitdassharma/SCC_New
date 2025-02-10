@@ -35,7 +35,9 @@ as projection on /ESRCC/I_CostBaseStewardship
 //       
     @ObjectModel.text.element: [ 'billingperioddescription' ]
     Billingperiod,
-    
+    @ObjectModel.text.element: [ 'ProcessTypedescription' ]
+    ProcessType,
+    @Semantics.currencyCode: true
     Currency,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
@@ -84,6 +86,8 @@ as projection on /ESRCC/I_CostBaseStewardship
     billingperioddescription,
     @Semantics.text: true 
     statusdescription,
+    @Semantics.text: true 
+    ProcessTypedescription,
     @ObjectModel.text.element: [ 'countryname' ]
     Country,
 //    statuscriticallity,

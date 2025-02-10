@@ -22,6 +22,7 @@ authorization master ( global )
     validation Rule~ValidateData;
     validation Weightage~ValidateData;
   }
+
   action ( features : instance ) SelectCustomizingTransptReq parameter D_SelectCustomizingTransptReqP result [1] $self;
 
   association _Rule { create ( features : instance, precheck ); with draft; }
@@ -30,7 +31,6 @@ authorization master ( global )
 define behavior for /ESRCC/I_CoRule alias Rule
 persistent table /esrcc/co_rule
 draft table /esrcc/d_co_rule
-//late numbering
 etag master LocalLastChangedAt
 lock dependent by _RuleAll
 authorization dependent by _RuleAll
@@ -41,6 +41,7 @@ authorization dependent by _RuleAll
 
   field ( readonly )
   SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy,
+  WorkflowId, WorkflowStatus, Comments,
   HideCostVersion, HideCapacityVersion, HideConsumptionVersion, HideKeyVersion, HideUom,
   HideAdhocAllocationKey, HideWeightageTab;
 
@@ -50,8 +51,8 @@ authorization dependent by _RuleAll
   field ( readonly : update )
   RuleId;
 
-  update ( features : global, precheck );
-  delete ( features : global );
+  update ( features : instance, precheck );
+  delete ( features : instance );
 
   mapping for /ESRCC/CO_RULE
   {
@@ -63,6 +64,9 @@ authorization dependent by _RuleAll
     KeyVersion = KEY_VERSION;
     Uom = UOM;
     AdhocAllocationKey = ADHOC_ALLOCATION_KEY;
+    WorkflowId = WORKFLOW_ID;
+    WorkflowStatus = WORKFLOW_STATUS;
+    Comments = COMMENTS;
     CreatedBy = CREATED_BY;
     CreatedAt = CREATED_AT;
     LastChangedBy = LAST_CHANGED_BY;
@@ -71,17 +75,22 @@ authorization dependent by _RuleAll
   }
 
   association _RuleAll { with draft; }
-  association _RuleText { create ( features : global ); with draft; }
-  association _Weightage { create ( features : global ); with draft; }
+  association _RuleText { create ( features : instance ); with draft; }
+  association _Weightage { create ( features : instance ); with draft; }
 
-  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+  action ( features : instance ) Submit parameter /ESRCC/C_COMMENT result [1] $self;
+  action ( features : instance ) Finalize result [1] $self;
+
+  determination UpdateWorkflowStatus on modify { field ChargeoutMethod, CostVersion, ConsumptionVersion, CapacityVersion, KeyVersion, AdhocAllocationKey, Uom; }
+  determination TriggerWorkflow on save { field WorkflowStatus; }
+
+  //  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
   validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
 }
 
 define behavior for /ESRCC/I_CoRuleText alias RuleText
 persistent table /esrcc/co_rulet
 draft table /esrcc/d_co_rult
-//late numbering
 etag master LocalLastChangedAt
 lock dependent by _RuleAll
 authorization dependent by _RuleAll
@@ -98,8 +107,8 @@ authorization dependent by _RuleAll
   Spras;
 
 
-  update ( features : global );
-  delete ( features : global );
+  update ( features : instance );
+  delete ( features : instance );
 
   mapping for /ESRCC/CO_RULET
   {
@@ -112,13 +121,14 @@ authorization dependent by _RuleAll
   association _RuleAll { with draft; }
   association _Rule { with draft; }
 
-  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+  determination UpdateWorkflowStatus on modify { create; update; delete; }
+
+  //  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
 }
 
 define behavior for /ESRCC/I_AllocWeightage alias Weightage
 persistent table /esrcc/aloc_wgt
 draft table /esrcc/d_alocwgt
-//late numbering
 etag master LocallastChangedAt
 lock dependent by _RuleAll
 authorization dependent by _RuleAll
@@ -136,8 +146,8 @@ authorization dependent by _RuleAll
   RuleId,
   AllocationKey;
 
-  update ( features : global, precheck );
-  delete ( features : global );
+  update ( features : instance, precheck );
+  delete ( features : instance );
 
   mapping for /esrcc/aloc_wgt
   {
@@ -155,6 +165,8 @@ authorization dependent by _RuleAll
 
   association _RuleAll { with draft; }
   association _Rule { with draft; }
+
+  determination UpdateWorkflowStatus on modify { create; update; delete; }
 
   validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
 }

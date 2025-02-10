@@ -17,6 +17,7 @@ as select from /ESRCC/I_ReceiverChargeout as ReceiverChargeout
     _ServiceCost._CostCenterCost.Ccode,
     _ServiceCost._CostCenterCost.Costobject,
     _ServiceCost._CostCenterCost.Costcenter,
+    _ServiceCost._CostCenterCost.ProcessType,
     _ServiceCost.Serviceproduct,
     ReceiverSysId,
     ReceiverCompanyCode,
@@ -46,8 +47,7 @@ as select from /ESRCC/I_ReceiverChargeout as ReceiverChargeout
     RecPassthrough,
     _ServiceCost._CostCenterCost.Stewardship,
     cast((RecCostShare / ( 1 - (_ServiceCost._CostCenterCost.Stewardship / 100))) as abap.dec(23,2)) as RecIncludedCost,
-    cast(RecCostShare - 
-    (RecCostShare / ( 1 - (_ServiceCost._CostCenterCost.Stewardship / 100))) as abap.dec(23,2)) as RecStewardship,
+    cast((RecCostShare / ( 1 - (_ServiceCost._CostCenterCost.Stewardship / 100))) - RecCostShare as abap.dec(23,2)) as RecStewardship,
     
     case when _ServiceCost._CostCenterCost.Includetotalcost <> 0 then
     cast(( (RecCostShare / ( 1 - (_ServiceCost._CostCenterCost.Stewardship / 100))) / _ServiceCost._CostCenterCost.Includetotalcost) * _ServiceCost._CostCenterCost.Excludedtotalcost as abap.dec(23,2))  
@@ -57,6 +57,17 @@ as select from /ESRCC/I_ReceiverChargeout as ReceiverChargeout
     cast((RecCostShare / ( 1 - (_ServiceCost._CostCenterCost.Stewardship / 100))) +
     (( (RecCostShare / ( 1 - (_ServiceCost._CostCenterCost.Stewardship / 100))) / _ServiceCost._CostCenterCost.Includetotalcost) * _ServiceCost._CostCenterCost.Excludedtotalcost ) as abap.dec(23,2)) 
     else 0 end as RecTotalCost,
+    
+    case when _ServiceCost._CostCenterCost.Includetotalcost <> 0 then
+    cast((((RecCostShare / ( 1 - (_ServiceCost._CostCenterCost.Stewardship / 100))) / _ServiceCost._CostCenterCost.Includetotalcost) * _ServiceCost._CostCenterCost.VirtualCost ) as abap.dec(23,2))  
+    else 0 end as RecVirtualTotalCost,
+    
+    case when _ServiceCost._CostCenterCost.Includetotalcost <> 0 then
+    cast((RecCostShare / ( 1 - (_ServiceCost._CostCenterCost.Stewardship / 100))) +
+    (( (RecCostShare / ( 1 - (_ServiceCost._CostCenterCost.Stewardship / 100))) / _ServiceCost._CostCenterCost.Includetotalcost) * _ServiceCost._CostCenterCost.Excludedtotalcost ) as abap.dec(23,2)) 
+    -
+    cast((((RecCostShare / ( 1 - (_ServiceCost._CostCenterCost.Stewardship / 100))) / _ServiceCost._CostCenterCost.Includetotalcost) * _ServiceCost._CostCenterCost.VirtualCost ) as abap.dec(23,2))  
+    else 0 end as RecERPTotalCost,
      
     case when _ServiceCost._CostCenterCost.Includetotalcost <> 0 then
     cast((((RecCostShare / ( 1 - (_ServiceCost._CostCenterCost.Stewardship / 100))) / _ServiceCost._CostCenterCost.Includetotalcost) * _ServiceCost._CostCenterCost.Origtotalcost ) as abap.dec(23,2))  
@@ -101,7 +112,9 @@ as select from /ESRCC/I_ReceiverChargeout as ReceiverChargeout
     @Semantics.text: true
     costobjectdescription as RecCostObjectdescription,
     @Semantics.text: true
-    statusdescription,   
+    statusdescription,  
+    @Semantics.text: true
+    _ServiceCost._CostCenterCost.ProcessTypedescription, 
     _ServiceCost._CostCenterCost.Country as legalentitycountry,
     Country      as receivingentitycountry,
     _ServiceCost._CostCenterCost.LocalCurr        as legalentitycurrecy,

@@ -13,7 +13,8 @@ define view entity /ESRCC/I_Stewardship
   key valid_from as ValidFrom,
       valid_to as Validto,
       stewardship,
-      
+      chain_id,
+      chain_sequence,
       co.Sysid,
       co.CompanyCode,
       co.LegalEntity,
@@ -40,3 +41,5 @@ define view entity /ESRCC/I_Stewardship
       
 
 }
+where stw.workflow_status = 'F'
+ 

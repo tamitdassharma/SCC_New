@@ -16,7 +16,8 @@ CLASS /esrcc/generate_pdf_invoice DEFINITION PUBLIC FINAL CREATE PRIVATE.
       _invoice_builder_plugin TYPE REF TO /esrcc/build_invoice.
 
     METHODS:
-      _get_chargeout_for_invoice IMPORTING invoice_ref_id TYPE sysuuid_c32,
+      _get_chargeout_for_invoice IMPORTING invoice_ref_id TYPE sysuuid_c32
+                                           invoice_curr_type TYPE abap_bool,
       _get_other_details_for_invoice,
       _build_invoice_data,
       _create_invoice            RETURNING VALUE(raw_pdf) TYPE cmis_s_content_raw-stream.
@@ -29,7 +30,8 @@ CLASS /ESRCC/GENERATE_PDF_INVOICE IMPLEMENTATION.
 
 
   METHOD /esrcc/generate_invoice~generate_invoice.
-    _get_chargeout_for_invoice( invoice_reference_id ).
+    _get_chargeout_for_invoice( invoice_ref_id = invoice_reference_id
+                                invoice_curr_type = invoice_currency_type ).
 
     _get_other_details_for_invoice( ).
 
@@ -85,6 +87,7 @@ cx_sy_dyn_call_illegal_method.
     " Get the charge-outs for the given invoice number, i.e., Invoice Reference ID
     SELECT * FROM /esrcc/c_chginvoice AS chargeout_invoice
       WHERE InvoiceUUID = @invoice_ref_id
+        AND Currencytype = @invoice_curr_type
       INTO TABLE @_chargeouts_for_invoice.
   ENDMETHOD.
 

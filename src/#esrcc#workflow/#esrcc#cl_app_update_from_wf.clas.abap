@@ -1,38 +1,52 @@
-CLASS /esrcc/cl_app_update_from_wf DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC .
+class /ESRCC/CL_APP_UPDATE_FROM_WF definition
+  public
+  final
+  create public .
 
-  PUBLIC SECTION.
+public section.
 
-    CLASS-METHODS update_cb_li
-      IMPORTING
-        !it_leading_data TYPE /esrcc/tt_wf_leadingobject
-        !iv_wi_id        TYPE /esrcc/workflowid
-        !iv_status       TYPE /esrcc/status_de
-        !iv_user         TYPE syst-uname OPTIONAL
-        !iv_comment      TYPE /esrcc/comment OPTIONAL .
-    CLASS-METHODS update_cc_cost
-      IMPORTING
-        !it_leading_data TYPE /esrcc/tt_wf_leadingobject
-        !iv_wi_id        TYPE /esrcc/workflowid
-        !iv_status       TYPE /esrcc/status_de
-        !iv_user         TYPE syst-uname OPTIONAL
-        !iv_comment      TYPE /esrcc/comment OPTIONAL .
-    CLASS-METHODS update_rec_cost
-      IMPORTING
-        !it_leading_data TYPE /esrcc/tt_wf_leadingobject
-        !iv_wi_id        TYPE /esrcc/workflowid
-        !iv_status       TYPE /esrcc/status_de
-        !iv_user         TYPE syst-uname OPTIONAL
-        !iv_comment      TYPE /esrcc/comment OPTIONAL .
-    CLASS-METHODS update_srv_cost
-      IMPORTING
-        !it_leading_data TYPE /esrcc/tt_wf_leadingobject
-        !iv_wi_id        TYPE /esrcc/workflowid
-        !iv_status       TYPE /esrcc/status_de
-        !iv_user         TYPE syst-uname OPTIONAL
-        !iv_comment      TYPE /esrcc/comment OPTIONAL .
+  class-methods UPDATE_CB_LI
+    importing
+      !IT_LEADING_DATA type /ESRCC/TT_WF_LEADINGOBJECT
+      !IV_WI_ID type /ESRCC/WORKFLOWID
+      !IV_STATUS type /ESRCC/STATUS_DE
+      !IV_USER type SYST-UNAME optional
+      !IV_COMMENT type /ESRCC/COMMENT optional .
+  class-methods UPDATE_CC_COST
+    importing
+      !IT_LEADING_DATA type /ESRCC/TT_WF_LEADINGOBJECT
+      !IV_WI_ID type /ESRCC/WORKFLOWID
+      !IV_STATUS type /ESRCC/STATUS_DE
+      !IV_USER type SYST-UNAME optional
+      !IV_COMMENT type /ESRCC/COMMENT optional .
+  class-methods UPDATE_REC_COST
+    importing
+      !IT_LEADING_DATA type /ESRCC/TT_WF_LEADINGOBJECT
+      !IV_WI_ID type /ESRCC/WORKFLOWID
+      !IV_STATUS type /ESRCC/STATUS_DE
+      !IV_USER type SYST-UNAME optional
+      !IV_COMMENT type /ESRCC/COMMENT optional .
+  class-methods UPDATE_SRV_COST
+    importing
+      !IT_LEADING_DATA type /ESRCC/TT_WF_LEADINGOBJECT
+      !IV_WI_ID type /ESRCC/WORKFLOWID
+      !IV_STATUS type /ESRCC/STATUS_DE
+      !IV_USER type SYST-UNAME optional
+      !IV_COMMENT type /ESRCC/COMMENT optional .
+  class-methods UPDATE_STEWARDSHIP_CONFIG
+    importing
+      !IT_LEADING_DATA type /ESRCC/TT_WF_LEADINGOBJECT
+      !IV_WI_ID type /ESRCC/WORKFLOWID
+      !IV_STATUS type /ESRCC/STATUS_DE
+      !IV_USER type SYST-UNAME optional
+      !IV_COMMENT type /ESRCC/COMMENT optional .
+  class-methods UPDATE_CO_RULE_CONFIG
+    importing
+      !IT_LEADING_DATA type /ESRCC/TT_WF_LEADINGOBJECT
+      !IV_WI_ID type /ESRCC/WORKFLOWID
+      !IV_STATUS type /ESRCC/STATUS_DE
+      !IV_USER type SYST-UNAME optional
+      !IV_COMMENT type /ESRCC/COMMENT optional .
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -219,4 +233,46 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
+
+
+METHOD update_co_rule_config.
+  DATA lr_rule_id TYPE RANGE OF /esrcc/chargeout_rule_id.
+
+  CHECK it_leading_data IS NOT INITIAL.
+  lr_rule_id = VALUE #( FOR rule IN it_leading_data ( sign = 'I' option = 'EQ' low = rule-rule_id ) ).
+
+  UPDATE /esrcc/co_rule SET workflow_id     = @iv_wi_id,
+                            workflow_status = @iv_status,
+                            last_changed_by = @iv_user
+*                            last_changed_at = @sy-timlo
+    WHERE rule_id IN @lr_rule_id.
+
+  IF sy-subrc = 0 AND iv_comment IS NOT INITIAL.
+    /esrcc/cl_comments_util=>modify_comments(
+      comments    = VALUE #( worfklow_id = iv_wi_id created_by = iv_user last_changed_by = iv_user status = iv_status )
+      iv_comments = iv_comment
+    ).
+  ENDIF.
+ENDMETHOD.
+
+
+METHOD update_stewardship_config.
+  DATA lr_stewardship_uuid TYPE RANGE OF sysuuid_x16.
+
+  CHECK it_leading_data IS NOT INITIAL.
+  lr_stewardship_uuid = VALUE #( FOR stw IN it_leading_data ( sign = 'I' option = 'EQ' low = stw-stewardship_uuid ) ).
+
+  UPDATE /esrcc/stewrdshp SET workflow_id     = @iv_wi_id,
+                              workflow_status = @iv_status,
+                              last_changed_by = @iv_user
+*                              last_changed_at = @sy-timlo
+    WHERE stewardship_uuid IN @lr_stewardship_uuid.
+
+  IF sy-subrc = 0 AND iv_comment IS NOT INITIAL.
+    /esrcc/cl_comments_util=>modify_comments(
+      comments    = VALUE #( worfklow_id = iv_wi_id created_by = iv_user last_changed_by = iv_user status = iv_status )
+      iv_comments = iv_comment
+    ).
+  ENDIF.
+ENDMETHOD.
 ENDCLASS.

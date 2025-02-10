@@ -17,14 +17,20 @@
     <DD07V>
      <VALPOS>0001</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
-     <DOMVALUE_L>ERP</DOMVALUE_L>
-     <DDTEXT>ERP SYSTEM (Amount from System)</DDTEXT>
+     <DOMVALUE_L>SCC</DOMVALUE_L>
+     <DDTEXT>EXA SCC (Virtual SCC Charge-in)</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0002</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
-     <DOMVALUE_L>SCC</DOMVALUE_L>
-     <DDTEXT>EXA SCC (Virtual SCC Charge-in)</DDTEXT>
+     <DOMVALUE_L>EXT</DOMVALUE_L>
+     <DDTEXT>Extracted (Amount from ERP System)</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <VALPOS>0003</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>UPL</DOMVALUE_L>
+     <DDTEXT>Uploaded (Amount from Excel)</DDTEXT>
     </DD07V>
    </DD07V_TAB>
   </asx:values>

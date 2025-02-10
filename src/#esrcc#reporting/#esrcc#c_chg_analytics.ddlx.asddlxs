@@ -310,6 +310,14 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   @UI.textArrangement: #TEXT_ONLY
   @EndUserText.label: 'Charge-Out Status'
   Status;
+  @UI.lineItem: [ {
+  position: 420 ,
+  importance: #MEDIUM
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_PROCESSTYPE', element: 'ProcessType' } }]
+  @UI.selectionField: [{ position: 110 }]
+  @UI.textArrangement: #TEXT_ONLY
+  ProcessType;
 
   //hidden fields
   @UI.hidden: true
@@ -346,5 +354,16 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   RecCostCenterdescription;
   @UI.hidden: true
   functionalareadescription;
+  @UI.hidden: true
+  ProcessTypedescription;
+  @UI.hidden: true
+  UUID;
+  @UI.hidden: true
+  ParentUUID;
+  @UI.hidden: true
+  RootUUID;
+  @UI.hidden: true
+  Currencytype;
+  
 
 }

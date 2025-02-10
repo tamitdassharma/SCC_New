@@ -37,6 +37,18 @@
      <DOMVALUE_L>CHR</DOMVALUE_L>
      <DDTEXT>Charge-out to Receiver</DDTEXT>
     </DD07V>
+    <DD07V>
+     <VALPOS>0005</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>CST</DOMVALUE_L>
+     <DDTEXT>Stewardship Configuration</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <VALPOS>0006</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>CCR</DOMVALUE_L>
+     <DDTEXT>Charge-out Rules Configuration</DDTEXT>
+    </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>
     <LANGU>D</LANGU>
@@ -70,6 +82,16 @@
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>CHR</DOMVALUE_L>
      <DDTEXT>Verrechnung an Empfänger</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0005</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>CST</DOMVALUE_L>
+    </item>
+    <item>
+     <VALPOS>0006</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>CCR</DOMVALUE_L>
     </item>
    </DD07_TEXTS>
   </asx:values>

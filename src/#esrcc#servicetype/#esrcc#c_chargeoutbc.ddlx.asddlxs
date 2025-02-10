@@ -41,7 +41,7 @@ annotate view /ESRCC/C_ChargeoutBc with
     parentId: 'CE',
     position: 30
   }]
-  
+
   @UI.hidden: true
   Uuid;
 
@@ -58,15 +58,15 @@ annotate view /ESRCC/C_ChargeoutBc with
   @UI.lineItem: [ { position: 3 } ]
   @UI.fieldGroup: [{ qualifier: 'ValidityGroup', position: 20 }]
   Validto;
-  
+
   @UI.identification: [ { position: 4 } ]
   @UI.lineItem: [ { position: 4 } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_ChargeoutRule_F4', element: 'RuleId' },
-                                       additionalBinding: [{ element: 'ChargeoutMethod', localElement: 'ChargeoutMethod' }],
+                                       additionalBinding: [{ element: 'ChargeoutMethod', localElement: 'ChargeoutMethod', usage: #RESULT }],
                                        useForValidation: true }]
   ChargeoutRuleId;
-  
+
   @UI.identification: [ { position: 5 } ]
   @UI.lineItem: [ { position: 5 } ]
   ChargeoutMethod;
@@ -89,7 +89,7 @@ annotate view /ESRCC/C_ChargeoutBc with
 
   @UI.hidden
   ServiceProductDescription;
-  
+
   @UI.hidden
   ChargeoutMethodDescription;
 }

@@ -19,6 +19,11 @@ define view entity /ESRCC/C_CoRule
       Uom,
       @ObjectModel.text.element: ['AllocationKeyDescription']
       AdhocAllocationKey,
+      WorkflowId,
+      @ObjectModel.text.element: ['WorkflowStatusDescription']
+      WorkflowStatus,
+      Comments,
+      WorkflowStatusCriticality,
       CreatedBy,
       CreatedAt,
       LastChangedBy,
@@ -29,19 +34,21 @@ define view entity /ESRCC/C_CoRule
       SingletonID,
 
       @Semantics.text: true
-      _ChargeOut.text              as ChargeoutMethodDescription,
+      _ChargeOut.text                             as ChargeoutMethodDescription,
       @Semantics.text: true
-      _UoM.UnitOfMeasureLongName   as UomDescription,
+      _UoM.UnitOfMeasureLongName                  as UomDescription,
       @Semantics.text: true
-      _CapacityVersionText.text    as CapacityVersionDescription,
+      _CapacityVersionText.text                   as CapacityVersionDescription,
       @Semantics.text: true
-      _ConsumptionVersionText.text as ConsumptionVersionDescription,
+      _ConsumptionVersionText.text                as ConsumptionVersionDescription,
       @Semantics.text: true
-      _CostVersionText.text        as CostVersionDescription,
+      _CostVersionText.text                       as CostVersionDescription,
       @Semantics.text: true
-      _KeyVersionText.text         as KeyVersionDescription,
+      _KeyVersionText.text                        as KeyVersionDescription,
       @Semantics.text: true
-      _AllocationKeyText.text      as AllocationKeyDescription,
+      _AllocationKeyText.AllocationKeyDescription as AllocationKeyDescription,
+      @Semantics.text: true
+      _WorkflowStatusText.text                    as WorkflowStatusDescription,
       @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/CL_CONFIG_VE_HANDLER'
       HideCostVersion,
       @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/CL_CONFIG_VE_HANDLER'

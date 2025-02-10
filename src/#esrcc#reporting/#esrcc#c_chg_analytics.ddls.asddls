@@ -22,6 +22,8 @@ as projection on /ESRCC/I_CHG_ANALYTICS
     Costobject,
     @ObjectModel.text.element: [ 'costcenterdescription' ]
     Costcenter,
+    @ObjectModel.text.element: [ 'ProcessTypedescription' ]
+    ProcessType,
     @ObjectModel.text.element: [ 'serviceproductdescription' ]
     Serviceproduct,
     ReceiverSysId,
@@ -96,6 +98,12 @@ as projection on /ESRCC/I_CHG_ANALYTICS
     @ObjectModel.filter.enabled: false
     @Semantics.amount.currencyCode: 'Currency'
     RecTotalCost,
+    @ObjectModel.filter.enabled: false
+    @Semantics.amount.currencyCode: 'Currency'
+    RecVirtualTotalCost,
+    @ObjectModel.filter.enabled: false
+    @Semantics.amount.currencyCode: 'Currency'
+    RecERPTotalCost,
     @ObjectModel.text.element: [ 'statusdescription' ]
     Status,
     @ObjectModel.text.element: [ 'oecdDescription' ]
@@ -136,6 +144,8 @@ as projection on /ESRCC/I_CHG_ANALYTICS
     statusdescription,
     @Semantics.text: true
     oecdDescription,
+    @Semantics.text: true
+    ProcessTypedescription,
     @ObjectModel.filter.enabled: false
     legalentitycountry,
     @ObjectModel.filter.enabled: false

@@ -180,5 +180,8 @@ define root custom entity /ESRCC/C_EXECUTION_COCKPIT
       messagetypeservice     : abap.char( 1 );
       @UI.hidden             : true
       messagetypechargeout   : abap.char( 1 );
-
+      @UI.hidden             : true
+      chain_id               : /esrcc/chain_id;
+      @UI.hidden             : true
+      chain_sequence         : /esrcc/chain_sequence;
 }

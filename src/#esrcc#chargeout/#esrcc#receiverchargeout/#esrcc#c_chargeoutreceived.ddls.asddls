@@ -23,6 +23,8 @@ as projection on /ESRCC/I_ChargeoutReceived
     Costobject,
     @ObjectModel.text.element: [ 'costcenterdescription' ]
     Costcenter,
+    @ObjectModel.text.element: [ 'ProcessTypedescription' ]
+    ProcessType,
     @ObjectModel.text.element: [ 'serviceproductdescription' ]
     Serviceproduct,
     ReceiverSysId,
@@ -102,7 +104,8 @@ as projection on /ESRCC/I_ChargeoutReceived
     RecCostObjectdescription, 
     @Semantics.text: true
     chargeoutdescription, 
-    
+    @Semantics.text: true
+    ProcessTypedescription,
     _CurrencyTypeText.text as currenytext,
     @ObjectModel.text.element: [ 'legalentitycountryname' ]
     LECountry,

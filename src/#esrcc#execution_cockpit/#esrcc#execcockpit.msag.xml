@@ -24,19 +24,19 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
      <MSGNR>002</MSGNR>
-     <TEXT>Charge Out Method (Direct/Indirect) for Service not maintained</TEXT>
+     <TEXT>Charge-out rule for service not maintained</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
      <MSGNR>003</MSGNR>
-     <TEXT>Service Charge out Configuration for Service not maintained</TEXT>
+     <TEXT>Charge-out configuration for service not maintained</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
      <MSGNR>004</MSGNR>
-     <TEXT>Receivers for Service not maintained</TEXT>
+     <TEXT>Receivers for charge-out not found</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
@@ -54,13 +54,55 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
      <MSGNR>007</MSGNR>
-     <TEXT>No Authorization to Calculate Service Cost Share &amp; Markup</TEXT>
+     <TEXT>No Authorization to Calculate Service Product Costing</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
      <MSGNR>008</MSGNR>
      <TEXT>No Authorization to Calculate Chargeout to Receivers</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Use sequential charge-out action to process</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>No Authorization to Finalize Cost Base &amp; Stewardship</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>No Authorization to Re-open Cost Base &amp; Stewardship</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>No Authorization to Finalize Service Product Costing</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>013</MSGNR>
+     <TEXT>No Authorization to Re-open Service Product Costing</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>014</MSGNR>
+     <TEXT>No Authorization to Finalize Chargeout to Receivers</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>015</MSGNR>
+     <TEXT>No Authorization to Re-open Chargeout to Receivers</TEXT>
     </T100>
    </T100>
   </asx:values>

@@ -11,7 +11,7 @@
   }
 }
 
-@UI.presentationVariant: [{ groupBy: [ 'Serviceproduct'] }]
+//@UI.presentationVariant: [{ groupBy: [ 'Serviceproduct'] }]
 annotate view /ESRCC/C_SRV_WORKFLOW with
 {
   @UI.facet: [

@@ -72,9 +72,9 @@ annotate view /ESRCC/C_CostBaseStewardship with
   @UI.lineItem: [
    {  position: 5 ,
     importance: #MEDIUM,
-    label: '',
-    iconUrl: 'xe19c',
-    cssDefault:{width: '5rem'}
+    label: ''
+//    iconUrl: 'xe19c',
+//    cssDefault:{width: '5rem'}
   } ]
   @UI.fieldGroup: [
   {
@@ -281,6 +281,14 @@ annotate view /ESRCC/C_CostBaseStewardship with
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_PROFITCENTER_F4', element: 'ProfitCenter' }}]
   @UI.textArrangement: #TEXT_LAST
   Profitcenter;
+  @UI.lineItem: [ {
+    position: 91 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '10rem'}
+  } ]
+  @UI.textArrangement: #TEXT_ONLY
+  ProcessType;
 
   @UI.lineItem: [ {
     position: 120 ,
@@ -469,6 +477,8 @@ annotate view /ESRCC/C_CostBaseStewardship with
   statusdescription;
   @UI.hidden: true
   Controllingarea;
+  @UI.hidden: true
+  ProcessTypedescription;
   @EndUserText.label: 'Currency'
   @Consumption.valueHelpDefinition: [ { entity: { name: 'I_Currency', element: 'Currency' }} ]
 //  @UI.hidden: true

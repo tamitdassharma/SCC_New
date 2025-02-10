@@ -531,7 +531,7 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    SELECT cost_element_uuid, cost_element
+    SELECT cost_element_uuid, sysid, legal_entity, company_code, cost_element
       FROM /esrcc/cst_elmnt
       FOR ALL ENTRIES IN @description_template
       WHERE sysid        = @description_template-sysid
@@ -545,7 +545,10 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
         ( VALUE #(
               BASE CORRESPONDING #( <description> )
               client            = sy-mandt
-              cost_element_uuid = VALUE #( cost_elements[ cost_element = <description>-cost_element ]-cost_element_uuid OPTIONAL ) ) ) ).
+              cost_element_uuid = VALUE #( cost_elements[ sysid = <description>-sysid
+                                                          legal_entity = <description>-legal_entity
+                                                          company_code = <description>-company_code
+                                                          cost_element = <description>-cost_element ]-cost_element_uuid OPTIONAL ) ) ) ).
 
     DELETE description_db WHERE cost_element_uuid IS INITIAL.
     MODIFY /esrcc/cst_elmtt FROM TABLE @description_db.
@@ -699,7 +702,7 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    SELECT cost_object_uuid, cost_object, cost_center
+    SELECT cost_object_uuid, sysid, legal_entity, company_code, cost_object, cost_center
       FROM /esrcc/cst_objct
       FOR ALL ENTRIES IN @description_template
       WHERE sysid        = @description_template-sysid
@@ -714,7 +717,10 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
         ( VALUE #(
               BASE CORRESPONDING #( <description> )
               client           = sy-mandt
-              cost_object_uuid = VALUE #( cost_objects[ cost_object = <description>-cost_object
+              cost_object_uuid = VALUE #( cost_objects[ sysid = <description>-sysid
+                                                        legal_entity = <description>-legal_entity
+                                                        company_code = <description>-company_code
+                                                        cost_object = <description>-cost_object
                                                         cost_center = <description>-cost_center ]-cost_object_uuid OPTIONAL ) ) ) ).
 
     DELETE description_db WHERE cost_object_uuid IS INITIAL.
@@ -774,7 +780,7 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    SELECT cost_element_uuid, cost_element
+    SELECT cost_element_uuid, sysid, legal_entity, company_code, cost_element
       FROM /esrcc/cst_elmnt
       FOR ALL ENTRIES IN @characteristic_template
       WHERE sysid        = @characteristic_template-sysid
@@ -811,7 +817,10 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
                                                           company_code = <characteristic>-company_code
                                                           cost_element = <characteristic>-cost_element
                                                           valid_from   = <characteristic>-valid_from ] OPTIONAL )
-            cost_element_uuid = VALUE #( cost_elements[ cost_element = <characteristic>-cost_element ]-cost_element_uuid OPTIONAL ) IN
+            cost_element_uuid = VALUE #( cost_elements[ sysid = <characteristic>-sysid
+                                                        legal_entity = <characteristic>-legal_entity
+                                                        company_code = <characteristic>-company_code
+                                                        cost_element = <characteristic>-cost_element ]-cost_element_uuid OPTIONAL ) IN
         ( VALUE #( BASE CORRESPONDING #( <characteristic> )
                    client              = sy-mandt
                    cst_elmnt_char_uuid = COND #( WHEN characteristic-cst_elmnt_char_uuid IS INITIAL

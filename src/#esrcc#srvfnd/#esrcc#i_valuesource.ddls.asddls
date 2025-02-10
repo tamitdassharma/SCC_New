@@ -1,6 +1,6 @@
 @AbapCatalog.viewEnhancementCategory: [#NONE]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Value Source'
+@EndUserText.label: 'Data Source'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.resultSet.sizeCategory: #XS
 @ObjectModel.usageType:{

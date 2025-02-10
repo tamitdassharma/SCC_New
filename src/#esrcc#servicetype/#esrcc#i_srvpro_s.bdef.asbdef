@@ -17,7 +17,10 @@ authorization master ( global )
   draft action Activate;
   draft action Discard;
   draft action Resume;
-  draft determine action Prepare;
+  draft determine action Prepare
+  {
+    validation ServiceProduct~ValidateData;
+  }
   //  action ( features : instance ) SelectCustomizingTransptReq parameter D_SelectCustomizingTransptReqP result [1] $self;
 
   association _ServiceProduct { create ( features : instance, precheck ); with draft; }
@@ -34,7 +37,7 @@ authorization dependent by _ServiceProductAll
   field ( mandatory : create )
   Serviceproduct;
 
-  field( mandatory )
+  field ( mandatory )
   Servicetype, OecdTpg;
 
   field ( readonly )
@@ -44,7 +47,7 @@ authorization dependent by _ServiceProductAll
   Serviceproduct;
 
 
-  update ( features : global );
+  update ( features : global, precheck );
   delete ( features : global );
 
   mapping for /ESRCC/SRVPRO
@@ -63,6 +66,8 @@ authorization dependent by _ServiceProductAll
 
   association _ServiceProductAll { with draft; }
   association _ServiceProductText { create ( features : global ); with draft; }
+
+  validation ValidateData on save { create; update; }
 
   //  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
 }

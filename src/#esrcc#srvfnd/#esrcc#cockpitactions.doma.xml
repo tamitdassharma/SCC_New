@@ -68,6 +68,18 @@
      <DOMVALUE_L>09</DOMVALUE_L>
      <DDTEXT>Re-Open Mark-up and Allocations/Charge-outs​</DDTEXT>
     </DD07V>
+    <DD07V>
+     <VALPOS>0010</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>10</DOMVALUE_L>
+     <DDTEXT>Calculate &amp; Finalize Sequential Charge-outs</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <VALPOS>0011</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>11</DOMVALUE_L>
+     <DDTEXT>Re-Open Sequential Charge-outs</DDTEXT>
+    </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>
     <LANGU>D</LANGU>
@@ -131,6 +143,16 @@
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>09</DOMVALUE_L>
      <DDTEXT>Betrag zur Verrechnung erneut öffnen</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0010</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>10</DOMVALUE_L>
+    </item>
+    <item>
+     <VALPOS>0011</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>11</DOMVALUE_L>
     </item>
    </DD07_TEXTS>
   </asx:values>

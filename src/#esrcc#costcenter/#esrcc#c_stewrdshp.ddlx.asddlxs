@@ -26,37 +26,49 @@ annotate view /ESRCC/C_Stewrdshp with
     position: 10
   },
   {
-     id: 'Validity',
-     purpose: #STANDARD,
-     type: #FIELDGROUP_REFERENCE,
-     parentId: 'CE',
-     targetQualifier: 'ValidityGroup',
-     label: 'Validity',
-     position: 20
-   },
+    id: 'Validity',
+    purpose: #STANDARD,
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'CE',
+    targetQualifier: 'ValidityGroup',
+    label: 'Validity',
+    position: 20
+  },
+  {
+    id: 'Workflow',
+    purpose: #STANDARD,
+    type: #FIELDGROUP_REFERENCE,
+    label: 'Workflow Information',
+    targetQualifier: 'WorkflowGroup',
+    parentId: 'CE',
+    position: 30
+  },
   {
     id: 'Admin',
     type: #FIELDGROUP_REFERENCE,
     parentId: 'CE',
     targetQualifier: 'AdminGroup',
     label: 'Admin Information',
-    position: 30
+    position: 40
   },
   {
     id: 'ServiceProduct',
     type: #LINEITEM_REFERENCE,
     targetElement: '_ServiceProduct',
     parentId: 'CE',
-    position: 40
+    position: 50
   },
   {
     id: 'ServiceReceiver',
     type: #LINEITEM_REFERENCE,
     targetElement: '_ServiceReceiver',
     parentId: 'CE',
-    position: 50
+    position: 60
   } ]
 
+  @UI.lineItem: [{ type: #FOR_ACTION, dataAction: 'Submit', label: 'Submit', position: 10 },
+                 { type: #FOR_ACTION, dataAction: 'Finalize', label: 'Finalize', position: 20 },
+                 { type: #FOR_ACTION, dataAction: 'Comment', label: 'Comments', position: 30 }]
   @UI.hidden: true
   @EndUserText.label: 'Stewardship UUID'
   StewardshipUuid;
@@ -136,20 +148,44 @@ annotate view /ESRCC/C_Stewrdshp with
   @UI.hidden: true
   @EndUserText.label: 'Cost Object UUID'
   CostObjectUuid;
-
+  
+  @UI.identification: [ { position: 10 } ]
+  @UI.lineItem: [ { position: 10 } ]
+  ChainId;
+  
+  @UI.identification: [ { position: 11 } ]
   @UI.lineItem: [ { position: 11 } ]
+  ChainSequence;
+  
+  @UI.lineItem: [ { position: 12 } ]
+  @UI.fieldGroup: [{ qualifier: 'WorkflowGroup', position: 10 }]
+  WorkflowId;
+  
+  @UI.lineItem: [ { position: 13, criticality: 'WorkflowStatusCriticality', criticalityRepresentation: #WITHOUT_ICON } ]
+  @UI.fieldGroup: [{ qualifier: 'WorkflowGroup', position: 20, criticality: 'WorkflowStatusCriticality', criticalityRepresentation: #WITHOUT_ICON }]
+  @UI.textArrangement: #TEXT_ONLY
+  @EndUserText.label: 'Workflow Status'
+  WorkflowStatus;
+  
+  @UI.lineItem: [{ hidden: true }]
+  @UI.multiLineText: true
+  @UI.fieldGroup: [{ qualifier: 'WorkflowGroup', position: 30 }]
+  @EndUserText.label: 'Comments (When Submitted)'
+  Comments;
+
+  @UI.lineItem: [ { position: 15 } ]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 1 }]
   CreatedBy;
 
-  @UI.lineItem: [ { position: 12, cssDefault.width: '9.5rem' } ]
+  @UI.lineItem: [ { position: 16, cssDefault.width: '9.5rem' } ]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 2 }]
   CreatedAt;
 
-  @UI.lineItem: [ { position: 13 } ]
+  @UI.lineItem: [ { position: 17 } ]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 3 }]
   LastChangedBy;
 
-  @UI.lineItem: [ { position: 14, cssDefault.width: '9.5rem' } ]
+  @UI.lineItem: [ { position: 18, cssDefault.width: '9.5rem' } ]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 4 }]
   LastChangedAt;
 
@@ -163,4 +199,8 @@ annotate view /ESRCC/C_Stewrdshp with
   CostObjectDescription;
   @UI.hidden: true
   CostCenterDescription;
+  @UI.hidden: true
+  WorkflowStatusCriticality;
+  @UI.hidden: true
+  WorkflowStatusDescription;
 }

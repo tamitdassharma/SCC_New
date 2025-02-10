@@ -7,6 +7,7 @@ as projection on /ESRCC/I_CostBaseStewardship
 {
     key UUID,
     key Currencytype,
+    @ObjectModel.text.element: [ 'costdatasetdescription' ]
     Fplv,
     Ryear,
     Poper,
@@ -19,7 +20,6 @@ as projection on /ESRCC/I_CostBaseStewardship
     Costobject,
     @ObjectModel.text.element: [ 'costcenterdescription' ]
     Costcenter,
-    
     @ObjectModel.text.element: [ 'billingfrequencydescription' ]
     Billingfrequqncy,
     @ObjectModel.text.element: [ 'businessdescription' ]
@@ -31,6 +31,8 @@ as projection on /ESRCC/I_CostBaseStewardship
     Controllingarea,    
     @ObjectModel.text.element: [ 'billingperioddescription' ]
     Billingperiod,
+    @ObjectModel.text.element: [ 'ProcessTypedescription' ]
+    ProcessType,
     @Semantics.currencyCode: true
     Currency,
     @DefaultAggregation: #SUM
@@ -79,6 +81,8 @@ as projection on /ESRCC/I_CostBaseStewardship
     billingperioddescription,
     @Semantics.text: true 
     statusdescription,
+    @Semantics.text: true 
+    ProcessTypedescription,
     @ObjectModel.text.element: [ 'countryname' ]
     Country,
     CreatedBy,
