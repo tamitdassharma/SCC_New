@@ -1,5 +1,6 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Receivers Chargeout Cost'
-@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
 define root view entity /ESRCC/C_RECEIVER_WORKFLOW 
 provider contract transactional_query

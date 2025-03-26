@@ -53,27 +53,21 @@ annotate view /ESRCC/C_WfCust with
   @UI.identification: [ { position: 4 } ]
   @UI.lineItem: [ { position: 4 } ]
   @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CosCen_F4', element: 'Sysid'},
-                                       additionalBinding: [{ element: 'Costobject', localElement: 'Costobject' },
-                                                           { element: 'Costcenter', localElement: 'Costcenter' }],
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId'},
                                        useForValidation: true }]
   Sysid;
 
   @UI.identification: [ { position: 5 } ]
   @UI.lineItem: [ { position: 5, cssDefault.width: '11.5rem' } ]
   @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CosCen_F4', element: 'Costobject'},
-                                       additionalBinding: [{ element: 'Sysid', localElement: 'Sysid', usage: #FILTER_AND_RESULT },
-                                                           { element: 'Costcenter', localElement: 'Costcenter' }],
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTOBJECTS', element: 'Costobject'},
                                        useForValidation: true }]
   Costobject;
 
   @UI.identification: [ { position: 6 } ]
   @UI.lineItem: [ { position: 6 } ]
   @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CosCen_F4', element: 'Costcenter'},
-                                       additionalBinding: [{ element: 'Sysid', localElement: 'Sysid', usage: #FILTER_AND_RESULT },
-                                                           { element: 'Costobject', localElement: 'Costobject' }],
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_WF_COST_NUMBER_F4', element: 'CostCenter'},
                                        useForValidation: true }]
   Costcenter;
 
@@ -113,6 +107,4 @@ annotate view /ESRCC/C_WfCust with
   SysidDescription;
   @UI.hidden: true
   CostobjectDescription;
-  @UI.hidden: true
-  CostcenterDescription;
 }

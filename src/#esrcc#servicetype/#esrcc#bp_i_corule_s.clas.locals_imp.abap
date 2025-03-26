@@ -11,7 +11,6 @@ CLASS lcl_custom_validation DEFINITION INHERITING FROM cl_abap_behv.
         capacityversion    TYPE if_abap_behv=>t_xflag,
         consumptionversion TYPE if_abap_behv=>t_xflag,
         keyversion         TYPE if_abap_behv=>t_xflag,
-        uom                TYPE if_abap_behv=>t_xflag,
         adhocallocationkey TYPE if_abap_behv=>t_xflag,
       END OF ts_control_rule,
 
@@ -82,10 +81,6 @@ CLASS lcl_custom_validation IMPLEMENTATION.
 
     IF control-consumptionversion = if_abap_behv=>mk-on AND co_rule_relevance-consumption_version = abap_true.
       APPEND VALUE #( fieldname = 'CONSUMPTIONVERSION' ) TO fields.
-    ENDIF.
-
-    IF control-uom = if_abap_behv=>mk-on AND co_rule_relevance-uom = abap_true.
-      APPEND VALUE #( fieldname = 'UOM' ) TO fields.
     ENDIF.
 
     IF control-keyversion = if_abap_behv=>mk-on AND co_rule_relevance-key_version = abap_true.
@@ -284,10 +279,8 @@ CLASS lsc_/esrcc/i_corule_s IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-*    DATA(chargeout_modified) = update-rule.
     DATA(co_rule_relevances) = /esrcc/cl_config_util=>get_co_rule_config( ).
 
-*    LOOP AT chargeout_modified ASSIGNING FIELD-SYMBOL(<chargeout>) WHERE %control-ChargeoutMethod <> if_abap_behv=>mk-on.
     LOOP AT update-rule ASSIGNING FIELD-SYMBOL(<chargeout>) WHERE %control-chargeoutmethod = if_abap_behv=>mk-on.
       DATA(co_rule_relevance) = VALUE #( co_rule_relevances[ chargeout_method = <chargeout>-chargeoutmethod ] OPTIONAL ).
 
@@ -297,7 +290,6 @@ CLASS lsc_/esrcc/i_corule_s IMPLEMENTATION.
                                    capacity_version      = COND #( WHEN co_rule_relevance-capacity_version     = abap_true THEN <chargeout>-capacityversion )
                                    consumption_version   = COND #( WHEN co_rule_relevance-consumption_version  = abap_true THEN <chargeout>-consumptionversion )
                                    key_version           = COND #( WHEN co_rule_relevance-key_version          = abap_true THEN <chargeout>-keyversion )
-                                   uom                   = COND #( WHEN co_rule_relevance-uom                  = abap_true THEN <chargeout>-uom )
                                    adhoc_allocation_key  = COND #( WHEN co_rule_relevance-adhoc_allocation_key = abap_true THEN <chargeout>-adhocallocationkey )
                                    created_by            = <chargeout>-createdby
                                    created_at            = <chargeout>-createdat
@@ -310,29 +302,11 @@ CLASS lsc_/esrcc/i_corule_s IMPLEMENTATION.
       ENDIF.
     ENDLOOP.
 
-*      indirect = VALUE #( FOR dir IN chargeout_modified WHERE ( %control-ChargeoutMethod = if_abap_behv=>mk-on AND ChargeoutMethod = 'I' )
-*                          ( CORRESPONDING /esrcc/co_rule( dir MAPPING cost_version          = costversion
-*                                                                      created_by            = createdby
-*                                                                      created_at            = createdat
-*                                                                      last_changed_by       = lastchangedby
-*                                                                      last_changed_at       = lastchangedat
-*                                                                      local_last_changed_at = locallastchangedat ) ) ).
-*      IF indirect IS NOT INITIAL.
-*        MODIFY indirect FROM VALUE #( ) TRANSPORTING consumption_version capacity_version WHERE consumption_version IS NOT INITIAL OR capacity_version IS NOT INITIAL.
-*        UPDATE /esrcc/co_rule FROM TABLE @indirect.
-*      ENDIF.
-
     IF co_rules IS NOT INITIAL.
       UPDATE /esrcc/co_rule FROM TABLE @co_rules.
     ENDIF.
 
-*    SELECT wgt~* FROM /esrcc/aloc_wgt AS wgt
-*      INNER JOIN @chargeout_modified AS ch
-*         ON ch~ruleid = wgt~rule_id
-*      INTO TABLE @DATA(weightage).
-*    IF weightage IS NOT INITIAL.
     IF rule_ids IS NOT INITIAL.
-*      DELETE /esrcc/aloc_wgt FROM TABLE @weightage.
       DELETE FROM /esrcc/aloc_wgt WHERE rule_id IN @rule_ids.
     ENDIF.
   ENDMETHOD.
@@ -343,18 +317,19 @@ CLASS lhc_/esrcc/i_corule DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PUBLIC SECTION.
     TYPES: tt_corule TYPE TABLE FOR READ RESULT /esrcc/i_corule_s\\rule.
 
-    CLASS-METHODS set_workflow_status_to_draft
-      IMPORTING entities TYPE tt_corule.
+    CLASS-METHODS set_workflow_status
+      IMPORTING
+        entities                     TYPE tt_corule
+        for_workflow_internal_status TYPE /esrcc/status_de
+        to_workflow_status           TYPE /esrcc/status_de.
+
+    CLASS-METHODS set_workflow_internal_status
+      IMPORTING
+        entities           TYPE tt_corule
+        to_workflow_status TYPE /esrcc/status_de.
 
   PRIVATE SECTION.
     METHODS:
-*      validaterecordchanges FOR VALIDATE ON SAVE
-*        IMPORTING
-*          keys FOR Rule~ValidateRecordChanges,
-*      get_global_features FOR GLOBAL FEATURES
-*        IMPORTING
-*        REQUEST requested_features FOR rule
-*        RESULT result,
       precheck_update FOR PRECHECK
         IMPORTING entities FOR UPDATE rule.
 
@@ -372,35 +347,19 @@ CLASS lhc_/esrcc/i_corule DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS submit FOR MODIFY
       IMPORTING keys FOR ACTION rule~submit RESULT result.
 
-    METHODS updateworkflowstatus FOR DETERMINE ON MODIFY
+    METHODS updateworkflowstatus FOR DETERMINE ON SAVE
       IMPORTING keys FOR rule~updateworkflowstatus.
     METHODS triggerworkflow FOR DETERMINE ON SAVE
       IMPORTING keys FOR rule~triggerworkflow.
+    METHODS updateinternalworkflowstatus FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR rule~updateinternalworkflowstatus.
+    METHODS reopen FOR MODIFY
+      IMPORTING keys FOR ACTION rule~reopen RESULT result.
+    METHODS updatecomment FOR DETERMINE ON SAVE
+      IMPORTING keys FOR rule~updatecomment.
 ENDCLASS.
 
 CLASS lhc_/esrcc/i_corule IMPLEMENTATION.
-*  METHOD validaterecordchanges.
-*    DATA change TYPE REQUEST FOR CHANGE /ESRCC/I_CoRule_S.
-*    SELECT SINGLE TransportRequestID FROM /esrcc/d_co_ru_s INTO @DATA(TransportRequestID). "#EC CI_NOORDER
-*    lhc_rap_tdat_cts=>get( )->validate_changes(
-*                                transport_request = TransportRequestID
-*                                table             = '/ESRCC/CO_RULE'
-*                                keys              = REF #( keys )
-*                                reported          = REF #( reported )
-*                                failed            = REF #( failed )
-*                                change            = REF #( change-Rule ) ).
-*  ENDMETHOD.
-*  METHOD get_global_features.
-*    DATA edit_flag TYPE abp_behv_flag VALUE if_abap_behv=>fc-o-enabled.
-*    IF cl_bcfg_cd_reuse_api_factory=>get_cust_obj_service_instance(
-*         iv_objectname = '/ESRCC/CO_RULE'
-*         iv_objecttype = cl_bcfg_cd_reuse_api_factory=>simple_table )->is_editable( ) = abap_false.
-*      edit_flag = if_abap_behv=>fc-o-disabled.
-*    ENDIF.
-**    result-%update = edit_flag.
-*    result-%delete = edit_flag.
-**    result-%assoc-_RuleText = edit_flag.
-*  ENDMETHOD.
   METHOD precheck_update.
     DATA(lo_validation) = lcl_custom_validation=>create( config_util_ref = /esrcc/cl_config_util=>create(
         EXPORTING
@@ -418,7 +377,6 @@ CLASS lhc_/esrcc/i_corule IMPLEMENTATION.
 
     LOOP AT entities INTO DATA(entity) WHERE %control-chargeoutmethod    = if_abap_behv=>mk-on
                                           OR %control-costversion        = if_abap_behv=>mk-on
-                                          OR %control-uom                = if_abap_behv=>mk-on
                                           OR %control-capacityversion    = if_abap_behv=>mk-on
                                           OR %control-consumptionversion = if_abap_behv=>mk-on
                                           OR %control-keyversion         = if_abap_behv=>mk-on
@@ -432,7 +390,6 @@ CLASS lhc_/esrcc/i_corule IMPLEMENTATION.
         entity  = CORRESPONDING #( entity )
         control = VALUE #( chargeoutmethod    = entity-%control-chargeoutmethod
                            costversion        = entity-%control-costversion
-                           uom                = entity-%control-uom
                            capacityversion    = entity-%control-capacityversion
                            consumptionversion = entity-%control-consumptionversion
                            keyversion         = entity-%control-keyversion
@@ -465,7 +422,6 @@ CLASS lhc_/esrcc/i_corule IMPLEMENTATION.
         failed_entity      = failed-rule ).
 
     DATA(lo_validation) = lcl_custom_validation=>create( config_util_ref = lo_rule ).
-
     DATA(co_rule_relevances) = /esrcc/cl_config_util=>get_co_rule_config( ).
 
     LOOP AT entities INTO DATA(entity).
@@ -473,7 +429,6 @@ CLASS lhc_/esrcc/i_corule IMPLEMENTATION.
         entity  = entity
         control = VALUE #( chargeoutmethod    = if_abap_behv=>mk-on
                            costversion        = if_abap_behv=>mk-on
-                           uom                = if_abap_behv=>mk-on
                            capacityversion    = if_abap_behv=>mk-on
                            consumptionversion = if_abap_behv=>mk-on
                            keyversion         = if_abap_behv=>mk-on
@@ -507,21 +462,19 @@ CLASS lhc_/esrcc/i_corule IMPLEMENTATION.
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(entities).
 
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( ).
     result = VALUE #( FOR wa IN entities
-                      LET submit   = COND #( WHEN ( wa-workflowstatus = '' OR wa-workflowstatus = 'D' ) AND wa-%is_draft = if_abap_behv=>mk-on THEN if_abap_behv=>fc-o-enabled
-                                             ELSE if_abap_behv=>fc-o-disabled )
-                          finalize = COND #( WHEN wa-workflowstatus = 'A' AND wa-%is_draft = if_abap_behv=>mk-on THEN if_abap_behv=>fc-o-enabled
-                                             ELSE if_abap_behv=>fc-o-disabled )
-                          update   = COND #( WHEN wa-workflowstatus = '' OR wa-workflowstatus = 'D' OR wa-workflowstatus = 'Q' OR wa-workflowstatus = 'R' OR wa-workflowstatus = 'A'
-                                                THEN if_abap_behv=>fc-o-enabled
-                                             ELSE if_abap_behv=>fc-o-disabled )
-                          delete   = COND #( WHEN wa-workflowstatus = 'F' OR wa-workflowstatus = 'P' THEN if_abap_behv=>fc-o-disabled
-                                             ELSE if_abap_behv=>fc-o-enabled )
-                      IN ( %tky              = wa-%tky
-                           %action-submit    = submit
-                           %action-finalize  = finalize
-                           %update           = update
-                           %delete           = delete
+                      LET submit   = lo_auth->regulate_action_submit( is_draft = wa-%is_draft wf_status = wa-workflowstatus )
+                          finalize = lo_auth->regulate_action_finalize( is_draft = wa-%is_draft wf_status = wa-workflowstatus )
+                          reopen   = lo_auth->regulate_action_reopen( is_draft = wa-%is_draft wf_status = wa-workflowstatus )
+                          update   = lo_auth->regulate_action_update( is_draft = wa-%is_draft wf_status = wa-workflowstatus )
+                          delete   = lo_auth->regulate_action_delete( is_draft = wa-%is_draft wf_status = wa-workflowstatus )
+                      IN ( %tky                    = wa-%tky
+                           %action-submit          = submit
+                           %action-finalize        = finalize
+                           %action-reopen          = reopen
+                           %update                 = update
+                           %delete                 = delete
                            %assoc-_ruletext  = update
                            %assoc-_weightage = update ) ).
   ENDMETHOD.
@@ -535,19 +488,22 @@ CLASS lhc_/esrcc/i_corule IMPLEMENTATION.
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(entities).
 
+    DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-finalize_in_process ).
+
     MODIFY ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
         ENTITY rule
-        UPDATE FIELDS ( workflowstatus workflowstatuscriticality )
-        WITH VALUE #( FOR entity IN entities WHERE ( workflowstatus = 'A' )
+        UPDATE FIELDS ( workflowstatus workflowstatuscriticality workflowinternalstatus )
+        WITH VALUE #( FOR entity IN entities
                         ( %tky                      = entity-%tky
-                          workflowstatus            = 'F'
-                          workflowstatuscriticality = '3' ) )
+                          workflowinternalstatus    = /esrcc/cl_wf_utility=>wf_status-finalize_in_process
+                          workflowstatus            = /esrcc/cl_wf_utility=>wf_status-finalize_in_process
+                          workflowstatuscriticality = criticality ) )
         FAILED failed
         REPORTED reported
         MAPPED mapped.
 
-    result = VALUE #( FOR entity IN entities ( %tky = entity-%tky
-                                               %param = entity ) ).
+    result = VALUE #( FOR entity IN entities ( %tky = entity-%tky %param = entity ) ).
+    reported-%other = VALUE #( ( /esrcc/cl_config_util=>message_on_action( ) ) ).
   ENDMETHOD.
 
   METHOD submit.
@@ -556,76 +512,108 @@ CLASS lhc_/esrcc/i_corule IMPLEMENTATION.
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(entities).
 
-    DELETE entities WHERE workflowstatus <> '' AND workflowstatus <> 'D'.
-    IF entities IS INITIAL.
-      RETURN.
-    ENDIF.
-
-    MODIFY ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
-        ENTITY rule
-        UPDATE FIELDS ( comments workflowid workflowstatus workflowstatuscriticality triggerworkflow )
-        WITH VALUE #( FOR entity IN entities
-                        ( %tky                      = entity-%tky
-                          workflowid                = ''
-                          comments                  = VALUE #( keys[ %tky = entity-%tky ]-%param-comments OPTIONAL )
-                          workflowstatus            = 'P'
-                          workflowstatuscriticality = '2'
-                          triggerworkflow           = abap_true ) )
-        FAILED failed
-        REPORTED reported
-        MAPPED mapped.
-
-*    IF failed IS INITIAL AND wf_active = abap_true.
-*      CALL FUNCTION '/ESRCC/FM_WF_START'
-*        EXPORTING
-*          it_leading_object = CORRESPONDING /esrcc/tt_wf_leadingobject( entities MAPPING rule_id = ruleid EXCEPT * )
-*          iv_apptype        = 'CCR'.
-*    ENDIF.
+    DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-in_process ).
+    TRY.
+        MODIFY ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
+            ENTITY rule
+            UPDATE FIELDS ( commentid comments workflowid workflowstatus workflowstatuscriticality workflowinternalstatus )
+            WITH VALUE #( FOR entity IN entities
+                            ( %tky                      = entity-%tky
+                              workflowid                = ''
+                              commentid                 = COND #( WHEN entity-commentid IS INITIAL THEN
+                                                                  cl_uuid_factory=>create_system_uuid( )->create_uuid_c32( )
+                                                                  ELSE entity-commentid )
+                              comments                  = VALUE #( keys[ %tky = entity-%tky ]-%param-comments OPTIONAL )
+                              workflowstatus            = /esrcc/cl_wf_utility=>wf_status-in_process
+                              workflowstatuscriticality = criticality
+                              workflowinternalstatus    = /esrcc/cl_wf_utility=>wf_status-in_process ) )
+            FAILED failed
+            REPORTED reported
+            MAPPED mapped.
+      CATCH cx_uuid_error.
+        "handle exception
+    ENDTRY.
 
     result = VALUE #( FOR entity IN entities ( %tky = entity-%tky
                                                %is_draft = entity-%is_draft
                                                %param-comments = entity-comments ) ).
+
+    reported-%other = VALUE #( ( /esrcc/cl_config_util=>message_on_action( ) ) ).
   ENDMETHOD.
 
   METHOD updateworkflowstatus.
-    CHECK keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
-
     READ ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
         ENTITY rule
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(entities).
 
-    set_workflow_status_to_draft( entities ).
+    " Set workflow status to "Draft"
+    set_workflow_status(
+      entities                     = entities
+      for_workflow_internal_status = /esrcc/cl_wf_utility=>wf_status-draft
+      to_workflow_status           = /esrcc/cl_wf_utility=>wf_status-draft
+    ).
+
+    " Set workflow status to "Finalized"
+    set_workflow_status(
+      entities                     = entities
+      for_workflow_internal_status = /esrcc/cl_wf_utility=>wf_status-finalize_in_process
+      to_workflow_status           = /esrcc/cl_wf_utility=>wf_status-finalized
+    ).
+
+    " Set workflow status to "Approved"
+    set_workflow_status(
+      entities                     = entities
+      for_workflow_internal_status = /esrcc/cl_wf_utility=>wf_status-reopen_in_process
+      to_workflow_status           = /esrcc/cl_wf_utility=>wf_status-approved
+    ).
   ENDMETHOD.
 
-  METHOD set_workflow_status_to_draft.
+  METHOD set_workflow_status.
+    DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = to_workflow_status ).
     MODIFY ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
         ENTITY rule
         UPDATE FIELDS ( workflowstatus workflowstatuscriticality )
-        WITH VALUE #( FOR entity IN entities WHERE ( workflowstatus <> 'D' )
+        WITH VALUE #( FOR entity IN entities WHERE ( workflowinternalstatus = for_workflow_internal_status )
                         ( %tky                      = entity-%tky
                           %is_draft                 = entity-%is_draft
-                          workflowstatus            = 'D'
-                          workflowstatuscriticality = '2'
+                          workflowstatus            = to_workflow_status
+                          workflowstatuscriticality = criticality
                           %control                  = VALUE #( workflowstatus            = if_abap_behv=>mk-on
                                                                workflowstatuscriticality = if_abap_behv=>mk-on ) ) ).
   ENDMETHOD.
 
+
+  METHOD set_workflow_internal_status.
+    MODIFY ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
+          ENTITY rule
+          UPDATE FIELDS ( workflowinternalstatus )
+          WITH VALUE #( FOR entity IN entities WHERE ( workflowinternalstatus <> to_workflow_status )
+                          ( %tky                      = entity-%tky
+                            %is_draft                 = entity-%is_draft
+                            workflowinternalstatus    = to_workflow_status
+                            %control                  = VALUE #( workflowinternalstatus = if_abap_behv=>mk-on ) ) ).
+  ENDMETHOD.
+
   METHOD triggerworkflow.
+    DATA:
+      failed_leading_objects TYPE /esrcc/tt_wf_leadingobject,
+      messages               TYPE /esrcc/tt_message.
+
     READ ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
         ENTITY rule
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(entities).
 
-    DELETE entities WHERE triggerworkflow = abap_false.
+    DELETE entities WHERE workflowinternalstatus <> /esrcc/cl_wf_utility=>wf_status-in_process.
     IF entities IS INITIAL.
       RETURN.
     ENDIF.
 
-    DATA(trigger_workflow) = abap_false.
+    DATA(workflow_internal_status) = ''.
     /esrcc/cl_wf_utility=>is_wf_on(
       EXPORTING
-        iv_apptype   = 'CCR'
+        iv_apptype   = /esrcc/cl_wf_utility=>app-bc_charge_out_rule
       IMPORTING
         ev_wf_active = DATA(wf_active)
     ).
@@ -633,96 +621,136 @@ CLASS lhc_/esrcc/i_corule IMPLEMENTATION.
     IF wf_active = abap_true.
       CALL FUNCTION '/ESRCC/FM_WF_START'
         EXPORTING
-          it_leading_object = CORRESPONDING /esrcc/tt_wf_leadingobject( entities MAPPING rule_id = ruleid EXCEPT * )
-          iv_apptype        = 'CCR'.
+          it_leading_object        = CORRESPONDING /esrcc/tt_wf_leadingobject( entities MAPPING rule_id = ruleid EXCEPT * )
+          iv_apptype               = /esrcc/cl_wf_utility=>app-bc_charge_out_rule
+        IMPORTING
+          et_failed_leading_object = failed_leading_objects
+          et_message               = messages.
 
-*      DATA(workflow_status) = 'P'.
-*      DATA(workflow_status_crit) = '2'.
-*     TO-DO: Set to in process after workflow is started successfully else set to error
+      " Set status to error for failed entities
+      DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-failed ).
+      LOOP AT failed_leading_objects INTO DATA(leading_object).
+        MODIFY entities
+            FROM VALUE #( workflowstatus = /esrcc/cl_wf_utility=>wf_status-failed
+                          workflowstatuscriticality = criticality )
+            TRANSPORTING workflowstatus workflowstatuscriticality
+            WHERE ruleid = leading_object-rule_id.
+      ENDLOOP.
+
       MODIFY ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
-      ENTITY rule
-      UPDATE FIELDS ( triggerworkflow )
-      WITH VALUE #( FOR entity IN entities
-                      ( %tky            = entity-%tky
-                        triggerworkflow = trigger_workflow ) )
-      FAILED DATA(failed_mod)
-      MAPPED DATA(mapped_mod).
+          ENTITY rule
+          UPDATE FIELDS ( workflowstatus workflowstatuscriticality workflowinternalstatus )
+          WITH VALUE #( FOR entity IN entities
+                          ( %tky                      = entity-%tky
+                            workflowstatus            = entity-workflowstatus
+                            workflowstatuscriticality = entity-workflowstatuscriticality
+                            workflowinternalstatus    = workflow_internal_status ) )
+          FAILED DATA(failed_mod)
+          MAPPED DATA(mapped_mod).
     ELSE.
-      DATA(workflow_status) = 'A'.
-      DATA(workflow_status_crit) = '3'.
-
+      criticality = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-approved ).
       MODIFY ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
         ENTITY rule
-        UPDATE FIELDS ( workflowstatus workflowstatuscriticality triggerworkflow )
+        UPDATE FIELDS ( workflowstatus workflowstatuscriticality workflowinternalstatus )
         WITH VALUE #( FOR entity IN entities
                         ( %tky                      = entity-%tky
-                          workflowstatus            = workflow_status
-                          workflowstatuscriticality = workflow_status_crit
-                          triggerworkflow           = trigger_workflow ) )
+                          workflowstatus            = /esrcc/cl_wf_utility=>wf_status-approved
+                          workflowstatuscriticality = criticality
+                          workflowinternalstatus    = workflow_internal_status ) )
         FAILED failed_mod
         MAPPED mapped_mod.
     ENDIF.
+  ENDMETHOD.
+
+  METHOD updateinternalworkflowstatus.
+    CHECK keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
+
+    READ ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
+        ENTITY rule
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(entities).
+
+    " Set internal status to "Draft" for modified entries
+    set_workflow_internal_status(
+      entities           = entities
+      to_workflow_status = /esrcc/cl_wf_utility=>wf_status-draft
+    ).
+  ENDMETHOD.
+
+  METHOD reopen.
+    READ ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
+        ENTITY rule
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(entities).
+
+    DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-reopen_in_process ).
+    MODIFY ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
+        ENTITY rule
+        UPDATE FIELDS ( comments workflowid workflowstatus workflowstatuscriticality workflowinternalstatus )
+        WITH VALUE #( FOR entity IN entities
+                        ( %tky                      = entity-%tky
+                          workflowid                = ''
+                          workflowstatus            = /esrcc/cl_wf_utility=>wf_status-reopen_in_process
+                          workflowstatuscriticality = criticality
+                          workflowinternalstatus    = /esrcc/cl_wf_utility=>wf_status-reopen_in_process ) )
+        FAILED failed
+        REPORTED reported
+        MAPPED mapped.
+
+    result = VALUE #( FOR entity IN entities ( %tky = entity-%tky
+                                               %is_draft = entity-%is_draft
+                                               %param-%tky = entity-%tky ) ).
+
+    reported-%other = VALUE #( ( /esrcc/cl_config_util=>message_on_action( ) ) ).
+  ENDMETHOD.
+
+  METHOD updatecomment.
+    READ ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
+        ENTITY rule
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(entities).
+
+    LOOP AT entities INTO DATA(entity) WHERE commentid IS NOT INITIAL.
+      /esrcc/cl_comments_util=>modify_comments(
+        comments    = VALUE #( instanceid = entity-commentid )
+        iv_comments = entity-comments
+      ).
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.
 CLASS lhc_/esrcc/i_coruletext DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
     METHODS:
-*      validaterecordchanges FOR VALIDATE ON SAVE
-*        IMPORTING
-*          keys FOR RuleText~ValidateRecordChanges,
       get_instance_features FOR INSTANCE FEATURES
         IMPORTING keys REQUEST requested_features FOR ruletext RESULT result,
-      updateworkflowstatus FOR DETERMINE ON MODIFY
-        IMPORTING keys FOR ruletext~updateworkflowstatus.
-*      get_global_features FOR GLOBAL FEATURES
-*        IMPORTING
-*        REQUEST requested_features FOR RuleText
-*        RESULT result.
+      updateinternalworkflowstatus FOR DETERMINE ON MODIFY
+        IMPORTING keys FOR ruletext~updateinternalworkflowstatus.
 ENDCLASS.
 
 CLASS lhc_/esrcc/i_coruletext IMPLEMENTATION.
-*  METHOD validaterecordchanges.
-*    DATA change TYPE REQUEST FOR CHANGE /ESRCC/I_CoRule_S.
-*    SELECT SINGLE TransportRequestID FROM /esrcc/d_co_ru_s INTO @DATA(TransportRequestID). "#EC CI_NOORDER
-*    lhc_rap_tdat_cts=>get( )->validate_changes(
-*                                transport_request = TransportRequestID
-*                                table             = '/ESRCC/CO_RULET'
-*                                keys              = REF #( keys )
-*                                reported          = REF #( reported )
-*                                failed            = REF #( failed )
-*                                change            = REF #( change-RuleText ) ).
-*  ENDMETHOD.
-*  METHOD get_global_features.
-*    DATA edit_flag TYPE abp_behv_flag VALUE if_abap_behv=>fc-o-enabled.
-*    IF cl_bcfg_cd_reuse_api_factory=>get_cust_obj_service_instance(
-*         iv_objectname = '/ESRCC/CO_RULET'
-*         iv_objecttype = cl_bcfg_cd_reuse_api_factory=>simple_table )->is_editable( ) = abap_false.
-*      edit_flag = if_abap_behv=>fc-o-disabled.
-*    ENDIF.
-*    result-%update = edit_flag.
-*    result-%delete = edit_flag.
-*  ENDMETHOD.
   METHOD get_instance_features.
     READ ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
         ENTITY ruletext
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(text).
 
-    SELECT SINGLE CASE WHEN rule~workflowstatus = 'F' THEN @if_abap_behv=>fc-o-disabled
-                       ELSE @if_abap_behv=>fc-o-enabled
-                  END AS editability
+    SELECT SINGLE rule~workflowstatus
         FROM /esrcc/i_corule AS rule
         INNER JOIN @text AS txt
             ON txt~ruleid = rule~ruleid
-        INTO @DATA(editability).
+        INTO @DATA(wf_status).
+
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( ).
+    DATA(regulate_update) = lo_auth->regulate_action_update( wf_status = wf_status ).
+    DATA(regulate_delete) = lo_auth->regulate_action_delete( wf_status = wf_status ).
 
     result = VALUE #( FOR wa IN text ( %tky    = wa-%tky
-                                       %update = editability
-                                       %delete = editability ) ).
+                                       %update = regulate_update
+                                       %delete = regulate_delete ) ).
   ENDMETHOD.
 
-  METHOD updateworkflowstatus.
+  METHOD updateinternalworkflowstatus.
     CHECK keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
 
     READ ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
@@ -738,7 +766,10 @@ CLASS lhc_/esrcc/i_coruletext IMPLEMENTATION.
         RESULT entities.
     ENDIF.
 
-    lhc_/esrcc/i_corule=>set_workflow_status_to_draft( entities ).
+    lhc_/esrcc/i_corule=>set_workflow_internal_status(
+      entities           = entities
+      to_workflow_status = /esrcc/cl_wf_utility=>wf_status-draft
+    ).
   ENDMETHOD.
 
 ENDCLASS.
@@ -747,34 +778,18 @@ ENDCLASS.
 CLASS lhc_weightage DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
   PRIVATE SECTION.
-
-*    METHODS get_global_features FOR GLOBAL FEATURES
-*      IMPORTING REQUEST requested_features FOR Weightage RESULT result.
-
     METHODS precheck_update FOR PRECHECK
       IMPORTING entities FOR UPDATE weightage.
     METHODS validatedata FOR VALIDATE ON SAVE
       IMPORTING keys FOR weightage~validatedata.
     METHODS get_instance_features FOR INSTANCE FEATURES
       IMPORTING keys REQUEST requested_features FOR weightage RESULT result.
-    METHODS updateworkflowstatus FOR DETERMINE ON MODIFY
-      IMPORTING keys FOR weightage~updateworkflowstatus.
+    METHODS updateinternalworkflowstatus FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR weightage~updateinternalworkflowstatus.
 
 ENDCLASS.
 
 CLASS lhc_weightage IMPLEMENTATION.
-
-*  METHOD get_global_features.
-*    DATA edit_flag TYPE abp_behv_flag VALUE if_abap_behv=>fc-o-enabled.
-*    IF cl_bcfg_cd_reuse_api_factory=>get_cust_obj_service_instance(
-*         iv_objectname = '/ESRCC/ALOC_WGT'
-*         iv_objecttype = cl_bcfg_cd_reuse_api_factory=>simple_table )->is_editable( ) = abap_false.
-*      edit_flag = if_abap_behv=>fc-o-disabled.
-*    ENDIF.
-*    result-%update = edit_flag.
-*    result-%delete = edit_flag.
-*  ENDMETHOD.
-
   METHOD precheck_update.
     DATA: weightage TYPE STRUCTURE FOR READ RESULT /esrcc/i_corule_s\\weightage.
 
@@ -887,20 +902,22 @@ CLASS lhc_weightage IMPLEMENTATION.
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(weightage).
 
-    SELECT SINGLE CASE WHEN rule~workflowstatus = 'F' THEN @if_abap_behv=>fc-o-disabled
-                       ELSE @if_abap_behv=>fc-o-enabled
-                  END AS editability
+    SELECT SINGLE rule~workflowstatus
         FROM /esrcc/i_corule AS rule
         INNER JOIN @weightage AS wgt
             ON wgt~ruleid = rule~ruleid
-        INTO @DATA(editability).
+        INTO @DATA(wf_status).
+
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( ).
+    DATA(regulate_update) = lo_auth->regulate_action_update( wf_status = wf_status ).
+    DATA(regulate_delete) = lo_auth->regulate_action_delete( wf_status = wf_status ).
 
     result = VALUE #( FOR wa IN weightage ( %tky    = wa-%tky
-                                            %update = editability
-                                            %delete = editability ) ).
+                                            %update = regulate_update
+                                            %delete = regulate_delete ) ).
   ENDMETHOD.
 
-  METHOD updateworkflowstatus.
+  METHOD updateinternalworkflowstatus.
     CHECK keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
 
     READ ENTITIES OF /esrcc/i_corule_s IN LOCAL MODE
@@ -916,7 +933,10 @@ CLASS lhc_weightage IMPLEMENTATION.
         RESULT entities.
     ENDIF.
 
-    lhc_/esrcc/i_corule=>set_workflow_status_to_draft( entities ).
+    lhc_/esrcc/i_corule=>set_workflow_internal_status(
+      entities           = entities
+      to_workflow_status = /esrcc/cl_wf_utility=>wf_status-draft
+    ).
   ENDMETHOD.
 
 ENDCLASS.

@@ -9,6 +9,7 @@ CLASS /esrcc/cl_calculate_chargeout DEFINITION
                serviceshare           TYPE /esrcc/application_type_de VALUE 'SCM',
                chargeout              TYPE /esrcc/application_type_de VALUE 'CHR',
                approved               TYPE /esrcc/chargeoutstatus     VALUE 'A',
+               inprocess              TYPE /esrcc/chargeoutstatus     VALUE 'P',
                draft                  TYPE /esrcc/chargeoutstatus     VALUE 'D',
                finalized              TYPE /esrcc/chargeoutstatus     VALUE 'F',
                approval_pending       TYPE /esrcc/chargeoutstatus     VALUE 'W',
@@ -16,12 +17,21 @@ CLASS /esrcc/cl_calculate_chargeout DEFINITION
                chargeout_approved     TYPE /esrcc/process_status_de   VALUE '04',
                chargeout_inprocess    TYPE /esrcc/process_status_de   VALUE '02',
                chargeout_finalized    TYPE /esrcc/process_status_de   VALUE '05',
+               chargeout_failed       TYPE /esrcc/process_status_de   VALUE '07',
+               chargeout_pending      TYPE /esrcc/process_status_de   VALUE '03',
+               chargeout_rejected     TYPE /esrcc/process_status_de   VALUE '06',
                costbase_approved      TYPE /esrcc/process_status_de   VALUE '07',
+               costbase_failed        TYPE /esrcc/process_status_de   VALUE '11',
                costbase_inprocess     TYPE /esrcc/process_status_de   VALUE '05',
                costbase_finalized     TYPE /esrcc/process_status_de   VALUE '08',
+               costbase_pending       TYPE /esrcc/process_status_de   VALUE '06',
+               costbase_rejected      TYPE /esrcc/process_status_de   VALUE '10',
                serviceshare_approved  TYPE /esrcc/process_status_de   VALUE '04',
                serviceshare_inprocess TYPE /esrcc/process_status_de   VALUE '02',
                serviceshare_finalized TYPE /esrcc/process_status_de   VALUE '05',
+               serviceshare_failed    TYPE /esrcc/process_status_de   VALUE '07',
+               serviceshare_pending   TYPE /esrcc/process_status_de   VALUE '03',
+               serviceshare_rejected  TYPE /esrcc/process_status_de   VALUE '06',
                scc_valuesource        TYPE /esrcc/ce_value_source     VALUE 'SCC',
                adhocprocesstype       TYPE /esrcc/process_type        VALUE 'A',
                standardprocesstype    TYPE /esrcc/process_type        VALUE 'S'.
@@ -40,41 +50,56 @@ CLASS /esrcc/cl_calculate_chargeout DEFINITION
 
     CLASS-METHODS: calculate_costbase
       IMPORTING
-        !it_keys TYPE /esrcc/tt_keys.
+        !it_keys   TYPE /esrcc/tt_keys
+        !it_poper  TYPE /esrcc/tt_poper_range OPTIONAL
+      EXPORTING
+        !ev_failed TYPE abap_boolean.
 
     CLASS-METHODS: calculate_servicecostshare
       IMPORTING
-        !it_keys TYPE /esrcc/tt_keys.
+        !it_keys   TYPE /esrcc/tt_keys
+        !it_poper  TYPE /esrcc/tt_poper_range OPTIONAL
+      EXPORTING
+        !ev_failed TYPE abap_boolean.
 
     CLASS-METHODS: calculate_chargeout
       IMPORTING
-        !it_keys TYPE /esrcc/tt_keys.
+        !it_keys   TYPE /esrcc/tt_keys
+        !it_poper  TYPE /esrcc/tt_poper_range OPTIONAL
+      EXPORTING
+        !ev_failed TYPE abap_boolean.
 
     CLASS-METHODS: finalize_costbase
       IMPORTING
-        !it_keys TYPE /esrcc/tt_keys.
+        !it_keys  TYPE /esrcc/tt_keys
+        !it_poper TYPE /esrcc/tt_poper_range OPTIONAL.
 
     CLASS-METHODS: finalize_servicecostshare
       IMPORTING
-        !it_keys TYPE /esrcc/tt_keys.
+        !it_keys  TYPE /esrcc/tt_keys
+        !it_poper TYPE /esrcc/tt_poper_range OPTIONAL.
 
     CLASS-METHODS: finalize_chargeout
       IMPORTING
-        !it_keys TYPE /esrcc/tt_keys.
+        !it_keys  TYPE /esrcc/tt_keys
+        !it_poper TYPE /esrcc/tt_poper_range OPTIONAL.
 
     CLASS-METHODS: reopen_costbase
       IMPORTING
-        !it_keys TYPE /esrcc/tt_keys.
+        !it_keys  TYPE /esrcc/tt_keys
+        !it_poper TYPE /esrcc/tt_poper_range OPTIONAL.
 
     CLASS-METHODS: reopen_serviceshare
       IMPORTING
         !it_keys           TYPE /esrcc/tt_keys
-        !iv_costbasereopen TYPE abap_boolean OPTIONAL.
+        !iv_costbasereopen TYPE abap_boolean OPTIONAL
+        !it_poper          TYPE /esrcc/tt_poper_range OPTIONAL.
 
     CLASS-METHODS: reopen_chargeout
       IMPORTING
         !it_keys           TYPE /esrcc/tt_keys
-        !iv_costbasereopen TYPE abap_boolean OPTIONAL.
+        !iv_costbasereopen TYPE abap_boolean OPTIONAL
+        !it_poper          TYPE /esrcc/tt_poper_range OPTIONAL.
 
     CLASS-METHODS: calculate_adhocchargeout
       IMPORTING
@@ -94,17 +119,30 @@ CLASS /esrcc/cl_calculate_chargeout DEFINITION
 
     CLASS-METHODS: create_processlogs
       IMPORTING
-        !iv_action TYPE /esrcc/actions OPTIONAL
-        !it_keys   TYPE /esrcc/tt_keys.
+        !iv_action      TYPE /esrcc/actions OPTIONAL
+        !it_keys        TYPE /esrcc/tt_keys
+      EXPORTING
+        !et_processlogs TYPE /esrcc/tt_processlogs.
 
-  PROTECTED SECTION.
-  PRIVATE SECTION.
-    CLASS-METHODS: determine_delta_chargeout
+    CLASS-METHODS: virtual_posting
       IMPORTING
         !it_keys  TYPE /esrcc/tt_keys
         !it_poper TYPE /esrcc/tt_poper_range.
 
-    CLASS-METHODS: virtual_posting
+    CLASS-METHODS: delete_adhoc_chargeout
+      IMPORTING
+        !id TYPE sysuuid_x16.
+
+    CLASS-METHODS: Authority_check
+      IMPORTING
+        !keys   TYPE /esrcc/procctrl
+        !action TYPE /esrcc/actions
+      EXPORTING
+        !failed TYPE abap_boolean.
+
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+    CLASS-METHODS: determine_delta_chargeout
       IMPORTING
         !it_keys  TYPE /esrcc/tt_keys
         !it_poper TYPE /esrcc/tt_poper_range.
@@ -149,8 +187,43 @@ CLASS /esrcc/cl_calculate_chargeout DEFINITION
       EXPORTING
         !et_poper TYPE /esrcc/tt_poper_range.
 
+    CLASS-METHODS: validate_costbase
+      IMPORTING
+        !it_poper  TYPE /esrcc/tt_poper_range
+      EXPORTING
+        !ev_failed TYPE abap_boolean
+      CHANGING
+        !ct_keys   TYPE /esrcc/tt_keys.
 
 
+    CLASS-METHODS: validate_serviceproductcosting
+      IMPORTING
+        !it_poper  TYPE /esrcc/tt_poper_range
+      EXPORTING
+        !ev_failed TYPE abap_boolean
+      CHANGING
+        !ct_keys   TYPE /esrcc/tt_keys.
+
+    CLASS-METHODS: validate_receiverchargeout
+      IMPORTING
+        !it_poper  TYPE /esrcc/tt_poper_range
+      EXPORTING
+        !ev_failed TYPE abap_boolean
+      CHANGING
+        !ct_keys   TYPE /esrcc/tt_keys.
+
+    CLASS-METHODS: create_loginstance
+      IMPORTING
+                !key               TYPE /esrcc/procctrl
+                !procctrl          TYPE /esrcc/tt_keys
+                !process           TYPE /esrcc/process
+      RETURNING VALUE(loginstance) TYPE REF TO /esrcc/if_application_logs.
+
+    CLASS-METHODS: add_logmessages
+      IMPORTING
+        !logitems    TYPE /esrcc/log_items
+        !loginstance TYPE REF TO /esrcc/if_application_logs.
+    .
 
 ENDCLASS.
 
@@ -176,8 +249,9 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
            ccode,
            costobject,
            costcenter,
-           businessdivision,
-           profitcenter,
+*           businessdivision,
+*           profitcenter,
+*           functionalarea,
            localcurr,
            groupcurr,
            SUM( hsl ) AS totalcost_l,
@@ -192,8 +266,9 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
            ccode,
            costobject,
            costcenter,
-           businessdivision,
-           profitcenter,
+*           businessdivision,
+*           profitcenter,
+*           functionalarea,
            localcurr,
            groupcurr
            INTO CORRESPONDING FIELDS OF TABLE @lt_cb_stw.
@@ -206,8 +281,9 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
            ccode,
            costobject,
            costcenter,
-           businessdivision,
-           profitcenter,
+*           businessdivision,
+*           profitcenter,
+*           functionalarea,
            localcurr,
            groupcurr,
            SUM( hsl ) AS virtualcost_l,
@@ -223,8 +299,9 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
            ccode,
            costobject,
            costcenter,
-           businessdivision,
-           profitcenter,
+*           businessdivision,
+*           profitcenter,
+*           functionalarea,
            localcurr,
            groupcurr
            INTO TABLE @DATA(lt_cb_stw_scc).
@@ -237,8 +314,9 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
            ccode,
            costobject,
            costcenter,
-           businessdivision,
-           profitcenter,
+*           businessdivision,
+*           profitcenter,
+*           functionalarea,
            localcurr,
            groupcurr,
            SUM( hsl ) AS origtotalcost_l,
@@ -254,8 +332,9 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
            ccode,
            costobject,
            costcenter,
-           businessdivision,
-           profitcenter,
+*           businessdivision,
+*           profitcenter,
+*           functionalarea,
            localcurr,
            groupcurr
            INTO TABLE @DATA(lt_cb_stw_orig).
@@ -268,8 +347,9 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
           ccode,
           costobject,
           costcenter,
-          businessdivision,
-          profitcenter,
+*          businessdivision,
+*          profitcenter,
+*          functionalarea,
           localcurr,
           groupcurr,
           SUM( hsl ) AS passtotalcost_l,
@@ -285,8 +365,9 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
           ccode,
           costobject,
           costcenter,
-          businessdivision,
-          profitcenter,
+*          businessdivision,
+*          profitcenter,
+*          functionalarea,
           localcurr,
           groupcurr
           INTO TABLE @DATA(lt_cb_stw_pass).
@@ -294,7 +375,8 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 * Derive the share % based on the share value
     SELECT SUM( sharevalue ) FROM @it_receivers AS receievers INTO @DATA(totalvalue).
 
-    SELECT SINGLE * FROM /esrcc/srvpro WHERE serviceproduct = @is_parameters-Serviceproduct
+    SELECT SINGLE servicetype, transactiongroup
+       FROM /esrcc/srvpro WHERE serviceproduct = @is_parameters-Serviceproduct
                                 INTO @DATA(ls_serviceproduct).
 
     SELECT SINGLE * FROM /esrcc/co_rule WHERE rule_id = @is_parameters-rule_id
@@ -302,6 +384,11 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
                                 INTO @DATA(ls_rule).
 
     DATA(lo_uuid) = cl_uuid_factory=>create_system_uuid( ).
+
+    READ TABLE it_cbli ASSIGNING FIELD-SYMBOL(<cbli>) INDEX 1.
+    IF sy-subrc <> 0.
+      RETURN.
+    ENDIF.
 
     LOOP AT lt_cb_stw ASSIGNING FIELD-SYMBOL(<ls_cbstw>).
 
@@ -348,6 +435,9 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
       ENDIF.
       <ls_cbstw>-billfrequency = 'M'.
       <ls_cbstw>-billingperiod = <ls_cbstw>-poper+1(2).
+      <ls_cbstw>-profitcenter  = <cbli>-profitcenter.
+      <ls_cbstw>-businessdivision  = <cbli>-businessdivision.
+      <ls_cbstw>-functionalarea    = <cbli>-functionalarea.
 * Assign the 16 digit unique identifier
       IF lo_uuid IS BOUND.
         TRY.
@@ -383,13 +473,13 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 *Create process log entry
       CLEAR lt_proctrl.
       APPEND INITIAL LINE TO lt_proctrl ASSIGNING FIELD-SYMBOL(<ls_proctrl>).
-      MOVE-CORRESPONDING <ls_cbstw> to <ls_proctrl>.
+      MOVE-CORRESPONDING <ls_cbstw> TO <ls_proctrl>.
       <ls_proctrl>-billingfreq = <ls_cbstw>-billfrequency.  "Adhoc
       <ls_proctrl>-process = 'ADH'.  "Adhoc
-       create_processlogs(
-         iv_action = '12'
-         it_keys   = lt_proctrl
-       ).
+      create_processlogs(
+        iv_action = '12'
+        it_keys   = lt_proctrl
+      ).
 
 **************************************************************************
 *Determine Service Cost Share
@@ -404,7 +494,6 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
       <ls_srvshare>-key_version = ls_rule-key_version.
       <ls_srvshare>-consumption_version = ls_rule-consumption_version.
       <ls_srvshare>-capacity_version = ls_rule-capacity_version.
-      <ls_srvshare>-uom = ls_rule-uom.
       <ls_srvshare>-cc_uuid = lv_ccuuid.
       <ls_srvshare>-status = finalized.
 * Assign the 16 digit unique identifier
@@ -463,6 +552,7 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
         ENDIF.
         <ls_recchg>-exchdate            = exchdate.
         <ls_recchg>-status              = finalized.
+        <ls_recchg>-invoicestatus       = '01'.  "not started
 * Admin data
         <ls_recchg>-created_by = sy-uname.
         /esrcc/cl_utility_core=>get_utc_date_time_ts(
@@ -547,17 +637,20 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 **************************************************************************
 *Update Respective Line items with relevant information
 **************************************************************************
-    SELECT * FROM /esrcc/cb_li FOR ALL ENTRIES IN @it_cbli WHERE belnr       = @it_cbli-belnr
-                                                            AND  ryear       = @it_cbli-ryear
-                                                            AND  poper       = @it_cbli-poper
-                                                            AND  legalentity = @it_cbli-legalentity
-                                                            AND  sysid       = @it_cbli-sysid
-                                                            AND  fplv        = @it_cbli-fplv
-                                                            AND ccode        = @it_cbli-ccode
-                                                            AND buzei        = @it_cbli-buzei
-                                                            AND costobject   = @it_cbli-costobject
-                                                            AND costelement  = @it_cbli-costelement
-                                                            INTO TABLE @DATA(lt_cbli).
+    SELECT cbli~* FROM /esrcc/cb_li AS cbli
+    INNER JOIN @it_cbli AS itcbli
+      ON  cbli~belnr       = itcbli~belnr
+     AND  cbli~ryear       = itcbli~ryear
+     AND  cbli~poper       = itcbli~poper
+     AND  cbli~legalentity = itcbli~legalentity
+     AND  cbli~sysid       = itcbli~sysid
+     AND  cbli~fplv        = itcbli~fplv
+     AND cbli~ccode        = itcbli~ccode
+     AND cbli~buzei        = itcbli~buzei
+     AND cbli~costobject   = itcbli~costobject
+     AND cbli~costelement  = itcbli~costelement
+     INTO TABLE @DATA(lt_cbli).
+
     LOOP AT lt_cbli ASSIGNING FIELD-SYMBOL(<ls_cbli>).
 *      <ls_cbli>-usagecal = 'E'.
       <ls_cbli>-status = finalized.
@@ -582,23 +675,27 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 
   METHOD calculate_chargeout.
 
-    DATA lt_rec_chg    TYPE TABLE OF /esrcc/rec_chg.
-    DATA lt_rec_share  TYPE TABLE OF /esrcc/alocshare.
-    DATA lt_srv_values TYPE TABLE OF /esrcc/alcvalues.
-    DATA lt_procctrl   TYPE STANDARD TABLE OF /esrcc/procctrl.
-    DATA ls_procctrl   TYPE  /esrcc/procctrl.
-    DATA ls_wf_leadobj TYPE /esrcc/s_wf_leadingobject.
-    DATA lt_wf_leadobj TYPE /esrcc/tt_wf_leadingobject.
-    DATA lv_valid_from TYPE /esrcc/validfrom.
+    DATA lt_rec_chg     TYPE TABLE OF /esrcc/rec_chg.
+    DATA lt_rec_share   TYPE TABLE OF /esrcc/alocshare.
+    DATA lt_aloc_values TYPE TABLE OF /esrcc/alcvalues.
+    DATA lt_procctrl    TYPE STANDARD TABLE OF /esrcc/procctrl.
+    DATA ls_procctrl    TYPE  /esrcc/procctrl.
+    DATA ls_wf_leadobj  TYPE /esrcc/s_wf_leadingobject.
+    DATA lt_wf_leadobj  TYPE /esrcc/tt_wf_leadingobject.
+    DATA lv_valid_from  TYPE /esrcc/validfrom.
 
 
 *Derive poper from billing frequency customizing
-    derive_poper(
-      EXPORTING
-        it_keys  = it_keys
-      IMPORTING
-        et_poper = DATA(_poper)
-    ).
+    IF it_poper IS INITIAL.
+      derive_poper(
+        EXPORTING
+          it_keys  = it_keys
+        IMPORTING
+          et_poper = DATA(_poper)
+      ).
+    ELSE.
+      _poper = it_poper.
+    ENDIF.
 
     DATA(lt_keys) = it_keys.
     DELETE lt_keys WHERE serviceproduct IS INITIAL.
@@ -608,6 +705,18 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     IF sy-subrc <> 0.
       RETURN.
     ENDIF.
+
+*validate chargeout
+    validate_receiverchargeout(
+      EXPORTING
+        it_poper = _poper
+      IMPORTING
+        ev_failed = ev_failed
+      CHANGING
+        ct_keys  = lt_keys
+    ).
+
+    CHECK lt_keys IS NOT INITIAL.
 
     /esrcc/cl_wf_utility=>is_wf_on(
       EXPORTING
@@ -620,17 +729,21 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     CLEAR: ls_wf_leadobj,lt_wf_leadobj.
 
 *Receiver charge out and markup
-    SELECT * FROM /esrcc/i_chargeout_recshare FOR ALL ENTRIES IN @lt_keys
-                                              WHERE  fplv          = @lt_keys-fplv
-                                                AND ryear          = @lt_keys-ryear
-                                                AND sysid          = @lt_keys-sysid
-                                                AND poper         IN @_poper
-                                                AND legalentity    = @lt_keys-legalentity
-                                                AND ccode          = @lt_keys-ccode
-                                                AND costobject     = @lt_keys-costobject
-                                                AND costcenter     = @lt_keys-costcenter
-                                                AND serviceproduct = @lt_keys-serviceproduct
-                                                INTO TABLE @DATA(lt_rec_cost).
+    SELECT recshare~*
+       FROM /esrcc/i_chargeout_recshare  AS recshare
+       INNER JOIN @lt_keys AS keys
+          ON recshare~fplv           = keys~fplv
+         AND recshare~ryear          = keys~ryear
+         AND recshare~sysid          = keys~sysid
+         AND recshare~legalentity    = keys~legalentity
+         AND recshare~ccode          = keys~ccode
+         AND recshare~costobject     = keys~costobject
+         AND recshare~costcenter     = keys~costcenter
+         AND recshare~serviceproduct = keys~serviceproduct
+         WHERE recshare~poper         IN @_poper
+         INTO TABLE @DATA(lt_rec_cost).
+
+    CHECK lt_rec_cost IS NOT INITIAL.
 
 *Delete old allocation data in case user re-triggered chargeout without re-open
 *  Delete receiver cost
@@ -640,138 +753,275 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     ).
 
 * Create New allocation data
-    SELECT * FROM /esrcc/i_chargeout_indkpishare FOR ALL ENTRIES IN @lt_keys
-                                                 WHERE  fplv        = @lt_keys-fplv
-                                                   AND ryear        = @lt_keys-ryear
-                                                   AND sysid        = @lt_keys-sysid
-                                                   AND poper        IN @_poper
-                                                   AND legalentity  = @lt_keys-legalentity
-                                                   AND  ccode       = @lt_keys-ccode
-                                                   AND  costobject  = @lt_keys-costobject
-                                                   AND  costcenter  = @lt_keys-costcenter
-                                                   AND  serviceproduct = @lt_keys-serviceproduct
-                                                   INTO TABLE @DATA(lt_allocation_share).
+    SELECT DISTINCT
+                indkpishare~fplv,
+                indkpishare~ryear,
+                indkpishare~sysid,
+                indkpishare~poper,
+                indkpishare~legalentity,
+                indkpishare~ccode,
+                indkpishare~costobject,
+                indkpishare~costcenter,
+                indkpishare~serviceproduct,
+                indkpishare~ReceiverSysId,
+                indkpishare~ReceiverCompanyCode,
+                indkpishare~ReceivingEntity,
+                indkpishare~ReceiverCostObject,
+                indkpishare~ReceiverCostCenter,
+                indkpishare~allockey,
+                indkpishare~keyversion,
+                indkpishare~allocationperiod,
+                indkpishare~refperiod,
+                indkpishare~weightage,
+                indkpishare~reckpivalue,
+                indkpishare~initialreckpishare,
+                indkpishare~reckpishare
+       FROM /esrcc/i_chargeout_indkpishare AS indkpishare
+       INNER JOIN @lt_keys AS keys
+               ON indkpishare~fplv           = keys~fplv
+              AND indkpishare~ryear          = keys~ryear
+              AND indkpishare~sysid          = keys~sysid
+              AND indkpishare~legalentity    = keys~legalentity
+              AND indkpishare~ccode          = keys~ccode
+              AND indkpishare~costobject     = keys~costobject
+              AND indkpishare~costcenter     = keys~costcenter
+              AND indkpishare~serviceproduct = keys~serviceproduct
+              WHERE indkpishare~poper        IN @_poper
+              ORDER BY  indkpishare~fplv,
+                        indkpishare~ryear,
+                        indkpishare~sysid,
+                        indkpishare~poper,
+                        indkpishare~legalentity,
+                        indkpishare~ccode,
+                        indkpishare~costobject,
+                        indkpishare~costcenter,
+                        indkpishare~serviceproduct,
+                        indkpishare~ReceiverSysId,
+                        indkpishare~ReceiverCompanyCode,
+                        indkpishare~ReceivingEntity,
+                        indkpishare~ReceiverCostObject,
+                        indkpishare~ReceiverCostCenter
+              INTO TABLE @DATA(lt_allocation_share).
 
-    SELECT * FROM /esrcc/i_indallocvalues FOR ALL ENTRIES IN @lt_keys
-                                          WHERE  fplv       = @lt_keys-fplv
-                                            AND ryear       = @lt_keys-ryear
-                                            AND sysid       = @lt_keys-sysid
-                                            AND  poper      IN @_poper
-                                            AND  legalentity = @lt_keys-legalentity
-                                            AND  ccode       = @lt_keys-ccode
-                                            AND  costobject  = @lt_keys-costobject
-                                            AND  costcenter  = @lt_keys-costcenter
-                                            AND  serviceproduct = @lt_keys-serviceproduct
-                                            INTO TABLE @DATA(lt_allocation_values).
+    SELECT DISTINCT
+             indallocvalues~fplv,
+             indallocvalues~ryear,
+             indallocvalues~sysid,
+             indallocvalues~poper,
+             indallocvalues~legalentity,
+             indallocvalues~ccode,
+             indallocvalues~costobject,
+             indallocvalues~costcenter,
+             indallocvalues~serviceproduct,
+             indallocvalues~ReceiverSysId,
+             indallocvalues~ReceiverCompanyCode,
+             indallocvalues~ReceivingEntity,
+             indallocvalues~ReceiverCostObject,
+             indallocvalues~ReceiverCostCenter,
+             indallocvalues~keyversion,
+             indallocvalues~allockey,
+             indallocvalues~allocationperiod,
+             indallocvalues~refpoper,
+             indallocvalues~refperiod,
+             indallocvalues~reckpivalue
+        FROM /esrcc/i_indallocvalues AS indallocvalues
+        INNER JOIN @lt_keys AS keys
+                ON  indallocvalues~fplv        = keys~fplv
+               AND  indallocvalues~ryear       = keys~ryear
+               AND  indallocvalues~sysid       = keys~sysid
+               AND  indallocvalues~legalentity = keys~legalentity
+               AND  indallocvalues~ccode       = keys~ccode
+               AND  indallocvalues~costobject  = keys~costobject
+               AND  indallocvalues~costcenter  = keys~costcenter
+               AND  indallocvalues~serviceproduct = keys~serviceproduct
+               WHERE  indallocvalues~poper      IN @_poper
+               ORDER BY indallocvalues~fplv,
+                        indallocvalues~ryear,
+                        indallocvalues~sysid,
+                        indallocvalues~poper,
+                        indallocvalues~legalentity,
+                        indallocvalues~ccode,
+                        indallocvalues~costobject,
+                        indallocvalues~costcenter,
+                        indallocvalues~serviceproduct,
+                        indallocvalues~ReceiverSysId,
+                        indallocvalues~ReceiverCompanyCode,
+                        indallocvalues~ReceivingEntity,
+                        indallocvalues~ReceiverCostObject,
+                        indallocvalues~ReceiverCostCenter,
+                        indallocvalues~keyversion,
+                        indallocvalues~allockey
+               INTO TABLE @DATA(lt_allocation_values).
 
     DATA(lo_uuid) = cl_uuid_factory=>create_system_uuid( ).
 
-    LOOP AT lt_rec_cost ASSIGNING FIELD-SYMBOL(<ls_rec_cost>).
-      APPEND INITIAL LINE TO lt_rec_chg ASSIGNING FIELD-SYMBOL(<ls_rec_chg>).
-      MOVE-CORRESPONDING <ls_rec_cost> TO <ls_rec_chg>.
+    LOOP AT lt_rec_cost INTO DATA(ls_rec_cost)
+                                GROUP BY ( legalentity = ls_rec_cost-legalentity ) INTO DATA(entitygroup).
 
-      IF wf_active EQ abap_true.
-        CLEAR ls_wf_leadobj.
-        MOVE-CORRESPONDING <ls_rec_cost> TO ls_wf_leadobj.
-        IF <key> IS ASSIGNED.
-          ls_wf_leadobj-billfrequency = <key>-billingfreq.
-          ls_wf_leadobj-billingperiod = <key>-billingperiod.
+
+      LOOP AT GROUP entitygroup ASSIGNING FIELD-SYMBOL(<ls_rec_cost>).
+
+        APPEND INITIAL LINE TO lt_rec_chg ASSIGNING FIELD-SYMBOL(<ls_rec_chg>).
+        MOVE-CORRESPONDING <ls_rec_cost> TO <ls_rec_chg>.
+
+        IF wf_active EQ abap_true.
+          CLEAR ls_wf_leadobj.
+          MOVE-CORRESPONDING <ls_rec_cost> TO ls_wf_leadobj.
+          IF <key> IS ASSIGNED.
+            ls_wf_leadobj-billfrequency = <key>-billingfreq.
+            ls_wf_leadobj-billingperiod = <key>-billingperiod.
+          ENDIF.
+          APPEND ls_wf_leadobj TO lt_wf_leadobj.
+          <ls_rec_chg>-status = inprocess.   "In Process
+        ELSE.
+          <ls_rec_chg>-status = approved.   "Approved
         ENDIF.
-        APPEND ls_wf_leadobj TO lt_wf_leadobj.
-      ELSE.
-        <ls_rec_chg>-status = approved.   "Approved
-      ENDIF.
 
 * Admin data
-      <ls_rec_chg>-created_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = <ls_rec_chg>-created_at
-      ).
-      <ls_rec_chg>-last_changed_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = <ls_rec_chg>-last_changed_at
-      ).
+        <ls_rec_chg>-created_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = <ls_rec_chg>-created_at
+        ).
+        <ls_rec_chg>-last_changed_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = <ls_rec_chg>-last_changed_at
+        ).
 
 * Assign the 16 digit unique identifier
-      IF lo_uuid IS BOUND.
-        TRY.
-            <ls_rec_chg>-rec_uuid = lo_uuid->create_uuid_x16( ).
-          CATCH cx_uuid_error.
-            "handle exception
-        ENDTRY.
-      ENDIF.
-
-* get exchange rate day
-      determine_last_day(
-        EXPORTING
-          iv_ryear    = <ls_rec_cost>-ryear
-          iv_poper    = <ls_rec_cost>-poper
-        IMPORTING
-          ev_valid_on = <ls_rec_chg>-exchdate
-      ).
-
-* Assign the 16 digit unique identifier for allocation share
-      LOOP AT lt_allocation_share ASSIGNING FIELD-SYMBOL(<ls_allocation_share>)
-                                  WHERE  fplv           = <ls_rec_cost>-fplv
-                                    AND ryear           = <ls_rec_cost>-ryear
-                                    AND sysid           = <ls_rec_cost>-sysid
-                                    AND poper           = <ls_rec_cost>-poper
-                                    AND legalentity     = <ls_rec_cost>-legalentity
-                                    AND ccode           = <ls_rec_cost>-ccode
-                                    AND costobject      = <ls_rec_cost>-costobject
-                                    AND costcenter      = <ls_rec_cost>-costcenter
-                                    AND serviceproduct  = <ls_rec_cost>-serviceproduct
-                                    AND ReceiverSysId   = <ls_rec_cost>-receiversysid
-                                    AND ReceiverCompanyCode = <ls_rec_cost>-receivercompanycode
-                                    AND ReceivingEntity = <ls_rec_cost>-receivingentity
-                                    AND ReceiverCostObject = <ls_rec_cost>-receivercostobject
-                                    AND ReceiverCostCenter = <ls_rec_cost>-receivercostcenter.
-
-        APPEND INITIAL LINE TO lt_rec_share ASSIGNING FIELD-SYMBOL(<ls_rec_share>).
-        MOVE-CORRESPONDING <ls_allocation_share> TO <ls_rec_share>.
         IF lo_uuid IS BOUND.
           TRY.
-              <ls_rec_share>-uuid = lo_uuid->create_uuid_x16( ).
+              <ls_rec_chg>-rec_uuid = lo_uuid->create_uuid_x16( ).
+              <ls_rec_chg>-commentid = lo_uuid->create_uuid_x16( ).
             CATCH cx_uuid_error.
               "handle exception
           ENDTRY.
-          <ls_rec_share>-parentuuid = <ls_rec_chg>-rec_uuid.
         ENDIF.
 
-* Assign the 16 digit unique identifier for allocation values
-        LOOP AT lt_allocation_values ASSIGNING FIELD-SYMBOL(<ls_allocation_values>)
-                                     WHERE  fplv            = <ls_rec_cost>-fplv
-                                       AND ryear            = <ls_rec_cost>-ryear
-                                       AND sysid            = <ls_rec_cost>-sysid
-                                       AND poper            = <ls_rec_cost>-poper
-                                       AND legalentity      = <ls_rec_cost>-legalentity
-                                       AND ccode            = <ls_rec_cost>-ccode
-                                       AND costobject       = <ls_rec_cost>-costobject
-                                       AND costcenter       = <ls_rec_cost>-costcenter
-                                       AND serviceproduct   = <ls_rec_cost>-serviceproduct
-                                       AND ReceiverSysId    = <ls_rec_cost>-receiversysid
-                                       AND ReceiverCompanyCode = <ls_rec_cost>-receivercompanycode
-                                       AND ReceivingEntity  = <ls_rec_cost>-receivingentity
-                                       AND ReceiverCostObject = <ls_rec_cost>-receivercostobject
-                                       AND ReceiverCostCenter = <ls_rec_cost>-receivercostcenter.
+* get exchange rate day
+        determine_last_day(
+          EXPORTING
+            iv_ryear    = <ls_rec_cost>-ryear
+            iv_poper    = <ls_rec_cost>-poper
+          IMPORTING
+            ev_valid_on = <ls_rec_chg>-exchdate
+        ).
 
-          APPEND INITIAL LINE TO lt_srv_values ASSIGNING FIELD-SYMBOL(<ls_srv_values>).
-          MOVE-CORRESPONDING <ls_allocation_values> TO <ls_srv_values>.
-          IF lo_uuid IS BOUND.
-            TRY.
-                <ls_srv_values>-uuid = lo_uuid->create_uuid_x16( ).
-              CATCH cx_uuid_error.
-                "handle exception
-            ENDTRY.
-            <ls_srv_values>-parentuuid = <ls_rec_share>-uuid.
-          ENDIF.
-        ENDLOOP.
+* Assign the 16 digit unique identifier for allocation share
+        READ TABLE lt_allocation_share TRANSPORTING NO FIELDS WITH KEY
+                                           fplv           = <ls_rec_cost>-fplv
+                                          ryear           = <ls_rec_cost>-ryear
+                                          sysid           = <ls_rec_cost>-sysid
+                                          poper           = <ls_rec_cost>-poper
+                                          legalentity     = <ls_rec_cost>-legalentity
+                                          ccode           = <ls_rec_cost>-ccode
+                                          costobject      = <ls_rec_cost>-costobject
+                                          costcenter      = <ls_rec_cost>-costcenter
+                                          serviceproduct  = <ls_rec_cost>-serviceproduct
+                                          ReceiverSysId   = <ls_rec_cost>-receiversysid
+                                          ReceiverCompanyCode = <ls_rec_cost>-receivercompanycode
+                                          ReceivingEntity = <ls_rec_cost>-receivingentity
+                                          ReceiverCostObject = <ls_rec_cost>-receivercostobject
+                                          ReceiverCostCenter = <ls_rec_cost>-receivercostcenter
+                                          BINARY SEARCH.
+        IF sy-subrc = 0.
+          LOOP AT lt_allocation_share ASSIGNING FIELD-SYMBOL(<ls_allocation_share>) FROM sy-tabix.
+
+            IF <ls_allocation_share>-fplv           = <ls_rec_cost>-fplv
+              AND <ls_allocation_share>-ryear       = <ls_rec_cost>-ryear
+              AND <ls_allocation_share>-sysid       = <ls_rec_cost>-sysid
+              AND <ls_allocation_share>-poper       = <ls_rec_cost>-poper
+              AND <ls_allocation_share>-legalentity = <ls_rec_cost>-legalentity
+              AND <ls_allocation_share>-ccode       = <ls_rec_cost>-ccode
+              AND <ls_allocation_share>-costobject  = <ls_rec_cost>-costobject
+              AND <ls_allocation_share>-costcenter  = <ls_rec_cost>-costcenter
+              AND <ls_allocation_share>-serviceproduct      = <ls_rec_cost>-serviceproduct
+              AND <ls_allocation_share>-ReceiverSysId       = <ls_rec_cost>-receiversysid
+              AND <ls_allocation_share>-ReceiverCompanyCode = <ls_rec_cost>-receivercompanycode
+              AND <ls_allocation_share>-ReceivingEntity     = <ls_rec_cost>-receivingentity
+              AND <ls_allocation_share>-ReceiverCostObject  = <ls_rec_cost>-receivercostobject
+              AND <ls_allocation_share>-ReceiverCostCenter  = <ls_rec_cost>-receivercostcenter.
+
+              APPEND INITIAL LINE TO lt_rec_share ASSIGNING FIELD-SYMBOL(<ls_rec_share>).
+              MOVE-CORRESPONDING <ls_allocation_share> TO <ls_rec_share>.
+              IF lo_uuid IS BOUND.
+                TRY.
+                    <ls_rec_share>-uuid = lo_uuid->create_uuid_x16( ).
+                  CATCH cx_uuid_error.
+                    "handle exception
+                ENDTRY.
+                <ls_rec_share>-parentuuid = <ls_rec_chg>-rec_uuid.
+              ENDIF.
+
+* Assign the 16 digit unique identifier for allocation values
+              READ TABLE lt_allocation_values TRANSPORTING NO FIELDS WITH KEY
+                                                 fplv            = <ls_rec_cost>-fplv
+                                                 ryear            = <ls_rec_cost>-ryear
+                                                 sysid            = <ls_rec_cost>-sysid
+                                                 poper            = <ls_rec_cost>-poper
+                                                 legalentity      = <ls_rec_cost>-legalentity
+                                                 ccode            = <ls_rec_cost>-ccode
+                                                 costobject       = <ls_rec_cost>-costobject
+                                                 costcenter       = <ls_rec_cost>-costcenter
+                                                 serviceproduct   = <ls_rec_cost>-serviceproduct
+                                                 ReceiverSysId    = <ls_rec_cost>-receiversysid
+                                                 ReceiverCompanyCode = <ls_rec_cost>-receivercompanycode
+                                                 ReceivingEntity  = <ls_rec_cost>-receivingentity
+                                                 ReceiverCostObject = <ls_rec_cost>-receivercostobject
+                                                 ReceiverCostCenter = <ls_rec_cost>-receivercostcenter
+                                                 KeyVersion         = <ls_allocation_share>-KeyVersion
+                                                 Allockey           = <ls_allocation_share>-Allockey
+                                                 BINARY SEARCH.
+              IF sy-subrc = 0.
+                LOOP AT lt_allocation_values ASSIGNING FIELD-SYMBOL(<ls_allocation_values>) FROM sy-tabix.
+
+                  IF  <ls_allocation_values>-fplv                 = <ls_rec_cost>-fplv
+                      AND <ls_allocation_values>-ryear            = <ls_rec_cost>-ryear
+                      AND <ls_allocation_values>-sysid            = <ls_rec_cost>-sysid
+                      AND <ls_allocation_values>-poper            = <ls_rec_cost>-poper
+                      AND <ls_allocation_values>-legalentity      = <ls_rec_cost>-legalentity
+                      AND <ls_allocation_values>-ccode            = <ls_rec_cost>-ccode
+                      AND <ls_allocation_values>-costobject       = <ls_rec_cost>-costobject
+                      AND <ls_allocation_values>-costcenter       = <ls_rec_cost>-costcenter
+                      AND <ls_allocation_values>-serviceproduct   = <ls_rec_cost>-serviceproduct
+                      AND <ls_allocation_values>-ReceiverSysId    = <ls_rec_cost>-receiversysid
+                      AND <ls_allocation_values>-ReceiverCompanyCode = <ls_rec_cost>-receivercompanycode
+                      AND <ls_allocation_values>-ReceivingEntity  = <ls_rec_cost>-receivingentity
+                      AND <ls_allocation_values>-ReceiverCostObject = <ls_rec_cost>-receivercostobject
+                      AND <ls_allocation_values>-ReceiverCostCenter = <ls_rec_cost>-receivercostcenter
+                      AND <ls_allocation_values>-keyversion         = <ls_allocation_share>-KeyVersion
+                      AND <ls_allocation_values>-allockey           = <ls_allocation_share>-Allockey.
+
+
+                    APPEND INITIAL LINE TO lt_aloc_values ASSIGNING FIELD-SYMBOL(<ls_aloc_values>).
+                    MOVE-CORRESPONDING <ls_allocation_values> TO <ls_aloc_values>.
+                    IF lo_uuid IS BOUND.
+                      TRY.
+                          <ls_aloc_values>-uuid = lo_uuid->create_uuid_x16( ).
+                        CATCH cx_uuid_error.
+                          "handle exception
+                      ENDTRY.
+                      <ls_aloc_values>-parentuuid = <ls_rec_share>-uuid.
+                    ENDIF.
+                  ELSE.
+                    EXIT.
+                  ENDIF.
+                ENDLOOP.
+              ENDIF.
+            ELSE.
+              EXIT.
+            ENDIF.
+          ENDLOOP.
+        ENDIF.
       ENDLOOP.
+      MODIFY /esrcc/rec_chg   FROM TABLE @lt_rec_chg.
+      MODIFY /esrcc/alocshare FROM TABLE @lt_rec_share.
+      MODIFY /esrcc/alcvalues FROM TABLE @lt_aloc_values.
+      CLEAR: lt_aloc_values, lt_rec_share, lt_rec_chg.
     ENDLOOP.
 
-    IF wf_active EQ abap_true.
+    IF wf_active EQ abap_true AND lt_wf_leadobj IS NOT INITIAL.
       trigger_workflow(
         it_leading_object = lt_wf_leadobj
         iv_application    = chargeout
@@ -810,9 +1060,8 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     ).
 
     MODIFY /esrcc/procctrl  FROM TABLE @lt_procctrl.
-    MODIFY /esrcc/rec_chg   FROM TABLE @lt_rec_chg.
-    MODIFY /esrcc/alocshare FROM TABLE @lt_rec_share.
-    MODIFY /esrcc/alcvalues FROM TABLE @lt_srv_values.
+
+    CLEAR: lt_procctrl, lt_rec_chg, lt_rec_share, lt_aloc_values.
 
   ENDMETHOD.
 
@@ -821,43 +1070,49 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 
     DATA lt_cc_cost    TYPE TABLE OF /esrcc/cb_stw.
     DATA lt_procctrl   TYPE STANDARD TABLE OF /esrcc/procctrl.
-    DATA ls_procctrl   TYPE  /esrcc/procctrl.
     DATA ls_wf_leadobj TYPE /esrcc/s_wf_leadingobject.
     DATA lt_wf_leadobj TYPE /esrcc/tt_wf_leadingobject.
-
+    DATA lt_cb_li      TYPE TABLE OF /esrcc/cb_li.
+    DATA lt_tmp_cost   TYPE TABLE OF /esrcc/cb_stw.
 
 *Derive poper from billing frequency customizing
-    derive_poper(
+    IF it_poper IS INITIAL.
+      derive_poper(
+        EXPORTING
+          it_keys  = it_keys
+        IMPORTING
+          et_poper = DATA(_poper)
+      ).
+    ELSE.
+      _poper = it_poper.
+    ENDIF.
+
+*** validate if costbase data was derived
+    DATA(lt_keys) = it_keys.
+    DELETE lt_keys WHERE costcenter IS INITIAL.
+
+    validate_costbase(
       EXPORTING
-        it_keys  = it_keys
+        it_poper = _poper
       IMPORTING
-        et_poper = DATA(_poper)
+        ev_failed = ev_failed
+      CHANGING
+        ct_keys  = lt_keys
     ).
 
+    CHECK lt_keys IS NOT INITIAL.
 
-    SELECT * FROM /esrcc/i_costbase_stewardship FOR ALL ENTRIES IN @it_keys
-                                                WHERE  fplv      = @it_keys-fplv
-                                                  AND ryear      = @it_keys-ryear
-                                                  AND sysid      = @it_keys-sysid
-                                                  AND poper     IN @_poper
-                                                  AND legalentity = @it_keys-legalentity
-                                                  AND ccode      = @it_keys-ccode
-                                                  AND costobject = @it_keys-costobject
-                                                  AND costcenter = @it_keys-costcenter
-                                         INTO CORRESPONDING FIELDS OF TABLE @lt_cc_cost.
-
-*get all cost base line items used to calculate costbase
-    SELECT * FROM /esrcc/cb_li FOR ALL ENTRIES IN @it_keys
-                               WHERE fplv       = @it_keys-fplv
-                                 AND ryear      = @it_keys-ryear
-                                 AND sysid      = @it_keys-sysid
-                                 AND poper     IN @_poper
-                                 AND legalentity = @it_keys-legalentity
-                                 AND ccode      = @it_keys-ccode
-                                 AND costobject = @it_keys-costobject
-                                 AND costcenter = @it_keys-costcenter
-                                 AND status     <> @finalized
-                                 INTO TABLE @DATA(lt_cb_li).
+    SELECT coststw~* FROM /esrcc/i_costbase_stewardship AS coststw
+            INNER JOIN @lt_keys AS keys
+                    ON  coststw~fplv      = keys~fplv
+                   AND coststw~ryear      = keys~ryear
+                   AND coststw~sysid      = keys~sysid
+                   AND coststw~legalentity = keys~legalentity
+                   AND coststw~ccode      = keys~ccode
+                   AND coststw~costobject = keys~costobject
+                   AND coststw~costcenter = keys~costcenter
+                   WHERE coststw~poper     IN @_poper
+                   INTO CORRESPONDING FIELDS OF TABLE @lt_cc_cost.
 
     /esrcc/cl_wf_utility=>is_wf_on(
       EXPORTING
@@ -866,61 +1121,92 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
         ev_wf_active = DATA(wf_active)
     ).
 
-
     CLEAR: ls_wf_leadobj,lt_wf_leadobj.
 
     DATA(lo_uuid) = cl_uuid_factory=>create_system_uuid( ).
 
-    LOOP AT lt_cc_cost ASSIGNING FIELD-SYMBOL(<ls_cc_cost>).
+    /esrcc/cl_utility_core=>get_utc_date_time_ts(
+           IMPORTING
+             time_stamp = DATA(created_at)
+         ).
+
+    /esrcc/cl_utility_core=>get_utc_date_time_ts(
+      IMPORTING
+        time_stamp = DATA(last_changed_at)
+    ).
+
+
+
+
+    LOOP AT lt_cc_cost INTO DATA(ls_cc_cost)
+                       GROUP BY ( legalentity = ls_cc_cost-legalentity ) INTO DATA(entitygroup).
+
+      LOOP AT GROUP entitygroup ASSIGNING FIELD-SYMBOL(<ls_cc_cost>).
 
 * Assign the 16 digit unique identifier
-      IF lo_uuid IS BOUND.
-        TRY.
-            <ls_cc_cost>-cc_uuid = lo_uuid->create_uuid_x16( ).
-          CATCH cx_uuid_error.
-            "handle exception
-        ENDTRY.
-      ENDIF.
+        IF lo_uuid IS BOUND.
+          TRY.
+              <ls_cc_cost>-cc_uuid = lo_uuid->create_uuid_x16( ).
+              <ls_cc_cost>-commentid = lo_uuid->create_uuid_x16( ).
+            CATCH cx_uuid_error.
+              "handle exception
+          ENDTRY.
+        ENDIF.
 
-      <ls_cc_cost>-billingperiod = it_keys[ 1 ]-billingperiod.
-      <ls_cc_cost>-processtype = standardprocesstype.
+        <ls_cc_cost>-billingperiod = lt_keys[ 1 ]-billingperiod.
+        <ls_cc_cost>-processtype = standardprocesstype.
 * Admin data
-      <ls_cc_cost>-created_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = <ls_cc_cost>-created_at
-      ).
-      <ls_cc_cost>-last_changed_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = <ls_cc_cost>-last_changed_at
-      ).
+        <ls_cc_cost>-created_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = <ls_cc_cost>-created_at
+        ).
+        <ls_cc_cost>-last_changed_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = <ls_cc_cost>-last_changed_at
+        ).
 
-      IF wf_active EQ abap_true.
-        CLEAR ls_wf_leadobj.
-        MOVE-CORRESPONDING <ls_cc_cost> TO ls_wf_leadobj.
-        APPEND ls_wf_leadobj TO lt_wf_leadobj.
-      ELSE.
-        <ls_cc_cost>-status = approved.   "Approval
-      ENDIF.
+        IF wf_active EQ abap_true.
+          CLEAR ls_wf_leadobj.
+          MOVE-CORRESPONDING <ls_cc_cost> TO ls_wf_leadobj.
+          APPEND ls_wf_leadobj TO lt_wf_leadobj.
+          <ls_cc_cost>-status = inprocess.
+        ELSE.
+          <ls_cc_cost>-status = approved.   "Approval
+        ENDIF.
 
-* update guids in respective cost line items to create link between costbase line items and costbase
-      LOOP AT lt_cb_li ASSIGNING FIELD-SYMBOL(<cbli>) WHERE fplv        = <ls_cc_cost>-fplv
-                                                        AND ryear       = <ls_cc_cost>-ryear
-                                                        AND sysid       = <ls_cc_cost>-sysid
-                                                        AND poper       = <ls_cc_cost>-poper
-                                                        AND legalentity = <ls_cc_cost>-legalentity
-                                                        AND ccode       = <ls_cc_cost>-ccode
-                                                        AND costobject  = <ls_cc_cost>-costobject
-                                                        AND costcenter  = <ls_cc_cost>-costcenter
-                                                        AND status      <> finalized.
-        <cbli>-cc_guid =  <ls_cc_cost>-cc_uuid.
+
+        APPEND <ls_cc_cost> TO lt_tmp_cost.
+
       ENDLOOP.
 
+*Finalize cost base line items.
+      IF lt_tmp_cost IS NOT INITIAL.
+        SELECT cb~*,
+               ik~cc_uuid AS cc_guid,
+               @sy-uname AS last_changed_by,
+               @last_changed_at AS last_changed_at
+          FROM /esrcc/cb_li AS cb
+          INNER JOIN @lt_tmp_cost AS ik
+            ON cb~fplv        = ik~fplv
+           AND cb~ryear       = ik~ryear
+           AND cb~sysid       = ik~sysid
+           AND cb~legalentity = ik~legalentity
+           AND cb~ccode       = ik~ccode
+           AND cb~costobject  = ik~costobject
+           AND cb~costcenter  = ik~costcenter
+           AND cb~poper        = ik~poper
+          AND cb~status <> @finalized
+        INTO CORRESPONDING FIELDS OF TABLE @lt_cb_li.
+
+        MODIFY /esrcc/cb_li FROM TABLE @lt_cb_li.
+      ENDIF.
+
+      CLEAR: lt_tmp_cost, lt_cb_li.
     ENDLOOP.
 
-
-    IF wf_active EQ abap_true.
+    IF wf_active EQ abap_true AND lt_wf_leadobj IS NOT INITIAL.
       trigger_workflow(
         it_leading_object = lt_wf_leadobj
         iv_application    = costbase
@@ -928,30 +1214,27 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     ENDIF.
 
 
-    LOOP AT it_keys ASSIGNING FIELD-SYMBOL(<key>) WHERE costcenter IS NOT INITIAL
-                                    AND serviceproduct IS INITIAL.
-      ls_procctrl = CORRESPONDING #( <key> ).
-      ls_procctrl-process = costbase.    "Cost Base
-      IF wf_active = abap_false.
-        ls_procctrl-status = costbase_approved.     "Cost Base Approved
-      ELSE.
-        ls_procctrl-status = costbase_inprocess.     "Cost Base In Process
-      ENDIF.
-
-* Admin data
-      ls_procctrl-created_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = ls_procctrl-created_at
-      ).
-      ls_procctrl-last_changed_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = ls_procctrl-last_changed_at
-      ).
-
-      APPEND ls_procctrl TO lt_procctrl.
-    ENDLOOP.
+    lt_procctrl = VALUE #(
+                  FOR keys IN lt_keys
+                  (
+                    sysid          = keys-sysid
+                    fplv           = keys-fplv
+                    ryear          = keys-ryear
+                    billingfreq    = keys-billingfreq
+                    billingperiod  = keys-billingperiod
+                    legalentity    = keys-legalentity
+                    ccode          = keys-ccode
+                    costobject     = keys-costobject
+                    costcenter     = keys-costcenter
+                    serviceproduct = keys-serviceproduct
+                    process        = costbase
+                    status         = COND #( WHEN wf_active = abap_false
+                                             THEN costbase_approved
+                                             ELSE costbase_inprocess )
+                    created_by      = sy-uname
+                    last_changed_by = sy-uname
+                    created_at      = created_at
+                    last_changed_at = last_changed_at ) ).
 
 *Add process logs for traceability
     create_processlogs(
@@ -959,17 +1242,19 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
       it_keys   = lt_procctrl
     ).
 
-*  Delete old as user might have re-triggered costbase & stewardship calculation
+*Delete old as user might have re-triggered costbase & stewardship calculation
     delete_costbase(
-      it_keys  = it_keys
+      it_keys  = lt_keys
       it_poper = _poper
     ).
 
-
-
     MODIFY /esrcc/procctrl FROM TABLE @lt_procctrl.
     MODIFY /esrcc/cb_stw FROM TABLE @lt_cc_cost.
-    MODIFY /esrcc/cb_li FROM TABLE @lt_cb_li.
+
+    FREE: lt_cc_cost,
+          lt_tmp_cost,
+          lt_procctrl,
+          lt_cb_li.
 
   ENDMETHOD.
 
@@ -983,12 +1268,16 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     DATA lt_wf_leadobj TYPE /esrcc/tt_wf_leadingobject.
 
 *Derive poper from billing frequency customizing
-    derive_poper(
-      EXPORTING
-        it_keys  = it_keys
-      IMPORTING
-        et_poper = DATA(_poper)
-    ).
+    IF it_poper IS INITIAL.
+      derive_poper(
+        EXPORTING
+          it_keys  = it_keys
+        IMPORTING
+          et_poper = DATA(_poper)
+      ).
+    ELSE.
+      _poper = it_poper.
+    ENDIF.
 
     DATA(lt_keys) = it_keys.
     DELETE lt_keys WHERE serviceproduct IS INITIAL.
@@ -999,19 +1288,32 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    SELECT * FROM /esrcc/i_chargeout_unitcost FOR ALL ENTRIES IN @lt_keys
-                                              WHERE fplv         = @lt_keys-fplv
-                                                AND ryear        = @lt_keys-ryear
-                                                AND sysid        = @lt_keys-sysid
-                                                AND poper       IN @_poper
-                                                AND legalentity  = @lt_keys-legalentity
-                                                AND ccode        = @lt_keys-ccode
-                                                AND costobject   = @lt_keys-costobject
-                                                AND costcenter   = @lt_keys-costcenter
-                                                AND serviceproduct = @lt_keys-serviceproduct
-                                                AND ServiceProduct IS NOT INITIAL
-                                       INTO TABLE @DATA(lt_srv_cost).
+*validate service cost share calculation
+    validate_serviceproductcosting(
+      EXPORTING
+        it_poper = _poper
+      IMPORTING
+        ev_failed = ev_failed
+      CHANGING
+        ct_keys  = lt_keys
+    ).
 
+    CHECK lt_keys IS NOT INITIAL.
+
+    SELECT cu~*
+      FROM /esrcc/i_chargeout_unitcost AS cu
+      INNER JOIN @lt_keys AS lk
+        ON cu~fplv          = lk~fplv
+       AND cu~ryear         = lk~ryear
+       AND cu~sysid         = lk~sysid
+       AND cu~legalentity   = lk~legalentity
+       AND cu~ccode         = lk~ccode
+       AND cu~costobject    = lk~costobject
+       AND cu~costcenter    = lk~costcenter
+       AND cu~serviceproduct = lk~serviceproduct
+    WHERE cu~poper IN @_poper
+      AND cu~serviceproduct IS NOT INITIAL
+    INTO TABLE @DATA(lt_srv_cost).
 
     /esrcc/cl_wf_utility=>is_wf_on(
       EXPORTING
@@ -1023,6 +1325,7 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 
     CLEAR: ls_wf_leadobj,lt_wf_leadobj.
 
+    CHECK lt_srv_cost IS NOT INITIAL.
 
     DATA(lo_uuid) = cl_uuid_factory=>create_system_uuid( ).
 
@@ -1039,6 +1342,7 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
           ls_wf_leadobj-billingperiod = <key>-billingperiod.
         ENDIF.
         APPEND ls_wf_leadobj TO lt_wf_leadobj.
+        <ls_srvshare>-status = inprocess.   "In process
       ELSE.
         <ls_srvshare>-status = approved.   "Approved
       ENDIF.
@@ -1059,6 +1363,7 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
       IF lo_uuid IS BOUND.
         TRY.
             <ls_srvshare>-srv_uuid = lo_uuid->create_uuid_x16( ).
+            <ls_srvshare>-commentid = lo_uuid->create_uuid_x16( ).
           CATCH cx_uuid_error.
             "handle exception
         ENDTRY.
@@ -1066,7 +1371,7 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 
     ENDLOOP.
 
-    IF wf_active EQ abap_true.
+    IF wf_active EQ abap_true AND lt_wf_leadobj IS NOT INITIAL.
       trigger_workflow(
         it_leading_object = lt_wf_leadobj
         iv_application    = serviceshare
@@ -1075,7 +1380,7 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 
 
 
-    LOOP AT lt_keys ASSIGNING <key> WHERE costcenter IS NOT INITIAL AND serviceproduct IS NOT INITIAL.
+    LOOP AT lt_keys ASSIGNING <key>.
       ls_procctrl = CORRESPONDING #( <key> ).
       ls_procctrl-process = serviceshare.
       IF wf_active =  abap_false.
@@ -1115,27 +1420,26 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     MODIFY /esrcc/procctrl  FROM TABLE @lt_procctrl.
     MODIFY /esrcc/srv_share FROM TABLE @lt_srvshare.
 
+    CLEAR: lt_procctrl, lt_srvshare, lt_srv_cost.
+
   ENDMETHOD.
 
 
   METHOD delete_virtual_postings.
 
-*    DATA ls_cbli TYPE /esrcc/cb_li.
-*    DATA lt_cbli TYPE TABLE OF /esrcc/cb_li.
-*    DATA lv_valid_from TYPE /esrcc/validfrom.
-*    DATA number TYPE /esrcc/doc_no.
-
-    SELECT * FROM /esrcc/cb_li FOR ALL ENTRIES IN @it_keys
-                                             WHERE fplv                 = @it_keys-fplv
-                                               AND ryear                = @it_keys-ryear
-                                               AND posting_sysid        = @it_keys-sysid
-                                               AND poper               IN @it_poper
-                                               AND posting_legalentity  = @it_keys-legalentity
-                                               AND posting_ccode        = @it_keys-ccode
-                                               AND posting_costobject   = @it_keys-costobject
-                                               AND posting_costcenter   = @it_keys-costcenter
-                                               AND value_source = 'SCC'
-                                               INTO TABLE @DATA(lt_costbase).
+    SELECT *
+      FROM /esrcc/cb_li AS cb
+      INNER JOIN @it_keys AS ik
+        ON cb~fplv                 = ik~fplv
+       AND cb~ryear                = ik~ryear
+       AND cb~posting_sysid        = ik~sysid
+       AND cb~posting_legalentity  = ik~legalentity
+       AND cb~posting_ccode        = ik~ccode
+       AND cb~posting_costobject   = ik~costobject
+       AND cb~posting_costcenter   = ik~costcenter
+    WHERE cb~poper IN @it_poper
+      AND cb~value_source = 'SCC'
+    INTO TABLE @DATA(lt_costbase).
 
     DELETE /esrcc/cb_li FROM TABLE @lt_costbase.
 
@@ -1144,68 +1448,91 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 
   METHOD determine_delta_chargeout.
 
-*Handling of delta for Indirect Scenario
+    DATA lt_recsharedelta TYPE TABLE OF /esrcc/rec_chg.
+
+*Handling of delta for direct Scenario
 *If there is cost base which is not allocated 100% due to difference between consumption & planning
 * for a period then allocate that cost base and remaining comsumption to a dummy receiver
-    SELECT rec_chg~* FROM /esrcc/cb_stw AS cb_stw
+
+*get total share of allocated to all receivers
+    SELECT DISTINCT
+           rec_chg~cc_uuid,
+           rec_chg~srv_uuid,
+           reckpi,
+           valueaddmarkup,
+           passthrumarkup
+          FROM /esrcc/cb_stw AS cb_stw
           INNER JOIN /esrcc/srv_share AS srv_share
-                  ON cb_stw~cc_uuid = srv_share~cc_uuid
-                 AND srv_share~chargeout = 'D'
+            ON cb_stw~cc_uuid = srv_share~cc_uuid
+           AND srv_share~chargeout = 'D'
           INNER JOIN /esrcc/rec_chg AS rec_chg
-                  ON cb_stw~cc_uuid = rec_chg~cc_uuid
-                 AND srv_share~srv_uuid = rec_chg~srv_uuid
-          FOR ALL ENTRIES IN @it_keys
-                WHERE fplv          = @it_keys-fplv
-                  AND ryear         = @it_keys-ryear
-                  AND sysid         = @it_keys-sysid
-                  AND poper        IN @it_poper
-                  AND legalentity   = @it_keys-legalentity
-                  AND ccode         = @it_keys-ccode
-                  AND costobject    = @it_keys-costobject
-                  AND costcenter    = @it_keys-costcenter
-                  AND serviceproduct = @it_keys-serviceproduct
-                  INTO TABLE @DATA(lt_recshare).
+            ON cb_stw~cc_uuid = rec_chg~cc_uuid
+           AND srv_share~srv_uuid = rec_chg~srv_uuid
+          INNER JOIN @it_keys AS ik
+            ON cb_stw~fplv          = ik~fplv
+           AND cb_stw~ryear         = ik~ryear
+           AND cb_stw~sysid         = ik~sysid
+           AND cb_stw~legalentity   = ik~legalentity
+           AND cb_stw~ccode         = ik~ccode
+           AND cb_stw~costobject    = ik~costobject
+           AND cb_stw~costcenter    = ik~costcenter
+           AND srv_share~serviceproduct = ik~serviceproduct
+        WHERE cb_stw~poper IN @it_poper
+        ORDER BY rec_chg~cc_uuid,
+                 rec_chg~srv_uuid
+        INTO TABLE @DATA(lt_recshare).
 
-    SELECT ryear,poper,srv_share~* FROM /esrcc/cb_stw AS cb_stw
-         INNER JOIN /esrcc/srv_share AS srv_share
-                 ON cb_stw~cc_uuid = srv_share~cc_uuid
-                AND srv_share~chargeout = 'D'
-         FOR ALL ENTRIES IN @it_keys
-               WHERE fplv          = @it_keys-fplv
-                 AND ryear         = @it_keys-ryear
-                 AND sysid         = @it_keys-sysid
-                 AND poper        IN @it_poper
-                 AND legalentity   = @it_keys-legalentity
-                 AND ccode         = @it_keys-ccode
-                 AND costobject    = @it_keys-costobject
-                 AND costcenter    = @it_keys-costcenter
-                 AND serviceproduct = @it_keys-serviceproduct
-                 INTO TABLE @DATA(lt_srvshare).
+*get total share assigned to service product
+    SELECT DISTINCT
+          cb_stw~ryear,
+          cb_stw~poper,
+          cb_stw~localcurr,
+          srv_share~*
+          FROM /esrcc/cb_stw AS cb_stw
+          INNER JOIN /esrcc/srv_share AS srv_share
+            ON cb_stw~cc_uuid = srv_share~cc_uuid
+           AND srv_share~chargeout = 'D'
+          INNER JOIN @it_keys AS ik
+            ON cb_stw~fplv          = ik~fplv
+           AND cb_stw~ryear         = ik~ryear
+           AND cb_stw~sysid         = ik~sysid
+           AND cb_stw~legalentity   = ik~legalentity
+           AND cb_stw~ccode         = ik~ccode
+           AND cb_stw~costobject    = ik~costobject
+           AND cb_stw~costcenter    = ik~costcenter
+           AND srv_share~serviceproduct = ik~serviceproduct
+        WHERE cb_stw~poper IN @it_poper
+        INTO TABLE @DATA(lt_srvshare).
 
-    SELECT cc_uuid,
+
+    SELECT DISTINCT
+           cc_uuid,
            srv_uuid,
            SUM( reckpi ) AS totalconsumption
            FROM @lt_recshare AS recshare
            GROUP BY
            cc_uuid,
            srv_uuid
+           ORDER BY cc_uuid,
+                    srv_uuid
            INTO TABLE @DATA(lt_totalconsumption).
 
-    CLEAR lt_recshare.
     DATA(lo_uuid) = cl_uuid_factory=>create_system_uuid( ).
 
 * get dummy cost object details
     SELECT SINGLE * FROM /esrcc/cst_objct WHERE legal_entity = 'REST'
                     INTO @DATA(dummyreceiver).
 
+
     LOOP AT lt_srvshare ASSIGNING FIELD-SYMBOL(<ls_srvshare>).
       READ TABLE lt_totalconsumption ASSIGNING FIELD-SYMBOL(<totalconsumption>)
                                      WITH KEY cc_uuid = <ls_srvshare>-srv_share-cc_uuid
-                                              srv_uuid = <ls_srvshare>-srv_share-srv_uuid.
+                                              srv_uuid = <ls_srvshare>-srv_share-srv_uuid
+                                              BINARY SEARCH.
 
-      IF sy-subrc = 0 AND <ls_srvshare>-srv_share-planning > <totalconsumption>-totalconsumption.
+      IF sy-subrc = 0 AND <ls_srvshare>-srv_share-planning <> <totalconsumption>-totalconsumption.
 ** add a dummy receiver
-        APPEND INITIAL LINE TO lt_recshare ASSIGNING FIELD-SYMBOL(<recshare>).
+        APPEND INITIAL LINE TO lt_recsharedelta ASSIGNING FIELD-SYMBOL(<recshare>).
         <recshare>-cc_uuid = <ls_srvshare>-srv_share-cc_uuid.
         <recshare>-srv_uuid = <ls_srvshare>-srv_share-srv_uuid.
 * Assign the 16 digit unique identifier
@@ -1229,10 +1556,20 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
           <recshare>-receivercostobject = 'CC'.
           <recshare>-receivercostcenter = 'DUMMY'.
         ENDIF.
+*   get the markups applied at service product level for each receiever and apply for delta node as well
+        READ TABLE lt_recshare ASSIGNING FIELD-SYMBOL(<ls_recshare>) WITH KEY cc_uuid = <totalconsumption>-cc_uuid
+                                                                              srv_uuid = <totalconsumption>-srv_uuid
+                                                                              BINARY SEARCH.
+        IF sy-subrc = 0.
+          <recshare>-valueaddmarkup = <ls_recshare>-valueaddmarkup.
+          <recshare>-passthrumarkup = <ls_recshare>-passthrumarkup.
+        ENDIF.
+*    Assign local currency of the provider as the invoicing currency for REST.
+        <recshare>-invoicingcurrency = <ls_srvshare>-localcurr.
+        <recshare>-status = finalized.
+        <recshare>-invoicestatus = '01'.
         <recshare>-reckpi = <ls_srvshare>-srv_share-planning - <totalconsumption>-totalconsumption.
         <recshare>-consumptionuom = <ls_srvshare>-srv_share-planninguom.
-        <recshare>-uom = <recshare>-consumptionuom.
-        <recshare>-status = chargeout_finalized.
         determine_last_day(
           EXPORTING
             iv_ryear    = <ls_srvshare>-ryear
@@ -1255,7 +1592,9 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
       ENDIF.
     ENDLOOP.
 
-    MODIFY /esrcc/rec_chg FROM TABLE @lt_recshare.
+    MODIFY /esrcc/rec_chg FROM TABLE @lt_recsharedelta.
+
+    CLEAR: lt_recshare, lt_totalconsumption, lt_recsharedelta, lt_srvshare.
 
   ENDMETHOD.
 
@@ -1284,73 +1623,81 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     DATA lt_cbli       TYPE TABLE OF /esrcc/cb_li.
     DATA lv_valid_from TYPE /esrcc/validfrom.
     DATA number        TYPE /esrcc/doc_no.
+    DATA lo_badi     TYPE REF TO /esrcc/badi_cockpit.
+    DATA lt_recshare   TYPE TABLE OF /esrcc/rec_chg.
+    DATA lv_invoicestatus TYPE /esrcc/invoicestatus VALUE '01'.
 
 *Derive poper from billing frequency customizing
-    READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<key>) INDEX 1.
-    IF sy-subrc = 0.
-      SELECT 'I'  AS sign,
-            'EQ'  AS option,
-            poper AS low
-            FROM /esrcc/billfreq
-            WHERE billingfreq = @<key>-billingfreq
-              AND billingvalue = @<key>-billingperiod
-            ORDER BY low ASCENDING
-            INTO CORRESPONDING FIELDS OF TABLE @_poper.
+    IF it_poper IS INITIAL.
+      READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<key>) INDEX 1.
+      IF sy-subrc = 0.
+        SELECT 'I'  AS sign,
+              'EQ'  AS option,
+              poper AS low
+              FROM /esrcc/billfreq
+              WHERE billingfreq = @<key>-billingfreq
+                AND billingvalue = @<key>-billingperiod
+              ORDER BY low ASCENDING
+              INTO CORRESPONDING FIELDS OF TABLE @_poper.
+      ENDIF.
+    ELSE.
+      _poper = it_poper.
     ENDIF.
 
-    LOOP AT it_keys ASSIGNING <key> WHERE costcenter IS NOT INITIAL
-                                      AND serviceproduct IS NOT INITIAL.
-      ls_procctrl = CORRESPONDING #( <key> ).
-      ls_procctrl-process = chargeout.    "Charge-Out
-      ls_procctrl-status = chargeout_finalized.     "Charge Out finalized
+    DATA(lt_keys) = it_keys.
+    DELETE lt_keys WHERE serviceproduct IS INITIAL.
 
-* Admin data
-      ls_procctrl-last_changed_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = ls_procctrl-last_changed_at
-      ).
+    CHECK lt_keys IS NOT INITIAL.
 
-      APPEND ls_procctrl TO lt_procctrl.
-    ENDLOOP.
+    /esrcc/cl_utility_core=>get_utc_date_time_ts(
+      IMPORTING
+        time_stamp = DATA(last_changed_at)
+    ).
+
+*update execution process control
+    SELECT procctrl~*,
+           @chargeout_finalized AS status,
+           @sy-uname AS last_changed_by,
+           @last_changed_at AS last_changed_at
+           FROM /esrcc/procctrl AS procctrl
+           INNER JOIN @lt_keys AS keys
+           ON procctrl~sysid          = keys~sysid
+          AND procctrl~fplv           = keys~fplv
+          AND procctrl~ryear          = keys~ryear
+          AND procctrl~billingfreq    = keys~billingfreq
+          AND procctrl~billingperiod  = keys~billingperiod
+          AND procctrl~legalentity    = keys~legalentity
+          AND procctrl~ccode          = keys~ccode
+          AND procctrl~costobject     = keys~costobject
+          AND procctrl~costcenter     = keys~costcenter
+          AND procctrl~serviceproduct = keys~serviceproduct
+          WHERE procctrl~process = @chargeout
+          INTO CORRESPONDING FIELDS OF TABLE @lt_procctrl.
+
 
 *Finalize calculated receiever
-    SELECT rec_chg~* FROM /esrcc/cb_stw AS cb_stw
+    SELECT rec_chg~*,
+           @lv_invoicestatus AS invoicestatus,
+           @finalized AS status,
+           @sy-uname AS last_changed_by,
+           @last_changed_at AS last_changed_at
+          FROM /esrcc/cb_stw AS cb_stw
           INNER JOIN /esrcc/srv_share AS srv_share
-                  ON cb_stw~cc_uuid = srv_share~cc_uuid
+            ON cb_stw~cc_uuid = srv_share~cc_uuid
           INNER JOIN /esrcc/rec_chg AS rec_chg
-                  ON cb_stw~cc_uuid = rec_chg~cc_uuid
-                 AND srv_share~srv_uuid = rec_chg~srv_uuid
-          FOR ALL ENTRIES IN @it_keys
-                WHERE fplv          = @it_keys-fplv
-                  AND ryear         = @it_keys-ryear
-                  AND sysid         = @it_keys-sysid
-                  AND poper        IN @_poper
-                  AND legalentity   = @it_keys-legalentity
-                  AND ccode         = @it_keys-ccode
-                  AND costobject    = @it_keys-costobject
-                  AND costcenter    = @it_keys-costcenter
-                  AND serviceproduct = @it_keys-serviceproduct
-                  INTO TABLE @DATA(lt_recshare).
-
-    LOOP AT lt_recshare ASSIGNING FIELD-SYMBOL(<ls_recshare>).
-      <ls_recshare>-status = finalized.
-      <ls_recshare>-invoicestatus = '01'.
-
-* Admin data
-      <ls_recshare>-last_changed_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = <ls_recshare>-last_changed_at
-      ).
-
-    ENDLOOP.
-
-*Add process logs for traceability
-    create_processlogs(
-      iv_action = action_finalize_chargeout
-      it_keys   = lt_procctrl
-    ).
+            ON cb_stw~cc_uuid = rec_chg~cc_uuid
+           AND srv_share~srv_uuid = rec_chg~srv_uuid
+          INNER JOIN @it_keys AS ik
+            ON cb_stw~fplv          = ik~fplv
+           AND cb_stw~ryear         = ik~ryear
+           AND cb_stw~sysid         = ik~sysid
+           AND cb_stw~legalentity   = ik~legalentity
+           AND cb_stw~ccode         = ik~ccode
+           AND cb_stw~costobject    = ik~costobject
+           AND cb_stw~costcenter    = ik~costcenter
+           AND srv_share~serviceproduct = ik~serviceproduct
+        WHERE cb_stw~poper IN @_poper
+        INTO CORRESPONDING FIELDS OF TABLE @lt_recshare.
 
 *Handling of delta for direct chargeout Scenario
     determine_delta_chargeout(
@@ -1359,15 +1706,32 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     ).
 
 *SCC Virtual posting
-    virtual_posting(
-      it_keys  = it_keys
-      it_poper = _poper
-    ).
+    IF lo_badi IS NOT BOUND.
+      TRY.
+          GET BADI lo_badi.
+        CATCH cx_badi_not_implemented cx_badi_unknown_error.
+      ENDTRY.
+    ENDIF.
 
+    IF lo_badi IS BOUND.
+
+      CALL BADI lo_badi->virtual_posting
+        EXPORTING
+          it_keys  = it_keys
+          it_poper = _poper.
+
+    ENDIF.
+
+*Add process logs for traceability
+    create_processlogs(
+      iv_action = action_finalize_chargeout
+      it_keys   = lt_procctrl
+    ).
 
     MODIFY /esrcc/procctrl FROM TABLE @lt_procctrl.
     MODIFY /esrcc/rec_chg FROM TABLE @lt_recshare.
 
+    CLEAR: lt_procctrl, lt_recshare.
 
   ENDMETHOD.
 
@@ -1377,85 +1741,112 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     DATA lt_procctrl TYPE STANDARD TABLE OF /esrcc/procctrl.
     DATA ls_procctrl TYPE  /esrcc/procctrl.
     DATA _poper TYPE RANGE OF poper.
+    DATA lt_cc_cost TYPE TABLE OF /esrcc/cb_stw.
+    DATA lt_cb_li   TYPE TABLE OF /esrcc/cb_li.
+    DATA lt_tmp_cost TYPE TABLE OF /esrcc/cb_stw.
 
 *Derive poper from billing frequency customizing
-    READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<key>) INDEX 1.
-    IF sy-subrc = 0.
-      SELECT 'I'  AS sign,
-            'EQ'  AS option,
-            poper AS low
-            FROM /esrcc/billfreq
-            WHERE billingfreq = @<key>-billingfreq
-              AND billingvalue = @<key>-billingperiod
-            ORDER BY low ASCENDING
-            INTO CORRESPONDING FIELDS OF TABLE @_poper.
+    IF it_poper IS INITIAL.
+      READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<key>) INDEX 1.
+      IF sy-subrc = 0.
+        SELECT 'I'  AS sign,
+              'EQ'  AS option,
+              poper AS low
+              FROM /esrcc/billfreq
+              WHERE billingfreq = @<key>-billingfreq
+                AND billingvalue = @<key>-billingperiod
+              ORDER BY low ASCENDING
+              INTO CORRESPONDING FIELDS OF TABLE @_poper.
+      ENDIF.
+    ELSE.
+      _poper = it_poper.
     ENDIF.
 
-*update execution process control
-    LOOP AT it_keys ASSIGNING <key> WHERE costcenter IS NOT INITIAL AND serviceproduct IS INITIAL.
-      ls_procctrl = CORRESPONDING #( <key> ).
-      ls_procctrl-process = costbase.    "Costbase
-      ls_procctrl-status = costbase_finalized.     "Cost base finalized
+    DATA(lt_keys) = it_keys.
+    DELETE lt_keys WHERE costcenter IS INITIAL.
 
-* Admin data
-      ls_procctrl-last_changed_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = ls_procctrl-last_changed_at
-      ).
+    CHECK lt_keys IS NOT INITIAL.
 
-      APPEND ls_procctrl TO lt_procctrl.
-    ENDLOOP.
+    /esrcc/cl_utility_core=>get_utc_date_time_ts(
+      IMPORTING
+        time_stamp = DATA(last_changed_at)
+    ).
 
-*Finalize cost base line items.
-    SELECT * FROM /esrcc/cb_li FOR ALL ENTRIES IN @it_keys
-                               WHERE fplv       = @it_keys-fplv
-                                 AND ryear      = @it_keys-ryear
-                                 AND sysid      = @it_keys-sysid
-                                 AND poper     IN @_poper
-                                 AND legalentity = @it_keys-legalentity
-                                 AND ccode      = @it_keys-ccode
-                                 AND costobject = @it_keys-costobject
-                                 AND costcenter = @it_keys-costcenter
-                                 AND status     <> @finalized
-                                 INTO TABLE @DATA(lt_cb_li).
-
-    LOOP AT lt_cb_li ASSIGNING FIELD-SYMBOL(<ls_cb_li>).
-      <ls_cb_li>-status = finalized.
-
-* Admin data
-      <ls_cb_li>-last_changed_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = <ls_cb_li>-last_changed_at
-      ).
-
-    ENDLOOP.
 
 *Finalize calculated Cost base & Stewardship
-    SELECT * FROM /esrcc/cb_stw FOR ALL ENTRIES IN @it_keys
-                                WHERE fplv        = @it_keys-fplv
-                                  AND ryear       = @it_keys-ryear
-                                  AND sysid       = @it_keys-sysid
-                                  AND poper      IN @_poper
-                                  AND legalentity = @it_keys-legalentity
-                                  AND ccode       = @it_keys-ccode
-                                  AND costobject  = @it_keys-costobject
-                                  AND costcenter  = @it_keys-costcenter
-*                                  AND  serviceproduct = @keys-serviceproduct
-                                  INTO TABLE @DATA(lt_cc_cost).
+    SELECT  cb~*,
+            @finalized AS status,
+            @sy-uname AS last_changed_by,
+            @last_changed_at AS last_changed_at
+      FROM /esrcc/cb_stw AS cb
+      INNER JOIN @lt_keys AS ik
+        ON cb~fplv        = ik~fplv
+       AND cb~ryear       = ik~ryear
+       AND cb~sysid       = ik~sysid
+       AND cb~legalentity = ik~legalentity
+       AND cb~ccode       = ik~ccode
+       AND cb~costobject  = ik~costobject
+       AND cb~costcenter  = ik~costcenter
+    WHERE cb~poper IN @_poper
+    INTO CORRESPONDING FIELDS OF TABLE @lt_cc_cost.
 
-    LOOP AT lt_cc_cost ASSIGNING FIELD-SYMBOL(<ls_cc_cost>).
-      <ls_cc_cost>-status = finalized.
 
-* Admin data
-      <ls_cc_cost>-last_changed_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = <ls_cc_cost>-last_changed_at
-      ).
+*Finalize cost base line items.
+    LOOP AT lt_cc_cost INTO DATA(ls_cc_cost)
+                       GROUP BY ( legalentity = ls_cc_cost-legalentity ) INTO DATA(entitygroup).
 
+      CLEAR lt_tmp_cost.
+      LOOP AT GROUP entitygroup INTO DATA(cc_cost).
+        APPEND cc_cost TO lt_tmp_cost.
+      ENDLOOP.
+
+*Finalize cost base line items.
+      IF lt_tmp_cost IS NOT INITIAL.
+        CLEAR lt_cb_li.
+        SELECT cb~*,
+               @finalized AS status,
+               @sy-uname AS last_changed_by,
+               @last_changed_at AS last_changed_at
+          FROM /esrcc/cb_li AS cb
+          INNER JOIN @lt_tmp_cost AS ik
+            ON cb~fplv        = ik~fplv
+           AND cb~ryear       = ik~ryear
+           AND cb~sysid       = ik~sysid
+           AND cb~legalentity = ik~legalentity
+           AND cb~ccode       = ik~ccode
+           AND cb~costobject  = ik~costobject
+           AND cb~costcenter  = ik~costcenter
+           AND cb~poper        = ik~poper
+          AND cb~status <> @finalized
+        INTO CORRESPONDING FIELDS OF TABLE @lt_cb_li.
+
+        MODIFY /esrcc/cb_li FROM TABLE @lt_cb_li.
+      ENDIF.
+      FREE: lt_tmp_cost,
+            lt_cb_li.
     ENDLOOP.
+
+*update execution process control
+    SELECT procctrl~*,
+           @costbase_finalized AS status,
+           @sy-uname AS last_changed_by,
+           @last_changed_at AS last_changed_at
+           FROM /esrcc/procctrl AS procctrl
+           INNER JOIN @lt_keys AS keys
+           ON procctrl~sysid          = keys~sysid
+          AND procctrl~fplv           = keys~fplv
+          AND procctrl~ryear          = keys~ryear
+          AND procctrl~billingfreq    = keys~billingfreq
+          AND procctrl~billingperiod  = keys~billingperiod
+          AND procctrl~legalentity    = keys~legalentity
+          AND procctrl~ccode          = keys~ccode
+          AND procctrl~costobject     = keys~costobject
+          AND procctrl~costcenter     = keys~costcenter
+          AND procctrl~serviceproduct = keys~serviceproduct
+          AND procctrl~process = @costbase
+          INTO CORRESPONDING FIELDS OF TABLE @lt_procctrl.
+
+
 
 *Add process logs for traceability
     create_processlogs(
@@ -1467,7 +1858,10 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     MODIFY /esrcc/cb_li    FROM TABLE @lt_cb_li.
     MODIFY /esrcc/cb_stw   FROM TABLE @lt_cc_cost.
 
-
+    FREE: lt_cc_cost,
+          lt_tmp_cost,
+          lt_procctrl,
+          lt_cb_li.
   ENDMETHOD.
 
 
@@ -1476,65 +1870,74 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     DATA lt_procctrl TYPE STANDARD TABLE OF /esrcc/procctrl.
     DATA ls_procctrl TYPE  /esrcc/procctrl.
     DATA _poper TYPE RANGE OF poper.
+    DATA lt_srvshare TYPE TABLE OF /esrcc/srv_share.
 
 *Derive poper from billing frequency customizing
-    READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<key>) INDEX 1.
-    IF sy-subrc = 0.
-      SELECT 'I'  AS sign,
-            'EQ'  AS option,
-            poper AS low
-            FROM /esrcc/billfreq
-            WHERE billingfreq = @<key>-billingfreq
-              AND billingvalue = @<key>-billingperiod
-            ORDER BY low ASCENDING
-            INTO CORRESPONDING FIELDS OF TABLE @_poper.
+    IF it_poper IS INITIAL.
+      READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<key>) INDEX 1.
+      IF sy-subrc = 0.
+        SELECT 'I'  AS sign,
+              'EQ'  AS option,
+              poper AS low
+              FROM /esrcc/billfreq
+              WHERE billingfreq = @<key>-billingfreq
+                AND billingvalue = @<key>-billingperiod
+              ORDER BY low ASCENDING
+              INTO CORRESPONDING FIELDS OF TABLE @_poper.
+      ENDIF.
+    ELSE.
+      _poper = it_poper.
     ENDIF.
 
-*  Finalize Process Control
-    LOOP AT it_keys ASSIGNING <key> WHERE costcenter IS NOT INITIAL
-                                      AND serviceproduct IS NOT INITIAL.
-      ls_procctrl = CORRESPONDING #( <key> ).
-      ls_procctrl-process = serviceshare.    "Stewardship
-      ls_procctrl-status = serviceshare_finalized.     "Stewardship Finalized
+    DATA(lt_keys) = it_keys.
+    DELETE lt_keys WHERE serviceproduct IS INITIAL.
 
-* Admin data
-      ls_procctrl-last_changed_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = ls_procctrl-last_changed_at
-      ).
+    CHECK lt_keys IS NOT INITIAL.
 
-      APPEND ls_procctrl TO lt_procctrl.
-    ENDLOOP.
+    /esrcc/cl_utility_core=>get_utc_date_time_ts(
+      IMPORTING
+        time_stamp = DATA(last_changed_at)
+    ).
+
+*update execution process control
+    SELECT procctrl~*,
+           @serviceshare_finalized AS status,
+           @sy-uname AS last_changed_by,
+           @last_changed_at AS last_changed_at
+           FROM /esrcc/procctrl AS procctrl
+           INNER JOIN @lt_keys AS keys
+           ON procctrl~sysid          = keys~sysid
+          AND procctrl~fplv           = keys~fplv
+          AND procctrl~ryear          = keys~ryear
+          AND procctrl~billingfreq    = keys~billingfreq
+          AND procctrl~billingperiod  = keys~billingperiod
+          AND procctrl~legalentity    = keys~legalentity
+          AND procctrl~ccode          = keys~ccode
+          AND procctrl~costobject     = keys~costobject
+          AND procctrl~costcenter     = keys~costcenter
+          AND procctrl~serviceproduct = keys~serviceproduct
+          WHERE procctrl~process = @serviceshare
+          INTO CORRESPONDING FIELDS OF TABLE @lt_procctrl.
 
 *Finalize calculated Cost base & Stewardship
-    SELECT srv_share~* FROM /esrcc/cb_stw AS cb_stw
-          INNER JOIN /esrcc/srv_share AS srv_share
-                  ON cb_stw~cc_uuid = srv_share~cc_uuid
-          FOR ALL ENTRIES IN @it_keys
-                WHERE fplv          = @it_keys-fplv
-                  AND ryear         = @it_keys-ryear
-                  AND sysid         = @it_keys-sysid
-                  AND poper        IN @_poper
-                  AND legalentity   = @it_keys-legalentity
-                  AND ccode         = @it_keys-ccode
-                  AND costobject    = @it_keys-costobject
-                  AND costcenter    = @it_keys-costcenter
-                  AND serviceproduct = @it_keys-serviceproduct
-                  INTO TABLE @DATA(lt_srvshare).
-
-
-    LOOP AT lt_srvshare ASSIGNING FIELD-SYMBOL(<ls_srvshare>).
-      <ls_srvshare>-status = finalized.
-
-* Admin data
-      <ls_srvshare>-last_changed_by = sy-uname.
-      /esrcc/cl_utility_core=>get_utc_date_time_ts(
-        IMPORTING
-          time_stamp = <ls_srvshare>-last_changed_at
-      ).
-
-    ENDLOOP.
+    SELECT srv_share~*,
+           @finalized AS status,
+           @sy-uname AS last_changed_by,
+           @last_changed_at AS last_changed_at
+      FROM /esrcc/cb_stw AS cb_stw
+      INNER JOIN /esrcc/srv_share AS srv_share
+        ON cb_stw~cc_uuid = srv_share~cc_uuid
+      INNER JOIN @lt_keys AS ik
+        ON cb_stw~fplv          = ik~fplv
+       AND cb_stw~ryear         = ik~ryear
+       AND cb_stw~sysid         = ik~sysid
+       AND cb_stw~legalentity   = ik~legalentity
+       AND cb_stw~ccode         = ik~ccode
+       AND cb_stw~costobject    = ik~costobject
+       AND cb_stw~costcenter    = ik~costcenter
+       AND srv_share~serviceproduct = ik~serviceproduct
+    WHERE cb_stw~poper IN @_poper
+    INTO CORRESPONDING FIELDS OF TABLE @lt_srvshare.
 
 *Add process logs for traceability
     create_processlogs(
@@ -1544,6 +1947,8 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 
     MODIFY /esrcc/procctrl  FROM TABLE @lt_procctrl.
     MODIFY /esrcc/srv_share FROM TABLE @lt_srvshare.
+
+    CLEAR: lt_procctrl, lt_srvshare.
 
   ENDMETHOD.
 
@@ -1600,6 +2005,8 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 
     DELETE /esrcc/procctrl  FROM TABLE @lt_procctrl.
 
+    CLEAR: lt_procctrl.
+
   ENDMETHOD.
 
 
@@ -1610,6 +2017,7 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
     DATA lt_alocshare  TYPE TABLE OF /esrcc/alocshare.
     DATA lt_alocvalues TYPE TABLE OF /esrcc/alcvalues.
     DATA _poper TYPE RANGE OF poper.
+    DATA lt_cb_li TYPE TABLE OF /esrcc/cb_li.
 
 *Derive poper from billing frequency customizing
     READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<key>) INDEX 1.
@@ -1624,54 +2032,50 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
             INTO CORRESPONDING FIELDS OF TABLE @_poper.
     ENDIF.
 
-*Update execution cockpit process control
-    SELECT * FROM /esrcc/procctrl FOR ALL ENTRIES IN @it_keys
-                                  WHERE fplv          = @it_keys-fplv
-                                    AND ryear         = @it_keys-ryear
-                                    AND sysid         = @it_keys-sysid
-                                    AND legalentity   = @it_keys-legalentity
-                                    AND ccode         = @it_keys-ccode
-                                    AND costobject    = @it_keys-costobject
-                                    AND costcenter    = @it_keys-costcenter
-                                    AND billingfreq   = @it_keys-billingfreq
-                                    AND billingperiod = @it_keys-billingperiod
-                                    INTO TABLE @lt_procctrl.
+    DATA(lt_keys) = it_keys.
+    DELETE lt_keys WHERE costcenter IS INITIAL.
 
-*ReOpen cost base line items.
-    SELECT * FROM /esrcc/cb_li FOR ALL ENTRIES IN @it_keys
-                               WHERE fplv        = @it_keys-fplv
-                                 AND ryear       = @it_keys-ryear
-                                 AND sysid       = @it_keys-sysid
-                                 AND poper       IN @_poper
-                                 AND legalentity = @it_keys-legalentity
-                                 AND ccode       = @it_keys-ccode
-                                 AND costobject  = @it_keys-costobject
-                                 AND costcenter  = @it_keys-costcenter
-                                 AND value_source <> 'SCC'
-                                 INTO TABLE @DATA(lt_cb_li).
+    CHECK lt_keys IS NOT INITIAL.
 
-    LOOP AT lt_cb_li ASSIGNING FIELD-SYMBOL(<ls_cb_li>).
-      <ls_cb_li>-status = approved.
-      CLEAR <ls_cb_li>-cc_guid.
-    ENDLOOP.
-
-*Add process logs for traceability
-    create_processlogs(
-      iv_action = action_reopen_costbase
-      it_keys   = lt_procctrl
+    /esrcc/cl_utility_core=>get_utc_date_time_ts(
+      IMPORTING
+        time_stamp = DATA(last_changed_at)
     ).
+
 *  reopen service cost share
     /esrcc/cl_calculate_chargeout=>reopen_serviceshare( it_keys = it_keys
                                                         iv_costbasereopen = abap_true ).
 
 *  Delete cost center cost
     delete_costbase(
-      it_keys  = it_keys
+      it_keys  = lt_keys
       it_poper = _poper
     ).
 
+*Update execution cockpit process control
+    SELECT pc~*
+      FROM /esrcc/procctrl AS pc
+      INNER JOIN @lt_keys AS ik
+        ON pc~fplv          = ik~fplv
+       AND pc~ryear         = ik~ryear
+       AND pc~sysid         = ik~sysid
+       AND pc~legalentity   = ik~legalentity
+       AND pc~ccode         = ik~ccode
+       AND pc~costobject    = ik~costobject
+       AND pc~costcenter    = ik~costcenter
+       AND pc~billingfreq   = ik~billingfreq
+       AND pc~billingperiod = ik~billingperiod
+    INTO TABLE @lt_procctrl.
+
+*Add process logs for traceability
+    create_processlogs(
+      iv_action = action_reopen_costbase
+      it_keys   = lt_procctrl
+    ).
+
     DELETE /esrcc/procctrl FROM TABLE @lt_procctrl.
-    MODIFY /esrcc/cb_li    FROM TABLE @lt_cb_li.
+
+    CLEAR: lt_procctrl.
 
   ENDMETHOD.
 
@@ -1731,6 +2135,8 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 
     DELETE /esrcc/procctrl FROM TABLE @lt_procctrl.
 
+    CLEAR: lt_procctrl.
+
   ENDMETHOD.
 
 
@@ -1746,248 +2152,378 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
 
   METHOD virtual_posting.
 
-    DATA ls_cbli TYPE /esrcc/cb_li.
-    DATA lt_cbli TYPE TABLE OF /esrcc/cb_li.
-    DATA lv_valid_from TYPE /esrcc/validfrom.
-    DATA number TYPE /esrcc/doc_no.
+    DATA ls_cbli    TYPE /esrcc/cb_li.
+    DATA lt_cbli    TYPE TABLE OF /esrcc/cb_li.
+    DATA lv_validon TYPE /esrcc/validfrom.
+    DATA number     TYPE /esrcc/doc_no.
+
+    READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<keys>) INDEX 1.
+    IF sy-subrc <> 0.
+      RETURN.
+    ENDIF.
+
+    LOOP AT it_poper ASSIGNING FIELD-SYMBOL(<ls_poper>).
+
+      CONCATENATE <keys>-ryear <ls_poper>-low+1(2) '01' INTO lv_validon.
+
+*get the list of receivers
+      SELECT DISTINCT rec_chg~receiversysid,
+                      rec_chg~receivingentity,
+                      rec_chg~receivercompanycode,
+                      le~local_curr AS receivercurrency
+            FROM /esrcc/cb_stw AS cb_stw
+            INNER JOIN /esrcc/srv_share AS srv_share
+              ON cb_stw~cc_uuid = srv_share~cc_uuid
+            INNER JOIN /esrcc/rec_chg AS rec_chg
+              ON cb_stw~cc_uuid = rec_chg~cc_uuid
+             AND srv_share~srv_uuid = rec_chg~srv_uuid
+            INNER JOIN @it_keys AS ik
+              ON cb_stw~fplv          = ik~fplv
+             AND cb_stw~ryear         = ik~ryear
+             AND cb_stw~sysid         = ik~sysid
+             AND cb_stw~legalentity   = ik~legalentity
+             AND cb_stw~ccode         = ik~ccode
+             AND cb_stw~costobject    = ik~costobject
+             AND cb_stw~costcenter    = ik~costcenter
+             AND srv_share~serviceproduct = ik~serviceproduct
+             LEFT OUTER JOIN /esrcc/le AS le
+             ON rec_chg~receivingentity = le~legalentity
+          WHERE cb_stw~poper = @<ls_poper>-low
+          ORDER BY receivingentity
+          INTO TABLE @DATA(receivers).
+
+*check if virtual cost element  is configured for receivers.
+      IF receivers IS NOT INITIAL.
+        SELECT DISTINCT cel~sysid, cel~company_code, cel~legal_entity, cel~cost_element, costelem~*
+              FROM /esrcc/cstelmtch AS costelem
+              INNER JOIN /esrcc/cst_elmnt AS cel
+              ON costelem~cost_element_uuid = cel~cost_element_uuid
+              INNER JOIN @receivers AS rc
+              ON cel~legal_entity  = rc~receivingentity
+              AND cel~company_code = rc~receivercompanycode
+              AND cel~sysid        = rc~receiversysid
+              WHERE costelem~value_source = @scc_valuesource
+                AND costelem~valid_from  <= @lv_validon
+                AND costelem~valid_to    >= @lv_validon
+              ORDER BY cel~sysid,
+                       cel~company_code,
+                       cel~legal_entity
+              INTO TABLE @DATA(lt_costelement).
 
 
 *SCC Virtual posting
-    SELECT * FROM /ESRCC/I_ChargeoutReceived FOR ALL ENTRIES IN @it_keys
-                                             WHERE fplv         = @it_keys-fplv
-                                               AND ryear        = @it_keys-ryear
-                                               AND sysid        = @it_keys-sysid
-                                               AND poper       IN @it_poper
-                                               AND legalentity  = @it_keys-legalentity
-                                               AND ccode        = @it_keys-ccode
-                                               AND costobject   = @it_keys-costobject
-                                               AND costcenter   = @it_keys-costcenter
-                                               AND serviceproduct = @it_keys-serviceproduct
-                                               AND Currencytype = 'G'
-                                               AND Receivingentity IS NOT INITIAL
-                                               INTO TABLE @DATA(lt_receiverchargeout).
+        SELECT DISTINCT
+               cb~fplv,
+               cb~ryear,
+               cb~poper,
+               cb~sysid,
+               cb~ccode,
+               cb~legalentity,
+               cb~Costobject,
+               cb~Costcenter,
+               co~uuid,
+               co~ReceiverSysId,
+               co~ReceiverCompanyCode,
+               co~Receivingentity,
+               co~ReceiverCostObject,
+               co~ReceiverCostCenter,
+               co~TotalChargeout AS TotalChargeoutAmount,
+               co~currency,
+               co~Exchdate
+          FROM /ESRCC/I_ReceiverChargeout AS co
+          INNER JOIN /esrcc/i_costbasestewardship AS cb
+          ON co~RootUUID = cb~uuid
+          INNER JOIN @lt_costelement AS ik
+            ON co~ReceiverSysId        = ik~sysid
+           AND co~Receivingentity      = ik~legal_entity
+           AND co~ReceiverCompanyCode  = ik~company_code
+        WHERE co~Currencytype   = 'G'
+          AND cb~poper          = @<ls_poper>-low
+          AND cb~ryear          = @<keys>-ryear
+          AND cb~fplv           = @<keys>-fplv
+          AND cb~Sysid          = @<keys>-sysid
+          AND cb~Legalentity    = @<keys>-legalentity
+          AND cb~ccode          = @<keys>-ccode
+          AND cb~Costobject     = @<keys>-costobject
+          AND cb~Costcenter     = @<keys>-costcenter
+          AND co~Receivingentity IS NOT INITIAL
+        INTO TABLE @DATA(lt_receiverchargeout).
 
-    SELECT * FROM /ESRCC/I_ChargeoutReceived FOR ALL ENTRIES IN @it_keys
-                                             WHERE fplv         = @it_keys-fplv
-                                               AND ryear        = @it_keys-ryear
-                                               AND sysid        = @it_keys-sysid
-                                               AND poper       IN @it_poper
-                                               AND legalentity  = @it_keys-legalentity
-                                               AND ccode        = @it_keys-ccode
-                                               AND costobject   = @it_keys-costobject
-                                               AND costcenter   = @it_keys-costcenter
-                                               AND serviceproduct = @it_keys-serviceproduct
-                                               AND Currencytype = 'L'
-                                               AND Receivingentity IS NOT INITIAL
-                                               INTO TABLE @DATA(lt_chargeoutlocalcurr).
+        LOOP AT lt_receiverchargeout ASSIGNING FIELD-SYMBOL(<ls_receiverchargeout>).
 
-    IF lt_receiverchargeout IS NOT INITIAL.
+          READ TABLE lt_costelement ASSIGNING FIELD-SYMBOL(<ls_costlement>)
+                                    WITH KEY sysid = <ls_receiverchargeout>-ReceiverSysId
+                                             company_code = <ls_receiverchargeout>-ReceiverCompanyCode
+                                             legal_entity = <ls_receiverchargeout>-Receivingentity
+                                             BINARY SEARCH.
 
-      SELECT cel~sysid, cel~company_code, cel~legal_entity, cel~cost_element, costelem~*
-                 FROM /esrcc/cstelmtch AS costelem
-                 INNER JOIN /esrcc/cst_elmnt AS cel
-                 ON costelem~cost_element_uuid = cel~cost_element_uuid
-                 FOR ALL ENTRIES IN @lt_receiverchargeout
-               WHERE value_source     = @scc_valuesource
-                 AND cel~legal_entity = @lt_receiverchargeout-receivingentity
-                 AND cel~company_code = @lt_receiverchargeout-receivercompanycode
-                 AND cel~sysid        = @lt_receiverchargeout-receiversysid
-               INTO TABLE @DATA(lt_costelement).
-
-
-      LOOP AT lt_receiverchargeout ASSIGNING FIELD-SYMBOL(<ls_receiverchargeout>).
-
-        CONCATENATE <ls_receiverchargeout>-ryear <ls_receiverchargeout>-poper+1(2) '01' INTO lv_valid_from.
-        READ TABLE lt_costelement ASSIGNING FIELD-SYMBOL(<ls_costlement>)
-                                  WITH KEY sysid = <ls_receiverchargeout>-ReceiverSysId
-                                           company_code = <ls_receiverchargeout>-ReceiverCompanyCode
-                                           legal_entity = <ls_receiverchargeout>-Receivingentity.
-
-        IF sy-subrc = 0 AND
-           <ls_costlement>-costelem-valid_from <= lv_valid_from AND
-           <ls_costlement>-costelem-valid_to >= lv_valid_from.
-
-          TRY.
-              CALL METHOD cl_numberrange_runtime=>number_get
-                EXPORTING
-                  nr_range_nr = '01'
-                  object      = '/ESRCC/VP'
-                IMPORTING
-                  number      = DATA(lv_number)
-                  returncode  = DATA(lv_rcode).
-            CATCH cx_nr_object_not_found
-                  cx_number_ranges INTO DATA(cx_numberrange).
-              DATA(error) = cx_numberrange->get_longtext(  ).
-          ENDTRY.
-          number = lv_number+10(10).
-          ls_cbli-fplv         = <ls_receiverchargeout>-fplv.
-          ls_cbli-ryear        = <ls_receiverchargeout>-ryear.
-          ls_cbli-poper        = <ls_receiverchargeout>-Poper.
-          ls_cbli-belnr        = number.
-          ls_cbli-sysid        = <ls_receiverchargeout>-ReceiverSysId.
-          ls_cbli-ccode        = <ls_receiverchargeout>-ReceiverCompanyCode.
-          ls_cbli-legalentity  = <ls_receiverchargeout>-Receivingentity.
-          ls_cbli-costobject   = <ls_receiverchargeout>-ReceiverCostObject.
-          ls_cbli-costcenter   = <ls_receiverchargeout>-ReceiverCostCenter.
-          ls_cbli-costelement  = <ls_costlement>-cost_element.
-          ls_cbli-costind      = <ls_costlement>-costelem-cost_indicator.
-          ls_cbli-costtype     = <ls_costlement>-costelem-cost_type.
-          ls_cbli-usagecal     = <ls_costlement>-costelem-usage_type.
-          ls_cbli-value_source = <ls_costlement>-costelem-value_source.
-          ls_cbli-reasonid     = <ls_costlement>-costelem-reason_id.
-          ls_cbli-postingtype  = <ls_costlement>-costelem-posting_type.
-
-          READ TABLE lt_chargeoutlocalcurr ASSIGNING FIELD-SYMBOL(<chargeoutlocalcurr>)
-                                          WITH KEY uuid         = <ls_receiverchargeout>-uuid.
           IF sy-subrc = 0.
-            ls_cbli-localcurr    = <chargeoutlocalcurr>-Currency.
-            ls_cbli-hsl          = <chargeoutlocalcurr>-TotalChargeoutAmount.
-          ENDIF.
-          ls_cbli-groupcurr           = <ls_receiverchargeout>-currency.
-          ls_cbli-ksl                 = <ls_receiverchargeout>-TotalChargeoutAmount.
-          ls_cbli-vendor              = <ls_receiverchargeout>-Legalentity.
-          ls_cbli-status              = approved.   "Approved
-          ls_cbli-posting_sysid       = <ls_receiverchargeout>-Sysid.
-          ls_cbli-posting_ccode       = <ls_receiverchargeout>-ccode.
-          ls_cbli-posting_legalentity = <ls_receiverchargeout>-Legalentity.
-          ls_cbli-posting_costobject  = <ls_receiverchargeout>-Costobject.
-          ls_cbli-posting_costcenter  = <ls_receiverchargeout>-Costcenter.
-* Admin data
-          ls_cbli-created_by = sy-uname.
-          /esrcc/cl_utility_core=>get_utc_date_time_ts(
-            IMPORTING
-              time_stamp = ls_cbli-created_at
-          ).
-          ls_cbli-last_changed_by = sy-uname.
-          /esrcc/cl_utility_core=>get_utc_date_time_ts(
-            IMPORTING
-              time_stamp = ls_cbli-last_changed_at
-          ).
-          APPEND ls_cbli TO lt_cbli.
-          CLEAR ls_cbli.
-        ENDIF.
-      ENDLOOP.
-    ENDIF.
 
-    MODIFY /esrcc/cb_li FROM TABLE @lt_cbli.
+            TRY.
+                CALL METHOD cl_numberrange_runtime=>number_get
+                  EXPORTING
+                    nr_range_nr = '01'
+                    object      = '/ESRCC/VP'
+                  IMPORTING
+                    number      = DATA(lv_number)
+                    returncode  = DATA(lv_rcode).
+              CATCH cx_nr_object_not_found
+                    cx_number_ranges INTO DATA(cx_numberrange).
+                DATA(error) = cx_numberrange->get_longtext(  ).
+            ENDTRY.
+            number = lv_number+10(10).
+            ls_cbli-fplv         = <ls_receiverchargeout>-fplv.
+            ls_cbli-ryear        = <ls_receiverchargeout>-ryear.
+            ls_cbli-poper        = <ls_receiverchargeout>-Poper.
+            ls_cbli-belnr        = number.
+            ls_cbli-sysid        = <ls_receiverchargeout>-ReceiverSysId.
+            ls_cbli-ccode        = <ls_receiverchargeout>-ReceiverCompanyCode.
+            ls_cbli-legalentity  = <ls_receiverchargeout>-Receivingentity.
+            ls_cbli-costobject   = <ls_receiverchargeout>-ReceiverCostObject.
+            ls_cbli-costcenter   = <ls_receiverchargeout>-ReceiverCostCenter.
+            ls_cbli-costelement  = <ls_costlement>-cost_element.
+            ls_cbli-costind      = <ls_costlement>-costelem-cost_indicator.
+            ls_cbli-costtype     = <ls_costlement>-costelem-cost_type.
+            ls_cbli-usagecal     = <ls_costlement>-costelem-usage_type.
+            ls_cbli-value_source = <ls_costlement>-costelem-value_source.
+            ls_cbli-reasonid     = <ls_costlement>-costelem-reason_id.
+            ls_cbli-postingtype  = <ls_costlement>-costelem-posting_type.
+
+            ls_cbli-groupcurr           = <ls_receiverchargeout>-currency.
+            ls_cbli-ksl                 = <ls_receiverchargeout>-TotalChargeoutAmount.
+
+            READ TABLE receivers ASSIGNING FIELD-SYMBOL(<receiver>)
+                                            WITH KEY receivingentity = <ls_receiverchargeout>-Receivingentity
+                                            BINARY SEARCH.
+            IF sy-subrc = 0.
+              ls_cbli-localcurr    = <receiver>-receivercurrency.
+              /esrcc/cl_utility_core=>currency_conversion(
+                EXPORTING
+                  amount          = <ls_receiverchargeout>-TotalChargeoutAmount
+                  source_curr     = ls_cbli-groupcurr
+                  target_curr     = ls_cbli-localcurr
+                  validon         = <ls_receiverchargeout>-Exchdate
+                IMPORTING
+                  convertedamount = ls_cbli-hsl
+              ).
+
+            ENDIF.
+
+            ls_cbli-vendor              = <ls_receiverchargeout>-Legalentity.
+            ls_cbli-status              = approved.   "Approved
+            ls_cbli-posting_sysid       = <ls_receiverchargeout>-Sysid.
+            ls_cbli-posting_ccode       = <ls_receiverchargeout>-ccode.
+            ls_cbli-posting_legalentity = <ls_receiverchargeout>-Legalentity.
+            ls_cbli-posting_costobject  = <ls_receiverchargeout>-Costobject.
+            ls_cbli-posting_costcenter  = <ls_receiverchargeout>-Costcenter.
+* Admin data
+            ls_cbli-created_by = sy-uname.
+            /esrcc/cl_utility_core=>get_utc_date_time_ts(
+              IMPORTING
+                time_stamp = ls_cbli-created_at
+            ).
+            ls_cbli-last_changed_by = sy-uname.
+            /esrcc/cl_utility_core=>get_utc_date_time_ts(
+              IMPORTING
+                time_stamp = ls_cbli-last_changed_at
+            ).
+            APPEND ls_cbli TO lt_cbli.
+            CLEAR ls_cbli.
+          ENDIF.
+        ENDLOOP.
+      ENDIF.
+
+      MODIFY /esrcc/cb_li FROM TABLE @lt_cbli.
+
+      CLEAR: lt_cbli, lt_receiverchargeout, lt_costelement, receivers.
+    ENDLOOP.
 
   ENDMETHOD.
 
 
   METHOD delete_chargeout.
 
-    IF iv_costbasereopen = abap_true.
-      SELECT rec_chg~* FROM /esrcc/cb_stw AS cb_stw
-            INNER JOIN /esrcc/srv_share AS srv_share
-                    ON srv_share~cc_uuid = cb_stw~cc_uuid
-            INNER JOIN /esrcc/rec_chg AS rec_chg
-                    ON rec_chg~cc_uuid = cb_stw~cc_uuid
-                   AND rec_chg~srv_uuid = srv_share~srv_uuid
-                   AND rec_chg~status  NE @approval_pending
-            FOR ALL ENTRIES IN @it_keys
-                  WHERE cb_stw~fplv                = @it_keys-fplv
-                    AND cb_stw~ryear               = @it_keys-ryear
-                    AND cb_stw~sysid               = @it_keys-sysid
-                    AND cb_stw~poper              IN @it_poper
-                    AND cb_stw~legalentity         = @it_keys-legalentity
-                    AND cb_stw~ccode               = @it_keys-ccode
-                    AND cb_stw~costobject          = @it_keys-costobject
-                    AND cb_stw~costcenter          = @it_keys-costcenter
-*                  AND srv_share~serviceproduct   = @it_keys-serviceproduct
-                    INTO TABLE @DATA(lt_recshare).
-    ELSE.
-      SELECT rec_chg~* FROM /esrcc/cb_stw AS cb_stw
-           INNER JOIN /esrcc/srv_share AS srv_share
-                   ON srv_share~cc_uuid = cb_stw~cc_uuid
-           INNER JOIN /esrcc/rec_chg AS rec_chg
-                   ON rec_chg~cc_uuid = cb_stw~cc_uuid
-                  AND rec_chg~srv_uuid = srv_share~srv_uuid
-                  AND rec_chg~status  NE @approval_pending
-           FOR ALL ENTRIES IN @it_keys
-                 WHERE cb_stw~fplv                = @it_keys-fplv
-                   AND cb_stw~ryear               = @it_keys-ryear
-                   AND cb_stw~sysid               = @it_keys-sysid
-                   AND cb_stw~poper              IN @it_poper
-                   AND cb_stw~legalentity         = @it_keys-legalentity
-                   AND cb_stw~ccode               = @it_keys-ccode
-                   AND cb_stw~costobject          = @it_keys-costobject
-                   AND cb_stw~costcenter          = @it_keys-costcenter
-                   AND srv_share~serviceproduct   = @it_keys-serviceproduct
-                   INTO TABLE @lt_recshare.
-    ENDIF.
+    DATA lt_keys TYPE /esrcc/tt_keys.
 
-    IF lt_recshare IS NOT INITIAL.
-*  Delete Service Allocation
-      SELECT * FROM /esrcc/alocshare FOR ALL ENTRIES IN @lt_recshare
-                                     WHERE  parentuuid = @lt_recshare-rec_uuid
-                                     INTO TABLE @DATA(lt_alocshare).
-      IF lt_alocshare IS NOT INITIAL.
-        SELECT * FROM /esrcc/alcvalues FOR ALL ENTRIES IN @lt_alocshare
-                                       WHERE parentuuid = @lt_alocshare-uuid
-                                         INTO TABLE @DATA(lt_alocvalues).
+    LOOP AT it_keys INTO DATA(keys) GROUP BY
+                          ( legalentity = keys-legalentity ) INTO DATA(entitygroup).
+
+      LOOP AT GROUP entitygroup ASSIGNING FIELD-SYMBOL(<keys>).
+        APPEND <keys> TO lt_keys.
+      ENDLOOP.
+      IF iv_costbasereopen = abap_true.
+        SELECT rec_chg~*
+        FROM /esrcc/cb_stw AS cb_stw
+        INNER JOIN /esrcc/srv_share AS srv_share
+          ON srv_share~cc_uuid = cb_stw~cc_uuid
+        INNER JOIN /esrcc/rec_chg AS rec_chg
+          ON rec_chg~cc_uuid = cb_stw~cc_uuid
+         AND rec_chg~srv_uuid = srv_share~srv_uuid
+         AND rec_chg~status  NE @approval_pending
+        INNER JOIN @lt_keys AS ik
+          ON cb_stw~fplv         = ik~fplv
+         AND cb_stw~ryear        = ik~ryear
+         AND cb_stw~sysid        = ik~sysid
+         AND cb_stw~legalentity  = ik~legalentity
+         AND cb_stw~ccode        = ik~ccode
+         AND cb_stw~costobject   = ik~costobject
+         AND cb_stw~costcenter   = ik~costcenter
+         WHERE cb_stw~poper IN @it_poper
+         INTO TABLE @DATA(lt_recshare).
+      ELSE.
+        SELECT rec_chg~*
+        FROM /esrcc/cb_stw AS cb_stw
+        INNER JOIN /esrcc/srv_share AS srv_share
+          ON srv_share~cc_uuid = cb_stw~cc_uuid
+        INNER JOIN /esrcc/rec_chg AS rec_chg
+          ON rec_chg~cc_uuid = cb_stw~cc_uuid
+         AND rec_chg~srv_uuid = srv_share~srv_uuid
+         AND rec_chg~status  NE @approval_pending
+        INNER JOIN @lt_keys AS ik
+          ON cb_stw~fplv         = ik~fplv
+         AND cb_stw~ryear        = ik~ryear
+         AND cb_stw~sysid        = ik~sysid
+         AND cb_stw~legalentity  = ik~legalentity
+         AND cb_stw~ccode        = ik~ccode
+         AND cb_stw~costobject   = ik~costobject
+         AND cb_stw~costcenter   = ik~costcenter
+         WHERE cb_stw~poper IN @it_poper
+           AND srv_share~serviceproduct = ik~serviceproduct
+          INTO TABLE @lt_recshare.
       ENDIF.
 
+      IF lt_recshare IS NOT INITIAL.
+*  Delete Service Allocation
+        SELECT alocshare~*
+          FROM /esrcc/alocshare AS alocshare
+          INNER JOIN @lt_recshare AS recshare
+            ON alocshare~parentuuid = recshare~rec_uuid
+        INTO TABLE @DATA(lt_alocshare).
+        IF lt_alocshare IS NOT INITIAL.
+          SELECT *
+            FROM /esrcc/alcvalues AS alcvalues
+            INNER JOIN @lt_alocshare AS alocshare
+              ON alcvalues~parentuuid = alocshare~uuid
+          INTO TABLE @DATA(lt_alocvalues).
+        ENDIF.
 
-      DELETE /esrcc/rec_chg   FROM TABLE @lt_recshare.
-      DELETE /esrcc/alocshare FROM TABLE @lt_alocshare.
-      DELETE /esrcc/alcvalues FROM TABLE @lt_alocvalues.
-    ENDIF.
+
+        DELETE /esrcc/rec_chg   FROM TABLE @lt_recshare.
+        DELETE /esrcc/alocshare FROM TABLE @lt_alocshare.
+        DELETE /esrcc/alcvalues FROM TABLE @lt_alocvalues.
+      ENDIF.
+
+      CLEAR: lt_keys,lt_recshare, lt_alocshare, lt_alocvalues.
+    ENDLOOP.
   ENDMETHOD.
 
 
   METHOD delete_costbase.
 
-    SELECT * FROM /esrcc/cb_stw FOR ALL ENTRIES IN @it_keys
-                               WHERE  fplv       = @it_keys-fplv
-                                 AND ryear       = @it_keys-ryear
-                                 AND sysid       = @it_keys-sysid
-                                 AND poper      IN @it_poper
-                                 AND legalentity = @it_keys-legalentity
-                                 AND ccode       = @it_keys-ccode
-                                 AND costobject  = @it_keys-costobject
-                                 AND costcenter  = @it_keys-costcenter
-                                 INTO TABLE @DATA(lt_cc_cost).
+    DATA lt_tmp_cost TYPE TABLE OF /esrcc/cb_stw.
+    DATA lt_cb_li    TYPE TABLE OF /esrcc/cb_li.
+    DATA lv_refguid  TYPE sysuuid_x16.
+
+    /esrcc/cl_utility_core=>get_utc_date_time_ts(
+      IMPORTING
+        time_stamp = DATA(last_changed_at)
+    ).
+
+    SELECT cb_stw~*
+      FROM /esrcc/cb_stw AS cb_stw
+      INNER JOIN @it_keys AS it_keys
+        ON cb_stw~fplv         = it_keys~fplv
+       AND cb_stw~ryear        = it_keys~ryear
+       AND cb_stw~sysid        = it_keys~sysid
+       AND cb_stw~legalentity  = it_keys~legalentity
+       AND cb_stw~ccode        = it_keys~ccode
+       AND cb_stw~costobject   = it_keys~costobject
+       AND cb_stw~costcenter   = it_keys~costcenter
+    WHERE cb_stw~poper IN @it_poper
+    INTO TABLE @DATA(lt_cc_cost).
+
+*Finalize cost base line items.
+    LOOP AT lt_cc_cost INTO DATA(ls_cc_cost)
+                       GROUP BY ( legalentity = ls_cc_cost-legalentity ) INTO DATA(entitygroup).
+
+      CLEAR lt_tmp_cost.
+      LOOP AT GROUP entitygroup INTO DATA(cc_cost).
+        APPEND cc_cost TO lt_tmp_cost.
+      ENDLOOP.
+
+*Finalize cost base line items.
+      IF lt_tmp_cost IS NOT INITIAL.
+        CLEAR lt_cb_li.
+        SELECT cb~*,
+               @approved AS status,
+               @lv_refguid AS cc_guid,
+               @sy-uname AS last_changed_by,
+               @last_changed_at AS last_changed_at
+          FROM /esrcc/cb_li AS cb
+          INNER JOIN @lt_tmp_cost AS ik
+            ON cb~fplv        = ik~fplv
+           AND cb~ryear       = ik~ryear
+           AND cb~sysid       = ik~sysid
+           AND cb~legalentity = ik~legalentity
+           AND cb~ccode       = ik~ccode
+           AND cb~costobject  = ik~costobject
+           AND cb~costcenter  = ik~costcenter
+           AND cb~poper       = ik~poper
+           AND cb~status      = @finalized
+        INTO CORRESPONDING FIELDS OF TABLE @lt_cb_li.
+
+        MODIFY /esrcc/cb_li FROM TABLE @lt_cb_li.
+      ENDIF.
+
+    ENDLOOP.
 
     DELETE /esrcc/cb_stw   FROM TABLE @lt_cc_cost.
+
+    CLEAR: lt_cc_cost,
+           lt_tmp_cost,
+           lt_cb_li.
 
   ENDMETHOD.
 
 
   METHOD delete_servicecostshare.
+
     IF iv_costbasereopen = abap_true.
-      SELECT srv_share~* FROM /esrcc/cb_stw AS cb_stw
-          INNER JOIN /esrcc/srv_share AS srv_share
-                  ON cb_stw~cc_uuid = srv_share~cc_uuid
-          FOR ALL ENTRIES IN @it_keys
-                WHERE fplv           = @it_keys-fplv
-                  AND ryear          = @it_keys-ryear
-                  AND sysid          = @it_keys-sysid
-                  AND poper         IN @it_poper
-                  AND legalentity    = @it_keys-legalentity
-                  AND ccode          = @it_keys-ccode
-                  AND costobject     = @it_keys-costobject
-                  AND costcenter     = @it_keys-costcenter
-*                AND serviceproduct = @it_keys-serviceproduct
-                  INTO TABLE @DATA(lt_srvshare).
+      SELECT srv_share~*
+      FROM /esrcc/cb_stw AS cb_stw
+      INNER JOIN /esrcc/srv_share AS srv_share
+        ON cb_stw~cc_uuid = srv_share~cc_uuid
+      INNER JOIN @it_keys AS it_keys
+        ON cb_stw~fplv         = it_keys~fplv
+       AND cb_stw~ryear        = it_keys~ryear
+       AND cb_stw~sysid        = it_keys~sysid
+       AND cb_stw~legalentity  = it_keys~legalentity
+       AND cb_stw~ccode        = it_keys~ccode
+       AND cb_stw~costobject   = it_keys~costobject
+       AND cb_stw~costcenter   = it_keys~costcenter
+    WHERE cb_stw~poper IN @it_poper
+    INTO TABLE @DATA(lt_srvshare).
     ELSE.
-      SELECT srv_share~* FROM /esrcc/cb_stw AS cb_stw
-          INNER JOIN /esrcc/srv_share AS srv_share
-                  ON cb_stw~cc_uuid = srv_share~cc_uuid
-          FOR ALL ENTRIES IN @it_keys
-                WHERE fplv           = @it_keys-fplv
-                  AND ryear          = @it_keys-ryear
-                  AND sysid          = @it_keys-sysid
-                  AND poper         IN @it_poper
-                  AND legalentity    = @it_keys-legalentity
-                  AND ccode          = @it_keys-ccode
-                  AND costobject     = @it_keys-costobject
-                  AND costcenter     = @it_keys-costcenter
-                  AND serviceproduct = @it_keys-serviceproduct
-                  INTO TABLE @lt_srvshare.
+      SELECT srv_share~*
+      FROM /esrcc/cb_stw AS cb_stw
+      INNER JOIN /esrcc/srv_share AS srv_share
+        ON cb_stw~cc_uuid = srv_share~cc_uuid
+      INNER JOIN @it_keys AS it_keys
+        ON cb_stw~fplv         = it_keys~fplv
+       AND cb_stw~ryear        = it_keys~ryear
+       AND cb_stw~sysid        = it_keys~sysid
+       AND cb_stw~legalentity  = it_keys~legalentity
+       AND cb_stw~ccode        = it_keys~ccode
+       AND cb_stw~costobject   = it_keys~costobject
+       AND cb_stw~costcenter   = it_keys~costcenter
+       AND srv_share~serviceproduct = it_keys~serviceproduct
+    WHERE cb_stw~poper IN @it_poper
+    INTO TABLE @lt_srvshare.
     ENDIF.
 
     DELETE /esrcc/srv_share FROM TABLE @lt_srvshare.
 
+    CLEAR lt_srvshare.
   ENDMETHOD.
 
 
@@ -2009,10 +2545,212 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD sequentialchargeout.
+
+    DATA ls_key TYPE /esrcc/procctrl.
+    DATA lt_keys TYPE /esrcc/tt_keys.
+*    DATA lt_key_serviceproduct TYPE /esrcc/tt_keys.
+    DATA lv_validon TYPE /esrcc/validfrom.
+    DATA lt_poper TYPE /esrcc/tt_poper_range.
+
+*Derive poper from billing frequency customizing
+    derive_poper(
+      EXPORTING
+        it_keys  = it_keys
+      IMPORTING
+        et_poper = DATA(_poper)
+    ).
+
+    SORT _poper BY low.
+
+*get the chain and sequence.
+* each cost object could be providing multiple services
+    READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<keys>) INDEX 1.
+    IF sy-subrc = 0.
+      SELECT stewardship~*
+        FROM /ESRCC/I_Stewardship AS stewardship
+        INNER JOIN @it_keys AS it_keys
+          ON stewardship~sysid       = it_keys~sysid
+         AND stewardship~legalentity = it_keys~legalentity
+         AND stewardship~CompanyCode = it_keys~ccode
+         AND stewardship~costobject  = it_keys~costobject
+         AND stewardship~costcenter  = it_keys~costcenter
+      WHERE stewardship~chain_id IS NOT INITIAL
+      INTO TABLE @DATA(lt_stewardship).
+
+      IF lt_stewardship IS NOT INITIAL.
+        SELECT DISTINCT stewardship~*
+          FROM /ESRCC/I_Stewardship AS stewardship
+          INNER JOIN @lt_stewardship AS lt_stewardship
+            ON stewardship~chain_id = lt_stewardship~chain_id
+        INTO TABLE @DATA(lt_chain_stw).
+
+        SELECT DISTINCT serviceproduct~*
+          FROM /esrcc/i_stw_serviceproduct AS serviceproduct
+          INNER JOIN @lt_chain_stw AS lt_chain_stw
+            ON serviceproduct~StewardshipUuid = lt_chain_stw~StewardshipUuid
+        INTO TABLE @DATA(lt_stw_serviceproduct).
+
+
+      ENDIF.
+
+
+      SORT lt_chain_stw BY chain_id chain_sequence validfrom.
+
+*   it could be billing frequency used quarterly or half yearly
+      LOOP AT _poper ASSIGNING FIELD-SYMBOL(<poper>).
+
+
+        CLEAR: lv_validon, lt_poper.
+        APPEND <poper> TO lt_poper.
+        CONCATENATE <keys>-ryear <poper>-low+1(2) '01' INTO lv_validon.
+
+        LOOP AT lt_chain_stw ASSIGNING FIELD-SYMBOL(<ls_chain_stw>) WHERE ValidFrom <= lv_validon
+                                                                      AND Validto >= lv_validon.
+          CLEAR: ls_key, lt_keys.
+
+
+          MOVE-CORRESPONDING <ls_chain_stw> TO ls_key.
+          ls_key-billingfreq = <keys>-billingfreq.
+          ls_key-billingperiod = <keys>-billingperiod.
+          ls_key-ryear = <keys>-ryear.
+          ls_key-fplv = <keys>-fplv.
+          ls_key-ccode = <ls_chain_stw>-CompanyCode.
+          APPEND ls_key TO lt_keys.
+
+* Step 1:
+          calculate_costbase(
+            EXPORTING
+              it_keys   = lt_keys
+              it_poper  = lt_poper
+            IMPORTING
+              ev_failed = DATA(failed)
+          ).
+
+          IF failed = abap_true.
+*    Stop the chain executed and report the errors in log and exit
+            RETURN.
+          ENDIF.
+
+* Step 2:
+          finalize_costbase( it_keys = lt_keys
+                             it_poper = lt_poper ).
+
+          LOOP AT lt_stw_serviceproduct ASSIGNING FIELD-SYMBOL(<ls_serviceproduct>)
+                                         WHERE CostObjectUuid = <ls_chain_stw>-CostObjectUuid
+                                           AND StewardshipUuid = <ls_chain_stw>-StewardshipUuid
+                                           AND ValidFrom <= lv_validon
+                                           AND Validto >= lv_validon.
+
+
+            CLEAR lt_keys.
+            ls_key-serviceproduct = <ls_serviceproduct>-ServiceProduct.
+            APPEND ls_key TO lt_keys.
+
+
+* Step 3:
+            calculate_servicecostshare(
+              EXPORTING
+                it_keys   = lt_keys
+                it_poper  = lt_poper
+              IMPORTING
+                ev_failed = failed
+            ).
+
+            IF failed = abap_true.
+*    Stop the chain executed and report the errors in log and exit
+              RETURN.
+            ENDIF.
+
+* Step 4:
+            finalize_servicecostshare( it_keys = lt_keys
+                                       it_poper = lt_poper ).
+
+* Step 5:
+            calculate_chargeout(
+              EXPORTING
+                it_keys   = lt_keys
+                it_poper  = lt_poper
+              IMPORTING
+                ev_failed = failed
+            ).
+
+            IF failed = abap_true.
+*    Stop the chain executed and report the errors in log and exit
+              RETURN.
+            ENDIF.
+
+* Step 6:
+            finalize_chargeout( it_keys = lt_keys
+                                it_poper = lt_poper ).
+
+          ENDLOOP.
+        ENDLOOP.
+      ENDLOOP.
+    ENDIF.
+  ENDMETHOD.
+
+
+  METHOD reopnesequentialchargeout.
+
+    DATA ls_key TYPE /esrcc/procctrl.
+    DATA lt_keys TYPE /esrcc/tt_keys.
+
+*get the chain and sequence.
+    READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<keys>) INDEX 1.
+    IF sy-subrc = 0.
+      SELECT stewardship~*
+        FROM /ESRCC/I_Stewardship AS stewardship
+        INNER JOIN @it_keys AS it_keys
+          ON stewardship~sysid       = it_keys~sysid
+         AND stewardship~legalentity = it_keys~legalentity
+         AND stewardship~CompanyCode = it_keys~ccode
+         AND stewardship~costobject  = it_keys~costobject
+         AND stewardship~costcenter  = it_keys~costcenter
+      WHERE stewardship~chain_id IS NOT INITIAL
+      INTO TABLE @DATA(lt_stewardship).
+
+      IF lt_stewardship IS NOT INITIAL.
+        SELECT DISTINCT stewardship~*
+          FROM /ESRCC/I_Stewardship AS stewardship
+          INNER JOIN @lt_stewardship AS lt_stewardship
+            ON stewardship~chain_id = lt_stewardship~chain_id
+        INTO TABLE @DATA(lt_chain_stw).
+
+*        SELECT DISTINCT serviceproduct~*
+*          FROM /esrcc/i_stw_serviceproduct AS serviceproduct
+*          INNER JOIN @lt_chain_stw AS lt_chain_stw
+*            ON serviceproduct~CostObjectUuid = lt_chain_stw~StewardshipUuid
+*        INTO TABLE @DATA(lt_stw_serviceproduct).
+
+
+      ENDIF.
+
+
+      SORT lt_chain_stw DESCENDING BY chain_id chain_sequence.
+
+      LOOP AT lt_chain_stw ASSIGNING FIELD-SYMBOL(<ls_chain_stw>).
+        CLEAR: ls_key, lt_keys.
+
+        MOVE-CORRESPONDING <ls_chain_stw> TO ls_key.
+        ls_key-billingfreq = <keys>-billingfreq.
+        ls_key-billingperiod = <keys>-billingperiod.
+        ls_key-ryear = <keys>-ryear.
+        ls_key-fplv = <keys>-fplv.
+        ls_key-ccode = <ls_chain_stw>-CompanyCode.
+        APPEND ls_key TO lt_keys.
+
+        reopen_costbase( it_keys = lt_keys ).
+
+      ENDLOOP.
+    ENDIF.
+
+  ENDMETHOD.
+
+
   METHOD create_processlogs.
 
     DATA processlog TYPE /esrcc/proclogs.
-    DATA processlogs TYPE TABLE OF /esrcc/proclogs.
 
     DATA(lo_uuid) = cl_uuid_factory=>create_system_uuid( ).
 
@@ -2041,171 +2779,1168 @@ CLASS /ESRCC/CL_CALCULATE_CHARGEOUT IMPLEMENTATION.
           time_stamp = processlog-last_changed_at
       ).
 
-      APPEND processlog TO processlogs.
+      APPEND processlog TO et_processlogs.
 
     ENDLOOP.
 
-    MODIFY /esrcc/proclogs FROM TABLE @processlogs.
+    MODIFY /esrcc/proclogs FROM TABLE @et_processlogs.
 
   ENDMETHOD.
 
 
-  METHOD reopnesequentialchargeout.
+  METHOD delete_adhoc_chargeout.
 
-    DATA ls_key TYPE /esrcc/procctrl.
-    DATA lt_keys TYPE /esrcc/tt_keys.
-    DATA lv_validon TYPE /esrcc/validfrom.
+    DATA lt_proctrl TYPE TABLE OF /esrcc/procctrl.
 
-*Derive poper from billing frequency customizing
-    derive_poper(
-      EXPORTING
-        it_keys  = it_keys
-      IMPORTING
-        et_poper = DATA(_poper)
-    ).
+    IF id IS NOT INITIAL.
+      SELECT * FROM /esrcc/cb_li WHERE cc_guid = @id
+                                 INTO TABLE @DATA(lt_cbli).
+      LOOP AT lt_cbli ASSIGNING FIELD-SYMBOL(<ls_cbli>).
 
-    SORT _poper BY low.
+        CLEAR <ls_cbli>-cc_guid.
+        <ls_cbli>-status = 'A'.   "Approved
+* Admin data
+        <ls_cbli>-last_changed_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = <ls_cbli>-last_changed_at
+        ).
+      ENDLOOP.
 
-*get the chain and sequence.
-    IF it_keys IS NOT INITIAL.
-      SELECT * FROM /ESRCC/I_Stewardship FOR ALL ENTRIES IN @it_keys
-                                         WHERE sysid       = @it_keys-sysid
-                                           AND legalentity = @it_keys-legalentity
-                                           AND CompanyCode = @it_keys-ccode
-                                           AND costobject  = @it_keys-costobject
-                                           AND costcenter  = @it_keys-costcenter
-                                           INTO TABLE @DATA(lt_stewardship).
+      IF lt_cbli IS NOT INITIAL.
 
-      IF lt_stewardship IS NOT INITIAL.
-        SELECT * FROM /ESRCC/I_Stewardship FOR ALL ENTRIES IN @lt_stewardship
-                                           WHERE chain_id    = @lt_stewardship-chain_id
-                                           INTO TABLE @DATA(lt_chain_stw).
-
-        SELECT * FROM /esrcc/i_stw_serviceproduct FOR ALL ENTRIES IN @lt_chain_stw
-                                           WHERE CostObjectUuid = @lt_chain_stw-CostObjectUuid
-                                           INTO TABLE @DATA(lt_stw_serviceproduct).
-
+*Create process log entry
+        CLEAR lt_proctrl.
+        APPEND INITIAL LINE TO lt_proctrl ASSIGNING FIELD-SYMBOL(<ls_proctrl>).
+        MOVE-CORRESPONDING <ls_cbli> TO <ls_proctrl>.
+        <ls_proctrl>-process = 'ADH'.  "Adhoc
+        /esrcc/cl_calculate_chargeout=>create_processlogs(
+          iv_action = '13'
+          it_keys   = lt_proctrl
+        ).
 
       ENDIF.
+
+      DATA(lv_ccuuid) = id.
+
+      SELECT * FROM /esrcc/rec_chg WHERE cc_uuid = @id INTO TABLE @DATA(lt_receievers).
+
+      IF lt_receievers IS NOT INITIAL.
+        SELECT * FROM /esrcc/alocshare AS alocshare
+            INNER JOIN /esrcc/rec_chg AS receievers
+            ON receievers~rec_uuid = alocshare~parentuuid
+            WHERE receievers~cc_uuid = @id INTO TABLE @DATA(lt_alocshare).
+        IF lt_alocshare IS NOT INITIAL.
+          SELECT * FROM /esrcc/alcvalues AS alocvalues
+           INNER JOIN /esrcc/alocshare AS alocshare
+            ON alocshare~uuid = alocvalues~parentuuid
+            INNER JOIN /esrcc/rec_chg AS receievers
+            ON receievers~rec_uuid = alocshare~parentuuid
+           WHERE receievers~cc_uuid = @id INTO TABLE @DATA(lt_alcvalues).
+        ENDIF.
+      ENDIF.
+
+
+      DELETE /esrcc/alcvalues FROM TABLE @lt_alcvalues.
+      DELETE /esrcc/alocshare FROM TABLE @lt_alocshare.
+      DELETE FROM /esrcc/rec_chg WHERE cc_uuid = @lv_ccuuid.
+      DELETE FROM /esrcc/srv_share WHERE cc_uuid = @lv_ccuuid.
+      DELETE FROM /esrcc/cb_stw WHERE cc_uuid = @lv_ccuuid.
+      IF lt_cbli IS NOT INITIAL.
+        MODIFY /esrcc/cb_li FROM TABLE @lt_cbli.
+      ENDIF.
+
     ENDIF.
-
-    SORT lt_chain_stw DESCENDING BY chain_id chain_sequence.
-*   it could be billing frequency used quarterly or half yearly
-    LOOP AT _poper ASSIGNING FIELD-SYMBOL(<poper>).
-
-* each cost object could be providing multiple services
-      READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<keys>) INDEX 1.
-      IF sy-subrc = 0.
-
-        LOOP AT lt_chain_stw ASSIGNING FIELD-SYMBOL(<ls_chain_stw>). "WHERE ValidFrom <= lv_validon
-          " AND Validto >= lv_validon.
-          CLEAR: ls_key, lt_keys.
-
-
-          MOVE-CORRESPONDING <ls_chain_stw> TO ls_key.
-          ls_key-billingfreq = <keys>-billingfreq.
-          ls_key-billingperiod = <keys>-billingperiod.
-          ls_key-ryear = <keys>-ryear.
-          ls_key-fplv = <keys>-fplv.
-          ls_key-ccode = <ls_chain_stw>-CompanyCode.
-          APPEND ls_key TO lt_keys.
-
-          reopen_costbase( it_keys = lt_keys ).
-
-        ENDLOOP.
-      ENDIF.
-    ENDLOOP.
 
   ENDMETHOD.
 
 
-  METHOD sequentialchargeout.
+  METHOD validate_costbase.
 
-    DATA ls_key TYPE /esrcc/procctrl.
-    DATA lt_keys TYPE /esrcc/tt_keys.
-    DATA lt_key_serviceproduct TYPE /esrcc/tt_keys.
-    DATA lv_validon TYPE /esrcc/validfrom.
+    DATA lt_cc_cost    TYPE TABLE OF /esrcc/cb_stw.
+    DATA lt_procctrl   TYPE STANDARD TABLE OF /esrcc/procctrl.
+    DATA ls_procctrl   TYPE  /esrcc/procctrl.
+    DATA lv_validon    TYPE /esrcc/validfrom.
+    DATA loghdr        TYPE /esrcc/log_hdr.
+    DATA logitems      TYPE STANDARD TABLE OF /esrcc/log_item WITH EMPTY KEY.
+    DATA logitem       TYPE /esrcc/log_item.
+    DATA procctrl       TYPE /esrcc/tt_keys.
 
-*Derive poper from billing frequency customizing
-    derive_poper(
-      EXPORTING
-        it_keys  = it_keys
-      IMPORTING
-        et_poper = DATA(_poper)
-    ).
+*Check if company code and legal entity is still active for charge-out in configuration
+    SELECT DISTINCT cc~sysid,
+                    cc~ccode,
+                    cc~legalentity
+        FROM /esrcc/le_ccode AS cc
+        INNER JOIN @ct_keys AS keys
+        ON  cc~sysid  = keys~Sysid
+        AND cc~ccode = keys~Ccode
+        AND cc~legalentity = keys~legalentity
+        AND cc~active = @abap_false
+        ORDER BY cc~sysid,
+                 cc~ccode,
+                 cc~legalentity
+        INTO TABLE @DATA(activeccode).
 
-    SORT _poper BY low.
+*Check if relationship in stewardship and service product and receiver configuration is still finalized.
+    SELECT DISTINCT stw~Sysid,
+                    stw~CompanyCode,
+                    stw~LegalEntity,
+                    stw~CostObject,
+                    stw~CostCenter,
+                    stw~ValidFrom,
+                    stw~ValidTo
+       FROM /ESRCC/I_Stewardship AS stw
+      INNER JOIN  @ct_keys AS keys
+         ON stw~sysid        = keys~Sysid
+        AND stw~companycode = keys~Ccode
+        AND stw~legalentity = keys~legalentity
+        AND stw~CostObject  = keys~costobject
+        AND stw~CostCenter  = keys~costcenter
+        ORDER BY stw~Sysid,
+                 stw~CompanyCode,
+                 stw~LegalEntity,
+                 stw~CostObject,
+                 stw~CostCenter
+*                 stw~ValidFrom,
+*                 stw~validto
+        INTO TABLE @DATA(stewardships).
 
-*get the chain and sequence.
-    IF it_keys IS NOT INITIAL.
-      SELECT * FROM /ESRCC/I_Stewardship FOR ALL ENTRIES IN @it_keys
-                                         WHERE sysid       = @it_keys-sysid
-                                           AND legalentity = @it_keys-legalentity
-                                           AND CompanyCode = @it_keys-ccode
-                                           AND costobject  = @it_keys-costobject
-                                           AND costcenter  = @it_keys-costcenter
-                                           INTO TABLE @DATA(lt_stewardship).
 
-      IF lt_stewardship IS NOT INITIAL.
-        SELECT * FROM /ESRCC/I_Stewardship FOR ALL ENTRIES IN @lt_stewardship
-                                           WHERE chain_id    = @lt_stewardship-chain_id
-                                           INTO TABLE @DATA(lt_chain_stw).
+*Check if total initial cost is zero including virtual cost
+    SELECT DISTINCT cb~fplv,
+                    cb~ryear,
+                    cb~poper,
+                    cb~sysid,
+                    cb~legalentity,
+                    cb~ccode,
+                    cb~costobject,
+                    cb~costcenter,
+                    erptotalcost_l,
+                    virtualtotalcost_l
+            FROM /esrcc/i_totalcostabse AS cb
+            INNER JOIN @ct_keys AS keys
+                    ON  cb~fplv        = keys~fplv
+                   AND  cb~ryear       = keys~ryear
+                   AND  cb~sysid       = keys~sysid
+                   AND  cb~legalentity = keys~legalentity
+                   AND  cb~ccode       = keys~ccode
+                   AND  cb~costobject  = keys~costobject
+                   AND  cb~costcenter  = keys~costcenter
+                   WHERE cb~poper     IN @it_poper
+                   ORDER BY cb~fplv,
+                            cb~ryear,
+                            cb~poper,
+                            cb~sysid,
+                            cb~legalentity,
+                            cb~ccode,
+                            cb~costobject,
+                            cb~costcenter
+                   INTO TABLE @DATA(lineitems).
 
-        SELECT * FROM /esrcc/i_stw_serviceproduct FOR ALL ENTRIES IN @lt_chain_stw
-                                           WHERE CostObjectUuid = @lt_chain_stw-CostObjectUuid
-                                           INTO TABLE @DATA(lt_stw_serviceproduct).
+* read the process control data to get the existing log guids
+    SELECT DISTINCT procctrl~fplv,
+                    procctrl~ryear,
+                    procctrl~sysid,
+                    procctrl~legalentity,
+                    procctrl~ccode,
+                    procctrl~costobject,
+                    procctrl~costcenter,
+                    procctrl~billingfreq,
+                    procctrl~billingperiod,
+                    procctrl~process,
+                    procctrl~log_header_uuid
+            FROM /esrcc/procctrl AS procctrl
+            INNER JOIN @ct_keys AS keys
+                    ON  procctrl~fplv          = keys~fplv
+                   AND  procctrl~ryear         = keys~ryear
+                   AND  procctrl~sysid         = keys~sysid
+                   AND  procctrl~legalentity   = keys~legalentity
+                   AND  procctrl~ccode         = keys~ccode
+                   AND  procctrl~costobject    = keys~costobject
+                   AND  procctrl~costcenter    = keys~costcenter
+                   AND  procctrl~billingfreq   = keys~billingfreq
+                   AND  procctrl~billingperiod = keys~billingperiod
+                   AND  procctrl~serviceproduct IS INITIAL
+                   AND  procctrl~process        = @costbase
+                   AND  procctrl~log_header_uuid IS NOT INITIAL
+                   ORDER BY procctrl~fplv,
+                            procctrl~ryear,
+                            procctrl~sysid,
+                            procctrl~legalentity,
+                            procctrl~ccode,
+                            procctrl~costobject,
+                            procctrl~costcenter,
+                            procctrl~billingfreq,
+                            procctrl~billingperiod,
+                            procctrl~process
+                   INTO CORRESPONDING FIELDS OF TABLE @procctrl.
 
 
+*Check if errors needs to be reported
+    LOOP AT ct_keys ASSIGNING FIELD-SYMBOL(<keys>).
+
+      DATA(failed) = abap_false.
+
+*Authority check
+      authority_check(
+        EXPORTING
+          keys   = <keys>
+          action = /esrcc/cl_calculate_chargeout=>action_calculate_costbase
+        IMPORTING
+          failed = failed
+      ).
+      IF failed = abap_true.
+*      log an error
+        CLEAR logitem.
+        logitem-message_id     = '/ESRCC/EXECCOCKPIT'.
+        logitem-message_number = '006'.
+        logitem-message_type   = 'E'.
+        APPEND logitem TO logitems.
+        failed = abap_true.
       ENDIF.
-    ENDIF.
 
-    SORT lt_chain_stw BY chain_id chain_sequence.
-*   it could be billing frequency used quarterly or half yearly
-    LOOP AT _poper ASSIGNING FIELD-SYMBOL(<poper>).
 
-* each cost object could be providing multiple services
-      READ TABLE it_keys ASSIGNING FIELD-SYMBOL(<keys>) INDEX 1.
+*validate if company code and legal entity is active
+      READ TABLE activeccode TRANSPORTING NO FIELDS WITH KEY sysid = <keys>-sysid
+                                                             ccode = <keys>-ccode
+                                                             legalentity = <keys>-legalentity.
       IF sy-subrc = 0.
-        CLEAR lv_validon.
+*      log an error
+        CLEAR logitem.
+        logitem-message_id     = '/ESRCC/EXECCOCKPIT'.
+        logitem-message_number = '017'.
+        logitem-message_type   = 'E'.
+        CONCATENATE <keys>-legalentity <keys>-ccode INTO logitem-message_v1 SEPARATED BY '/'.
+        APPEND logitem TO logitems.
+        failed = abap_true.
+      ENDIF.
+
+*Check for each month in case billing frequency is not monthly
+      LOOP AT it_poper ASSIGNING FIELD-SYMBOL(<poper>).
+        DATA(stewardshipexist) = abap_false.
+
+*  Information message about the period for which logs are being published
+        CLEAR logitem.
+        logitem-message_id     = '/ESRCC/EXECCOCKPIT'.
+        logitem-message_number = '018'.
+        logitem-message_type   = 'I'.
+        TRY.
+            DATA(parentloguuid) = cl_system_uuid=>create_uuid_c32_static( ). .
+          CATCH cx_uuid_error.
+            "handle exception
+        ENDTRY. .
+        logitem-log_uuid = parentloguuid.
+        logitem-is_parent = abap_true.
+        CONCATENATE <keys>-ryear <poper>-low INTO logitem-message_v1 SEPARATED BY '-'.
+        APPEND logitem TO logitems.
+
         CONCATENATE <keys>-ryear <poper>-low+1(2) '01' INTO lv_validon.
 
-        LOOP AT lt_chain_stw ASSIGNING FIELD-SYMBOL(<ls_chain_stw>) WHERE ValidFrom <= lv_validon
-                                                                      AND Validto >= lv_validon.
-          CLEAR: ls_key, lt_keys, lt_key_serviceproduct.
+        READ TABLE stewardships TRANSPORTING NO FIELDS WITH KEY sysid       = <keys>-sysid
+                                                                CompanyCode = <keys>-ccode
+                                                                legalentity = <keys>-legalentity
+                                                                CostObject  = <keys>-costobject
+                                                                costcenter  = <keys>-costcenter
+                                                                BINARY SEARCH.
 
+        IF sy-subrc = 0.
+          LOOP AT stewardships ASSIGNING FIELD-SYMBOL(<stewardship>) FROM sy-tabix WHERE ValidFrom <= lv_validon
+                                                                                     AND Validto   >= lv_validon.
 
-          MOVE-CORRESPONDING <ls_chain_stw> TO ls_key.
-          ls_key-billingfreq = <keys>-billingfreq.
-          ls_key-billingperiod = <keys>-billingperiod.
-          ls_key-ryear = <keys>-ryear.
-          ls_key-fplv = <keys>-fplv.
-          ls_key-ccode = <ls_chain_stw>-CompanyCode.
-          APPEND ls_key TO lt_keys.
+            stewardshipexist = abap_true.
 
-          LOOP AT lt_stw_serviceproduct ASSIGNING FIELD-SYMBOL(<ls_serviceproduct>)
-                                        WHERE CostObjectUuid = <ls_chain_stw>-CostObjectUuid.
-
-
-
-            ls_key-serviceproduct = <ls_serviceproduct>-ServiceProduct.
-            APPEND ls_key TO lt_key_serviceproduct.
           ENDLOOP.
 
-* Step 1:
-          calculate_costbase( it_keys = lt_keys ).
-* Step 2:
-          finalize_costbase( it_keys = lt_keys ).
-* Step 3:
-          calculate_servicecostshare( it_keys = lt_key_serviceproduct ).
-* Step 4:
-          finalize_servicecostshare( it_keys = lt_key_serviceproduct ).
-* Step 5:
-          calculate_chargeout( it_keys = lt_key_serviceproduct ).
-* Step 6:
-          finalize_chargeout( it_keys = lt_key_serviceproduct ).
+          IF stewardshipexist = abap_false.
+*      log an error
+            CLEAR logitem.
+            logitem-parent_log_uuid = parentloguuid.
+            logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+            logitem-message_number = '019'.
+            logitem-message_type = 'E'.
+            CONCATENATE <keys>-legalentity <keys>-ccode INTO logitem-message_v1 SEPARATED BY '/'.
+            APPEND logitem TO logitems.
+            failed = abap_true.
+          ENDIF.
+        ENDIF.
 
-        ENDLOOP.
+        READ TABLE lineitems ASSIGNING FIELD-SYMBOL(<lineitem>) WITH KEY    fplv        = <keys>-fplv
+                                                                ryear       = <keys>-ryear
+                                                                poper       = <poper>-low
+                                                                sysid       = <keys>-sysid
+                                                                legalentity = <keys>-legalentity
+                                                                ccode       = <keys>-ccode
+                                                                CostObject  = <keys>-costobject
+                                                                costcenter  = <keys>-costcenter
+                                                                 BINARY SEARCH.
+        IF sy-subrc <> 0.
+*      log an error
+          CLEAR logitem.
+          logitem-parent_log_uuid = parentloguuid.
+          logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+          logitem-message_number = '020'.
+          logitem-message_type = 'E'.
+          CONCATENATE <keys>-legalentity <keys>-ccode INTO logitem-message_v1 SEPARATED BY '/'.
+          APPEND logitem TO logitems.
+          failed = abap_true.
+        ELSEIF <lineitem>-erptotalcost_l = 0 AND <lineitem>-virtualtotalcost_l = 0.
+*      log an warning
+          CLEAR logitem.
+          logitem-parent_log_uuid = parentloguuid.
+          logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+          logitem-message_number = '021'.
+          logitem-message_type = 'E'.
+          CONCATENATE <keys>-legalentity <keys>-ccode INTO logitem-message_v1 SEPARATED BY '/'.
+          APPEND logitem TO logitems.
+          failed = abap_true.
+        ENDIF.
+
+      ENDLOOP.
+
+      IF failed = abap_true.
+
+* create message logs
+        create_loginstance(
+          EXPORTING
+            key         = <keys>
+            procctrl    = procctrl
+            process     = costbase
+          RECEIVING
+            loginstance = DATA(loginstance)
+        ).
+
+        loginstance->add_messages( log_messages = logitems ).
+        loginstance->save_messages( ).
+        CLEAR logitems.
+*update process control
+        CLEAR ls_procctrl.
+        ls_procctrl = CORRESPONDING #( <keys> ).
+        ls_procctrl-process = costbase.    "Cost Base
+        ls_procctrl-status  = costbase_failed.     "Cost Base failed
+        ls_procctrl-log_header_uuid = loginstance->get_log_header_id( ).
+*Admin data
+        ls_procctrl-created_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = ls_procctrl-created_at
+        ).
+        ls_procctrl-last_changed_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = ls_procctrl-last_changed_at
+        ).
+        APPEND ls_procctrl TO lt_procctrl.
+
+        DELETE ct_keys WHERE sysid = <keys>-sysid
+                         AND ccode = <keys>-ccode
+                         AND legalentity = <keys>-legalentity
+                         AND costobject = <keys>-costobject
+                         AND costcenter = <keys>-costcenter
+                         AND fplv = <keys>-fplv
+                         AND ryear = <keys>-ryear
+                         AND billingfreq = <keys>-billingfreq
+                         AND billingperiod = <keys>-billingperiod.
+        ev_failed = failed.
       ENDIF.
+      CLEAR loginstance.
     ENDLOOP.
+
+
+    MODIFY /esrcc/procctrl FROM TABLE @lt_procctrl.
+    CLEAR: procctrl, lineitems, stewardships.
+
+  ENDMETHOD.
+
+
+  METHOD validate_receiverchargeout.
+
+    DATA lt_procctrl   TYPE STANDARD TABLE OF /esrcc/procctrl.
+    DATA ls_procctrl   TYPE  /esrcc/procctrl.
+    DATA lv_validon    TYPE /esrcc/validfrom.
+    DATA loghdr        TYPE /esrcc/log_hdr.
+    DATA logitems      TYPE STANDARD TABLE OF /esrcc/log_item WITH EMPTY KEY.
+    DATA logitem       TYPE /esrcc/log_item.
+    DATA procctrl      TYPE /esrcc/tt_keys.
+
+
+*Check if receivers are maintained
+    SELECT DISTINCT receivers~*
+           FROM  /esrcc/i_srvproduct_receivers AS receivers
+           INNER JOIN @ct_keys AS keys
+             ON receivers~SystemId       = keys~sysid
+            AND receivers~legalentity    = keys~legalentity
+            AND receivers~CompanyCode    = keys~ccode
+            AND receivers~costobject     = keys~costobject
+            AND receivers~costcenter     = keys~costcenter
+            AND receivers~serviceproduct = keys~serviceproduct
+            WHERE receivers~active         = @abap_true
+            INTO TABLE @DATA(receivers).
+
+*Check if charge-out rule is configured
+    SELECT DISTINCT
+           recshare~fplv,
+           recshare~ryear,
+           recshare~poper,
+           recshare~sysid,
+           recshare~legalentity,
+           recshare~ccode,
+           recshare~costobject,
+           recshare~costcenter,
+           recshare~serviceproduct,
+           recshare~chargeout,
+           recshare~consumptionuom,
+           SUM( reckpi ) AS totalreckpi,
+           SUM( reckpishare ) AS totalreckpishare
+       FROM /esrcc/i_chargeout_recshare  AS recshare
+       INNER JOIN @ct_keys AS keys
+          ON recshare~fplv           = keys~fplv
+         AND recshare~ryear          = keys~ryear
+         AND recshare~sysid          = keys~sysid
+         AND recshare~legalentity    = keys~legalentity
+         AND recshare~ccode          = keys~ccode
+         AND recshare~costobject     = keys~costobject
+         AND recshare~costcenter     = keys~costcenter
+         AND recshare~serviceproduct = keys~serviceproduct
+         WHERE recshare~poper         IN @it_poper
+           AND ( ( recshare~chargeout = 'D' AND recshare~consumptionuom IS NOT INITIAL ) OR recshare~chargeout = 'I' )
+         GROUP BY
+         recshare~fplv,
+         recshare~ryear,
+         recshare~poper,
+         recshare~sysid,
+         recshare~legalentity,
+         recshare~ccode,
+         recshare~costobject,
+         recshare~costcenter,
+         recshare~serviceproduct,
+         recshare~chargeout,
+         recshare~consumptionuom
+         ORDER BY recshare~fplv,
+                 recshare~ryear,
+                 recshare~poper,
+                 recshare~sysid,
+                 recshare~legalentity,
+                 recshare~ccode,
+                 recshare~costobject,
+                 recshare~costcenter,
+                 recshare~serviceproduct
+         INTO TABLE @DATA(receiverchargeouts).
+
+* Check if chargeout rule method is direct then if capacity has been defined
+    SELECT DISTINCT
+           cb_stw~fplv,
+           cb_stw~ryear,
+           cb_stw~poper,
+           cb_stw~sysid,
+           cb_stw~legalentity,
+           cb_stw~ccode,
+           cb_stw~costobject,
+           cb_stw~costcenter,
+           srvshare~serviceproduct,
+           srvshare~planning,
+           srvshare~planninguom
+            FROM /ESRCC/srv_share AS srvshare
+            INNER JOIN /ESRCC/cb_stw AS cb_stw
+               ON srvshare~cc_uuid = cb_stw~cc_uuid
+            INNER JOIN @ct_keys AS keys
+               ON cb_stw~fplv           = keys~fplv
+              AND cb_stw~ryear          = keys~ryear
+              AND cb_stw~sysid          = keys~sysid
+              AND cb_stw~legalentity    = keys~legalentity
+              AND cb_stw~ccode          = keys~ccode
+              AND cb_stw~costobject     = keys~costobject
+              AND cb_stw~costcenter     = keys~costcenter
+             WHERE srvshare~chargeout = 'D'
+               AND cb_stw~poper          IN @it_poper
+               ORDER BY cb_stw~fplv,
+                        cb_stw~ryear,
+                        cb_stw~poper,
+                        cb_stw~sysid,
+                        cb_stw~legalentity,
+                        cb_stw~ccode,
+                        cb_stw~costobject,
+                        cb_stw~costcenter,
+                        srvshare~serviceproduct
+              INTO TABLE @DATA(serviceshares).
+
+* read the process control data to get the existing log guids
+    SELECT DISTINCT procctrl~fplv,
+                    procctrl~ryear,
+                    procctrl~sysid,
+                    procctrl~legalentity,
+                    procctrl~ccode,
+                    procctrl~costobject,
+                    procctrl~costcenter,
+                    procctrl~serviceproduct,
+                    procctrl~billingfreq,
+                    procctrl~billingperiod,
+                    procctrl~process,
+                    procctrl~log_header_uuid
+            FROM /esrcc/procctrl AS procctrl
+            INNER JOIN @ct_keys AS keys
+                    ON  procctrl~fplv          = keys~fplv
+                   AND  procctrl~ryear         = keys~ryear
+                   AND  procctrl~sysid         = keys~sysid
+                   AND  procctrl~legalentity   = keys~legalentity
+                   AND  procctrl~ccode         = keys~ccode
+                   AND  procctrl~costobject    = keys~costobject
+                   AND  procctrl~costcenter    = keys~costcenter
+                   AND  procctrl~billingfreq   = keys~billingfreq
+                   AND  procctrl~billingperiod = keys~billingperiod
+                   AND  procctrl~serviceproduct = keys~serviceproduct
+                   AND  procctrl~process        = @serviceshare
+                   WHERE procctrl~log_header_uuid IS NOT INITIAL
+                   ORDER BY procctrl~fplv,
+                            procctrl~ryear,
+                            procctrl~sysid,
+                            procctrl~legalentity,
+                            procctrl~ccode,
+                            procctrl~costobject,
+                            procctrl~costcenter,
+                            procctrl~serviceproduct,
+                            procctrl~billingfreq,
+                            procctrl~billingperiod,
+                            procctrl~process
+                   INTO CORRESPONDING FIELDS OF TABLE @procctrl.
+
+
+*Check if errors needs to be reported
+    LOOP AT ct_keys ASSIGNING FIELD-SYMBOL(<keys>).
+
+      DATA(failed) = abap_false.
+
+*Authority check
+      authority_check(
+        EXPORTING
+          keys   = <keys>
+          action = /esrcc/cl_calculate_chargeout=>action_calculat_serviceproduct
+        IMPORTING
+          failed = failed
+      ).
+      IF failed = abap_true.
+*      log an error
+        CLEAR logitem.
+        logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+        logitem-message_number = '008'.
+        logitem-message_type = 'E'.
+        APPEND logitem TO logitems.
+        failed = abap_true.
+      ENDIF.
+
+*Check for each month in case billing frequency is not monthly
+      LOOP AT it_poper ASSIGNING FIELD-SYMBOL(<poper>).
+
+
+*  Information message about the period for which logs are being published
+        CLEAR logitem.
+        logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+        logitem-message_number = '018'.
+        logitem-message_type = 'I'.
+        TRY.
+            DATA(parentloguuid) = cl_system_uuid=>create_uuid_c32_static( ). .
+          CATCH cx_uuid_error.
+            "handle exception
+        ENDTRY. .
+        logitem-log_uuid = parentloguuid.
+        logitem-is_parent = abap_true.
+        CONCATENATE <keys>-fplv <keys>-ryear <poper>-low INTO logitem-message_v1 SEPARATED BY '-'.
+        APPEND logitem TO logitems.
+
+        CONCATENATE <keys>-ryear <poper>-low+1(2) '01' INTO lv_validon.
+
+*check if atleast one receivers exist for the service product
+        READ TABLE receivers TRANSPORTING NO FIELDS WITH KEY  SystemId       = <keys>-sysid
+                                                              legalentity    = <keys>-legalentity
+                                                              CompanyCode    = <keys>-ccode
+                                                              costobject     = <keys>-costobject
+                                                              costcenter     = <keys>-costcenter
+                                                              serviceproduct = <keys>-serviceproduct.
+        IF sy-subrc <> 0.
+*      log an error
+          CLEAR logitem.
+          logitem-parent_log_uuid = parentloguuid.
+          logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+          logitem-message_number = '004'.
+          logitem-message_type = 'E'.
+          APPEND logitem TO logitems.
+          failed = abap_true.
+        ELSE.
+
+          READ TABLE receiverchargeouts ASSIGNING FIELD-SYMBOL(<receiverchargeout>) WITH KEY fplv           = <keys>-fplv
+                                                                                             ryear          = <keys>-ryear
+                                                                                             poper          = <poper>-low
+                                                                                             sysid          = <keys>-sysid
+                                                                                             legalentity    = <keys>-legalentity
+                                                                                             ccode          = <keys>-ccode
+                                                                                             costobject     = <keys>-costobject
+                                                                                             costcenter     = <keys>-costcenter
+                                                                                             serviceproduct = <keys>-serviceproduct
+                                                                                              BINARY SEARCH.
+
+          IF sy-subrc <> 0.
+*      log an error
+            CLEAR logitem.
+            logitem-parent_log_uuid = parentloguuid.
+            logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+            logitem-message_number = '027'.
+            logitem-message_type = 'E'.
+            APPEND logitem TO logitems.
+            failed = abap_true.
+          ELSE.
+            IF <receiverchargeout>-chargeout = 'I' AND <receiverchargeout>-totalreckpishare = 0.
+*      log an error
+              CLEAR logitem.
+              logitem-parent_log_uuid = parentloguuid.
+              logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+              logitem-message_number = '029'.
+              logitem-message_type = 'E'.
+              APPEND logitem TO logitems.
+              failed = abap_true.
+            ELSEIF <receiverchargeout>-chargeout = 'D' AND <receiverchargeout>-totalreckpi = 0.
+*      log an error
+              CLEAR logitem.
+              logitem-parent_log_uuid = parentloguuid.
+              logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+              logitem-message_number = '028'.
+              logitem-message_type = 'E'.
+              APPEND logitem TO logitems.
+              failed = abap_true.
+            ELSEIF <receiverchargeout>-chargeout = 'D' AND <receiverchargeout>-totalreckpi <> 0.
+              READ TABLE serviceshares ASSIGNING FIELD-SYMBOL(<serviceshare>) WITH KEY fplv           = <receiverchargeout>-fplv
+                                                                                       ryear          = <receiverchargeout>-ryear
+                                                                                       poper          = <receiverchargeout>-poper
+                                                                                       sysid          = <receiverchargeout>-sysid
+                                                                                       legalentity    = <receiverchargeout>-legalentity
+                                                                                       ccode          = <receiverchargeout>-ccode
+                                                                                       costobject     = <receiverchargeout>-costobject
+                                                                                       costcenter     = <receiverchargeout>-costcenter
+                                                                                       serviceproduct = <receiverchargeout>-serviceproduct BINARY SEARCH.
+              IF sy-subrc = 0 AND <receiverchargeout>-consumptionuom <> <serviceshare>-planninguom.
+*      log an error
+                CLEAR logitem.
+                logitem-parent_log_uuid = parentloguuid.
+                logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+                logitem-message_number = '030'.
+                logitem-message_type = 'E'.
+                APPEND logitem TO logitems.
+                failed = abap_true.
+              ENDIF.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+      ENDLOOP.
+
+      IF failed = abap_true.
+* create message logs
+        create_loginstance(
+          EXPORTING
+            key         = <keys>
+            procctrl    = procctrl
+            process     = chargeout
+          RECEIVING
+            loginstance = DATA(loginstance)
+        ).
+
+        loginstance->add_messages( log_messages = logitems ).
+        loginstance->save_messages( ).
+        CLEAR logitems.
+*  update execution cockpit status
+        CLEAR ls_procctrl.
+        ls_procctrl = CORRESPONDING #( <keys> ).
+        ls_procctrl-process = chargeout.    "Cost Base
+        ls_procctrl-status  = chargeout_failed.     "Cost Base failed
+        ls_procctrl-log_header_uuid = loginstance->get_log_header_id( ).
+*Admin data
+        ls_procctrl-created_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = ls_procctrl-created_at
+        ).
+        ls_procctrl-last_changed_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = ls_procctrl-last_changed_at
+        ).
+        APPEND ls_procctrl TO lt_procctrl.
+
+        DELETE ct_keys WHERE sysid = <keys>-sysid
+                         AND ccode = <keys>-ccode
+                         AND legalentity = <keys>-legalentity
+                         AND costobject = <keys>-costobject
+                         AND costcenter = <keys>-costcenter
+                         AND serviceproduct = <keys>-serviceproduct
+                         AND fplv = <keys>-fplv
+                         AND ryear = <keys>-ryear
+                         AND billingfreq = <keys>-billingfreq
+                         AND billingperiod = <keys>-billingperiod.
+
+        ev_failed = failed.
+      ENDIF.
+      CLEAR loginstance.
+    ENDLOOP.
+
+
+    MODIFY /esrcc/procctrl FROM TABLE @lt_procctrl.
+
+    CLEAR: procctrl, receivers,receiverchargeouts,serviceshares.
+
+  ENDMETHOD.
+
+
+  METHOD validate_serviceproductcosting.
+
+    DATA lt_procctrl   TYPE STANDARD TABLE OF /esrcc/procctrl.
+    DATA ls_procctrl   TYPE  /esrcc/procctrl.
+    DATA lv_validon    TYPE /esrcc/validfrom.
+    DATA loghdr        TYPE /esrcc/log_hdr.
+    DATA logitems      TYPE STANDARD TABLE OF /esrcc/log_item WITH EMPTY KEY.
+    DATA logitem       TYPE /esrcc/log_item.
+    DATA procctrl       TYPE /esrcc/tt_keys.
+
+
+*Check if charge-out rule is configured
+    SELECT DISTINCT cout~serviceproduct,
+                    cout~validFrom,
+                    cout~validto,
+                    rule~chargeout_method
+            FROM /esrcc/chargeout AS cout
+            INNER JOIN /esrcc/co_rule AS rule
+            ON rule~rule_id = cout~chargeout_rule_id
+            AND rule~workflow_status = 'F'
+            INNER JOIN @ct_keys AS keys
+               ON cout~serviceproduct = keys~serviceproduct
+            WHERE rule~cost_version = keys~fplv
+              AND rule~workflow_status = @finalized
+            ORDER BY cout~serviceproduct
+            INTO TABLE @DATA(rulesdetails).
+
+* Check if chargeout rule method is direct then if capacity has been defined
+    SELECT DISTINCT srvcap~Ryear,
+                    srvcap~poper,
+                    srvcap~Sysid,
+                    srvcap~LegalEntity,
+                    srvcap~CompanyCode,
+                    srvcap~Costobject,
+                    srvcap~Costcenter,
+                    srvcap~ServiceProduct,
+                    srvcap~planning,
+                    srvcap~uom
+            FROM /ESRCC/I_ServiceCapacity AS srvcap
+            INNER JOIN @ct_keys AS keys
+               ON srvcap~Sysid       = keys~sysid
+              AND srvcap~LegalEntity = keys~legalentity
+              AND srvcap~CompanyCode = keys~ccode
+              AND srvcap~Ryear       = keys~ryear
+              AND srvcap~Costobject  = keys~costobject
+              AND srvcap~Costcenter  = keys~costcenter
+              AND srvcap~ServiceProduct = keys~serviceproduct
+              WHERE srvcap~poper       IN @it_poper
+              ORDER BY srvcap~Ryear,
+                       srvcap~poper,
+                       srvcap~Sysid,
+                       srvcap~LegalEntity,
+                       srvcap~CompanyCode,
+                       srvcap~Costobject,
+                       srvcap~Costcenter,
+                       srvcap~ServiceProduct
+              INTO TABLE @DATA(capacities).
+
+* read the process control data to get the existing log guids
+    SELECT DISTINCT procctrl~fplv,
+                    procctrl~ryear,
+                    procctrl~sysid,
+                    procctrl~legalentity,
+                    procctrl~ccode,
+                    procctrl~costobject,
+                    procctrl~costcenter,
+                    procctrl~serviceproduct,
+                    procctrl~billingfreq,
+                    procctrl~billingperiod,
+                    procctrl~process,
+                    procctrl~log_header_uuid
+            FROM /esrcc/procctrl AS procctrl
+            INNER JOIN @ct_keys AS keys
+                    ON  procctrl~fplv          = keys~fplv
+                   AND  procctrl~ryear         = keys~ryear
+                   AND  procctrl~sysid         = keys~sysid
+                   AND  procctrl~legalentity   = keys~legalentity
+                   AND  procctrl~ccode         = keys~ccode
+                   AND  procctrl~costobject    = keys~costobject
+                   AND  procctrl~costcenter    = keys~costcenter
+                   AND  procctrl~billingfreq   = keys~billingfreq
+                   AND  procctrl~billingperiod = keys~billingperiod
+                   AND  procctrl~serviceproduct = keys~serviceproduct
+                   AND  procctrl~process        = @serviceshare
+                   WHERE procctrl~log_header_uuid IS NOT INITIAL
+                   ORDER BY procctrl~fplv,
+                            procctrl~ryear,
+                            procctrl~sysid,
+                            procctrl~legalentity,
+                            procctrl~ccode,
+                            procctrl~costobject,
+                            procctrl~costcenter,
+                            procctrl~serviceproduct,
+                            procctrl~billingfreq,
+                            procctrl~billingperiod,
+                            procctrl~process
+                   INTO CORRESPONDING FIELDS OF TABLE @procctrl.
+
+
+*Check if errors needs to be reported
+    LOOP AT ct_keys ASSIGNING FIELD-SYMBOL(<keys>).
+
+      DATA(failed) = abap_false.
+
+*Authority check
+      authority_check(
+        EXPORTING
+          keys   = <keys>
+          action = /esrcc/cl_calculate_chargeout=>action_calculat_serviceproduct
+        IMPORTING
+          failed = failed
+      ).
+      IF failed = abap_true.
+*      log an error
+        CLEAR logitem.
+        logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+        logitem-message_number = '007'.
+        logitem-message_type = 'E'.
+        APPEND logitem TO logitems.
+        failed = abap_true.
+      ENDIF.
+
+
+*Check for each month in case billing frequency is not monthly
+      LOOP AT it_poper ASSIGNING FIELD-SYMBOL(<poper>).
+        DATA(ruleexist) = abap_false.
+
+*  Information message about the period for which logs are being published
+        CLEAR logitem.
+        logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+        logitem-message_number = '018'.
+        logitem-message_type = 'I'.
+        TRY.
+            DATA(parentloguuid) = cl_system_uuid=>create_uuid_c32_static( ). .
+          CATCH cx_uuid_error.
+            "handle exception
+        ENDTRY. .
+        logitem-log_uuid = parentloguuid.
+        logitem-is_parent = abap_true.
+        CONCATENATE <keys>-ryear <poper>-low INTO logitem-message_v1 SEPARATED BY '-'.
+        APPEND logitem TO logitems.
+
+        CONCATENATE <keys>-ryear <poper>-low+1(2) '01' INTO lv_validon.
+
+        READ TABLE rulesdetails TRANSPORTING NO FIELDS WITH KEY serviceproduct = <keys>-serviceproduct
+                                                                BINARY SEARCH.
+
+        IF sy-subrc = 0.
+          LOOP AT rulesdetails ASSIGNING FIELD-SYMBOL(<rules>) FROM sy-tabix WHERE validfrom   <= lv_validon
+                                                                               AND validto     >= lv_validon.
+
+            ruleexist = abap_true.
+
+          ENDLOOP.
+        ENDIF.
+        IF ruleexist = abap_false.
+*      log an error
+          CLEAR logitem.
+          logitem-parent_log_uuid = parentloguuid.
+          logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+          logitem-message_number = '023'.
+          logitem-message_type = 'E'.
+          logitem-message_v1 = <keys>-serviceproduct.
+          APPEND logitem TO logitems.
+          failed = abap_true.
+        ELSEIF <rules>-chargeout_method = 'D'.
+
+          READ TABLE capacities ASSIGNING FIELD-SYMBOL(<capacity>) WITH KEY ryear          = <keys>-ryear
+                                                                            poper          = <poper>-low
+                                                                            Sysid          = <keys>-sysid
+                                                                            LegalEntity    = <keys>-legalentity
+                                                                            CompanyCode    = <keys>-ccode
+                                                                            Costobject     = <keys>-costobject
+                                                                            Costcenter     = <keys>-costcenter
+                                                                            ServiceProduct = <keys>-serviceproduct BINARY SEARCH.
+
+          IF sy-subrc <> 0.
+*      log an error
+            CLEAR logitem.
+            logitem-parent_log_uuid = parentloguuid.
+            logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+            logitem-message_number = '024'.
+            logitem-message_type = 'E'.
+            logitem-message_v1 = <keys>-serviceproduct.
+            APPEND logitem TO logitems.
+            failed = abap_true.
+          ELSEIF <capacity>-planning = 0.
+*      log an error
+            CLEAR logitem.
+            logitem-parent_log_uuid = parentloguuid.
+            logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+            logitem-message_number = '025'.
+            logitem-message_type = 'E'.
+            logitem-message_v1 = <keys>-serviceproduct.
+            APPEND logitem TO logitems.
+            failed = abap_true.
+          ENDIF.
+        ENDIF.
+
+
+      ENDLOOP.
+
+      IF failed = abap_true.
+* create message logs
+        create_loginstance(
+          EXPORTING
+            key         = <keys>
+            procctrl    = procctrl
+            process     = serviceshare
+          RECEIVING
+            loginstance = DATA(loginstance)
+        ).
+
+        loginstance->add_messages( log_messages = logitems ).
+        loginstance->save_messages( ).
+        CLEAR logitems.
+*  update execution cockpit status
+        CLEAR ls_procctrl.
+        ls_procctrl = CORRESPONDING #( <keys> ).
+        ls_procctrl-process = serviceshare.    "Cost Base
+        ls_procctrl-status  = serviceshare_failed.     "Cost Base failed
+        ls_procctrl-log_header_uuid = loginstance->get_log_header_id( ).
+*Admin data
+        ls_procctrl-created_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = ls_procctrl-created_at
+        ).
+        ls_procctrl-last_changed_by = sy-uname.
+        /esrcc/cl_utility_core=>get_utc_date_time_ts(
+          IMPORTING
+            time_stamp = ls_procctrl-last_changed_at
+        ).
+        APPEND ls_procctrl TO lt_procctrl.
+
+
+        DELETE ct_keys WHERE sysid = <keys>-sysid
+                         AND ccode = <keys>-ccode
+                         AND legalentity = <keys>-legalentity
+                         AND costobject = <keys>-costobject
+                         AND costcenter = <keys>-costcenter
+                         AND serviceproduct = <keys>-serviceproduct
+                         AND fplv = <keys>-fplv
+                         AND ryear = <keys>-ryear
+                         AND billingfreq = <keys>-billingfreq
+                         AND billingperiod = <keys>-billingperiod.
+        ev_failed = failed.
+
+      ENDIF.
+      CLEAR loginstance.
+    ENDLOOP.
+
+
+    MODIFY /esrcc/procctrl FROM TABLE @lt_procctrl.
+    CLEAR: procctrl, rulesdetails, capacities.
+
+  ENDMETHOD.
+
+
+  METHOD add_logmessages.
+
+
+  ENDMETHOD.
+
+
+  METHOD authority_check.
+
+    CLEAR failed.
+
+*    Authorisation Check
+    IF action = /esrcc/cl_calculate_chargeout=>action_calculate_costbase OR
+       action = /esrcc/cl_calculate_chargeout=>action_calculat_serviceproduct OR
+       action = /esrcc/cl_calculate_chargeout=>action_calculat_chargeout.
+      AUTHORITY-CHECK OBJECT '/ESRCC/LE'
+          ID '/ESRCC/LE' FIELD keys-legalentity
+          ID 'ACTVT'  FIELD '01'.
+      IF sy-subrc <> 0.
+        failed = abap_true.
+      ELSE.
+        AUTHORITY-CHECK OBJECT '/ESRCC/CO'
+            ID '/ESRCC/OBJ' FIELD keys-costobject
+            ID '/ESRCC/CN'  FIELD keys-costcenter
+            ID 'ACTVT'  FIELD '01'.
+        IF sy-subrc <> 0.
+          failed = abap_true.
+        ENDIF.
+      ENDIF.
+    ELSEIF action = /esrcc/cl_calculate_chargeout=>action_finalize_costbase OR
+           action = /esrcc/cl_calculate_chargeout=>action_finalize_serviceproduct OR
+           action = /esrcc/cl_calculate_chargeout=>action_finalize_chargeout.
+
+      AUTHORITY-CHECK OBJECT '/ESRCC/LE'
+          ID '/ESRCC/LE' FIELD keys-legalentity
+          ID 'ACTVT'  FIELD '02'.
+      IF sy-subrc <> 0.
+        failed = abap_true.
+      ELSE.
+        AUTHORITY-CHECK OBJECT '/ESRCC/CO'
+            ID '/ESRCC/OBJ' FIELD keys-costobject
+            ID '/ESRCC/CN'  FIELD keys-costcenter
+            ID 'ACTVT'  FIELD '02'.
+        IF sy-subrc <> 0.
+          failed = abap_true.
+        ENDIF.
+      ENDIF.
+    ELSEIF action = /esrcc/cl_calculate_chargeout=>action_reopen_costbase OR
+           action = /esrcc/cl_calculate_chargeout=>action_reopen_serviceproduct OR
+           action = /esrcc/cl_calculate_chargeout=>action_reopen_chargeout.
+      AUTHORITY-CHECK OBJECT '/ESRCC/LE'
+          ID '/ESRCC/LE' FIELD keys-legalentity
+          ID 'ACTVT'  FIELD '06'.
+      IF sy-subrc <> 0.
+        failed = abap_true.
+      ELSE.
+        AUTHORITY-CHECK OBJECT '/ESRCC/CO'
+            ID '/ESRCC/OBJ' FIELD keys-costobject
+            ID '/ESRCC/CN'  FIELD keys-costcenter
+            ID 'ACTVT'  FIELD '06'.
+        IF sy-subrc <> 0.
+          failed = abap_true.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+  ENDMETHOD.
+
+
+  METHOD create_loginstance.
+
+    DATA loghdr        TYPE /esrcc/log_hdr.
+    DATA logitem       TYPE /esrcc/log_item.
+
+    IF key-serviceproduct IS INITIAL.
+
+      READ TABLE procctrl ASSIGNING FIELD-SYMBOL(<procctrl>) WITH KEY fplv           = key-fplv
+                                                                        ryear         = key-ryear
+                                                                        sysid         = key-sysid
+                                                                        legalentity   = key-legalentity
+                                                                        ccode         = key-ccode
+                                                                        costobject    = key-costobject
+                                                                        costcenter    = key-costcenter
+                                                                        billingfreq   = key-billingfreq
+                                                                        billingperiod = key-billingperiod
+                                                                        process       = process BINARY SEARCH.
+
+      IF sy-subrc = 0 AND <procctrl>-log_header_uuid IS NOT INITIAL.
+* check if logid is already available then call resue instance to get the existence instance
+        /esrcc/cl_application_logs=>reuse_instance(
+          EXPORTING
+            log_header_id = <procctrl>-log_header_uuid
+          RECEIVING
+            instance      = loginstance
+        ).
+
+*    Clear old messages
+        loginstance->clear_messages( ).
+
+      ELSE.
+*  create a new instance
+        /esrcc/cl_application_logs=>create_instance(
+          EXPORTING
+            deter_save = abap_true
+          RECEIVING
+            instance   = loginstance
+        ).
+
+*    set log header info
+        loghdr-application      = 'EXE'.
+        loghdr-sub_application  = process.
+        loghdr-company_code     = key-ccode.
+        loghdr-legal_entity     = key-legalentity.
+        loghdr-planning_version = key-fplv.
+        loghdr-reporting_year   = key-ryear.
+        loghdr-system_id        = key-sysid.
+        loginstance->set_log_header_info( log_header = loghdr ).
+      ENDIF.
+
+*  set header message about the object
+      CLEAR logitem.
+      logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+      logitem-message_number = '022'.
+      logitem-message_type = 'I'.
+      CONCATENATE key-fplv key-ryear key-billingfreq key-billingperiod INTO DATA(perioddetials) SEPARATED BY '-'.
+      CONCATENATE 'Period:' perioddetials INTO logitem-message_v1 SEPARATED BY space.
+      CONCATENATE key-sysid key-legalentity key-ccode INTO logitem-message_v2 SEPARATED BY '/'.
+      CONCATENATE 'Entity:' logitem-message_v2 INTO logitem-message_v2 SEPARATED BY space.
+      CONCATENATE key-costobject key-costcenter INTO logitem-message_v3 SEPARATED BY '/'.
+      CONCATENATE 'Object:' logitem-message_v3 INTO logitem-message_v3 SEPARATED BY space.
+      loginstance->add_message(
+        EXPORTING
+          log_message      = logitem
+      ).
+    ELSE.
+
+      READ TABLE procctrl ASSIGNING <procctrl> WITH KEY fplv             = key-fplv
+                                                        ryear          = key-ryear
+                                                        sysid          = key-sysid
+                                                        legalentity    = key-legalentity
+                                                        ccode          = key-ccode
+                                                        costobject     = key-costobject
+                                                        costcenter     = key-costcenter
+                                                        serviceproduct = key-serviceproduct
+                                                        billingfreq    = key-billingfreq
+                                                        billingperiod  = key-billingperiod
+                                                        process        = process BINARY SEARCH.
+
+      IF sy-subrc = 0 AND <procctrl>-log_header_uuid IS NOT INITIAL.
+* check if logid is already available then call resue instance to get the existence instance
+        /esrcc/cl_application_logs=>reuse_instance(
+          EXPORTING
+            log_header_id = <procctrl>-log_header_uuid
+          RECEIVING
+            instance      = loginstance
+        ).
+
+*    Clear old messages
+        loginstance->clear_messages( ).
+
+      ELSE.
+*  create a new instance
+        /esrcc/cl_application_logs=>create_instance(
+          EXPORTING
+            deter_save = abap_true
+          RECEIVING
+            instance   = loginstance
+        ).
+
+*    set log header info
+        loghdr-application      = 'EXE'.
+        loghdr-sub_application  = process.
+        loghdr-company_code     = key-ccode.
+        loghdr-legal_entity     = key-legalentity.
+        loghdr-planning_version = key-fplv.
+        loghdr-reporting_year   = key-ryear.
+        loghdr-system_id        = key-sysid.
+        loginstance->set_log_header_info( log_header = loghdr ).
+      ENDIF.
+
+*  set header message about the object
+      CLEAR logitem.
+      logitem-message_id = '/ESRCC/EXECCOCKPIT'.
+      logitem-message_number = '022'.
+      logitem-message_type = 'I'.
+      CONCATENATE key-fplv key-ryear key-billingfreq key-billingperiod INTO perioddetials SEPARATED BY '-'.
+      CONCATENATE 'Period:' perioddetials INTO logitem-message_v1 SEPARATED BY space.
+      CONCATENATE key-sysid key-legalentity key-ccode INTO logitem-message_v2 SEPARATED BY '/'.
+      CONCATENATE 'Entity:' logitem-message_v2 INTO logitem-message_v2 SEPARATED BY space.
+      CONCATENATE key-costobject key-costcenter key-serviceproduct INTO logitem-message_v3 SEPARATED BY '/'.
+      CONCATENATE 'Object:' logitem-message_v3 INTO logitem-message_v3 SEPARATED BY space.
+      loginstance->add_message(
+        EXPORTING
+          log_message      = logitem
+      ).
+
+    ENDIF.
   ENDMETHOD.
 ENDCLASS.

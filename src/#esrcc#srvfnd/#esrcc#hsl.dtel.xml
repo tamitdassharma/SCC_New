@@ -26,7 +26,7 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Betrag in Hauswährung</DDTEXT>
+     <DDTEXT>Betrag in lokaler Währung</DDTEXT>
      <REPTEXT>Betrag (LC)</REPTEXT>
      <SCRTEXT_M>Betrag (LC)</SCRTEXT_M>
      <SCRTEXT_L>Betrag (LC)</SCRTEXT_L>

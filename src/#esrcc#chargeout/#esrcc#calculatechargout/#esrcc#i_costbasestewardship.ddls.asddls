@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST,#UNION]
 @AccessControl.authorizationCheck: #CHECK
 @EndUserText.label: 'Cost Center Cost'
 @Metadata.ignorePropagatedAnnotations: true
@@ -54,6 +55,9 @@ as select from /ESRCC/I_CostBaseData as cc_cost
   association [0..1] to /ESRCC/I_PROCESSTYPE as _Processtype
   on _Processtype.ProcessType = $projection.ProcessType
   
+  association [0..1] to /ESRCC/I_CURR as _Currencytype
+  on _Currencytype.Currencytype = $projection.Currencytype
+  
 {
     key UUID,
     key Currencytype,
@@ -84,6 +88,7 @@ as select from /ESRCC/I_CostBaseData as cc_cost
     cast((Totalcost -  Excludedtotalcost) * (1 - (Stewardship / 100)) as abap.dec(23,2)) as Remainingcostbase,
     cc_cost.Status,
     Workflowid,
+    CommentId,
     CreatedBy,
     CreatedAt,
     LastChangedBy,
@@ -106,7 +111,8 @@ as select from /ESRCC/I_CostBaseData as cc_cost
     _legalCountryText,
     _Processtype.text as ProcessTypedescription,
     // Make association public   
-    _ServiceMarkup
+    _ServiceMarkup,
+    _Currencytype
     
 }
 

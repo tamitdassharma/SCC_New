@@ -61,7 +61,7 @@ authorization dependent by _StewardshipAll
     ChainSequence = CHAIN_SEQUENCE;
     WorkflowId = WORKFLOW_ID;
     WorkflowStatus = WORKFLOW_STATUS;
-    Comments = COMMENTS;
+    CommentId = COMMENT_ID;
     CreatedBy = CREATED_BY;
     CreatedAt = CREATED_AT;
     LastChangedBy = LAST_CHANGED_BY;
@@ -71,10 +71,13 @@ authorization dependent by _StewardshipAll
 
   action ( features : instance ) Submit parameter /ESRCC/C_COMMENT result [1] $self;
   action ( features : instance ) Finalize result [1] $self;
-  action ( features : instance ) Comments parameter /ESRCC/C_COMMENT result [1] $self;
+  action ( features : instance ) Reopen result [1] $self;
 
-  determination UpdateWorkflowStatus on modify { field Validto, Stewardship, ChainId, ChainSequence; }
+  determination UpdateInternalWorkflowStatus on modify { field Validto, Stewardship, ChainId, ChainSequence; }
+  determination UpdateWorkflowStatus on save { field WorkflowInternalStatus; }
+  determination UpdateComment on save { field Comments; }
   determination TriggerWorkflow on save { field WorkflowStatus; }
+
   validation ValidateData on save { create; update; }
 
   association _StewardshipAll { with draft; }
@@ -127,7 +130,7 @@ authorization dependent by _StewardshipAll
   association _StewardshipAll { with draft; }
   association _Stewardship { with draft; }
 
-  determination UpdateWorkflowStatus on modify { create; update; delete; }
+  determination UpdateInternalWorkflowStatus on modify { create; update; delete; }
 
   validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
 }
@@ -174,7 +177,7 @@ authorization dependent by _StewardshipAll
   association _StewardshipAll { with draft; }
   association _Stewardship { with draft; }
 
-  determination UpdateWorkflowStatus on modify { create; update; delete; }
+  determination UpdateInternalWorkflowStatus on modify { create; update; delete; }
 
   validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
 }

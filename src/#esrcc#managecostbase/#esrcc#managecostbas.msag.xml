@@ -72,7 +72,7 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
      <MSGNR>010</MSGNR>
-     <TEXT>No receivers added</TEXT>
+     <TEXT>Please add receivers for Charge-out</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
@@ -85,6 +85,18 @@
      <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
      <MSGNR>012</MSGNR>
      <TEXT>No Authorization to Discard Changes for Legal Entity &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
+     <MSGNR>013</MSGNR>
+     <TEXT>Please run simulation before submit</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/MANAGECOSTBAS</ARBGB>
+     <MSGNR>014</MSGNR>
+     <TEXT>Receiver cannot be same as Provider</TEXT>
     </T100>
    </T100>
   </asx:values>

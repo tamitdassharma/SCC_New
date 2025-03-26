@@ -7,7 +7,7 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Indirect allocation key values</DDTEXT>
+    <DDTEXT>Indirect Charge-out: Allocation Key Base Values</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>A</CONTFLAG>
@@ -158,6 +158,15 @@
      <CHECKFLAG>X</CHECKFLAG>
     </DD08V>
    </DD08V_TABLE>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD02_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Indirekte Verrechnung: Allokationsschlüssel Basiswerte</DDTEXT>
+    </item>
+   </DD02_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

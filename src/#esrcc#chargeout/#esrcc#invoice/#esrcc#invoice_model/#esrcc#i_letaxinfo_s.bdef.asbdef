@@ -18,7 +18,6 @@ authorization master ( global )
   draft action Discard;
   draft action Resume;
   draft determine action Prepare;
-  //  action ( features : instance ) SelectCustomizingTransptReq parameter D_SelectCustomizingTransptReqP result [1] $self;
 
   association _TaxInformation { create ( features : instance ); with draft; }
 }
@@ -58,6 +57,4 @@ authorization dependent by _TaxInformationAll
   }
 
   association _TaxInformationAll { with draft; }
-
-  //  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
 }

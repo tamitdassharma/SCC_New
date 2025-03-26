@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Indirect Allocation KPI Share'
 @Metadata.ignorePropagatedAnnotations: true
@@ -11,14 +11,14 @@ define view entity /ESRCC/I_CHARGEOUT_INDKPISHARE
 as select from /ESRCC/I_CHARGEOUT_INDWGHT as weightage
 
 association [0..1] to /ESRCC/I_CHARGEOUT_INDKPISUM as indkpisum
-                  on weightage.fplv = indkpisum.Fplv
-                 and weightage.ryear = indkpisum.Ryear 
-                 and weightage.poper = indkpisum.Poper
-                 and weightage.sysid = indkpisum.Sysid
-                 and weightage.ccode = indkpisum.Ccode
-                 and weightage.legalentity = indkpisum.Legalentity
-                 and weightage.costobject = indkpisum.Costobject
-                 and weightage.costcenter = indkpisum.Costcenter
+                  on weightage.Fplv = indkpisum.fplv
+                 and weightage.Ryear = indkpisum.ryear 
+                 and weightage.Poper = indkpisum.poper
+                 and weightage.Sysid = indkpisum.sysid
+                 and weightage.Ccode = indkpisum.ccode
+                 and weightage.Legalentity = indkpisum.legalentity
+                 and weightage.Costobject = indkpisum.costobject
+                 and weightage.Costcenter = indkpisum.costcenter
                  and weightage.serviceproduct = indkpisum.serviceproduct
                  and weightage.KeyVersion = indkpisum.KeyVersion                             
                  and weightage.Allockey = indkpisum.Allockey
@@ -28,14 +28,14 @@ association [0..1] to /ESRCC/I_CHARGEOUT_INDKPISUM as indkpisum
                  
 
 association [0..*] to /ESRCC/I_INDALLOC as TOTALINDALLOC
-                  on weightage.fplv = TOTALINDALLOC.fplv
-                 and weightage.ryear = TOTALINDALLOC.ryear 
-                 and weightage.poper = TOTALINDALLOC.poper
-                 and weightage.sysid = TOTALINDALLOC.sysid
-                 and weightage.ccode = TOTALINDALLOC.ccode
-                 and weightage.legalentity = TOTALINDALLOC.legalentity
-                 and weightage.costobject = TOTALINDALLOC.costobject
-                 and weightage.costcenter = TOTALINDALLOC.costcenter
+                  on weightage.Fplv = TOTALINDALLOC.fplv
+                 and weightage.Ryear = TOTALINDALLOC.ryear 
+                 and weightage.Poper = TOTALINDALLOC.poper
+                 and weightage.Sysid = TOTALINDALLOC.sysid
+                 and weightage.Ccode = TOTALINDALLOC.ccode
+                 and weightage.Legalentity = TOTALINDALLOC.legalentity
+                 and weightage.Costobject = TOTALINDALLOC.costobject
+                 and weightage.Costcenter = TOTALINDALLOC.costcenter
                  and weightage.serviceproduct = TOTALINDALLOC.serviceproduct
                  and weightage.ReceiverSysId = TOTALINDALLOC.ReceiverSysId
                  and weightage.ReceiverCompanyCode = TOTALINDALLOC.ReceiverCompanyCode
@@ -50,14 +50,14 @@ association [0..*] to /ESRCC/I_INDALLOC as TOTALINDALLOC
                 
                  
 {
- key fplv,
- key ryear,
- key poper,
- key sysid,
- key ccode,
- key legalentity,
- key costobject,
- key costcenter,
+ key Fplv,
+ key Ryear,
+ key Poper,
+ key Sysid,
+ key Ccode,
+ key Legalentity,
+ key Costobject,
+ key Costcenter,
  key serviceproduct,
  key ReceiverSysId,
  key ReceiverCompanyCode,

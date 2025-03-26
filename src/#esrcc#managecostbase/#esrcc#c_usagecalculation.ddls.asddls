@@ -1,3 +1,4 @@
+@AbapCatalog.extensibility.extensible: true
 @EndUserText.label: 'Include/Exclude Items in Calculation'
 define abstract entity /ESRCC/C_USAGECALCULATION  
 {   

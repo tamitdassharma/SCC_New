@@ -27,6 +27,7 @@ define behavior for /ESRCC/C_CoRule alias Rule
 
   use action Submit;
   use action Finalize;
+  use action Reopen;
 
   use association _RuleAll { with draft; }
   use association _RuleText { create; with draft; }

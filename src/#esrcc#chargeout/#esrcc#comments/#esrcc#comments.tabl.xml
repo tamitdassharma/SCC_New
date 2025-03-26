@@ -41,6 +41,14 @@
      <COMPTYPE>E</COMPTYPE>
     </DD03P>
     <DD03P>
+     <FIELDNAME>INSTANCEID</FIELDNAME>
+     <KEYFLAG>X</KEYFLAG>
+     <ROLLNAME>/ESRCC/COMMENTID</ROLLNAME>
+     <ADMINFIELD>0</ADMINFIELD>
+     <NOTNULL>X</NOTNULL>
+     <COMPTYPE>E</COMPTYPE>
+    </DD03P>
+    <DD03P>
      <FIELDNAME>WORFKLOW_ID</FIELDNAME>
      <KEYFLAG>X</KEYFLAG>
      <ROLLNAME>/ESRCC/WORKFLOWID</ROLLNAME>
@@ -105,6 +113,15 @@
      <COMPTYPE>E</COMPTYPE>
     </DD03P>
    </DD03P_TABLE>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD02_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Kommentare bearbeiten</DDTEXT>
+    </item>
+   </DD02_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

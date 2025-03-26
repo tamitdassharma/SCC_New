@@ -1,4 +1,5 @@
 @EndUserText.label: 'Service Product Singleton - Maintain'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @Metadata.allowExtensions: true
 @ObjectModel.semanticKey: [ 'SingletonID' ]

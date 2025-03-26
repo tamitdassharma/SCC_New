@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Allocation Data Mapping'
 @Metadata.ignorePropagatedAnnotations: true
@@ -31,9 +31,10 @@ define view entity /ESRCC/I_TOTALCB_ALLOC
       srvalloc.CostVersion as cost_version,
       srvalloc.ConsumptionVersion as consumption_version,
       srvalloc.KeyVersion as key_version,
-      srvalloc.Uom,
+//      srvalloc.Uom,
       validon,
       localcurr,
       groupcurr,
-      ShareOfCost
+      ShareOfCost,
+      ContractId
 }

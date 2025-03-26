@@ -1,5 +1,5 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
-@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
+@AccessControl.authorizationCheck: #CHECK
 @EndUserText.label: 'Service Final Charge Out Amount'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
@@ -33,7 +33,7 @@ define root view entity /ESRCC/I_SRV_WORKFLOW
       Passthroughshare,
       Chargeout,
       Planning,
-      Uom,
+      PlanningUom,
       Servicecostperunit,
       Valueaddcostperunit,
       Passthrucostperunit,

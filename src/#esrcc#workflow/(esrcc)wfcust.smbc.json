@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain Configuration for Workflow Approval",
+    "description": "Maintain Workflow Approval Configuration",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_WFCUST_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "RoleAssignmentAll",
-    "name": "Workflow: Approval Configuration",
-    "configurationGroup": "/ESRCC/BC_GROUP7",
+    "name": "Workflow Approval",
+    "configurationGroup": "/ESRCC/BC_GROUP8",
     "skipRootEntity": true
   },
   "appConfiguration": {

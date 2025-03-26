@@ -89,6 +89,8 @@ annotate view /ESRCC/C_ALLOCATIONSHARE with
   @UI.selectionField: [{ position: 10 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTDATASET', element: 'costdataset' }}]
   @UI.textArrangement: #TEXT_ONLY
+  @Consumption.filter.selectionType: #SINGLE
+  @Consumption.filter.mandatory: true
   Fplv;
 
   @UI.lineItem: [
@@ -104,6 +106,8 @@ annotate view /ESRCC/C_ALLOCATIONSHARE with
   } ]
   @UI.selectionField: [{ position: 20 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RYEAR', element: 'ryear' }}]
+  @Consumption.filter.selectionType: #SINGLE
+  @Consumption.filter.mandatory: true
   Ryear;
   @UI.lineItem: [ {
     position: 30 ,
@@ -118,6 +122,8 @@ annotate view /ESRCC/C_ALLOCATIONSHARE with
   } ]
   @UI.selectionField: [{ position: 30 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_POPER', element: 'Poper' }}]
+//  @Consumption.filter.selectionType: #SINGLE
+//  @Consumption.filter.mandatory: true
   Poper;
   @UI.lineItem: [ {
     position: 40 ,
@@ -239,8 +245,8 @@ annotate view /ESRCC/C_ALLOCATIONSHARE with
   label: '',
   cssDefault:{width: '20rem'}
   } ]
-  @UI.selectionField: [{ position: 100 }]
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_PR_F4', element: 'Ccode' },
+  @UI.selectionField: [{ position: 110 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_REC_F4', element: 'Ccode' },
                                        additionalBinding: [{ element: 'Legalentity', localElement: 'Receivingentity' }]}]
   @UI.textArrangement: #TEXT_LAST
   ReceiverCompanyCode;
@@ -262,7 +268,7 @@ annotate view /ESRCC/C_ALLOCATIONSHARE with
   label: '',
   cssDefault:{width: '20rem'}
   } ]
-  @UI.selectionField: [{ position: 100 }]
+  @UI.selectionField: [{ position: 120 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTOBJECTS', element: 'Costobject' }}]
   @UI.textArrangement: #TEXT_LAST
   ReceiverCostObject;
@@ -273,8 +279,8 @@ annotate view /ESRCC/C_ALLOCATIONSHARE with
   label: '',
   cssDefault:{width: '20rem'}
   } ]
-  @UI.selectionField: [{ position: 100 }]
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_F4', element: 'Costcenter' },
+  @UI.selectionField: [{ position: 130 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_RECEIVER_F4', element: 'Costcenter' },
                                        additionalBinding: [{ element: 'Costobject', localElement: 'ReceiverCostObject'}]}]
   @UI.textArrangement: #TEXT_LAST
   ReceiverCostCenter;
@@ -375,8 +381,8 @@ annotate view /ESRCC/C_ALLOCATIONSHARE with
    importance: #LOW,
    label: ''
   } ]
-  @EndUserText.label: 'Legal Entity Country'
-  @EndUserText.quickInfo: 'Legal Entity Country'
+  @EndUserText.label: 'Providing Country'
+  @EndUserText.quickInfo: 'Providing Country'
   @UI.textArrangement: #TEXT_LAST
   legalentitycountry;
   @UI.lineItem: [ {
@@ -392,9 +398,8 @@ annotate view /ESRCC/C_ALLOCATIONSHARE with
   @UI.lineItem: [ {
    position: 999 ,
    importance: #LOW,
-   label: ''
+   label: 'ID'
   } ]
-  @EndUserText.label: 'Allocation UUID'
   AlocUUID;
 
   @UI.hidden: true

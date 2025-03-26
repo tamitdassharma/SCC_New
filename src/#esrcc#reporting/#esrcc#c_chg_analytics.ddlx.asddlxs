@@ -156,10 +156,11 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   @UI.lineItem: [ {
   position: 110 ,
   importance: #MEDIUM,
-  label: 'Receiver System Id',
+  label: 'Receiver System ID',
   cssDefault:{width: '10rem'}
   } ]
-  @UI.selectionField: [{ position: 63 }]
+//  @UI.selectionField: [{ position: 69 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' } }]
   ReceiverSysId;
   @UI.lineItem: [ {
   position: 110 ,
@@ -167,7 +168,9 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   label: 'Receiver Company Code',
   cssDefault:{width: '10rem'}
   } ]
-  @UI.selectionField: [{ position: 63 }]
+  @UI.selectionField: [{ position: 71 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_REC_F4', element: 'Ccode' },
+                                       additionalBinding: [{ element: 'Legalentity', localElement: 'Receivingentity' }]}]
   ReceiverCompanyCode;
   @UI.lineItem: [ {
   position: 110 ,
@@ -176,25 +179,28 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   cssDefault:{width: '10rem'}
   } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RECEIVINGENTITY_F4', element: 'Receivingentity' } }]
-  @UI.selectionField: [{ position: 63 }]
+  @UI.selectionField: [{ position: 70 }]
   @EndUserText.label: 'Receiving Entity'
   @UI.textArrangement: #TEXT_LAST
   Receivingentity;
   @UI.lineItem: [ {
   position: 110 ,
   importance: #MEDIUM,
-  label: 'Receiver Cost Object',
+  label: 'Receiver Cost Object Type',
   cssDefault:{width: '10rem'}
   } ]
-  @UI.selectionField: [{ position: 63 }]
+  @UI.selectionField: [{ position: 72 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTOBJECTS', element: 'Costobject' }}]
   ReceiverCostObject;
   @UI.lineItem: [ {
   position: 110 ,
   importance: #MEDIUM,
-  label: 'Receiver Cost Number',
+  label: 'Receiver Cost Object Number',
   cssDefault:{width: '10rem'}
   } ]
-  @UI.selectionField: [{ position: 63 }]
+  @UI.selectionField: [{ position: 73 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_RECEIVER_F4', element: 'Costcenter' },
+                                       additionalBinding: [{ element: 'Costobject', localElement: 'ReceiverCostObject'}]}]
   ReceiverCostCenter;
   @UI.lineItem: [ {
   position: 130 ,

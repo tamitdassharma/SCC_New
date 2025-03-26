@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain Execution Cockpit Status",
+    "description": "Maintain Execution Cockpit Statuses",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_EXECSTAT_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "ExecutionStatusAll",
-    "name": "Maintain Execution Cockpit Status",
-    "configurationGroup": "/ESRCC/BC_GROUP8",
+    "name": "Execution Cockpit Statuses",
+    "configurationGroup": "/ESRCC/BC_GROUP9",
     "skipRootEntity": true
   },
   "appConfiguration": {

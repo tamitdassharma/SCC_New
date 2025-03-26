@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Workflow Controller - Maintain'
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true

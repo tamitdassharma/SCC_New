@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 @EndUserText.label: 'Service Capacity for Direct Charging'
 

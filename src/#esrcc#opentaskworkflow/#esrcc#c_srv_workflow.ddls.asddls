@@ -1,5 +1,6 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Service Cost Share'
-@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
 define root view entity /ESRCC/C_SRV_WORKFLOW 
 provider contract transactional_query
@@ -52,10 +53,10 @@ as projection on /ESRCC/I_SRV_WORKFLOW
     
     @ObjectModel.text.element: [ 'chargeoutdescription' ]
     Chargeout,
-    
+    @Semantics.quantity.unitOfMeasure: 'PlanningUom'
     Planning,
     @ObjectModel.text.element: [ 'unitname' ]
-    Uom,
+    PlanningUom,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
     Servicecostperunit,

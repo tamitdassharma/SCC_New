@@ -32,7 +32,7 @@ define root view entity /ESRCC/I_COSTBASE_CHARGEOUT as select from /esrcc/cb_stw
     stewardship as Stewardship,
     status as Status,
     workflowid as Workflowid,
-    comments as Comments,
+//    comments as Comments,
     validon as Validon,
     processtype as Processtype,
     created_by as CreatedBy,

@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST,#UNION]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Cost Center ChargeOut Union View'
 @Metadata.ignorePropagatedAnnotations: true
@@ -36,6 +36,7 @@ as select from /esrcc/cb_stw
     stewardship as Stewardship,
     status as Status,
     workflowid as Workflowid,
+    commentid as CommentId,
     processtype as ProcessType,
     created_by as CreatedBy,
     created_at as CreatedAt,
@@ -72,6 +73,7 @@ select from /esrcc/cb_stw
     stewardship as Stewardship,
     status as Status,
     workflowid as Workflowid,
+    commentid as CommentId,
     processtype as ProcessType,
     created_by as CreatedBy,
     created_at as CreatedAt,
@@ -108,6 +110,7 @@ select from /esrcc/cb_stw
     stewardship as Stewardship,
     status as Status,
     workflowid as Workflowid,
+    commentid as CommentId,
     processtype as ProcessType,
     created_by as CreatedBy,
     created_at as CreatedAt,

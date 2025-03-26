@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION, #GROUP_BY ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Indirect Allocation Total KPI Share'
 @Metadata.ignorePropagatedAnnotations: true
@@ -11,14 +11,14 @@ define view entity /ESRCC/I_INDTOTALKPISHARE
 as select from /ESRCC/I_CHARGEOUT_INDKPISHARE 
 
 {
-    key fplv,
-    key ryear,
-    key poper,
-    key sysid,
-    key ccode,
-    key legalentity,
-    key costobject,
-    key costcenter,
+    key Fplv,
+    key Ryear,
+    key Poper,
+    key Sysid,
+    key Ccode,
+    key Legalentity,
+    key Costobject,
+    key Costcenter,
     key serviceproduct,    
     key ReceiverSysId,
     key ReceiverCompanyCode,
@@ -28,14 +28,14 @@ as select from /ESRCC/I_CHARGEOUT_INDKPISHARE
     sum( reckpishare ) as totalreckpishare
 }
 group by
-fplv,
-ryear,
-poper,
-sysid,
-ccode,
-legalentity,
-costobject,
-costcenter,
+Fplv,
+Ryear,
+Poper,
+Sysid,
+Ccode,
+Legalentity,
+Costobject,
+Costcenter,
 serviceproduct,
 ReceiverSysId,
 ReceiverCompanyCode,

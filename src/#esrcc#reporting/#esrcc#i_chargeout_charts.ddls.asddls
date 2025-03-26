@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 @EndUserText.label: 'Service Charge Out Analytical List'
 @Metadata.ignorePropagatedAnnotations: false
@@ -13,6 +13,12 @@
 define view entity /ESRCC/I_CHARGEOUT_CHARTS
   as select from /ESRCC/I_CHG_ANALYTICS
 {
+      @AnalyticsDetails.query.hidden: true
+  key UUID,
+      @AnalyticsDetails.query.hidden: true
+  key ParentUUID,
+      @AnalyticsDetails.query.hidden: true
+  key RootUUID,
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'costdatasetdescription' ]
   key Fplv,
@@ -67,6 +73,9 @@ define view entity /ESRCC/I_CHARGEOUT_CHARTS
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'businessdescription' ]
       Businessdivision,
+      
+      @AnalyticsDetails.query.display: #KEY
+      ContractId,
 
       @DefaultAggregation: #SUM
       @Semantics.amount.currencyCode: 'Currency'

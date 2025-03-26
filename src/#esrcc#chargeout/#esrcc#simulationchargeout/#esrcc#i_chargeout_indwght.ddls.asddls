@@ -1,6 +1,6 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Chargout to Receivers KPI Sum'
+@EndUserText.label: 'Charge-out to Receivers KPI Sum'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,

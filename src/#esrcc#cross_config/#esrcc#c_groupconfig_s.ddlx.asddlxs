@@ -10,26 +10,8 @@ annotate view /ESRCC/C_GroupConfig_S with
     id: 'CE',
     purpose: #STANDARD,
     type: #COLLECTION,
-    label: 'Group Configuration'
+    label: 'Maintain Group Configuration'
   },
-  //  {
-  //    id: 'Transport',
-  //    purpose: #STANDARD,
-  //    type: #IDENTIFICATION_REFERENCE,
-  //    label: 'Transport',
-  //    parentId: 'CE',
-  //    position: 1
-  //    hidden: #(HideTransport)
-  //    },
-  //    {
-  //      id: '/ESRCC/I_GroupConfig',
-  //      purpose: #STANDARD,
-  //      type: #LINEITEM_REFERENCE,
-  //    //    label: 'Group Configuration',
-  //      parentId: 'CE',
-  //      position: 2 ,
-  //      targetElement: '_GroupConfig'
-  //  },
   {
     id: 'Group',
     purpose: #STANDARD,
@@ -57,15 +39,4 @@ annotate view /ESRCC/C_GroupConfig_S with
 
   @UI.hidden: true
   HideTransport;
-
-  //  @UI.identification: [ {
-  //  //    position: 4 ,
-  //  //    importance: #HIGH
-  //  //  },
-  //  //  {
-  //    type: #FOR_ACTION,
-  //    dataAction: 'SelectCustomizingTransptReq',
-  //    label: 'Select Transport'
-  //  } ]
-  //  TransportRequestID;
 }

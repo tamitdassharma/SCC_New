@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Chargout to Receivers Share'
 @Metadata.ignorePropagatedAnnotations: true
@@ -12,14 +12,14 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
   as select from /ESRCC/I_CHARGEOUT_RECEIVERS as chargeoutreckpi
   
   association [0..1] to /ESRCC/I_INDTOTALKPISHARE as _chargeoutreckpisum     
-            on  _chargeoutreckpisum.fplv               = $projection.Fplv
-           and _chargeoutreckpisum.ryear               = $projection.Ryear
-           and _chargeoutreckpisum.poper               = $projection.Poper
-           and _chargeoutreckpisum.sysid               = $projection.Sysid
-           and _chargeoutreckpisum.legalentity         = $projection.Legalentity
-           and _chargeoutreckpisum.ccode               = $projection.Ccode
-           and _chargeoutreckpisum.costobject          = $projection.Costobject
-           and _chargeoutreckpisum.costcenter          = $projection.Costcenter
+            on  _chargeoutreckpisum.Fplv               = $projection.Fplv
+           and _chargeoutreckpisum.Ryear               = $projection.Ryear
+           and _chargeoutreckpisum.Poper               = $projection.Poper
+           and _chargeoutreckpisum.Sysid               = $projection.Sysid
+           and _chargeoutreckpisum.Legalentity         = $projection.Legalentity
+           and _chargeoutreckpisum.Ccode               = $projection.Ccode
+           and _chargeoutreckpisum.Costobject          = $projection.Costobject
+           and _chargeoutreckpisum.Costcenter          = $projection.Costcenter
            and _chargeoutreckpisum.serviceproduct      = $projection.serviceproduct
            and _chargeoutreckpisum.ReceiverSysId       = $projection.ReceiverSysId
            and _chargeoutreckpisum.ReceiverCompanyCode = $projection.ReceiverCompanyCode
@@ -47,6 +47,7 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
            
   association [0..*] to /esrcc/srvmkp as mkup
            on mkup.serviceproduct = $projection.serviceproduct
+           and mkup.workflow_status = 'F'
           and $projection.validon between mkup.validfrom and mkup.validto
 
 {   
@@ -71,22 +72,14 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       chargeout,
       consumption_version,
       key_version,
-      uom,
-      @Semantics.quantity.unitOfMeasure: 'uom'
+      _diralloc.Uom as consumptionuom,
+      @Semantics.quantity.unitOfMeasure: 'consumptionuom'
       cast(case when chargeout = 'I' then
        0 
       else
-      case when _diralloc.Uom <> chargeoutreckpi.uom then
-      unit_conversion( 
-                     client => $session.client,
-                     quantity => _diralloc.Consumption,
-                     source_unit => _diralloc.Uom,
-                     target_unit => chargeoutreckpi.uom,
-                     error_handling => 'SET_TO_NULL' ) 
-      else
-      _diralloc.Consumption end 
+      _diralloc.Consumption  
       end as abap.quan( 23, 2))       as reckpi,
-      _diralloc.Uom as consumptionuom,
+
       case when chargeout = 'I' then
       round(_chargeoutreckpisum.totalreckpishare * 100, 3)
       else
@@ -104,6 +97,7 @@ define root view entity /ESRCC/I_CHARGEOUT_RECSHARE
       mkup.passcost     
       else
       mkup.intra_passcost
-      end as passthrumarkup        
+      end as passthrumarkup,
+      ContractId        
 
 }

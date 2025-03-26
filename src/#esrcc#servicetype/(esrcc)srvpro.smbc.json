@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain Service Products",
+    "description": "Maintain Service Products (Level 3)",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_SRVPRO_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "ServiceProductAll",
-    "name": "Maintain Service Product",
-    "configurationGroup": "/ESRCC/BC_GROUP4",
+    "name": "L3 - Service Products",
+    "configurationGroup": "/ESRCC/BC_GROUP3",
     "skipRootEntity": true
   },
   "appConfiguration": {

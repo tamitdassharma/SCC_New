@@ -168,7 +168,31 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
      <MSGNR>027</MSGNR>
-     <TEXT>Service Provider and Service Receiver should be defined before &apos;Submit&apos;</TEXT>
+     <TEXT>&amp;1 should be defined before &apos;Submit&apos;</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
+     <MSGNR>028</MSGNR>
+     <TEXT>Click Save to confirm and complete the process</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
+     <MSGNR>029</MSGNR>
+     <TEXT>Entry doesn&apos;t exists in &apos;Cost Object Maste Data &amp;&amp; Frequency&apos;</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
+     <MSGNR>030</MSGNR>
+     <TEXT>One Cost Element allowed for Data Source &amp;1 of Legal Entity, Company Code</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/CONFIG_MSG</ARBGB>
+     <MSGNR>031</MSGNR>
+     <TEXT>At least one &apos;Service Product Receiver&apos; should be active</TEXT>
     </T100>
    </T100>
   </asx:values>

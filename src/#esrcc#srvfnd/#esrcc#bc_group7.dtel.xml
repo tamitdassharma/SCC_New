@@ -7,9 +7,8 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <HEADLEN>55</HEADLEN>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Group 7: Workflow Configurations</DDTEXT>
-    <REPTEXT>Group 7: Workflow Configurations</REPTEXT>
-    <SCRTEXT_L>Group 7: Workflow Configurations</SCRTEXT_L>
+    <DDTEXT>Group 7: Accounting &amp; Billing Configurations</DDTEXT>
+    <REPTEXT>Group 7: Accounting &amp; Billing Configurations</REPTEXT>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>CHAR</DATATYPE>
     <LENG>000001</LENG>
@@ -22,9 +21,8 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Gruppe 7: Workflow-Konfigurationen</DDTEXT>
-     <REPTEXT>Gruppe 7: Workflow-Konfigurationen</REPTEXT>
-     <SCRTEXT_L>Gruppe 7: Workflow-Konfigurationen</SCRTEXT_L>
+     <DDTEXT>Gruppe 7: Faktura-/Verbuchungskonfigurationen</DDTEXT>
+     <REPTEXT>Gruppe 7: Faktura-/Verbuchungskonfigurationen</REPTEXT>
     </item>
    </DD04_TEXTS>
   </asx:values>

@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_FUNCTIONALAREAS_",
     "serviceVersion": "0001",
     "rootEntitySet": "FunctionalAreasAll",
-    "name": "Maintain Functional Areas",
-    "configurationGroup": "",
+    "name": "Functional Areas",
+    "configurationGroup": "/ESRCC/BC_GROUP1",
     "skipRootEntity": true
   },
   "appConfiguration": {

@@ -1,5 +1,6 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Invoice Chargeout'
-@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
 define root view entity /ESRCC/C_CHGINVOICE
   provider contract transactional_query
@@ -11,9 +12,9 @@ define root view entity /ESRCC/C_CHGINVOICE
           @ObjectModel.text.element: [ 'currencytypetext' ]
   key     Currencytype,
           @ObjectModel.text.element: [ 'costdatasetdescription' ]
-          Fplv,
-          Ryear,
-          Poper,
+          _ServiceCost._CostCenterCost.Fplv,
+          _ServiceCost._CostCenterCost.Ryear,
+          _ServiceCost._CostCenterCost.Poper,
           Sysid,
           @ObjectModel.text.element: [ 'legalentitydescription' ]
           Legalentity,
@@ -24,9 +25,9 @@ define root view entity /ESRCC/C_CHGINVOICE
           @ObjectModel.text.element: [ 'costcenterdescription' ]
           Costcenter,
           @ObjectModel.text.element: [ 'ProcessTypedescription' ]
-          ProcessType,
+          _ServiceCost._CostCenterCost.ProcessType,
           @ObjectModel.text.element: [ 'serviceproductdescription' ]
-          Serviceproduct,
+          _ServiceCost.Serviceproduct,
           ReceiverSysId,
           @ObjectModel.text.element: [ 'RecCcodedescription' ]
           ReceiverCompanyCode,
@@ -37,20 +38,21 @@ define root view entity /ESRCC/C_CHGINVOICE
           @ObjectModel.text.element: [ 'RecCostCenterdescription' ]
           ReceiverCostCenter,
           @ObjectModel.text.element: [ 'billingfrequencydescription' ]
-          Billingfrequqncy,
+          _ServiceCost._CostCenterCost.Billingfrequqncy,
           @ObjectModel.text.element: [ 'billingperioddescription' ]
-          Billingperiod,
+          _ServiceCost._CostCenterCost.Billingperiod,
           @ObjectModel.text.element: [ 'chargeoutdescription' ]
-          Chargeout,
+          _ServiceCost.Chargeout,
           @ObjectModel.text.element: [ 'servicetypedescription' ]
-          Servicetype,
+          _ServiceCost.Servicetype,
           @ObjectModel.text.element: [ 'transactiongroupdescription' ]
-          Transactiongroup,
+          _ServiceCost.Transactiongroup,
+          _ServiceCost.ContractId,
           @Semantics.amount.currencyCode: 'Currency'
           TransferPrice,
 //          @Semantics.quantity.unitOfMeasure: 'Uom'
           Reckpi,
-          Uom,
+          ConsumptionUom,
           Currency,
           Reckpishare,
           @Semantics.amount.currencyCode: 'Currency'
@@ -76,27 +78,27 @@ define root view entity /ESRCC/C_CHGINVOICE
 
           //descriptions
           @Semantics.text: true
-          billingfrequencydescription,
+          _ServiceCost._CostCenterCost.billingfrequencydescription,
           @Semantics.text: true
-          billingperioddescription,
+          _ServiceCost._CostCenterCost.billingperioddescription,
           @Semantics.text: true
-          legalentitydescription,
+          _ServiceCost._CostCenterCost.legalentitydescription,
           @Semantics.text: true
-          costobjectdescription,
+          _ServiceCost._CostCenterCost.costobjectdescription,
           @Semantics.text: true
-          costcenterdescription,
+          _ServiceCost._CostCenterCost.costcenterdescription,
           @Semantics.text: true
-          Serviceproductdescription,
+          _ServiceCost.Serviceproductdescription,
           @Semantics.text: true
-          Transactiongroupdescription,
+          _ServiceCost.Transactiongroupdescription,
           @Semantics.text: true
-          Servicetypedescription,
+          _ServiceCost.Servicetypedescription,
           @Semantics.text: true
-          ccodedescription,
+          _ServiceCost._CostCenterCost.ccodedescription,
           @Semantics.text: true
-          oecdDescription,
+          _ServiceCost.oecdDescription,
           @Semantics.text: true
-          costdatasetdescription,
+          _ServiceCost._CostCenterCost.costdatasetdescription,
           @Semantics.text: true
           RecCcodedescription,
           @Semantics.text: true
@@ -106,7 +108,7 @@ define root view entity /ESRCC/C_CHGINVOICE
           @Semantics.text: true
           RecCostObjectdescription,
           @Semantics.text: true
-          chargeoutdescription,
+          _ServiceCost.chargeoutdescription,
           @Semantics.text: true
           invoicestatusdescription,
           @Semantics.text: true
@@ -115,9 +117,9 @@ define root view entity /ESRCC/C_CHGINVOICE
           @Semantics.text: true
           _CurrencyTypeText.text as currencytypetext,    
           @ObjectModel.text.element: [ 'legalentitycountryname' ]
-          LECountry as legalentitycountry,
+          _ServiceCost._CostCenterCost.Country as legalentitycountry,
           @ObjectModel.text.element: [ 'receivingentitycountryname' ]
           receivingentitycountry,
-          _legalCountryText.CountryName as legalentitycountryname,
+          _ServiceCost._CostCenterCost._legalCountryText.CountryName as legalentitycountryname,
           _ReceivingCountryText.CountryName as receivingentitycountryname
 }

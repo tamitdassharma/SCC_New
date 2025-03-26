@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain Legal Entity Additional Information",
+    "description": "Maintain Additional Information",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_LEOTHERS",
     "serviceVersion": "0001",
     "rootEntitySet": "OtherInformationAll",
-    "name": "Maintain Legal Entity Additional Information",
-    "configurationGroup": "",
+    "name": "Additional Information",
+    "configurationGroup": "/ESRCC/BC_GROUP7",
     "skipRootEntity": true
   },
   "appConfiguration": {

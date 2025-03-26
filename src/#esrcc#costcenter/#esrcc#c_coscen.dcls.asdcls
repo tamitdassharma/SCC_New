@@ -1,5 +1,0 @@
-@MappingRole: true
-define role /ESRCC/C_CosCen {
-  grant select on /ESRCC/C_CosCen
-  where INHERITING CONDITIONS FROM ENTITY /ESRCC/I_CosCen;
-}

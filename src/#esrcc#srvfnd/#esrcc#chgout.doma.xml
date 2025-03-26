@@ -30,7 +30,7 @@
      <VALPOS>0003</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>A</DOMVALUE_L>
-     <DDTEXT>Adhoc</DDTEXT>
+     <DDTEXT>Ad-hoc</DDTEXT>
     </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>
@@ -58,6 +58,7 @@
      <VALPOS>0003</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>A</DOMVALUE_L>
+     <DDTEXT>Ad-hoc</DDTEXT>
     </item>
    </DD07_TEXTS>
   </asx:values>

@@ -9,8 +9,9 @@
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Intercompany Mark-up on Pass Through Cost (%)</DDTEXT>
-    <REPTEXT>Intracompany Mark-up on Pass Through Cost (%)</REPTEXT>
+    <DDTEXT>Intraco. Markup on Pass-thr (%)</DDTEXT>
+    <REPTEXT>Intraco. Markup on Pass-thr (%)</REPTEXT>
+    <SCRTEXT_L>Intraco. Markup on Pass-thr (%)</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>DEC</DATATYPE>
     <LENG>000005</LENG>
@@ -18,6 +19,17 @@
     <OUTPUTLEN>000006</OUTPUTLEN>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Intraco. Aufschlag Durchlauf(%)</DDTEXT>
+     <REPTEXT>Intraco. Aufschlag Durchlauf(%)</REPTEXT>
+     <SCRTEXT_L>Intraco. Aufschlag Durchlauf(%)</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

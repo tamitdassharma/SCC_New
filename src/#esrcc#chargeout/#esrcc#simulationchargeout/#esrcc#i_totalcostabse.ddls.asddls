@@ -1,6 +1,6 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION, #GROUP_BY ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Service cosrt & Share'
+@EndUserText.label: 'Service Cost & Share'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,

@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION, #GROUP_BY ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Charge Out Cost Base Line Items'
 @Metadata.ignorePropagatedAnnotations: true

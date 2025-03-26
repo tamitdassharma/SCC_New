@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @EndUserText.label: 'Service Product'
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_SrvPro

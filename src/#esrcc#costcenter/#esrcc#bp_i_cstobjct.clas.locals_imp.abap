@@ -110,17 +110,16 @@ CLASS lhc_/esrcc/i_cstobjct_s IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD edit.
-    DATA(lo_util) = /esrcc/cl_config_util=>create_for_authorization( ).
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( ).
     SELECT DISTINCT legalentity, costobject FROM /esrcc/i_cstobjct INTO TABLE @DATA(cost_objects). "#EC CI_NOWHERE
 
     LOOP AT cost_objects INTO DATA(cost_object).
-      DATA(is_unauthorized) = lo_util->is_unauthorized(
+      DATA(is_unauthorized) = lo_auth->is_unauthorized(
         EXPORTING
-          legal_entity = cost_object-legalentity
-          cost_object  = cost_object-costobject
-          create       = abap_true
-          update       = abap_true
-          delete       = abap_true
+          auth_value = CORRESPONDING #( cost_object MAPPING legal_entity = legalentity cost_object = costobject )
+          create     = abap_true
+          update     = abap_true
+          delete     = abap_true
       ).
 
       IF is_unauthorized = abap_true.
@@ -143,6 +142,15 @@ CLASS lhc_/esrcc/i_cstobjct_s IMPLEMENTATION.
         paths              = VALUE #( ( path = 'CostObjectAll' ) )
         source_entity_name = '/ESRCC/C_CSTOBJCT'
         is_transition      = abap_true
+      CHANGING
+        reported_entity    = reported-costobject
+        failed_entity      = failed-costobject
+    ).
+
+    DATA(lo_auth) = /esrcc/cl_authorization=>create(
+      EXPORTING
+        paths              = VALUE #( ( path = 'CostObjectAll' ) )
+        source_entity_name = '/ESRCC/C_CSTOBJCT'
       CHANGING
         reported_entity    = reported-costobject
         failed_entity      = failed-costobject
@@ -174,18 +182,18 @@ CLASS lhc_/esrcc/i_cstobjct_s IMPLEMENTATION.
                                                          costcenter  = entity-costcenter
                                                          size        = GROUP SIZE )
         ASCENDING REFERENCE INTO DATA(group_ref).
-      lo_cost_object->check_authorization(
+      lo_auth->check_authorization(
         EXPORTING
-          entity      = CORRESPONDING ts_cost_object( entity )
-          cost_object = entity-costobject
-          activity    = /esrcc/cl_config_util=>c_authorization_activity-create
+          entity     = CORRESPONDING ts_cost_object( group_ref->* )
+          auth_value = VALUE #( cost_object = group_ref->costobject )
+          activity   = /esrcc/cl_authorization=>c_authorization_activity-create
       ).
 
-      IF line_exists( duplicate_entities[ sysid       = entity-sysid
-                                          legalentity = entity-legalentity
-                                          companycode = entity-companycode
-                                          costobject  = entity-costobject
-                                          costcenter  = entity-costcenter ] ) OR group_ref->size > 1.
+      IF line_exists( duplicate_entities[ sysid       = group_ref->sysid
+                                          legalentity = group_ref->legalentity
+                                          companycode = group_ref->companycode
+                                          costobject  = group_ref->costobject
+                                          costcenter  = group_ref->costcenter ] ) OR group_ref->size > 1.
         lo_cost_object->set_duplicate_error( entity = CORRESPONDING ts_cost_object( group_ref->* ) ).
       ENDIF.
     ENDLOOP.
@@ -231,21 +239,23 @@ CLASS lhc_/esrcc/i_cstobjct IMPLEMENTATION.
     DATA(lo_cost_object) = /esrcc/cl_config_util=>create(
         EXPORTING
           paths              = VALUE #( ( path = 'CostObjectAll' ) )
+          assoc_paths        = VALUE #( ( path = '_CostObjectAll' ) )
           source_entity_name = '/ESRCC/C_CSTOBJCT'
         CHANGING
           reported_entity    = reported-costobject
           failed_entity      = failed-costobject ).
 
-    IF lo_cost_object->foreign_check_cost_object(
-      EXPORTING
-        entities          = entities
-        uuid_fieldname    = 'COSTOBJECTUUID'
-        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = costobjectuuid )
-        operation         = VALUE #( update = abap_true )
-        foreign_check     = VALUE #( serv_consumption = abap_true alloc_key = abap_true )
-    ) = abap_true.
-      RETURN.
-    ENDIF.
+*    IF lo_cost_object->foreign_check_cost_object(
+*      EXPORTING
+*        entities          = entities
+*        uuid_fieldname    = 'COSTOBJECTUUID'
+*        error_fieldname   = 'LEGALENTITY'
+*        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = costobjectuuid )
+*        action            = VALUE #( update = abap_true )
+*        foreign_check     = VALUE #( serv_consumption = abap_true serv_capacity = abap_true alloc_key = abap_true )
+*    ) = abap_true.
+*      RETURN.
+*    ENDIF.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_cost_object ).
 
@@ -258,19 +268,28 @@ CLASS lhc_/esrcc/i_cstobjct IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_instance_features.
-    IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
-      /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
-        EXPORTING
-          keys            = keys
-          update          = abap_true
-          delete          = abap_true
-          create_by_assoc = abap_true
-          field_mapping   = VALUE #( legal_entity = 'LEGALENTITY' cost_object = 'COSTOBJECT' )
-          assoc_path      = VALUE #( ( path = '_CostObjectText' ) )
-        CHANGING
-          result          = result
-      ).
+    IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-off.
+      RETURN.
     ENDIF.
+
+    READ ENTITIES OF /esrcc/i_cstobjct_s IN LOCAL MODE
+        ENTITY costobject
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(entities).
+
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( paths = VALUE #( ( path = '_CostObjectText' ) ) ).
+
+    LOOP AT keys INTO DATA(key).
+      DATA(entity) = VALUE #( entities[ %tky = key-%tky ] OPTIONAL ).
+      lo_auth->set_authorization_for_instance(
+        EXPORTING
+          key                   = key
+          set_authorization_for = VALUE #( update = abap_true delete = abap_true create_by_assoc = abap_true )
+          auth_value            = VALUE #( legal_entity = entity-legalentity cost_object = entity-costobject )
+        CHANGING
+          result                = result
+      ).
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD validatedata.
@@ -282,20 +301,22 @@ CLASS lhc_/esrcc/i_cstobjct IMPLEMENTATION.
     DATA(lo_cost_object) = /esrcc/cl_config_util=>create(
                              EXPORTING
                                paths              = VALUE #( ( path = 'CostObjectAll' ) )
+                               assoc_paths        = VALUE #( ( path = '_CostObjectAll' ) )
                                source_entity_name = '/ESRCC/C_CSTOBJCT'
                              CHANGING
                                reported_entity    = reported-costobject
                                failed_entity      = failed-costobject
                            ).
 
-    lo_cost_object->foreign_check_cost_object(
-      EXPORTING
-        entities          = entities
-        uuid_fieldname    = 'COSTOBJECTUUID'
-        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = costobjectuuid )
-        operation         = VALUE #( delete = abap_true )
-        foreign_check     = VALUE #( serv_consumption = abap_true serv_capacity = abap_true alloc_key = abap_true )
-    ).
+*    lo_cost_object->foreign_check_cost_object(
+*      EXPORTING
+*        entities          = entities
+*        uuid_fieldname    = 'COSTOBJECTUUID'
+*        error_fieldname   = 'LEGALENTITY'
+*        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = costobjectuuid )
+*        action            = VALUE #( update = abap_true )
+*        foreign_check     = VALUE #( serv_consumption = abap_true serv_capacity = abap_true alloc_key = abap_true )
+*    ).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_cost_object ).
 
@@ -308,29 +329,31 @@ CLASS lhc_/esrcc/i_cstobjct IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD precheck_delete.
-    READ ENTITIES OF /esrcc/i_cstobjct_s IN LOCAL MODE
-        ENTITY costobject
-        ALL FIELDS WITH CORRESPONDING #( keys )
-        RESULT DATA(entities).
-
-    DATA(lo_cost_object) = /esrcc/cl_config_util=>create(
-                         EXPORTING
-                           paths              = VALUE #( ( path = 'CostObjectAll' )
-                                                         ( path = 'CostObject' ) )
-                           source_entity_name = '/ESRCC/C_CSTOBJCT'
-                         CHANGING
-                           reported_entity    = reported-costobject
-                           failed_entity      = failed-costobject
-                       ).
-
-    lo_cost_object->foreign_check_cost_object(
-      EXPORTING
-        entities          = entities
-        uuid_fieldname    = 'COSTOBJECTUUID'
-        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = costobjectuuid )
-        operation         = VALUE #( delete = abap_true )
-        foreign_check     = VALUE #( serv_consumption = abap_true serv_capacity = abap_true alloc_key = abap_true )
-    ).
+*    READ ENTITIES OF /esrcc/i_cstobjct_s IN LOCAL MODE
+*        ENTITY costobject
+*        ALL FIELDS WITH CORRESPONDING #( keys )
+*        RESULT DATA(entities).
+*
+*    DATA(lo_cost_object) = /esrcc/cl_config_util=>create(
+*                         EXPORTING
+*                           paths              = VALUE #( ( path = 'CostObjectAll' )
+*                                                         ( path = 'CostObject' ) )
+*                           assoc_paths        = VALUE #( ( path = '_CostObjectAll' ) )
+*                           source_entity_name = '/ESRCC/C_CSTOBJCT'
+*                         CHANGING
+*                           reported_entity    = reported-costobject
+*                           failed_entity      = failed-costobject
+*                       ).
+*
+*    lo_cost_object->foreign_check_cost_object(
+*      EXPORTING
+*        entities          = entities
+*        uuid_fieldname    = 'COSTOBJECTUUID'
+*        error_fieldname   = 'LEGALENTITY'
+*        cost_object_uuids = CORRESPONDING #( entities MAPPING uuid = costobjectuuid )
+*        action            = VALUE #( delete = abap_true )
+*        foreign_check     = VALUE #( serv_consumption = abap_true serv_capacity = abap_true alloc_key = abap_true )
+*    ).
   ENDMETHOD.
 
 ENDCLASS.
@@ -343,16 +366,27 @@ ENDCLASS.
 
 CLASS lhc_/esrcc/i_cstobjcttext IMPLEMENTATION.
   METHOD get_instance_features.
-    IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
-      /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
-          EXPORTING
-            keys            = keys
-            update          = abap_true
-            delete          = abap_true
-            field_mapping   = VALUE #( legal_entity = 'LEGALENTITY' cost_object = 'COSTOBJECT' )
-          CHANGING
-            result          = result
-        ).
+    IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-off.
+      RETURN.
     ENDIF.
+
+    READ ENTITIES OF /esrcc/i_cstobjct_s IN LOCAL MODE
+            ENTITY costobjecttext
+            BY \_costobject
+            ALL FIELDS WITH CORRESPONDING #( keys )
+            RESULT DATA(entities).
+
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( ).
+    LOOP AT keys INTO DATA(key).
+      DATA(entity) = VALUE #( entities[ %tky = CORRESPONDING #( key-%tky ) ] OPTIONAL ).
+      lo_auth->set_authorization_for_instance(
+        EXPORTING
+          key                   = key
+          set_authorization_for = VALUE #( update = abap_true delete = abap_true )
+          auth_value            = VALUE #( legal_entity = entity-legalentity cost_object = entity-costobject )
+        CHANGING
+          result                = result
+      ).
+    ENDLOOP.
   ENDMETHOD.
 ENDCLASS.

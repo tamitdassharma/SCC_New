@@ -7,7 +7,13 @@
       type: #STANDARD,
       value: 'ServiceProduct'
     }
-  }
+  },
+  presentationVariant: [{
+    qualifier: 'pVariant',
+    sortOrder: [{ by: 'ServiceProduct', direction: #ASC },
+                { by: 'ValidFrom', direction: #ASC}],                
+    visualizations: [{type: #AS_LINEITEM }]
+  }]
 }
 
 annotate view /ESRCC/C_StwdSp with
@@ -45,7 +51,7 @@ annotate view /ESRCC/C_StwdSp with
    } ]
 
   @UI.hidden: true
-  @EndUserText.label: 'Service Produce UUID'
+  @EndUserText.label: 'Service Product UUID'
   ServiceProductUuid;
 
   @UI.lineItem: [ { position: 10 } ]

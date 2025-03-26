@@ -21,9 +21,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Allokationssschlüssel</DDTEXT>
-     <REPTEXT>Allokationssschlüssel</REPTEXT>
-     <SCRTEXT_L>Allokationssschlüssel</SCRTEXT_L>
+     <DDTEXT>Allokationsschlüssel</DDTEXT>
+     <REPTEXT>Allokationsschlüssel</REPTEXT>
+     <SCRTEXT_L>Allokationsschlüssel</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

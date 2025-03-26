@@ -1,4 +1,5 @@
 @EndUserText.label: 'Cost elements - Maintain'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
 define view entity /ESRCC/C_CostElements

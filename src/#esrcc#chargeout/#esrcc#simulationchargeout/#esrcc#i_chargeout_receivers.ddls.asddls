@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Charge-Out for Receivers'
 @Metadata.ignorePropagatedAnnotations: true
@@ -39,10 +39,11 @@ association [0..1] to /ESRCC/I_LE as _legalentity
     key srvallocreceivers.ReceiverCompanyCode,
     key srvallocreceivers.ReceivingEntity,
     key srvallocreceivers.ReceiverCostObject,
-    key srvallocreceivers.ReceiverCostCenter,      
+    key srvallocreceivers.ReceiverCostCenter,
+    services.ContractId,    
     consumption_version,
     key_version,
-    uom,
+    PlanningUoM,
     chargeout, 
     validon,
     case when srvallocreceivers.InvoicingCurrency = '' then

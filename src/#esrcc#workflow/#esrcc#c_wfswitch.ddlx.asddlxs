@@ -1,11 +1,10 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Workflow Switch',
-    typeNamePlural: 'Workflow Switch',
+    typeName: 'Workflow Activation',
+    typeNamePlural: 'Workflow Activation',
     title: {
       type: #STANDARD,
-      label: 'Workflow Switch',
       value: 'Application'
     }
   }
@@ -15,7 +14,8 @@ annotate view /ESRCC/C_WfSwitch with
   @UI.facet: [ {
     id: 'CE',
     purpose: #STANDARD,
-    type: #COLLECTION
+    type: #COLLECTION,
+    position: 1
   },
   {
     id: '/ESRCC/I_WfSwitch',

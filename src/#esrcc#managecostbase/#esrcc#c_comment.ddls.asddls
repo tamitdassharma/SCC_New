@@ -1,9 +1,9 @@
+@AbapCatalog.extensibility.extensible: true
 @EndUserText.label: 'Comment'
 define root abstract entity /ESRCC/C_COMMENT  
 {   
-    
-    @EndUserText.label: 'Comment'
+    @EndUserText.label: 'Comments'
     @UI.multiLineText: true
-    comments : abap.char(1024);
+    comments : /esrcc/comment;
     
 }

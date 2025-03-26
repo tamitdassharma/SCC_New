@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 @EndUserText.label: '##GENERATED Indirect allocation key values'
 define root view entity /ESRCC/I_INDIRECTALLOCKEYVALUE

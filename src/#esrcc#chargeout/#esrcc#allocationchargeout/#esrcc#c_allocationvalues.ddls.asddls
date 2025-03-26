@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST]
 @EndUserText.label: 'Allocation Values'
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @Metadata.allowExtensions: true

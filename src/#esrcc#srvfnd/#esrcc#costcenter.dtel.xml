@@ -23,9 +23,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Kostenträger-Nummer (Quelle)</DDTEXT>
-     <REPTEXT>Kostenträger-Nummer (Quelle)</REPTEXT>
-     <SCRTEXT_L>Kostenträger-Nummer (Quelle)</SCRTEXT_L>
+     <DDTEXT>Kostenträger-Nummer</DDTEXT>
+     <REPTEXT>Kostenträger-Nummer</REPTEXT>
+     <SCRTEXT_L>Kostenträger-Nummer</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

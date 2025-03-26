@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_BUSDIV_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "BusinessDivisionAll",
-    "name": "Maintain Business Division",
-    "configurationGroup": "/ESRCC/BC_GROUP2",
+    "name": "Business Divisions",
+    "configurationGroup": "/ESRCC/BC_GROUP1",
     "skipRootEntity": true
   },
   "appConfiguration": {

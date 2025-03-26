@@ -10,7 +10,7 @@
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Workflow Approval level</DDTEXT>
+    <DDTEXT>Approval Level</DDTEXT>
     <REPTEXT>Approval Level</REPTEXT>
     <SCRTEXT_S>Approval</SCRTEXT_S>
     <SCRTEXT_M>Approval Level</SCRTEXT_M>
@@ -25,7 +25,7 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Workflow Genehmigungsstufe</DDTEXT>
+     <DDTEXT>Genehmigungsstufe</DDTEXT>
      <REPTEXT>Genehmigungsstufe</REPTEXT>
      <SCRTEXT_S>Genehmigu.</SCRTEXT_S>
      <SCRTEXT_M>Genehmigungsstufe</SCRTEXT_M>

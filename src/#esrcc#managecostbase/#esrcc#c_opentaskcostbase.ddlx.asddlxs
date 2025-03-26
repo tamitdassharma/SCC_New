@@ -227,6 +227,7 @@ annotate view /ESRCC/C_OPENTASKCOSTBASE with
     position: 110 ,
     label: ''
   } ]
+  @UI.textArrangement: #TEXT_LAST
   Businessdivision;
 
   @UI.lineItem: [ {
@@ -238,7 +239,20 @@ annotate view /ESRCC/C_OPENTASKCOSTBASE with
     position: 120 ,
     label: ''
   } ]
+  @UI.textArrangement: #TEXT_LAST
   Profitcenter;
+  
+  @UI.lineItem: [ {
+    position: 125 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
+  @UI.identification: [ {
+    position: 125 ,
+    label: ''
+  } ]
+  @UI.textArrangement: #TEXT_LAST
+  Functionalarea;
 
   @UI.lineItem: [ {
     position: 130 ,
@@ -415,7 +429,7 @@ annotate view /ESRCC/C_OPENTASKCOSTBASE with
   @EndUserText.label: 'Legal Entity Country' 
   @EndUserText.quickInfo: 'Legal Entity Country'  
   @UI.textArrangement: #TEXT_LAST
-  Country;
+  country;
 
   @UI.hidden: true
   LocalLastChangedAt;
@@ -454,7 +468,11 @@ annotate view /ESRCC/C_OPENTASKCOSTBASE with
   @UI.hidden: true
   businessdivdescription;
   @UI.hidden: true
-  profitcenterdescription;
+  ProfitCenterDescription;
   @UI.hidden: true
   legalentitycountryname;
+  @UI.hidden: true
+  reasondescription;
+  @UI.hidden: true
+  FunctionalAreaDescription;
 }

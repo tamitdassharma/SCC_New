@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Service Products Share'
 
@@ -37,5 +37,4 @@ define view entity /ESRCC/I_STW_SERVICEPRODUCT
       CostObjectDescription,
       CompanyCodeDescription,
       LegalEntityDescription
-//      stw_sp.
 }

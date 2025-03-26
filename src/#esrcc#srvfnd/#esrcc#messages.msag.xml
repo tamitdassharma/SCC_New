@@ -56,6 +56,12 @@
      <MSGNR>007</MSGNR>
      <TEXT>No Authorization to Delete for Cost Object &amp;1 / &amp;2</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/MESSAGES</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>No Line items found for the selected Ad-hoc Charge-out</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

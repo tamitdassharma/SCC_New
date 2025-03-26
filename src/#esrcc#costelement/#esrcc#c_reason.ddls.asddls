@@ -1,4 +1,5 @@
-@EndUserText.label: 'Cost Exclusion Inclusion Reason - Mainta'
+@EndUserText.label: 'Cost Exclusion Inclusion Reason - Maintain'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
 define view entity /ESRCC/C_Reason

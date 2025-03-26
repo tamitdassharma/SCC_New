@@ -7,9 +7,8 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <HEADLEN>55</HEADLEN>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Group 6: Cross Charging Configurations</DDTEXT>
-    <REPTEXT>Group 6: Cross Charging Configurations</REPTEXT>
-    <SCRTEXT_L>Group 6: Cross Charging Configurations</SCRTEXT_L>
+    <DDTEXT>Group 6: Service Relationship Configurations</DDTEXT>
+    <REPTEXT>Group 6: Service Relationship Configurations</REPTEXT>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>CHAR</DATATYPE>
     <LENG>000001</LENG>
@@ -22,9 +21,8 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Gruppe 6: Abrechnungskonfigurationen</DDTEXT>
-     <REPTEXT>Gruppe 6: Abrechnungskonfigurationen</REPTEXT>
-     <SCRTEXT_L>Gruppe 6: Abrechnungskonfigurationen</SCRTEXT_L>
+     <DDTEXT>Gruppe 6: Konfiguration Servicebeziehungen</DDTEXT>
+     <REPTEXT>Gruppe 6: Konfiguration Servicebeziehungen</REPTEXT>
     </item>
    </DD04_TEXTS>
   </asx:values>

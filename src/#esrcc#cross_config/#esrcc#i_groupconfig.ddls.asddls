@@ -1,4 +1,5 @@
 @EndUserText.label: 'Group Configuration'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_GroupConfig
   as select from    I_Language

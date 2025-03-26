@@ -1,7 +1,7 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
 @EndUserText.label: 'Manage Cost Base'
-//@ObjectModel.semanticKey: [ 'Fplv','Ryear','Poper','SysID','Legalentity','Ccode','Belnr','Buzei','Costobject','Costcenter','Costelement' ]
 define root view entity /ESRCC/C_MANAGECOSTBASE
   provider contract transactional_query
   as projection on /ESRCC/I_MANAGECOSTBASE
@@ -31,14 +31,14 @@ define root view entity /ESRCC/C_MANAGECOSTBASE
       Businessdivision,
       @ObjectModel.text.element: [ 'profitcenterdescription' ]
       Profitcenter,
+      @ObjectModel.text.element: [ 'FunctionalAreaDescription' ]
+      Functionalarea,
       @ObjectModel.text.element: [ 'costtypedescription' ]
       Costtype,
-      //  @DefaultAggregation: #SUM
       @Semantics.amount.currencyCode: 'Localcurr'
       @ObjectModel.filter.enabled: false
       Hsl,
       Localcurr,
-      //  @DefaultAggregation: #SUM
       @Semantics.amount.currencyCode: 'Groupcurr'
       @ObjectModel.filter.enabled: false
       Ksl,
@@ -55,7 +55,8 @@ define root view entity /ESRCC/C_MANAGECOSTBASE
       @ObjectModel.text.element: [ 'statusdescription' ]
       Status,
       WorkflowId,
-      UniqueId,
+      CommentId,
+      UniqueId,    
       @Semantics.user.createdBy: true
       CreatedBy,
       @ObjectModel.filter.enabled: false
@@ -97,11 +98,13 @@ define root view entity /ESRCC/C_MANAGECOSTBASE
       @Semantics.text: true
       businessdivdescription,
       @Semantics.text: true
-      profitcenterdescription,
+      ProfitCenterDescription,
+      @Semantics.text: true
+      FunctionalAreaDescription,
       usagecriticallity,
       statuscriticallity,
       @ObjectModel.text.element: [ 'legalentitycountryname' ]
-      Country,
+      country,
       _legalCountryText.CountryName as legalentitycountryname
 
 }

@@ -1,4 +1,5 @@
 @EndUserText.label: 'Legal Entity to Company Code'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_LeCcode
   as select from /esrcc/le_ccode
@@ -13,10 +14,6 @@ define view entity /ESRCC/I_LeCcode
       legalentity               as Legalentity,
       controllingarea           as Controllingarea,
       active                    as Active,
-//      _LegalEntity.CurrencyName as LocalCurrDescription,
-//      _LegalEntity.CountryName  as CountryDescription,
-      //      _LegalEntity._CurrencyText[ Language = $session.system_language ].CurrencyName as LocalCurrDescription,
-      //      _LegalEntity._CountryText[ Language = $session.system_language ].CountryName   as CountryDescription,
       @Semantics.user.createdBy: true
       created_by                as CreatedBy,
       @Semantics.systemDateTime.createdAt: true

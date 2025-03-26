@@ -7,11 +7,11 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Reason for Cost Exclusion/Inclusion</DDTEXT>
+    <DDTEXT>Reasons for Include/Exclude</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
-    <EXCLASS>3</EXCLASS>
+    <EXCLASS>4</EXCLASS>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD02V>
    <DD09L>
@@ -51,7 +51,7 @@
     </DD03P>
     <DD03P>
      <FIELDNAME>DEFAULTFLAG</FIELDNAME>
-     <ROLLNAME>ABAP_BOOLEAN</ROLLNAME>
+     <ROLLNAME>/ESRCC/DEFAULT_FLAG</ROLLNAME>
      <ADMINFIELD>0</ADMINFIELD>
      <VALEXI>X</VALEXI>
      <SHLPORIGIN>F</SHLPORIGIN>
@@ -94,7 +94,7 @@
    <DD02_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Begründung für Einschließen/Ausschließen</DDTEXT>
+     <DDTEXT>Gründe einbeziehen/ausschließen</DDTEXT>
     </item>
    </DD02_TEXTS>
   </asx:values>

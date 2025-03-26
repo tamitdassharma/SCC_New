@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST]
 @EndUserText.label: 'Cost Base & Stewardship'
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
@@ -6,6 +7,7 @@ provider contract transactional_query
 as projection on /ESRCC/I_CostBaseStewardship 
 {
     key UUID,
+    @ObjectModel.text.element: [ 'CurrencyTypedescription' ]
     key Currencytype,
     @ObjectModel.text.element: [ 'costdatasetdescription' ]
     Fplv,
@@ -59,6 +61,7 @@ as projection on /ESRCC/I_CostBaseStewardship
     @ObjectModel.text.element: [ 'statusdescription' ]
     Status,
     Workflowid, 
+    CommentId,
     @Semantics.text: true  
     ccodedescription,
     @Semantics.text: true 
@@ -83,6 +86,8 @@ as projection on /ESRCC/I_CostBaseStewardship
     statusdescription,
     @Semantics.text: true 
     ProcessTypedescription,
+    @Semantics.text: true 
+    _Currencytype.text as CurrencyTypedescription,
     @ObjectModel.text.element: [ 'countryname' ]
     Country,
     CreatedBy,

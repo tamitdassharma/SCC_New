@@ -7,11 +7,11 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Maintain Legal Entities</DDTEXT>
+    <DDTEXT>Legal Entities</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
-    <EXCLASS>3</EXCLASS>
+    <EXCLASS>4</EXCLASS>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD02V>
    <DD09L>
@@ -19,8 +19,7 @@
     <AS4LOCAL>A</AS4LOCAL>
     <TABKAT>0</TABKAT>
     <TABART>APPL0</TABART>
-    <PUFFERUNG>X</PUFFERUNG>
-    <BUFALLOW>X</BUFALLOW>
+    <BUFALLOW>N</BUFALLOW>
    </DD09L>
    <DD03P_TABLE>
     <DD03P>
@@ -115,7 +114,7 @@
    <DD02_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Gesellschaften bearbeiten</DDTEXT>
+     <DDTEXT>Gesellschaften</DDTEXT>
     </item>
    </DD02_TEXTS>
   </asx:values>

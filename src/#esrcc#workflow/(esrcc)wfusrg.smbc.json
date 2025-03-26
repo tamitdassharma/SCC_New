@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain & Assign Users to Workflow User Groups",
+    "description": "Maintain Workflow User Groups",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_WFUSRG",
     "serviceVersion": "0001",
     "rootEntitySet": "UserGroupAll",
-    "name": "Workflow: User Group",
-    "configurationGroup": "/ESRCC/BC_GROUP7",
+    "name": "Workflow User Groups",
+    "configurationGroup": "/ESRCC/BC_GROUP8",
     "skipRootEntity": true
   },
   "appConfiguration": {

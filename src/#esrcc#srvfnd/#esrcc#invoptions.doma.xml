@@ -18,13 +18,13 @@
      <VALPOS>0001</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>1</DOMVALUE_L>
-     <DDTEXT>One Invoice for all Charge-outs for same Sender-Receiver</DDTEXT>
+     <DDTEXT>All charge-outs with same provider/receiver in one invoice</DDTEXT>
     </DD07V>
     <DD07V>
      <VALPOS>0002</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>2</DOMVALUE_L>
-     <DDTEXT>Separate Invoice for each Charge-out</DDTEXT>
+     <DDTEXT>Create a separate invoice for each single service product</DDTEXT>
     </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>
@@ -40,13 +40,13 @@
      <VALPOS>0001</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>1</DOMVALUE_L>
-     <DDTEXT>Eine Rechnung für alle Verr. mit ident. Erbringer-Empfänger</DDTEXT>
+     <DDTEXT>Alle Verr. mit ident. Erbringer/Empfänger in eine Rechnung</DDTEXT>
     </item>
     <item>
      <VALPOS>0002</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>2</DOMVALUE_L>
-     <DDTEXT>Separate Rechnung für jede einzelne Verrechnung</DDTEXT>
+     <DDTEXT>Rechnung für jedes einzelne Serviceprodukt separat erstellen</DDTEXT>
     </item>
    </DD07_TEXTS>
   </asx:values>

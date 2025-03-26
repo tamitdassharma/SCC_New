@@ -1,11 +1,10 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Legal Entity Address',
-    typeNamePlural: 'Legal Entity Address',
+    typeName: 'Legal Entity Billing Address',
+    typeNamePlural: 'Legal Entity Billing Address',
     title: {
       type: #STANDARD,
-      label: 'Legal Entity Address',
       value: 'LegalEntity'
     }
   }
@@ -44,47 +43,38 @@ annotate view /ESRCC/C_LeAddress with
 
   @UI.identification: [ { position: 2 } ]
   @UI.lineItem: [ { position: 2 } ]
-  @EndUserText.label: 'Customer Number'
   CustomerNumber;
 
   @UI.identification: [ { position: 3 } ]
   @UI.lineItem: [ { position: 3 } ]
-  @EndUserText.label: 'Contact Person'
   ContactPerson;
 
   @UI.identification: [ { position: 4 } ]
   @UI.lineItem: [ { position: 4 } ]
-  @EndUserText.label: 'Street 1'
   Street1;
 
   @UI.identification: [ { position: 5 } ]
   @UI.lineItem: [ { position: 5 } ]
-  @EndUserText.label: 'Street 2'
   Street2;
 
   @UI.identification: [ { position: 6 } ]
   @UI.lineItem: [ { position: 6 } ]
-  @EndUserText.label: 'City'
   City;
 
   @UI.identification: [ { position: 7 } ]
   @UI.lineItem: [ { position: 7 } ]
-  @EndUserText.label: 'Zip'
   Zip;
 
   @UI.identification: [ { position: 8 } ]
   @UI.lineItem: [ { position: 8 } ]
-  @EndUserText.label: 'Federal State'
   State;
 
   @UI.identification: [ { position: 9 } ]
   @UI.lineItem: [ { position: 9 } ]
-  @EndUserText.label: 'Country'
   Country;
 
   @UI.identification: [ { position: 10 } ]
   @UI.lineItem: [ { position: 10 } ]
-  @EndUserText.label: 'Telephone'
   Telephone;
 
   @UI.lineItem: [ { position: 11 } ]

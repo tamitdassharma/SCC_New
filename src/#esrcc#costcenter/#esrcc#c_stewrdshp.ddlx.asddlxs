@@ -1,14 +1,23 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Stewardship Share for Cost Object',
-    typeNamePlural: 'Stewardship Share for Cost Objects',
+    typeName: 'Stewardship',
+    typeNamePlural: 'Stewardships',
     title: {
       type: #STANDARD,
-      label: 'Stewardship',
       value: 'LegalEntity'
     }
-  }
+  },
+  presentationVariant: [{
+    qualifier: 'pVariant',
+    sortOrder: [{ by: 'Sysid', direction: #ASC },
+                { by: 'LegalEntity', direction: #ASC},
+                { by: 'CompanyCode', direction: #ASC },
+                { by: 'CostObject', direction: #ASC },
+                { by: 'CostCenter', direction: #ASC },
+                { by: 'ValidFrom', direction: #ASC }],
+    visualizations: [{type: #AS_LINEITEM }]
+  }]
 }
 annotate view /ESRCC/C_Stewrdshp with
 {
@@ -53,22 +62,24 @@ annotate view /ESRCC/C_Stewrdshp with
   },
   {
     id: 'ServiceProduct',
-    type: #LINEITEM_REFERENCE,
+    type: #PRESENTATIONVARIANT_REFERENCE,
     targetElement: '_ServiceProduct',
     parentId: 'CE',
+    targetQualifier: 'pVariant',
     position: 50
   },
   {
     id: 'ServiceReceiver',
-    type: #LINEITEM_REFERENCE,
+    type: #PRESENTATIONVARIANT_REFERENCE,
     targetElement: '_ServiceReceiver',
     parentId: 'CE',
+    targetQualifier: 'pVariant',
     position: 60
   } ]
 
   @UI.lineItem: [{ type: #FOR_ACTION, dataAction: 'Submit', label: 'Submit', position: 10 },
                  { type: #FOR_ACTION, dataAction: 'Finalize', label: 'Finalize', position: 20 },
-                 { type: #FOR_ACTION, dataAction: 'Comment', label: 'Comments', position: 30 }]
+                 { type: #FOR_ACTION, dataAction: 'Reopen', label: 'Re-open', position: 30 }]
   @UI.hidden: true
   @EndUserText.label: 'Stewardship UUID'
   StewardshipUuid;
@@ -77,35 +88,43 @@ annotate view /ESRCC/C_Stewrdshp with
   @UI.lineItem: [ { position: 2 } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'Sysid' },
-                                       additionalBinding: [{ localElement: 'LegalEntity', element: 'LegalEntity' },
-                                                           { localElement: 'CompanyCode', element: 'CompanyCode' },
-                                                           { localElement: 'CostObject', element: 'Costobject' },
-                                                           { localElement: 'CostCenter', element: 'Costcenter' },
-                                                           { localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
-                                       useForValidation: true }]
+//   Due to SAP Framework issue, the additional Binding is removed ( SCC-205 ), to be enabled if its addressed or if it works in other higher versions
+//                                       additionalBinding: [{ localElement: 'LegalEntity', element: 'LegalEntity' },
+//                                                           { localElement: 'CompanyCode', element: 'CompanyCode' },
+//                                                           { localElement: 'CostObject', element: 'Costobject' },
+//                                                           { localElement: 'CostCenter', element: 'Costcenter' },
+//                                                           { localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
+                                       additionalBinding: [{ localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
+                                       useForValidation: true
+                                       }]
   Sysid;
 
   @UI.identification: [ { position: 3 } ]
   @UI.lineItem: [ { position: 3 } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'LegalEntity' },
-                                       additionalBinding: [{ localElement: 'Sysid', element: 'Sysid' },
-                                                           { localElement: 'CompanyCode', element: 'CompanyCode' },
-                                                           { localElement: 'CostObject', element: 'Costobject' },
-                                                           { localElement: 'CostCenter', element: 'Costcenter' },
-                                                           { localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
-                                       useForValidation: true }]
+//   Due to SAP Framework issue, the additional Binding is removed ( SCC-205 ), to be enabled if its addressed or if it works in other higher versions
+//                                       additionalBinding: [{ localElement: 'Sysid', element: 'Sysid' },
+//                                                           { localElement: 'CompanyCode', element: 'CompanyCode' },
+//                                                           { localElement: 'CostObject', element: 'Costobject' },
+//                                                           { localElement: 'CostCenter', element: 'Costcenter' },
+//                                                           { localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
+                                       additionalBinding: [{ localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
+                                       useForValidation: true
+                                       }]
   LegalEntity;
 
   @UI.identification: [ { position: 4 } ]
   @UI.lineItem: [ { position: 4 } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'CompanyCode' },
-                                       additionalBinding: [{ localElement: 'Sysid', element: 'Sysid' },
-                                                           { localElement: 'LegalEntity', element: 'LegalEntity' },
-                                                           { localElement: 'CostObject', element: 'Costobject' },
-                                                           { localElement: 'CostCenter', element: 'Costcenter' },
-                                                           { localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
+//   Due to SAP Framework issue, the additional Binding is removed ( SCC-205 ), to be enabled if its addressed or if it works in other higher versions
+//                                       additionalBinding: [{ localElement: 'Sysid', element: 'Sysid' },
+//                                                           { localElement: 'LegalEntity', element: 'LegalEntity' },
+//                                                           { localElement: 'CostObject', element: 'Costobject' },
+//                                                           { localElement: 'CostCenter', element: 'Costcenter' },
+//                                                           { localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
+                                       additionalBinding: [{ localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
                                        useForValidation: true }]
   CompanyCode;
 
@@ -113,11 +132,13 @@ annotate view /ESRCC/C_Stewrdshp with
   @UI.lineItem: [ { position: 5, cssDefault.width: '11.5rem' } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'Costobject' },
-                                       additionalBinding: [{ localElement: 'Sysid', element: 'Sysid' },
-                                                           { localElement: 'LegalEntity', element: 'LegalEntity' },
-                                                           { localElement: 'CompanyCode', element: 'CompanyCode' },
-                                                           { localElement: 'CostCenter', element: 'Costcenter' },
-                                                           { localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
+//   Due to SAP Framework issue, the additional Binding is removed ( SCC-205 ), to be enabled if its addressed or if it works in other higher versions
+//                                       additionalBinding: [{ localElement: 'Sysid', element: 'Sysid' },
+//                                                           { localElement: 'LegalEntity', element: 'LegalEntity' },
+//                                                           { localElement: 'CompanyCode', element: 'CompanyCode' },
+//                                                           { localElement: 'CostCenter', element: 'Costcenter' },
+//                                                           { localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
+                                       additionalBinding: [{ localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
                                        useForValidation: true }]
   CostObject;
 
@@ -125,11 +146,13 @@ annotate view /ESRCC/C_Stewrdshp with
   @UI.lineItem: [ { position: 6 } ]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'Costcenter' },
-                                       additionalBinding: [{ localElement: 'Sysid', element: 'Sysid' },
-                                                           { localElement: 'LegalEntity', element: 'LegalEntity' },
-                                                           { localElement: 'CompanyCode', element: 'CompanyCode' },
-                                                           { localElement: 'CostObject', element: 'Costobject' },
-                                                           { localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
+//   Due to SAP Framework issue, the additional Binding is removed ( SCC-205 ), to be enabled if its addressed or if it works in other higher versions
+//                                       additionalBinding: [{ localElement: 'Sysid', element: 'Sysid', usage: #FILTER },
+//                                                           { localElement: 'LegalEntity', element: 'LegalEntity', usage: #FILTER },
+//                                                           { localElement: 'CompanyCode', element: 'CompanyCode', usage: #FILTER },
+//                                                           { localElement: 'CostObject', element: 'Costobject', usage: #FILTER },
+//                                                           { localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
+                                       additionalBinding: [{ localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
                                        useForValidation: true }]
   CostCenter;
 
@@ -148,29 +171,31 @@ annotate view /ESRCC/C_Stewrdshp with
   @UI.hidden: true
   @EndUserText.label: 'Cost Object UUID'
   CostObjectUuid;
-  
+
   @UI.identification: [ { position: 10 } ]
   @UI.lineItem: [ { position: 10 } ]
   ChainId;
-  
+
   @UI.identification: [ { position: 11 } ]
   @UI.lineItem: [ { position: 11 } ]
   ChainSequence;
-  
+
   @UI.lineItem: [ { position: 12 } ]
   @UI.fieldGroup: [{ qualifier: 'WorkflowGroup', position: 10 }]
   WorkflowId;
-  
+
   @UI.lineItem: [ { position: 13, criticality: 'WorkflowStatusCriticality', criticalityRepresentation: #WITHOUT_ICON } ]
   @UI.fieldGroup: [{ qualifier: 'WorkflowGroup', position: 20, criticality: 'WorkflowStatusCriticality', criticalityRepresentation: #WITHOUT_ICON }]
   @UI.textArrangement: #TEXT_ONLY
   @EndUserText.label: 'Workflow Status'
   WorkflowStatus;
-  
+
+  @UI.lineItem: [{ hidden: true }]
+  CommentId;
+
   @UI.lineItem: [{ hidden: true }]
   @UI.multiLineText: true
   @UI.fieldGroup: [{ qualifier: 'WorkflowGroup', position: 30 }]
-  @EndUserText.label: 'Comments (When Submitted)'
   Comments;
 
   @UI.lineItem: [ { position: 15 } ]

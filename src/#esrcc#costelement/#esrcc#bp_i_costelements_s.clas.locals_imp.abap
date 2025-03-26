@@ -15,10 +15,7 @@ CLASS lcl_custom_validation DEFINITION.
       validate_cost_element
         IMPORTING
           entity  TYPE ts_cost_element
-          control TYPE ts_control,
-      check_duplicate
-        IMPORTING
-          entity TYPE ts_cost_element.
+          control TYPE ts_control.
 
   PRIVATE SECTION.
     DATA: config_util_ref TYPE REF TO /esrcc/cl_config_util.
@@ -46,9 +43,6 @@ CLASS lcl_custom_validation IMPLEMENTATION.
       entity = entity
     ).
   ENDMETHOD.
-
-  METHOD check_duplicate.
-  ENDMETHOD.
 ENDCLASS.
 
 CLASS lhc_rap_tdat_cts DEFINITION.
@@ -70,6 +64,10 @@ CLASS lhc_rap_tdat_cts IMPLEMENTATION.
 ENDCLASS.
 CLASS lhc_/esrcc/i_costelements_s DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
+    CONSTANTS:
+      c_source_entity TYPE sxco_cds_object_name VALUE '/ESRCC/C_COSTELEMENTS',
+      c_path          TYPE sxco_cds_association_name VALUE 'CostElementsAll'.
+
     METHODS:
       get_instance_features FOR INSTANCE FEATURES
         IMPORTING
@@ -123,8 +121,8 @@ CLASS lhc_/esrcc/i_costelements_s IMPLEMENTATION.
 
     DATA(lo_cost_element) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths              = VALUE #( ( path = 'CostElementsAll' ) )
-        source_entity_name = '/ESRCC/C_COSTELEMENTS'
+        paths              = VALUE #( ( path = c_path ) )
+        source_entity_name = c_source_entity
         is_transition      = abap_true
       CHANGING
         reported_entity    = reported-costelement
@@ -186,6 +184,10 @@ CLASS lsc_/esrcc/i_costelements_s IMPLEMENTATION.
 ENDCLASS.
 CLASS lhc_/esrcc/i_costelements DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
+    CONSTANTS:
+      c_source_entity TYPE sxco_cds_object_name VALUE '/ESRCC/C_COSTELEMENTS',
+      c_path          TYPE sxco_cds_association_name VALUE 'CostElementsAll'.
+
     METHODS:
       get_global_features FOR GLOBAL FEATURES
         IMPORTING
@@ -217,8 +219,8 @@ CLASS lhc_/esrcc/i_costelements IMPLEMENTATION.
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths              = VALUE #( ( path = 'CostElementsAll' ) )
-        source_entity_name = '/ESRCC/C_COSTELEMENTS'
+        paths              = VALUE #( ( path = c_path ) )
+        source_entity_name = c_source_entity
       CHANGING
         reported_entity    = reported-costelement
         failed_entity      = failed-costelement ) ).
@@ -240,8 +242,8 @@ CLASS lhc_/esrcc/i_costelements IMPLEMENTATION.
   METHOD precheck_update.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
         EXPORTING
-          paths              = VALUE #( ( path = 'CostElementsAll' ) )
-          source_entity_name = '/ESRCC/C_COSTELEMENTS'
+          paths              = VALUE #( ( path = c_path ) )
+          source_entity_name = c_source_entity
         CHANGING
           reported_entity    = reported-costelement
           failed_entity      = failed-costelement ) ).
@@ -261,6 +263,7 @@ CLASS lhc_/esrcc/i_costelements IMPLEMENTATION.
   ENDMETHOD.
 
 ENDCLASS.
+
 CLASS lhc_/esrcc/i_costelementstext DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
     METHODS:

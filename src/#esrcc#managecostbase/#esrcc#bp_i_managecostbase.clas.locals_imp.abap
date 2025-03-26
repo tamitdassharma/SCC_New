@@ -21,6 +21,7 @@ CLASS lhc_managecostbase DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS precheck_changevalueadd FOR PRECHECK
       IMPORTING keys FOR ACTION managecostbase~changevalueadd.
+
     METHODS precheck_changeitems FOR PRECHECK
       IMPORTING keys FOR ACTION managecostbase~changeitems.
 
@@ -29,12 +30,16 @@ CLASS lhc_managecostbase DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS precheck_submit FOR PRECHECK
       IMPORTING keys FOR ACTION managecostbase~submit.
+
     METHODS triggerworkflow FOR DETERMINE ON SAVE
       IMPORTING keys FOR managecostbase~triggerworkflow.
+
     METHODS adhocchargeout FOR MODIFY
       IMPORTING keys FOR ACTION managecostbase~adhocchargeout.
+
     METHODS precheck_adhocchargeout FOR PRECHECK
       IMPORTING keys FOR ACTION managecostbase~adhocchargeout.
+
     METHODS simulatechargout FOR MODIFY
       IMPORTING keys FOR ACTION managecostbase~simulatechargout RESULT result.
 
@@ -44,50 +49,7 @@ CLASS lhc_managecostbase IMPLEMENTATION.
 
   METHOD get_instance_authorizations.
 
-*    " Return result to UI
-*    READ ENTITIES OF /esrcc/i_managecostbase IN LOCAL MODE
-*        ENTITY managecostbase
-*        ALL FIELDS
-*        WITH CORRESPONDING #( keys )
-*        RESULT DATA(costbases).
-*
-*    CHECK costbases IS NOT INITIAL.
-*
-*    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
-*
-*      IF requested_authorizations-%update = if_abap_behv=>mk-on.
-*        AUTHORITY-CHECK OBJECT '/ESRCC/LE'
-*            ID '/ESRCC/LE' FIELD <costbase>-legalentity
-*            ID 'ACTVT'      FIELD '02'.
-*        IF sy-subrc = 0.
-*          AUTHORITY-CHECK OBJECT '/ESRCC/CO'
-*            ID '/ESRCC/OBJ' FIELD <costbase>-costobject
-*            ID '/ESRCC/CN' FIELD <costbase>-costcenter
-*            ID 'ACTVT'      FIELD '02'.
-*          IF sy-subrc <> 0.
-*            APPEND VALUE #( %tky = <costbase>-%tky
-*                            %msg = new_message(
-*                                       id    = '/ESRCC/MANAGECOSTBAS'
-*                                       number = '000'
-*                                       v1     = <costbase>-legalentity
-*                                       severity  = if_abap_behv_message=>severity-error )
-*                           ) TO reported-managecostbase.
-*            APPEND VALUE #( %tky = <costbase>-%tky ) TO
-*                            failed-managecostbase.
-*          ENDIF.
-*        ELSE.
-*          APPEND VALUE #( %tky = <costbase>-%tky
-*                              %msg = new_message(
-*                                         id    = '/ESRCC/MANAGECOSTBAS'
-*                                         number = '000'
-*                                         v1     = <costbase>-legalentity
-*                                         severity  = if_abap_behv_message=>severity-error )
-*                             ) TO reported-managecostbase.
-*          APPEND VALUE #( %tky = <costbase>-%tky ) TO
-*                          failed-managecostbase.
-*        ENDIF.
-*      ENDIF.
-*    ENDLOOP.
+
   ENDMETHOD.
 
   METHOD changeitems.
@@ -106,14 +68,16 @@ CLASS lhc_managecostbase IMPLEMENTATION.
 
     MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
         ENTITY managecostbase
-         UPDATE FIELDS ( oldusagecal usagecal status ReasonId )
+         UPDATE FIELDS ( oldstatus oldreasonid oldusagecal usagecal status ReasonId )
               WITH VALUE #( FOR costbase IN costbases WHERE ( status <> 'F' AND status <> 'W' )
                               (
                                  %key = costbase-%key
-                                 oldusagecal = costbase-usagecal
-                                 usagecal = ls_param-usagecal
-                                 ReasonId = ls_param-reasonid
-                                 status = 'D'
+                                 oldusagecal = COND #( WHEN ( ( costbase-Usagecal <> ls_param-usagecal ) AND ( costbase-status <> 'D' OR ( costbase-status = 'D' AND costbase-oldusagecal IS INITIAL ) ) ) THEN costbase-usagecal ELSE costbase-oldusagecal )
+                                 oldreasonid = COND #( WHEN ( ( costbase-Usagecal <> ls_param-usagecal ) AND ( costbase-status <> 'D' OR ( costbase-status = 'D' AND costbase-oldreasonid IS INITIAL ) ) ) THEN costbase-reasonid ELSE costbase-oldreasonid )
+                                 oldstatus   = COND #( WHEN ( ( costbase-Usagecal <> ls_param-usagecal ) AND ( costbase-status <> 'D' OR ( costbase-status = 'D' AND costbase-oldstatus IS INITIAL ) ) ) THEN costbase-Status ELSE costbase-oldstatus )
+                                 usagecal = COND #( WHEN costbase-Usagecal <> ls_param-usagecal then ls_param-usagecal else costbase-Usagecal )
+                                 ReasonId = COND #( WHEN costbase-ReasonId <> ls_param-reasonid then ls_param-reasonid else costbase-ReasonId )
+                                 status = COND #( WHEN costbase-Usagecal <> ls_param-usagecal then 'D' else costbase-status )
                                ) )
                               FAILED   FINAL(fail_mod)
                               REPORTED FINAL(rep_mod)
@@ -141,13 +105,14 @@ CLASS lhc_managecostbase IMPLEMENTATION.
 
     MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
         ENTITY managecostbase
-         UPDATE FIELDS ( oldcostind costind status )
+         UPDATE FIELDS ( oldstatus oldcostind costind status )
               WITH VALUE #( FOR costbase IN costbases WHERE ( status <> 'F' AND status <> 'W' )
                               (
                                  %key = costbase-%key
-                                 oldcostind = costbase-costind
-                                 costind = ls_param-costind
-                                 status = 'D'
+                                 oldcostind  = COND #( WHEN ( ( costbase-costind <> ls_param-costind ) AND ( costbase-status <> 'D' OR ( costbase-status = 'D' AND costbase-oldcostind IS INITIAL ) ) ) THEN costbase-costind ELSE costbase-oldcostind )
+                                 oldstatus   = COND #( WHEN ( ( costbase-costind <> ls_param-costind ) AND ( costbase-status <> 'D' OR ( costbase-status = 'D' AND costbase-oldstatus IS INITIAL ) ) ) THEN costbase-Status ELSE costbase-oldstatus )
+                                 costind = COND #( WHEN costbase-costind <> ls_param-costind then ls_param-costind else costbase-costind )
+                                 status = COND #( WHEN costbase-costind <> ls_param-costind then 'D' else costbase-status )
                                ) )
                               FAILED   FINAL(fail_mod)
                               REPORTED FINAL(rep_mod)
@@ -170,17 +135,18 @@ CLASS lhc_managecostbase IMPLEMENTATION.
 
     MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
         ENTITY managecostbase
-         UPDATE FIELDS ( oldcostind oldcostdataset oldusagecal costind usagecal status )
+         UPDATE FIELDS ( oldreasonid oldcostind oldcostdataset oldusagecal costind usagecal status ReasonId )
               WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'D' )
                               (
                                  %key = costbase-%key
                                  costind = COND #( WHEN costbase-oldcostind IS INITIAL THEN costbase-costind ELSE costbase-oldcostind )
                                  usagecal = COND #( WHEN costbase-oldusagecal IS INITIAL THEN costbase-usagecal ELSE costbase-oldusagecal )
-                                 status = 'U'
+                                 status = COND #( WHEN costbase-oldstatus IS INITIAL THEN costbase-status ELSE costbase-oldstatus )
+                                 reasonid = COND #( WHEN costbase-oldreasonid IS INITIAL THEN costbase-ReasonId ELSE costbase-oldreasonid )
                                  oldcostind = ''
                                  oldcostdataset = ''
                                  oldusagecal = ''
-
+                                 oldreasonid = ''
                                ) )
                               FAILED   FINAL(fail_mod)
                               REPORTED FINAL(rep_mod)
@@ -195,6 +161,8 @@ CLASS lhc_managecostbase IMPLEMENTATION.
   METHOD submit.
 
     DATA lt_leading_object TYPE /esrcc/tt_wf_leadingobject.
+    DATA ls_comment  TYPE /esrcc/comments.
+    DATA lt_comments TYPE TABLE OF /esrcc/comments.
 
     " Return result to UI
     READ ENTITIES OF /esrcc/i_managecostbase IN LOCAL MODE
@@ -212,12 +180,35 @@ CLASS lhc_managecostbase IMPLEMENTATION.
         ev_wf_active = DATA(wf_active)
     ).
 
+    cl_uuid_factory=>create_system_uuid(
+      RECEIVING
+        generator = DATA(lo_uuid)
+    ).
+
+    LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
+      IF <costbase>-CommentId IS INITIAL.
+        TRY.
+            <costbase>-commentid = lo_uuid->create_uuid_c32( ).
+          CATCH cx_uuid_error.
+        ENDTRY.
+      ENDIF.
+      ls_comment-instanceid = <costbase>-commentid.
+      ls_comment-worfklow_id = <costbase>-WorkflowId.
+      ls_comment-wfcomment = keys[ 1 ]-%param-comments.
+      ls_comment-status = 'A'.
+      /esrcc/cl_comments_util=>modify_comments(
+          comments    = ls_comment
+          iv_comments = keys[ 1 ]-%param-comments
+        ).
+    ENDLOOP.
+
+
 * check if workflow is on or not
     IF wf_active = abap_true.
 
       MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
        ENTITY managecostbase
-        UPDATE FIELDS ( comments oldcostind oldcostdataset oldusagecal costind usagecal status WorkflowId )
+        UPDATE FIELDS ( oldcostind oldcostdataset oldusagecal costind usagecal status WorkflowId CommentId )
              WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'D' )
                              (
                                 %key = costbase-%key
@@ -228,6 +219,7 @@ CLASS lhc_managecostbase IMPLEMENTATION.
                                 usagecal = costbase-usagecal
                                 status = 'P'
                                 WorkflowId = ''
+                                CommentId = costbase-CommentId
                               ) )
                              FAILED failed
                              REPORTED reported
@@ -237,7 +229,7 @@ CLASS lhc_managecostbase IMPLEMENTATION.
 
       MODIFY ENTITIES OF /esrcc/i_managecostbase  IN LOCAL MODE
        ENTITY managecostbase
-        UPDATE FIELDS ( comments oldcostind oldcostdataset oldusagecal costind usagecal status WorkflowId )
+        UPDATE FIELDS ( oldcostind oldcostdataset oldusagecal costind usagecal status WorkflowId CommentId )
              WITH VALUE #( FOR costbase IN costbases WHERE ( status = 'D' )
                              (
                                 %key = costbase-%key
@@ -248,6 +240,7 @@ CLASS lhc_managecostbase IMPLEMENTATION.
                                 usagecal = costbase-usagecal
                                 status = 'A'
                                 WorkflowId = ''
+                                CommentId = costbase-CommentId
                               ) )
                              FAILED failed
                              REPORTED reported
@@ -284,13 +277,13 @@ CLASS lhc_managecostbase IMPLEMENTATION.
     LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
 *Authorisation Check
       AUTHORITY-CHECK OBJECT '/ESRCC/LE'
-              ID '/ESRCC/LE' FIELD <costbase>-legalentity
-              ID 'ACTVT'      FIELD '02'.
+      ID '/ESRCC/LE' FIELD <costbase>-legalentity
+      ID 'ACTVT'      FIELD '02'.
       IF sy-subrc = 0.
         AUTHORITY-CHECK OBJECT '/ESRCC/CO'
-          ID '/ESRCC/OBJ' FIELD <costbase>-costobject
-          ID '/ESRCC/CN' FIELD <costbase>-costcenter
-          ID 'ACTVT'      FIELD '02'.
+        ID '/ESRCC/OBJ' FIELD <costbase>-costobject
+        ID '/ESRCC/CN' FIELD <costbase>-costcenter
+        ID 'ACTVT'      FIELD '02'.
         IF sy-subrc <> 0.
           APPEND VALUE #( %tky = <costbase>-%tky
                           %msg = new_message(
@@ -373,13 +366,13 @@ CLASS lhc_managecostbase IMPLEMENTATION.
     LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
 *Authorisation Check
       AUTHORITY-CHECK OBJECT '/ESRCC/LE'
-              ID '/ESRCC/LE' FIELD <costbase>-legalentity
-              ID 'ACTVT'      FIELD '02'.
+      ID '/ESRCC/LE' FIELD <costbase>-legalentity
+      ID 'ACTVT'      FIELD '02'.
       IF sy-subrc = 0.
         AUTHORITY-CHECK OBJECT '/ESRCC/CO'
-          ID '/ESRCC/OBJ' FIELD <costbase>-costobject
-          ID '/ESRCC/CN' FIELD <costbase>-costcenter
-          ID 'ACTVT'      FIELD '02'.
+        ID '/ESRCC/OBJ' FIELD <costbase>-costobject
+        ID '/ESRCC/CN' FIELD <costbase>-costcenter
+        ID 'ACTVT'      FIELD '02'.
         IF sy-subrc <> 0.
           APPEND VALUE #( %tky = <costbase>-%tky
                           %msg = new_message(
@@ -462,13 +455,13 @@ CLASS lhc_managecostbase IMPLEMENTATION.
     LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
 *Authorisation Check
       AUTHORITY-CHECK OBJECT '/ESRCC/LE'
-              ID '/ESRCC/LE' FIELD <costbase>-legalentity
-              ID 'ACTVT'      FIELD '02'.
+      ID '/ESRCC/LE' FIELD <costbase>-legalentity
+      ID 'ACTVT'      FIELD '02'.
       IF sy-subrc = 0.
         AUTHORITY-CHECK OBJECT '/ESRCC/CO'
-          ID '/ESRCC/OBJ' FIELD <costbase>-costobject
-          ID '/ESRCC/CN' FIELD <costbase>-costcenter
-          ID 'ACTVT'      FIELD '02'.
+        ID '/ESRCC/OBJ' FIELD <costbase>-costobject
+        ID '/ESRCC/CN' FIELD <costbase>-costcenter
+        ID 'ACTVT'      FIELD '02'.
         IF sy-subrc <> 0.
           APPEND VALUE #( %tky = <costbase>-%tky
                           %msg = new_message(
@@ -523,13 +516,13 @@ CLASS lhc_managecostbase IMPLEMENTATION.
     LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
 *Authorisation Check
       AUTHORITY-CHECK OBJECT '/ESRCC/LE'
-              ID '/ESRCC/LE' FIELD <costbase>-legalentity
-              ID 'ACTVT'      FIELD '02'.
+      ID '/ESRCC/LE' FIELD <costbase>-legalentity
+      ID 'ACTVT'      FIELD '02'.
       IF sy-subrc = 0.
         AUTHORITY-CHECK OBJECT '/ESRCC/CO'
-          ID '/ESRCC/OBJ' FIELD <costbase>-costobject
-          ID '/ESRCC/CN' FIELD <costbase>-costcenter
-          ID 'ACTVT'      FIELD '02'.
+        ID '/ESRCC/OBJ' FIELD <costbase>-costobject
+        ID '/ESRCC/CN' FIELD <costbase>-costcenter
+        ID 'ACTVT'      FIELD '02'.
         IF sy-subrc <> 0.
           APPEND VALUE #( %tky = <costbase>-%tky
                           %msg = new_message(
@@ -694,6 +687,7 @@ CLASS lhc_managecostbase IMPLEMENTATION.
     DATA ls_param    TYPE /esrcc/c_adhocchargeout.
     DATA lt_receiver TYPE /esrcc/tt_receivers.
     DATA lt_cbli     TYPE TABLE OF /esrcc/cb_li.
+    DATA lo_badi     TYPE REF TO /esrcc/badi_cockpit.
 
     " Return result to UI
     READ ENTITIES OF /esrcc/i_managecostbase IN LOCAL MODE
@@ -711,21 +705,23 @@ CLASS lhc_managecostbase IMPLEMENTATION.
       ( xco_cp_json=>transformation->boolean_to_abap_bool )
         ) )->write_to( REF #( lt_receiver ) ).
 
-    IF lt_receiver IS INITIAL.
-      APPEND VALUE #(     %tky = keys[ 1 ]-%tky
-                          %msg = new_message(
-                          id   = '/ESRCC/MANAGECOSTBAS'
-                          number = '010'
-                          severity  = if_abap_behv_message=>severity-error )
-                         ) TO reported-managecostbase.
-      RETURN.
+    IF lo_badi IS NOT BOUND.
+      TRY.
+          GET BADI lo_badi.
+        CATCH cx_badi_not_implemented cx_badi_unknown_error.
+      ENDTRY.
     ENDIF.
 
-    /esrcc/cl_calculate_chargeout=>calculate_adhocchargeout(
-      it_cbli       = lt_cbli
-      is_parameters = ls_param
-      it_receivers  = lt_receiver
-    ).
+    IF lo_badi IS BOUND.
+
+      CALL BADI lo_badi->calculate_adhocchargeout
+        EXPORTING
+          it_cbli       = lt_cbli
+          is_parameters = ls_param
+          it_receivers  = lt_receiver.
+
+    ENDIF.
+
 
     READ TABLE costbases ASSIGNING FIELD-SYMBOL(<costbase>) INDEX 1.
     IF sy-subrc = 0.
@@ -741,6 +737,9 @@ CLASS lhc_managecostbase IMPLEMENTATION.
 
   METHOD precheck_adhocchargeout.
 
+    DATA ls_param    TYPE /esrcc/c_adhocchargeout.
+    DATA lt_receiver TYPE /esrcc/tt_receivers.
+
     " Return result to UI
     READ ENTITIES OF /esrcc/i_managecostbase IN LOCAL MODE
         ENTITY managecostbase
@@ -751,13 +750,13 @@ CLASS lhc_managecostbase IMPLEMENTATION.
     LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
 *Authorisation Check
       AUTHORITY-CHECK OBJECT '/ESRCC/LE'
-              ID '/ESRCC/LE' FIELD <costbase>-legalentity
-              ID 'ACTVT'      FIELD '01'.
+      ID '/ESRCC/LE' FIELD <costbase>-legalentity
+      ID 'ACTVT'      FIELD '01'.
       IF sy-subrc = 0.
         AUTHORITY-CHECK OBJECT '/ESRCC/CO'
-          ID '/ESRCC/OBJ' FIELD <costbase>-costobject
-          ID '/ESRCC/CN' FIELD <costbase>-costcenter
-          ID 'ACTVT'      FIELD '01'.
+        ID '/ESRCC/OBJ' FIELD <costbase>-costobject
+        ID '/ESRCC/CN' FIELD <costbase>-costcenter
+        ID 'ACTVT'      FIELD '01'.
         IF sy-subrc <> 0.
           APPEND VALUE #( %tky = <costbase>-%tky
                           %msg = new_message(
@@ -784,6 +783,8 @@ CLASS lhc_managecostbase IMPLEMENTATION.
       ENDIF.
     ENDLOOP.
 
+    CHECK failed-managecostbase IS INITIAL.
+
     LOOP AT costbases ASSIGNING <costbase> WHERE status <> 'A'.
       APPEND VALUE #( %tky = <costbase>-%tky
                       %msg = new_message(
@@ -795,6 +796,8 @@ CLASS lhc_managecostbase IMPLEMENTATION.
                       failed-managecostbase.
       EXIT.
     ENDLOOP.
+
+    CHECK failed-managecostbase IS INITIAL.
 
     LOOP AT costbases ASSIGNING <costbase> WHERE Usagecal = 'E'.
       APPEND VALUE #( %tky = <costbase>-%tky
@@ -808,6 +811,8 @@ CLASS lhc_managecostbase IMPLEMENTATION.
       EXIT.
     ENDLOOP.
 
+    CHECK failed-managecostbase IS INITIAL.
+
     LOOP AT costbases ASSIGNING <costbase> WHERE UniqueId IS NOT INITIAL.
       APPEND VALUE #( %tky = <costbase>-%tky
                       %msg = new_message(
@@ -819,6 +824,8 @@ CLASS lhc_managecostbase IMPLEMENTATION.
                       failed-managecostbase.
       EXIT.
     ENDLOOP.
+
+    CHECK failed-managecostbase IS INITIAL.
 
     SORT costbases BY ryear poper fplv sysid Legalentity Ccode Costobject Costcenter.
     DELETE ADJACENT DUPLICATES FROM costbases COMPARING ryear poper fplv sysid Legalentity Ccode Costobject Costcenter.
@@ -833,6 +840,60 @@ CLASS lhc_managecostbase IMPLEMENTATION.
                       failed-managecostbase.
     ENDIF.
 
+    CHECK failed-managecostbase IS INITIAL.
+
+    ls_param = CORRESPONDING #( keys[ 1 ]-%param ).
+
+    xco_cp_json=>data->from_string( ls_param-receivers )->apply( VALUE #(
+*      ( xco_cp_json=>transformation->pascal_case_to_underscore )
+      ( xco_cp_json=>transformation->boolean_to_abap_bool )
+        ) )->write_to( REF #( lt_receiver ) ).
+
+    IF lt_receiver IS INITIAL.
+      APPEND VALUE #(     %tky = keys[ 1 ]-%tky
+                          %msg = new_message(
+                          id   = '/ESRCC/MANAGECOSTBAS'
+                          number = '010'
+                          severity  = if_abap_behv_message=>severity-error )
+                         ) TO reported-managecostbase.
+      APPEND VALUE #( %tky = <costbase>-%tky ) TO
+                      failed-managecostbase.
+
+    ELSE.
+*check if receiver is same as provider
+      IF keys IS NOT INITIAL.
+        READ TABLE lt_receiver TRANSPORTING NO FIELDS WITH KEY legalentity = keys[ 1 ]-legalentity
+                                                                     ccode = keys[ 1 ]-ccode
+                                                                     sysid = keys[ 1 ]-sysid
+                                                                costobject = keys[ 1 ]-costobject
+                                                                costcenter = keys[ 1 ]-costcenter.
+        IF sy-subrc = 0.
+          APPEND VALUE #(
+                           %cid = keys[ 1 ]-%tky
+                           %msg = new_message(
+                           id   = '/ESRCC/MANAGECOSTBAS'
+                           number = '014'
+                           severity  = if_abap_behv_message=>severity-error )
+                          ) TO reported-managecostbase.
+          APPEND VALUE #( %cid = keys[ 1 ]-%tky ) TO
+                          failed-managecostbase.
+          RETURN.
+        ENDIF.
+      ENDIF.
+      SELECT SUM( sharepercent ) FROM @lt_receiver AS receivers INTO @DATA(totalsharepercent).
+      IF totalsharepercent = 0.
+        APPEND VALUE #(     %tky = keys[ 1 ]-%tky
+                            %msg = new_message(
+                            id   = '/ESRCC/MANAGECOSTBAS'
+                            number = '013'
+                            severity  = if_abap_behv_message=>severity-error )
+                           ) TO reported-managecostbase.
+        APPEND VALUE #( %tky = <costbase>-%tky ) TO
+                      failed-managecostbase.
+
+      ENDIF.
+    ENDIF.
+
   ENDMETHOD.
 
   METHOD simulatechargout.
@@ -844,6 +905,8 @@ CLASS lhc_managecostbase IMPLEMENTATION.
     DATA totalcostbasevalueadd TYPE /esrcc/hsl.
     DATA costabsolutepass      TYPE /esrcc/hsl.
     DATA costabsolutevalueadd  TYPE /esrcc/hsl.
+    DATA lv_sharepercent       TYPE /esrcc/shareperc.
+    DATA lv_validon            TYPE /esrcc/validfrom.
 
     SELECT * FROM /esrcc/cb_li FOR ALL ENTRIES IN @keys
                                WHERE legalentity = @keys-%param-legalentity
@@ -880,14 +943,28 @@ CLASS lhc_managecostbase IMPLEMENTATION.
       ( xco_cp_json=>transformation->boolean_to_abap_bool )
         ) )->write_to( REF #( lt_receiver ) ).
 
+*check if receiver is same as provider
+    IF keys IS NOT INITIAL.
+      READ TABLE lt_receiver TRANSPORTING NO FIELDS WITH KEY legalentity = keys[ 1 ]-%param-legalentity
+                                                                   ccode = keys[ 1 ]-%param-ccode
+                                                                   sysid = keys[ 1 ]-%param-sysid
+                                                              costobject = keys[ 1 ]-%param-costobject
+                                                              costcenter = keys[ 1 ]-%param-costcenter.
+      IF sy-subrc = 0.
+        APPEND VALUE #(
+                         %cid = keys[ 1 ]-%cid
+                         %msg = new_message(
+                         id   = '/ESRCC/MANAGECOSTBAS'
+                         number = '014'
+                         severity  = if_abap_behv_message=>severity-error )
+                        ) TO reported-managecostbase.
+        APPEND VALUE #( %cid = keys[ 1 ]-%cid ) TO
+                        failed-managecostbase.
+        RETURN.
+      ENDIF.
+    ENDIF.
 * Derive the share % based on the share value
     SELECT SUM( sharevalue ) FROM @lt_receiver AS receievers INTO @DATA(totalvalue).
-    IF totalvalue > 0.
-      LOOP AT lt_receiver ASSIGNING FIELD-SYMBOL(<receiver>) .
-        <receiver>-sharepercent = ( <receiver>-sharevalue / totalvalue ) * 100.
-      ENDLOOP.
-    ENDIF.
-
 
     LOOP AT costbases ASSIGNING FIELD-SYMBOL(<costbase>).
       IF <costbase>-Costind = 'PASS'.
@@ -896,13 +973,19 @@ CLASS lhc_managecostbase IMPLEMENTATION.
         totalcostbasevalueadd = totalcostbasevalueadd + <costbase>-hsl.
       ENDIF.
       DATA(localcurr) = <costbase>-localcurr.
-      DATA(lv_validon) = <costbase>-ryear && <costbase>-poper+1(2) && '01'.
+      lv_validon = <costbase>-ryear && <costbase>-poper+1(2) && '01'.
     ENDLOOP.
 
     totalcostbase = totalcostbasepass + totalcostbasevalueadd.
-    LOOP AT lt_receiver ASSIGNING <receiver>.
-      costabsolutepass     = ( <receiver>-sharepercent / 100 ) * totalcostbasepass.
-      costabsolutevalueadd = ( <receiver>-sharepercent / 100 ) * totalcostbasevalueadd.
+    LOOP AT lt_receiver ASSIGNING FIELD-SYMBOL(<receiver>).
+      IF totalvalue > 0.
+        lv_sharepercent = ( <receiver>-sharevalue / totalvalue ) * 100.
+        <receiver>-sharepercent = lv_sharepercent.
+      ELSEIF
+        lv_sharepercent = <receiver>-sharepercent.
+      ENDIF.
+      costabsolutepass     = ( lv_sharepercent / 100 ) * totalcostbasepass.
+      costabsolutevalueadd = ( lv_sharepercent / 100 ) * totalcostbasevalueadd.
 
       <receiver>-costabsolute = costabsolutepass + costabsolutevalueadd.
       IF <costbase>-Legalentity <> <receiver>-legalentity.
@@ -916,14 +999,45 @@ CLASS lhc_managecostbase IMPLEMENTATION.
       IF localcurr = <receiver>-invoicingcurrency.
         <receiver>-invoicechargeout = <receiver>-chargout.
       ELSE.
-        SELECT SINGLE ConvertedAmount FROM /esrcc/b_currencyconevrsion(
-                        p_amount         = @<receiver>-chargout,
-                        p_source_curr    = @localcurr,
-                        p_target_curr    = @<receiver>-invoicingcurrency,
-                        p_conv_date      = @lv_validon,
-                        p_exch_rate_type = 'M' )
-                    INTO @<receiver>-invoicechargeout.
+        /esrcc/cl_utility_core=>currency_conversion(
+          EXPORTING
+            amount          = <receiver>-chargout
+            source_curr     = localcurr
+            target_curr     = <receiver>-invoicingcurrency
+            validon         = lv_validon
+          IMPORTING
+            convertedamount = <receiver>-invoicechargeout
+        ).
+
       ENDIF.
+      /esrcc/cl_utility_core=>curr_internal_to_external(
+         EXPORTING
+           currency        = <receiver>-invoicingcurrency
+           amount_internal = <receiver>-invoicechargeout
+         IMPORTING
+           amount_external = <receiver>-invoicechargeout
+       ).
+      /esrcc/cl_utility_core=>curr_internal_to_external(
+          EXPORTING
+            currency        = localcurr
+            amount_internal = <receiver>-costabsolute
+          IMPORTING
+            amount_external = <receiver>-costabsolute
+        ).
+      /esrcc/cl_utility_core=>curr_internal_to_external(
+        EXPORTING
+          currency        = localcurr
+          amount_internal = <receiver>-markup
+        IMPORTING
+          amount_external = <receiver>-markup
+      ).
+      /esrcc/cl_utility_core=>curr_internal_to_external(
+        EXPORTING
+          currency        = localcurr
+          amount_internal = <receiver>-chargout
+        IMPORTING
+          amount_external = <receiver>-chargout
+      ).
     ENDLOOP.
 
     DATA(lv_json_string) = xco_cp_json=>data->from_abap( lt_receiver )->apply( VALUE #(

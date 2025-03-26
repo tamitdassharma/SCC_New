@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_COSTELMENETCHARA",
     "serviceVersion": "0001",
     "rootEntitySet": "CostElementCharAll",
-    "name": "Maintain Cost Element Characteristics",
-    "configurationGroup": "",
+    "name": "Cost Element Characteristics",
+    "configurationGroup": "/ESRCC/BC_GROUP2",
     "skipRootEntity": true
   },
   "appConfiguration": {

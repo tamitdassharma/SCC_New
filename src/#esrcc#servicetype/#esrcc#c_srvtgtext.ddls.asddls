@@ -1,4 +1,5 @@
 @EndUserText.label: 'Service Transaction group Text - Maintai'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
 define view entity /ESRCC/C_SrvTgText

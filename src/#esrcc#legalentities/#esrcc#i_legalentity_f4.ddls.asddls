@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 @EndUserText.label: 'Service Provider'
 
@@ -29,4 +29,3 @@ define view entity /ESRCC/I_LEGALENTITY_F4
 where
      Role = 'R1'
   or Role = 'R3'
-  or Role = 'R4'

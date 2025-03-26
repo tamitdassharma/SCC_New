@@ -1,4 +1,5 @@
 @EndUserText.label: 'Legal Entity'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_LE
   as select from /esrcc/le
@@ -8,8 +9,6 @@ define view entity /ESRCC/I_LE
   association [0..1] to /ESRCC/I_REGION      as _Region         on  _Region.Region = $projection.Region
   association [0..1] to /ESRCC/I_ROLE        as _Role           on  _Role.Role = $projection.Role
   association [0..1] to /ESRCC/I_ENTITYTYPE  as _EntityType     on  _EntityType.Entitytype = $projection.Entitytype
-//  association [0..1] to /esrcc/le_t          as _LegalEntity    on  _LegalEntity.legalentity = $projection.Legalentity
-//                                                                and _LegalEntity.spras       = $session.system_language
   association [0..1] to I_CountryText        as _Country        on  _Country.Country  = $projection.Country
                                                                 and _Country.Language = $session.system_language
   association [0..1] to I_CurrencyText       as _Currency       on  _Currency.Currency = $projection.LocalCurr
@@ -37,7 +36,6 @@ define view entity /ESRCC/I_LE
       _Region,
       _Role,
       _EntityType,
-//      _LegalEntity,
       _Country,
       _Currency
 }

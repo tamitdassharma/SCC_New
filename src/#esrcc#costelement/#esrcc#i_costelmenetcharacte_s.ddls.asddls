@@ -1,4 +1,4 @@
-@EndUserText.label: 'Cost elmenet characteristics Singleton'
+@EndUserText.label: 'Cost element characteristics Singleton'
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 define root view entity /ESRCC/I_CostElmenetCharacte_S
   as select from I_Language

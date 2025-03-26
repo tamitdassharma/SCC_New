@@ -9,10 +9,10 @@
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>System ID (Source)</DDTEXT>
-    <REPTEXT>System ID (Receiver)</REPTEXT>
-    <SCRTEXT_M>System ID (Receiver)</SCRTEXT_M>
-    <SCRTEXT_L>System ID (Receiver)</SCRTEXT_L>
+    <DDTEXT>Receiver System ID</DDTEXT>
+    <REPTEXT>Receiver System ID</REPTEXT>
+    <SCRTEXT_M>Receiver System ID</SCRTEXT_M>
+    <SCRTEXT_L>Receiver System ID</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>CHAR</DATATYPE>
     <LENG>000010</LENG>
@@ -25,11 +25,10 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>System ID (Quelle)</DDTEXT>
-     <REPTEXT>System ID (Quelle)</REPTEXT>
-     <SCRTEXT_S>System ID</SCRTEXT_S>
-     <SCRTEXT_M>System ID (Quelle)</SCRTEXT_M>
-     <SCRTEXT_L>System ID (Quelle)</SCRTEXT_L>
+     <DDTEXT>Empfänger System ID</DDTEXT>
+     <REPTEXT>Empfänger System ID</REPTEXT>
+     <SCRTEXT_M>Empfänger System ID</SCRTEXT_M>
+     <SCRTEXT_L>Empfänger System ID</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

@@ -10,7 +10,7 @@
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>ESRCC Role Name</DDTEXT>
+    <DDTEXT>Role</DDTEXT>
     <REPTEXT>Role</REPTEXT>
     <SCRTEXT_S>Role</SCRTEXT_S>
     <SCRTEXT_M>Role</SCRTEXT_M>
@@ -25,7 +25,7 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>ESRCC Rollenname</DDTEXT>
+     <DDTEXT>Rolle</DDTEXT>
      <REPTEXT>Rolle</REPTEXT>
      <SCRTEXT_S>Rolle</SCRTEXT_S>
      <SCRTEXT_M>Rolle</SCRTEXT_M>

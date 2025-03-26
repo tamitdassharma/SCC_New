@@ -9,9 +9,10 @@ annotate view /ESRCC/C_Stewrdshp_S with
   @UI.facet: [ {
     id: '/ESRCC/I_Stewrdshp', 
     purpose: #STANDARD, 
-    type: #LINEITEM_REFERENCE, 
-    label: 'Maintain Stewardship Shares for Cost Objects', 
+    type: #PRESENTATIONVARIANT_REFERENCE,
+    label: 'Maintain Stewardship, Service Products & Receivers', 
     position: 2,
+    targetQualifier: 'pVariant',
     targetElement: '_Stewardship'
   } ]
   @UI.lineItem: [ {

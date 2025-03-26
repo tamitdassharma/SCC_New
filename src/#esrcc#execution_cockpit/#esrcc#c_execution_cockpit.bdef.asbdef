@@ -1,7 +1,7 @@
 unmanaged implementation in class /esrcc/bp_c_execution_cockpit unique;
 strict ( 1 ); //Uncomment this line in order to enable strict mode 2. The strict mode has two variants (strict(1), strict(2)) and is prerequisite to be future proof regarding syntax and to be able to release your BO.
 
-define behavior for /ESRCC/C_EXECUTION_COCKPIT //alias <alias_name>
+define behavior for /ESRCC/C_EXECUTION_COCKPIT  //alias <alias_name>
 //late numbering
 lock master
 authorization master ( instance )
@@ -21,4 +21,5 @@ authorization master ( instance )
   action reopenchargeout;
   action automate_sequentialchargeout;
   action reopen_sequentialchargeout;
+
 }

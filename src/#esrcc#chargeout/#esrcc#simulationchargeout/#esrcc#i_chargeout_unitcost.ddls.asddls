@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Charge-Out Markup'
 @Metadata.ignorePropagatedAnnotations: true
@@ -48,19 +48,10 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     localcurr,
     groupcurr,
     ShareOfCost as costshare,
-    
-//  Direct allocation unit cost
-    @Semantics.quantity.unitOfMeasure: 'uom'
-    cast(case when chargeout = 'D' and dirplan.Uom <> Uom then
-    unit_conversion( 
-                     client => $session.client,
-                     quantity => dirplan.Planning,
-                     source_unit => dirplan.Uom,
-                     target_unit => Uom,
-                     error_handling => 'SET_TO_NULL' ) 
-    else
-    dirplan.Planning end as abap.quan( 23, 2 )) as planning,
-    dirplan.Uom as PlanningUoM,
-    Uom  
+    ContractId,   
+    @Semantics.quantity.unitOfMeasure: 'PlanningUoM'
+    dirplan.Planning as planning,
+    dirplan.Uom as PlanningUoM
+//    Uom  
 
 }

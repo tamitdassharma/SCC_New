@@ -21,5 +21,7 @@ INTERFACE /esrcc/if_application_logs PUBLIC.
                                              message_ids TYPE message_ids_type,
     save_header,
     save_messages,
+    clear_messages,
+    clear_header,
     save_header_and_messages.
 ENDINTERFACE.

@@ -1,10 +1,12 @@
 @EndUserText.label: 'Charge-out'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_ChargeoutBc
   as select from /esrcc/chargeout
   association        to parent /ESRCC/I_ChargeoutBc_S as _ChargeoutAll on $projection.SingletonID = _ChargeoutAll.SingletonID
   association [0..1] to /ESRCC/I_SERVICEPRODUCT_F4    as _ProductText  on _ProductText.ServiceProduct = $projection.Serviceproduct
-  association [1..1] to /ESRCC/I_ChargeoutRule_F4     as _Rule         on _Rule.RuleId = $projection.ChargeoutRuleId
+  //  association [1..1] to /ESRCC/I_ChargeoutRule_F4     as _Rule         on _Rule.RuleId = $projection.ChargeoutRuleId
+  association [1..1] to /ESRCC/C_CoRule               as _Rule         on _Rule.RuleId = $projection.ChargeoutRuleId
 {
   key uuid                  as Uuid,
       serviceproduct        as Serviceproduct,

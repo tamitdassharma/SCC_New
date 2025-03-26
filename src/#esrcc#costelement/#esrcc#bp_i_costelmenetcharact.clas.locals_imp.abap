@@ -78,6 +78,9 @@ CLASS lhc_rap_tdat_cts IMPLEMENTATION.
 ENDCLASS.
 CLASS lhc_/esrcc/i_costelmenetcharac DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
+    CONSTANTS c_source_entity TYPE sxco_cds_object_name VALUE '/ESRCC/C_COSTELMENETCHARACTE'.
+    CONSTANTS c_path TYPE sxco_cds_association_name VALUE 'CostElementCharAll'.
+
     METHODS:
       get_instance_features FOR INSTANCE FEATURES
         IMPORTING
@@ -147,11 +150,12 @@ CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
 
   METHOD precheck_cba_costelementchar.
     TYPES ts_ce_char TYPE STRUCTURE FOR READ RESULT /esrcc/i_costelmenetcharacte_s\\costelementchar.
+    CONSTANTS c_vs_virtual TYPE /esrcc/ce_value_source VALUE 'SCC'.
 
     DATA(lo_config_util) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths              = VALUE #( ( path = 'CostElementCharAll' ) )
-        source_entity_name = '/ESRCC/C_COSTELMENETCHARACTE'
+        paths              = VALUE #( ( path = c_path ) )
+        source_entity_name = c_source_entity
         is_transition      = abap_true
       CHANGING
         reported_entity    = reported-costelementchar
@@ -160,6 +164,7 @@ CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_config_util ).
     DATA(target_entities) = VALUE #( entities[ 1 ]-%target ).
 
+*   Identify duplicate entries
     SELECT DISTINCT
            celem~costelementuuid
         FROM /esrcc/d_cstelmt AS celem
@@ -169,15 +174,38 @@ CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
         WHERE celem~draftentityoperationcode NOT IN ( 'D', 'L' )
         INTO TABLE @DATA(duplicate_entities).
 
-    LOOP AT target_entities INTO DATA(entity) GROUP BY ( costelementuuid = entity-costelementuuid
-                                                         validfrom       = entity-validfrom
-                                                         size            = GROUP SIZE )
+*   Identify already assigned cost element entities
+    SELECT DISTINCT
+           tent~cstelmntcharuuid
+        FROM /esrcc/d_cstelmt AS celem
+        INNER JOIN @target_entities AS tent
+            ON  tent~sysid       = celem~sysid
+            AND tent~legalentity = celem~legalentity
+            AND tent~companycode = celem~companycode
+            AND tent~valuesource = celem~valuesource
+            AND tent~validfrom   BETWEEN celem~validfrom AND celem~validto
+        WHERE celem~draftentityoperationcode NOT IN ( 'D', 'L' )
+          AND tent~valuesource  = @c_vs_virtual
+          AND celem~valuesource = @c_vs_virtual
+        INTO TABLE @DATA(assigned_entities).
+
+    SELECT SINGLE text
+        FROM /esrcc/i_valuesource
+        WHERE valuesource = @c_vs_virtual
+        INTO @DATA(value_source_text).
+
+    LOOP AT target_entities INTO DATA(entity) GROUP BY ( costelementuuid  = entity-costelementuuid
+                                                         validfrom        = entity-validfrom
+                                                         size             = GROUP SIZE )
         ASCENDING REFERENCE INTO DATA(group_ref).
+      READ TABLE target_entities INTO DATA(t_entity) INDEX sy-tabix.
+
       lo_validation->validate_ce_char(
         entity  = CORRESPONDING #( group_ref->* )
         control = VALUE #( validfrom = if_abap_behv=>mk-on )
       ).
 
+      " Validate duplicate entries
       IF line_exists( duplicate_entities[ costelementuuid = group_ref->costelementuuid ] ) OR group_ref->size > 1.
         lo_config_util->set_state_message(
           entity     = CORRESPONDING ts_ce_char( entity )
@@ -187,37 +215,53 @@ CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
                          severity = if_abap_behv_message=>severity-error
                        )
           state_area = CONV #( /esrcc/cl_config_util=>duplicate ) ).
+      ELSEIF line_exists( assigned_entities[ cstelmntcharuuid = t_entity-cstelmntcharuuid ] ).
+        " Validate cost element assignment
+        lo_config_util->set_state_message(
+          entity     = CORRESPONDING ts_ce_char( t_entity )
+          msg        = new_message(
+                         id       = /esrcc/cl_config_util=>c_config_msg
+                         number   = '030'
+                         severity = if_abap_behv_message=>severity-error
+                         v1       = value_source_text
+                       )
+          state_area = CONV #( /esrcc/cl_config_util=>duplicate ) ).
       ENDIF.
     ENDLOOP.
   ENDMETHOD.
 
   METHOD validatedata.
     DATA: draft TYPE STRUCTURE FOR READ RESULT /esrcc/c_costelmenetcharacte_s\\costelementchar.
+    CONSTANTS c_vs_virtual TYPE /esrcc/ce_value_source VALUE 'SCC'.
 
     READ ENTITIES OF /esrcc/i_costelmenetcharacte_s IN LOCAL MODE
          ENTITY costelementchar
          ALL FIELDS WITH CORRESPONDING #( keys )
          RESULT DATA(entities).
 
-**   Draft version data
-*    SELECT ele~*
-*      FROM /esrcc/d_cstelmt AS ele
-*      INNER JOIN @keys AS key
-*        ON  key~sysid        = ele~sysid
-*        AND key~legalentity  = ele~legalentity
-*        AND key~ccode        = ele~ccode
-*        AND key~costelement  = ele~costelement
-*        AND key~validfrom   <> ele~validfrom
-*      WHERE ele~draftentityoperationcode NOT IN ( 'D', 'L' )
-*      INTO TABLE @DATA(draft_entities).
+*   To validate overlapping dates
+    SELECT ele~*
+      FROM /esrcc/d_cstelmt AS ele
+      INNER JOIN @entities AS ent
+        ON  ent~sysid        = ele~sysid
+        AND ent~legalentity  = ele~legalentity
+        AND ent~companycode  = ele~companycode
+*        AND ent~costelement  = ele~costelement
+      WHERE ele~draftentityoperationcode NOT IN ( 'D', 'L' )
+      INTO TABLE @DATA(overlapping_dates).
 
     DATA(lo_ce_char) = /esrcc/cl_config_util=>create(
       EXPORTING
-        paths              = VALUE #( ( path = 'CostElementCharAll' ) )
-        source_entity_name = '/ESRCC/C_COSTELMENETCHARACTE'
+        paths              = VALUE #( ( path = c_path ) )
+        source_entity_name = c_source_entity
       CHANGING
         reported_entity    = reported-costelementchar
         failed_entity      = failed-costelementchar ).
+
+    SELECT SINGLE text
+        FROM /esrcc/i_valuesource
+        WHERE valuesource = @c_vs_virtual
+        INTO @DATA(value_source_text).
 
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_ce_char ).
 
@@ -227,29 +271,51 @@ CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
         control = VALUE #( validto = if_abap_behv=>mk-on cost_indicator = if_abap_behv=>mk-on )
       ).
 
-*      LOOP AT draft_entities ASSIGNING FIELD-SYMBOL(<draft>)
-*           WHERE     sysid        = entity-sysid
-*                 AND legalentity  = entity-legalentity
-*                 AND ccode        = entity-ccode
-*                 AND costelement  = entity-costelement
-*                 AND validfrom   <> entity-validfrom.
-*        draft = CORRESPONDING #( <draft> ).
-*        draft = CORRESPONDING #( BASE ( draft ) entity MAPPING %is_draft = %is_draft singletonid = singletonid EXCEPT * ).
-*        lo_ce_char->validate_overlapping_validity( EXPORTING src_from    = <draft>-validfrom
-*                                                             src_to      = <draft>-validto
-*                                                             src_entity  = draft
-*                                                             curr_from   = entity-validfrom
-*                                                             curr_to     = entity-validto
-*                                                             curr_entity = entity ).
-*      ENDLOOP.
+      " Validate overlapping dates
+      LOOP AT overlapping_dates INTO DATA(date)
+           WHERE     sysid            = entity-sysid
+                 AND legalentity      = entity-legalentity
+                 AND companycode      = entity-companycode
+                 AND costelement      = entity-costelement
+                 AND cstelmntcharuuid <> entity-cstelmntcharuuid.
+        draft = CORRESPONDING #( date ).
+        draft = CORRESPONDING #( BASE ( draft ) entity MAPPING %is_draft = %is_draft singletonid = singletonid EXCEPT * ).
+        lo_ce_char->validate_overlapping_validity( EXPORTING src_from    = draft-validfrom
+                                                             src_to      = draft-validto
+                                                             src_entity  = draft
+                                                             curr_from   = entity-validfrom
+                                                             curr_to     = entity-validto
+                                                             curr_entity = entity ).
+      ENDLOOP.
+
+      IF entity-valuesource = c_vs_virtual.
+        LOOP AT overlapping_dates INTO date WHERE cstelmntcharuuid <> entity-cstelmntcharuuid
+                                              AND sysid            = entity-sysid
+                                              AND legalentity      = entity-legalentity
+                                              AND companycode      = entity-companycode
+                                              AND valuesource      = c_vs_virtual
+                                              AND ( validfrom      BETWEEN entity-validfrom AND entity-validto
+                                                OR  validto        BETWEEN entity-validfrom AND entity-validto ).
+          lo_ce_char->set_state_message(
+            entity     = entity
+            msg        = new_message(
+                           id       = /esrcc/cl_config_util=>c_config_msg
+                           number   = '030'
+                           severity = if_abap_behv_message=>severity-error
+                           v1       = value_source_text )
+            state_area = CONV #( /esrcc/cl_config_util=>duplicate )
+          ).
+          EXIT.
+        ENDLOOP.
+      ENDIF.
     ENDLOOP.
   ENDMETHOD.
 
   METHOD precheck_update.
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
         EXPORTING
-          paths              = VALUE #( ( path = 'CostElementCharAll' ) )
-          source_entity_name = '/ESRCC/C_COSTELMENETCHARACTE'
+          paths              = VALUE #( ( path = c_path ) )
+          source_entity_name = c_source_entity
         CHANGING
           reported_entity    = reported-costelementchar
           failed_entity      = failed-costelementchar ) ).
@@ -262,8 +328,8 @@ CLASS lhc_/esrcc/i_costelmenetcharac IMPLEMENTATION.
       ).
     ENDLOOP.
   ENDMETHOD.
-
 ENDCLASS.
+
 CLASS lsc_/esrcc/i_costelmenetcharac DEFINITION INHERITING FROM cl_abap_behavior_saver.
   PROTECTED SECTION.
     METHODS:

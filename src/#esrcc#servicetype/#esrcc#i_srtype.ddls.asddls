@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @EndUserText.label: 'Service Type'
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_SrType
@@ -6,7 +7,6 @@ define view entity /ESRCC/I_SrType
   composition [0..*] of /ESRCC/I_SrTypeText as _ServiceTypeText
 {
   key srvtype               as Srvtype,
-//      active                as Active,
       @Semantics.user.createdBy: true
       created_by            as CreatedBy,
       @Semantics.systemDateTime.createdAt: true

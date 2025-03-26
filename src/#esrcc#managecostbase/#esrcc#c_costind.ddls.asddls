@@ -1,3 +1,4 @@
+@AbapCatalog.extensibility.extensible: true
 @EndUserText.label: 'Change Cost Indicator'
 define abstract entity /ESRCC/C_COSTIND  
 {   

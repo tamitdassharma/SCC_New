@@ -1,3 +1,4 @@
+@AbapCatalog.extensibility.extensible: true
 @EndUserText.label: 'Include/Exclude Items in Calculation'
 define root abstract entity /ESRCC/C_ADHOCCHARGEOUT
 {

@@ -1,12 +1,12 @@
-class /ESRCC/BP_I_COSTELMENETCHARACT definition
-  public
-  abstract
-  final
-  for behavior of /ESRCC/I_COSTELMENETCHARACTE_S .
+CLASS /esrcc/bp_i_costelmenetcharact DEFINITION
+  PUBLIC
+  ABSTRACT
+  FINAL
+  FOR BEHAVIOR OF /esrcc/i_costelmenetcharacte_s .
 
-public section.
-protected section.
-private section.
+  PUBLIC SECTION.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
 ENDCLASS.
 
 

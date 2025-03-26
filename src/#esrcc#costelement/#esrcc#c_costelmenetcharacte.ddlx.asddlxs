@@ -7,7 +7,16 @@
       type: #STANDARD,
       value: 'Costelement'
     }
-  }
+  },
+  presentationVariant: [{
+    qualifier: 'pVariant',
+    sortOrder: [{ by: 'Sysid', direction: #ASC },
+                { by: 'LegalEntity', direction: #ASC},
+                { by: 'CompanyCode', direction: #ASC },
+                { by: 'Costelement', direction: #ASC },
+                { by: 'ValidFrom', direction: #ASC }],                
+    visualizations: [{type: #AS_LINEITEM }]
+  }]
 }
 annotate view /ESRCC/C_CostElmenetCharacte with
 {

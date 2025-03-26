@@ -48,6 +48,7 @@ define root view entity /ESRCC/I_ApplicationLogsHierF
       //      //      cast('' as abap_boolean)        as IsParent
       //      /* Application Log Invalid Records */
       cast('' as sysuuid_c32)                  as LogHeaderUuid,
+//      LogHeaderUuid,
       cast('' as /esrcc/ryear)                 as Ryear,
       cast('' as poper)                        as Poper,
       cast('' as /esrcc/costdataset_de)        as Fplv,
@@ -77,7 +78,7 @@ define root view entity /ESRCC/I_ApplicationLogsHierF
       //      cast('' as /esrcc/usage)            as Oldusagecal,
       //      cast('' as /esrcc/costdataset_de)   as Oldcostdataset,
       //      cast('' as abap.char(1024))         as Comments
-
+      RootUUID,
       _AppText.text                            as ApplicationDescription,
       _SubAppText.text                         as SubApplicationDescription,
       _SystemIdText.Description                as SystemIdDescription,
@@ -155,7 +156,7 @@ union all select from /ESRCC/I_AppLogItemsHeaderHier
       //      cast('' as /esrcc/usage)            as Oldusagecal,
       //      cast('' as /esrcc/costdataset_de)   as Oldcostdataset,
       //      cast('' as abap.char(1024))         as Comments
-
+      RootUUID,
       ''                                              as ApplicationDescription,
       ''                                              as SubApplicationDescription,
       ''                                              as SystemIdDescription,
@@ -220,7 +221,7 @@ union all select from /ESRCC/I_AppLogItemsChildHier
       //      cast('' as /esrcc/usage)            as Oldusagecal,
       //      cast('' as /esrcc/costdataset_de)   as Oldcostdataset,
       //      cast('' as abap.char(1024))         as Comments
-
+      RootUUID,
       ''                                              as ApplicationDescription,
       ''                                              as SubApplicationDescription,
       ''                                              as SystemIdDescription,
@@ -286,7 +287,8 @@ union all select from /ESRCC/I_InvalidRecordsHier
       //      Oldusagecal,
       //      Oldcostdataset,
       //      Comments
-
+//      cast( '' as sysuuid_c32 ) as rootUUID, 
+      RootUUID,       
       ''                                              as ApplicationDescription,
       ''                                              as SubApplicationDescription,
       ''                                              as SystemIdDescription,

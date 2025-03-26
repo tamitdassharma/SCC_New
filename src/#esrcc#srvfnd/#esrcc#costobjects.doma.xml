@@ -36,7 +36,7 @@
      <VALPOS>0004</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>TB</DOMVALUE_L>
-     <DDTEXT>Account Balance total</DDTEXT>
+     <DDTEXT>Account Balance Total</DDTEXT>
     </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>
@@ -70,7 +70,7 @@
      <VALPOS>0004</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>TB</DOMVALUE_L>
-     <DDTEXT>Kontensaldo gesamt</DDTEXT>
+     <DDTEXT>Kontosaldo gesamt</DDTEXT>
     </item>
    </DD07_TEXTS>
   </asx:values>

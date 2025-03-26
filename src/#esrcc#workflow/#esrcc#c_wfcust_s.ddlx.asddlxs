@@ -10,7 +10,7 @@ annotate view /ESRCC/C_WfCust_S with
     id: '/ESRCC/I_WfCust', 
     purpose: #STANDARD, 
     type: #LINEITEM_REFERENCE, 
-    label: 'Maintain Configuration for Workflow Approval',
+    label: 'Maintain Workflow Approval Configuration',
     position: 2 , 
     targetElement: '_RoleAssignment'
   } ]

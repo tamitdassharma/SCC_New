@@ -19,6 +19,18 @@
     <OUTPUTLEN>000010</OUTPUTLEN>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Erbringer System ID</DDTEXT>
+     <REPTEXT>Erbringer System ID</REPTEXT>
+     <SCRTEXT_M>Erbringer System ID</SCRTEXT_M>
+     <SCRTEXT_L>Erbringer System ID</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

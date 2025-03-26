@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Workflow mapping of User and Role - Main'
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
@@ -14,7 +15,6 @@ define view entity /ESRCC/C_WfCust
   key Sysid,
       @ObjectModel.text.element: ['CostobjectDescription']
   key Costobject,
-      @ObjectModel.text.element: ['CostcenterDescription']
   key Costcenter,
       Usergroup,
       Pfcgrole,
@@ -36,9 +36,7 @@ define view entity /ESRCC/C_WfCust
       @Semantics.text: true
       _SystemText.Description      as SysidDescription,
       @Semantics.text: true
-      _CostNumberText.CostobjectDescription,
-      @Semantics.text: true
-      _CostNumberText.Description  as CostcenterDescription,
+      _CostObjectText.text         as CostobjectDescription,
 
       _RoleAssignmentAll : redirected to parent /ESRCC/C_WfCust_S
 }

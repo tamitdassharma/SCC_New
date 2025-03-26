@@ -61,7 +61,8 @@ annotate view /ESRCC/C_CoRule with
   
   @UI.lineItem: [{ position: 1 },
                  { type: #FOR_ACTION, dataAction: 'Submit', label: 'Submit', position: 10 },
-                 { type: #FOR_ACTION, dataAction: 'Finalize', label: 'Finalize', position: 20 }]
+                 { type: #FOR_ACTION, dataAction: 'Finalize', label: 'Finalize', position: 20 },
+                 { type: #FOR_ACTION, dataAction: 'Reopen', label: 'Re-open', position: 30 }]
   RuleId;
 
   @UI.identification: [ { hidden: true, position: 2 } ]
@@ -97,13 +98,6 @@ annotate view /ESRCC/C_CoRule with
   @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_KEY_VERSION', element: 'KeyVersion' } } ]
   KeyVersion;
 
-  @UI.identification: [ { position: 8, hidden: #(HideUom) } ]
-  @UI.lineItem: [ { position: 8, hidden: true } ]
-  @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [ { entity: { name: 'I_UnitOfMeasure', element: 'UnitOfMeasure' } } ]
-  @EndUserText.label: 'Unit of Measure'
-  Uom;
-
   @UI.identification: [ { position: 9, hidden: #(HideAdhocAllocationKey) } ]
   @UI.lineItem: [ { position: 9, hidden: true } ]
   @UI.textArrangement: #TEXT_LAST
@@ -119,11 +113,13 @@ annotate view /ESRCC/C_CoRule with
   @UI.textArrangement: #TEXT_ONLY
   @EndUserText.label: 'Workflow Status'
   WorkflowStatus;
+  
+  @UI.lineItem: [{ hidden: true }]
+  CommentId;
 
   @UI.lineItem: [{ hidden: true }]
   @UI.multiLineText: true
   @UI.fieldGroup: [{ qualifier: 'WorkflowGroup', position: 30 }]
-  @EndUserText.label: 'Comments (When Submitted)'
   Comments;
 
   @UI.lineItem: [ { position: 13 } ]
@@ -145,8 +141,6 @@ annotate view /ESRCC/C_CoRule with
   @UI.hidden
   ChargeoutMethodDescription;
   @UI.hidden
-  UomDescription;
-  @UI.hidden
   CapacityVersionDescription;
   @UI.hidden
   ConsumptionVersionDescription;
@@ -166,8 +160,6 @@ annotate view /ESRCC/C_CoRule with
   HideConsumptionVersion;
   @UI.hidden: true
   HideKeyVersion;
-  @UI.hidden: true
-  HideUom;
   @UI.hidden: true
   HideAdhocAllocationKey;
   @UI.hidden: true

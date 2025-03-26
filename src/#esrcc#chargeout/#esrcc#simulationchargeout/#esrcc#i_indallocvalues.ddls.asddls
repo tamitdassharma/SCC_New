@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Indirect Allocation'
 @Metadata.ignorePropagatedAnnotations: true
@@ -17,22 +17,22 @@ as select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
            and indwght.ReceivingEntity = periodindalloc.ReceivingEntity
            and indwght.ReceiverCostObject = periodindalloc.ReceiverCostObject
            and indwght.ReceiverCostCenter = periodindalloc.ReceiverCostCenter
-           and indwght.ryear           = periodindalloc.Ryear
+           and indwght.Ryear           = periodindalloc.Ryear
            and indwght.Allockey        = periodindalloc.AllocationKey
            and indwght.KeyVersion      = periodindalloc.Fplv
-           and indwght.poper           >= periodindalloc.Poper
+           and indwght.Poper           >= periodindalloc.Poper
 
                                                                                          
 
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key indwght.ReceiverSysId,
   key indwght.ReceiverCompanyCode,
@@ -58,21 +58,21 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
        and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
        and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
        and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
-       and indwght.ryear               = periodindalloc.Ryear
+       and indwght.Ryear               = periodindalloc.Ryear
        and indwght.Allockey            = periodindalloc.AllocationKey
        and indwght.KeyVersion          = periodindalloc.Fplv
-       and indwght.poper               = periodindalloc.Poper                                                    
+       and indwght.Poper               = periodindalloc.Poper                                                    
                                                                                          
 
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key indwght.ReceiverSysId,
   key indwght.ReceiverCompanyCode,
@@ -98,20 +98,20 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
                and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
                and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
                and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
-               and indwght.ryear               = periodindalloc.Ryear
+               and indwght.Ryear               = periodindalloc.Ryear
                and indwght.Allockey            = periodindalloc.AllocationKey
                and indwght.KeyVersion          = periodindalloc.Fplv                                                          
                and indwght.RefPeriod          >= periodindalloc.Poper                                                                                      
 
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key indwght.ReceiverSysId,
   key indwght.ReceiverCompanyCode,
@@ -137,20 +137,20 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
            and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
            and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
            and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
-           and indwght.ryear               = periodindalloc.Ryear
+           and indwght.Ryear               = periodindalloc.Ryear
            and indwght.Allockey            = periodindalloc.AllocationKey
            and indwght.KeyVersion          = periodindalloc.Fplv                                                                                                                                                                   
-           and indwght.poper              >= periodindalloc.Poper  
+           and indwght.Poper              >= periodindalloc.Poper  
            and periodindalloc.Poper        > indwght.fromRefperiod                       
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key indwght.ReceiverSysId,
   key indwght.ReceiverCompanyCode,
@@ -176,22 +176,22 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
                and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
                and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
                and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
-               and indwght.ryear               = periodindalloc.Ryear
+               and indwght.Ryear               = periodindalloc.Ryear
                and indwght.Allockey            = periodindalloc.AllocationKey
                and indwght.KeyVersion          = periodindalloc.Fplv
-               and indwght.poper               > periodindalloc.Poper  
+               and indwght.Poper               > periodindalloc.Poper  
                and periodindalloc.Poper       >= indwght.fromRefperiod                           
                                                                                          
 
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key indwght.ReceiverSysId,
   key indwght.ReceiverCompanyCode,
@@ -218,21 +218,21 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
                and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
                and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
                and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
-               and indwght.ryear               = periodindalloc.Ryear
+               and indwght.Ryear               = periodindalloc.Ryear
                and indwght.Allockey            = periodindalloc.AllocationKey
                and indwght.KeyVersion          = periodindalloc.Fplv
                and indwght.RefPeriod           = periodindalloc.Poper
                                                                                          
 
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key indwght.ReceiverSysId,
   key indwght.ReceiverCompanyCode,

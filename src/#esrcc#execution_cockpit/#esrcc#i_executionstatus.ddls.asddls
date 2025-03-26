@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Execution Cockpit Status'
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_ExecutionStatus

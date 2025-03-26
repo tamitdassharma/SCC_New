@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @EndUserText.label: 'Service Transaction Group'
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_SrvTg
@@ -6,7 +7,6 @@ define view entity /ESRCC/I_SrvTg
   composition [0..*] of /ESRCC/I_SrvTgText as _TransactionGrpText
 {
   key transactiongroup as Transactiongroup,
-//  active as Active,
   @Semantics.user.createdBy: true
   created_by as CreatedBy,
   @Semantics.systemDateTime.createdAt: true

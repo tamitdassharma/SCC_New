@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Charge-out Rules'
 @Metadata.ignorePropagatedAnnotations: true
@@ -14,8 +14,6 @@ define view entity /ESRCC/I_ChargeoutRule_F4
   association [0..1] to /ESRCC/I_CONSUMPTION_VERSION as _ConsumptionVersionText on  _ConsumptionVersionText.ConsumptionVersion = $projection.ConsumptionVersion
   association [0..1] to /ESRCC/I_KEY_VERSION         as _KeyVersionText         on  _KeyVersionText.KeyVersion = $projection.KeyVersion
   association [0..1] to /ESRCC/I_ALLOCATION_KEY_F4   as _AdhocKeyText           on  _AdhocKeyText.Allocationkey = $projection.AdhocAllocationKey
-  association        to I_UnitOfMeasureText          as _UoM                    on  _UoM.UnitOfMeasure_E = $projection.Uom
-                                                                                and _UoM.Language        = $session.system_language
 {
       @UI.lineItem: [{ position: 10 }]
       @UI.textArrangement: #TEXT_LAST
@@ -65,14 +63,6 @@ define view entity /ESRCC/I_ChargeoutRule_F4
       @Consumption.valueHelpDefinition: [ { entity: { name: '/ESRCC/I_ALLOCATION_KEY_F4', element: 'Allocationkey' } } ]
       adhoc_allocation_key                   as AdhocAllocationKey,
 
-      @UI.lineItem: [{ position: 80 }]
-      @UI.textArrangement: #TEXT_LAST
-      @ObjectModel.text: { element: ['UomDescription'] }
-      @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
-      @Consumption.valueHelpDefinition: [ { entity: { name: 'I_UnitOfMeasure', element: 'UnitOfMeasure' } } ]
-      @EndUserText.label: 'Unit of Measure'
-      uom                                    as Uom,
-
       @UI.hidden: true
       @Semantics.text: true
       @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
@@ -100,11 +90,7 @@ define view entity /ESRCC/I_ChargeoutRule_F4
 
       @UI.hidden: true
       @Semantics.text: true
-      _AdhocKeyText.AllocationKeyDescription as AdhocKeyDescription,
-
-      @UI.hidden: true
-      @Semantics.text: true
-      _UoM.UnitOfMeasureLongName             as UomDescription
+      _AdhocKeyText.AllocationKeyDescription as AdhocKeyDescription
 }
 where
   workflow_status = 'F' -- Finalized

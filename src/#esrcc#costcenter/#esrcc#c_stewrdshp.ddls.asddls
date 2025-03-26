@@ -1,4 +1,5 @@
 @EndUserText.label: 'Stewardship - Maintain'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
 define view entity /ESRCC/C_Stewrdshp
@@ -13,6 +14,8 @@ define view entity /ESRCC/C_Stewrdshp
       WorkflowId,
       @ObjectModel.text.element: ['WorkflowStatusDescription']
       WorkflowStatus,
+      CommentId,
+      @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/CL_CONFIG_VE_HANDLER'
       Comments,
       CreatedBy,
       CreatedAt,

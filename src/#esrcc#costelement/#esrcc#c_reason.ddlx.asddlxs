@@ -1,11 +1,10 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Reason',
-    typeNamePlural: 'Reasons',
+    typeName: 'Reason for Cost Include/Exclusion',
+    typeNamePlural: 'Reasons for Cost Include/Exclusion',
     title: {
       type: #STANDARD,
-      label: 'Reason for Cost Exclusion/Inclusion',
       value: 'Reasonid'
     }
   }
@@ -53,8 +52,7 @@ annotate view /ESRCC/C_Reason with
   Calculationusage;
 
   @UI.identification: [ { position: 4 } ]
-  @UI.lineItem: [ { position: 4, cssDefault.width: '3.5rem' } ]
-  @EndUserText.label: 'Default'
+  @UI.lineItem: [ { position: 4, cssDefault.width: '4.5rem' } ]
   Defaultflag;
 
   @UI.lineItem: [ { position: 5 } ]

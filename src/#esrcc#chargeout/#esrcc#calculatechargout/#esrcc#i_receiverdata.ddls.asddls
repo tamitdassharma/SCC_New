@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST,#UNION]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Receiver Total Cost Union View'
 @Metadata.ignorePropagatedAnnotations: true
@@ -22,11 +22,11 @@ define view entity /ESRCC/I_ReceiverData
       valueaddmarkup      as Valueaddmarkup,
       passthrumarkup      as Passthrumarkup,
       reckpi              as Reckpi,
-      reckpishare         as Reckpishare,
-      uom                 as Uom,
+      reckpishare         as Reckpishare,      
       consumptionuom      as ConsumptionUom,
       status              as Status,
       workflowid          as Workflowid,
+      commentid           as CommentId,
       exchdate            as Exchdate,
       invoicingcurrency   as InvoicingCurrency,
       invoiceuuid         as InvoiceUUID,
@@ -52,11 +52,11 @@ select from /esrcc/rec_chg
       valueaddmarkup      as Valueaddmarkup,
       passthrumarkup      as Passthrumarkup,
       reckpi              as Reckpi,
-      reckpishare         as Reckpishare,
-      uom                 as Uom,
+      reckpishare         as Reckpishare,      
       consumptionuom      as ConsumptionUom,
       status              as Status,
       workflowid          as Workflowid,
+      commentid           as CommentId,
       exchdate            as Exchdate,
       invoicingcurrency   as InvoicingCurrency,
       invoiceuuid         as InvoiceUUID,
@@ -81,11 +81,11 @@ union select from /esrcc/rec_chg
       valueaddmarkup      as Valueaddmarkup,
       passthrumarkup      as Passthrumarkup,
       reckpi              as Reckpi,
-      reckpishare         as Reckpishare,
-      uom                 as Uom,
+      reckpishare         as Reckpishare,      
       consumptionuom      as ConsumptionUom,
       status              as Status,
       workflowid          as Workflowid,
+      commentid           as CommentId,
       exchdate            as Exchdate,
       invoicingcurrency   as InvoicingCurrency,
       invoiceuuid         as InvoiceUUID,

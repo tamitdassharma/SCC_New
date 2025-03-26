@@ -165,22 +165,21 @@ annotate view /ESRCC/C_SRV_WORKFLOW with
    position: 71 ,
    qualifier: 'ChgData'
  } ]
-  @EndUserText.label: 'Consumption'
   Planning;
-  @UI.lineItem: [ {
-  position: 110 ,
-  importance: #MEDIUM,
-  label: ''
-  } ]
-  @UI.fieldGroup: [
-  {
-   importance: #HIGH,
-   position: 72 ,
-   qualifier: 'ChgData'
-  } ]
-  @EndUserText.label: 'UoM'
-  @UI.textArrangement: #TEXT_LAST
-  Uom;
+//  @UI.lineItem: [ {
+//  position: 110 ,
+//  importance: #MEDIUM,
+//  label: ''
+//  } ]
+//  @UI.fieldGroup: [
+//  {
+//   importance: #HIGH,
+//   position: 72 ,
+//   qualifier: 'ChgData'
+//  } ]
+//  @EndUserText.label: 'UoM'
+//  @UI.textArrangement: #TEXT_LAST
+//  uom;
   @UI.lineItem: [ {
   position: 120 ,
   importance: #MEDIUM,

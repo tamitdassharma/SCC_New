@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_ALLOCKEYS_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "AllocationKeyAll",
-    "name": "Maintain Allocation Key for Indirect Charge",
-    "configurationGroup": "/ESRCC/BC_GROUP6",
+    "name": "Allocation Keys",
+    "configurationGroup": "/ESRCC/BC_GROUP4",
     "skipRootEntity": true
   },
   "appConfiguration": {

@@ -1,4 +1,5 @@
 @EndUserText.label: 'Stewardship'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_Stewrdshp
   as select from /esrcc/stewrdshp
@@ -11,46 +12,52 @@ define view entity /ESRCC/I_Stewrdshp
   composition [0..*] of /ESRCC/I_StwdSp             as _ServiceProduct
   composition [0..*] of /ESRCC/I_StwdSpRec          as _ServiceReceiver
 {
-  key stewardship_uuid         as StewardshipUuid,
-      valid_from               as ValidFrom,
-      valid_to                 as Validto,
-      stewardship              as Stewardship,
-      cost_object_uuid         as CostObjectUuid,
-      chain_id                 as ChainId,
-      chain_sequence           as ChainSequence,
-      workflow_id              as WorkflowId,
-      workflow_status          as WorkflowStatus,
-      comments                 as Comments,
+  key stewardship_uuid            as StewardshipUuid,
+      valid_from                  as ValidFrom,
+      valid_to                    as Validto,
+      stewardship                 as Stewardship,
+      cost_object_uuid            as CostObjectUuid,
+      chain_id                    as ChainId,
+      chain_sequence              as ChainSequence,
+      workflow_id                 as WorkflowId,
+      workflow_status             as WorkflowStatus,
+      comment_id                  as CommentId,
       _CostObject.Sysid,
       _CostObject.LegalEntity,
       _CostObject.CompanyCode,
       _CostObject.CostObject,
       _CostObject.CostCenter,
       @Semantics.user.createdBy: true
-      created_by               as CreatedBy,
+      created_by                  as CreatedBy,
       @Semantics.systemDateTime.createdAt: true
-      created_at               as CreatedAt,
+      created_at                  as CreatedAt,
       @Semantics.user.lastChangedBy: true
-      last_changed_by          as LastChangedBy,
+      last_changed_by             as LastChangedBy,
       @Semantics.systemDateTime.lastChangedAt: true
-      last_changed_at          as LastChangedAt,
+      last_changed_at             as LastChangedAt,
       @Semantics.systemDateTime.localInstanceLastChangedAt: true
-      local_last_changed_at    as LocalLastChangedAt,
-      1                        as SingletonID,
+      local_last_changed_at       as LocalLastChangedAt,
+      1                           as SingletonID,
 
       case workflow_status
+      -- Red
+        when 'R' then 1
+        when 'E' then 1
+
+      -- Yellow
         when 'D' then 2
-        when 'P' then 2
         when 'W' then 2
-        when 'U' then 3
-        when 'E' then 3
+        when 'P' then 2
+        when 'J' then 2
+        when 'L' then 2
+
+      -- Green
         when 'A' then 3
         when 'F' then 3
-        when 'R' then 1
-        when 'C' then 1
         else 0
-      end                      as WorkflowStatusCriticality,
-      cast('' as abap_boolean) as TriggerWorkflow,
+      end                         as WorkflowStatusCriticality,
+      cast('' as abap.char( 1 ) ) as WorkflowInternalStatus,
+      cast('' as /esrcc/comment ) as Comments,
 
       _StewardshipAll,
       _ServiceProduct,

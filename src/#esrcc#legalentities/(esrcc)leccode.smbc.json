@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain Company Code & Assign to Legal Entity",
+    "description": "Maintain & Assign Company Codes",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_LECCODE_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "LeToCompanyCodeAll",
-    "name": "Maintain & Assign Company Code",
-    "configurationGroup": "/ESRCC/BC_GROUP2",
+    "name": "Company Codes",
+    "configurationGroup": "/ESRCC/BC_GROUP1",
     "skipRootEntity": true
   },
   "appConfiguration": {

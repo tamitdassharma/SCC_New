@@ -7,7 +7,7 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Maintain Service Product Text</DDTEXT>
+    <DDTEXT>Service Product Descriptions</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
@@ -119,7 +119,7 @@
    <DD02_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Serviceprodukt Text bearbeiten</DDTEXT>
+     <DDTEXT>Serviceprodukte Bezeichnungen</DDTEXT>
     </item>
    </DD02_TEXTS>
   </asx:values>

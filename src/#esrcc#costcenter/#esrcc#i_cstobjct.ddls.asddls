@@ -1,4 +1,5 @@
 @EndUserText.label: 'Cost Object'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_CstObjct
   as select from /esrcc/cst_objct

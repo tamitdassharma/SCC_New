@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Service Product Charge-out Configuration",
+    "description": "Maintain Service Product Charge-out Rules",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,7 +9,7 @@
     "serviceName": "/ESRCC/UI_CHARGEOUT_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "ChargeoutAll",
-    "name": "Service Product Charge-out Configuration",
+    "name": "Service Product Charge-out Rule",
     "configurationGroup": "",
     "skipRootEntity": true
   },

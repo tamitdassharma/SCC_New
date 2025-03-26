@@ -1,5 +1,7 @@
 @EndUserText.label: 'Cost elements'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
+
 define view entity /ESRCC/I_CostElements
   as select from /esrcc/cst_elmnt
   association        to parent /ESRCC/I_CostElements_S as _CostElementsAll on  $projection.SingletonID = _CostElementsAll.SingletonID

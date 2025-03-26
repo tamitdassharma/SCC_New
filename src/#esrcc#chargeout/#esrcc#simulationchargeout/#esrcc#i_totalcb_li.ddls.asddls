@@ -1,6 +1,6 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Service cosrt & Share'
+@EndUserText.label: 'Service Cost & Share'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,
@@ -12,7 +12,7 @@ define view entity /ESRCC/I_TOTALCB_LI
       
     association [0..*] to /ESRCC/I_STW_SERVICEPRODUCT as srvprm
     on srvprm.LegalEntity = $projection.legalentity
-    and srvprm.sysid = $projection.sysid
+    and srvprm.Sysid = $projection.sysid
     and srvprm.CompanyCode = $projection.ccode
     and srvprm.CostObject = $projection.costobject
     and srvprm.CostCenter = $projection.costcenter
@@ -35,6 +35,7 @@ define view entity /ESRCC/I_TOTALCB_LI
     localcurr,
     groupcurr,   
     cc_cost.stewardship,
-    srvprm.ShareOfCost
+    srvprm.ShareOfCost,
+    srvprm.ContractId
 
 }

@@ -1,4 +1,4 @@
-@Metadata.layer: #CUSTOMER
+@Metadata.layer: #CORE
 @UI: {
   headerInfo: {
     typeName: 'Cost Element',
@@ -8,13 +8,13 @@
       value: 'CostElement'
     },
     description: { value: 'Description' }
-  },
+  }, 
   presentationVariant: [{
-//    requestAtLeast: [ 'Sysid', 'LegalEntity', 'CompanyCode', 'CostElement' ],
-    sortOrder: [{ by: 'Sysid' }],
-                --{ by: 'LegalEntity', direction: #ASC },
-                --{ by: 'CompanyCode', direction: #ASC },
-                --{ by: 'CostElement', direction: #ASC }],
+    qualifier: 'pVariant',
+    sortOrder: [{ by: 'Sysid', direction: #ASC },
+                { by: 'LegalEntity', direction: #ASC},
+                { by: 'CompanyCode', direction: #ASC },
+                { by: 'CostElement', direction: #ASC }],                
     visualizations: [{type: #AS_LINEITEM }]
   }]
 }

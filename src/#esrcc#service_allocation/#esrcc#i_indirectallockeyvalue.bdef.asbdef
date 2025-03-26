@@ -1,17 +1,13 @@
 managed implementation in class /ESRCC/BP_I_IndrctAllocKeyValu unique;
 strict ( 2 );
-//with draft;
 
 define behavior for /ESRCC/I_INDIRECTALLOCKEYVALUE alias IndirectAllocationKeyValues
 persistent table /esrcc/indtalloc
-//draft table /ESRCC/D_INDALOC
-//etag master LocalLastChangedAt
 lock master
-//total etag LastChangedAt
 authorization master ( global )
 
 {
-  field ( mandatory )
+  field ( mandatory : create, readonly : update )
   Sysid,
   LegalEntity,
   CompanyCode,
@@ -37,12 +33,6 @@ authorization master ( global )
   update ( precheck );
   delete ( precheck );
 
-  //  draft action Edit;
-  //  draft action Activate;
-  //  draft action Discard;
-  //  draft action Resume;
-  //  draft determine action Prepare;
-
   mapping for /ESRCC/INDTALLOC
   {
     IndirectAllocationUUID = INDIRECT_ALLOCATION_UUID;
@@ -60,5 +50,5 @@ authorization master ( global )
     LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
   }
 
-  validation ValidateData on save {create; update;}
+  validation ValidateData on save { create; update; }
 }

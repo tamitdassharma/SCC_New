@@ -1,13 +1,19 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Service Product Charge-out Configuration',
-    typeNamePlural: 'Service Product Charge-out Configuration',
+    typeName: 'Service Product Charge-out Rule',
+    typeNamePlural: 'Service Product Charge-out Rules',
     title: {
       type: #STANDARD,
       value: 'Serviceproduct'
     }
-  }
+  },
+  presentationVariant: [{
+    qualifier: 'pVariant',
+    sortOrder: [{ by: 'Serviceproduct', direction: #ASC },
+                { by: 'Validfrom', direction: #ASC}],
+    visualizations: [{type: #AS_LINEITEM }]
+  }]
 }
 annotate view /ESRCC/C_ChargeoutBc with
 {
@@ -71,19 +77,28 @@ annotate view /ESRCC/C_ChargeoutBc with
   @UI.lineItem: [ { position: 5 } ]
   ChargeoutMethod;
 
-  @UI.lineItem: [ { position: 6 } ]
+  @UI.identification: [ { position: 6, criticality: 'WorkflowStatusCriticality', criticalityRepresentation: #WITHOUT_ICON } ]
+  @UI.lineItem: [ { position: 6, criticality: 'WorkflowStatusCriticality', criticalityRepresentation: #WITHOUT_ICON } ]
+  @UI.textArrangement: #TEXT_ONLY
+  @EndUserText.label: 'Workflow Status'
+  WorkflowStatus;
+
+  @UI.hidden: true
+  WorkflowStatusCriticality;
+
+  @UI.lineItem: [ { position: 7 } ]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 10 }]
   CreatedBy;
 
-  @UI.lineItem: [ { position: 7, cssDefault.width: '9.5rem' } ]
+  @UI.lineItem: [ { position: 8, cssDefault.width: '9.5rem' } ]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 20 }]
   CreatedAt;
 
-  @UI.lineItem: [{ position: 8 }]
+  @UI.lineItem: [{ position: 9 }]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 30 }]
   LastChangedBy;
 
-  @UI.lineItem: [{ position: 9, cssDefault.width: '9.5rem' }]
+  @UI.lineItem: [{ position: 10, cssDefault.width: '9.5rem' }]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 40 }]
   LastChangedAt;
 
@@ -92,4 +107,7 @@ annotate view /ESRCC/C_ChargeoutBc with
 
   @UI.hidden
   ChargeoutMethodDescription;
+
+  @UI.hidden
+  WorkflowStatusDescription;
 }

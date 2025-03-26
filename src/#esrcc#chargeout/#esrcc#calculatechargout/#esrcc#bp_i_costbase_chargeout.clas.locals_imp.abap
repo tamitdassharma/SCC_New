@@ -34,53 +34,30 @@ CLASS lhc_CostbaseChargeout IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD deleteadhochargeout.
-    DATA lt_proctrl TYPE TABLE OF /esrcc/procctrl.
+    DATA lo_badi     TYPE REF TO /esrcc/badi_cockpit.
+
+    IF lo_badi IS NOT BOUND.
+      TRY.
+          GET BADI lo_badi.
+        CATCH cx_badi_not_implemented cx_badi_unknown_error.
+      ENDTRY.
+    ENDIF.
+
+
 
     IF keys IS NOT INITIAL.
-      SELECT * FROM /esrcc/cb_li FOR ALL ENTRIES IN @keys WHERE cc_guid = @keys-CcUuid
-                                                          INTO TABLE @DATA(lt_cbli).
-      LOOP AT lt_cbli ASSIGNING FIELD-SYMBOL(<ls_cbli>).
 
-        CLEAR <ls_cbli>-cc_guid.
-        <ls_cbli>-status = 'A'.   "Approved
-* Admin data
-        <ls_cbli>-last_changed_by = sy-uname.
-        /esrcc/cl_utility_core=>get_utc_date_time_ts(
-          IMPORTING
-            time_stamp = <ls_cbli>-last_changed_at
-        ).
-      ENDLOOP.
-      IF lt_cbli IS NOT INITIAL.
+      IF lo_badi IS BOUND.
 
-*Create process log entry
-        CLEAR lt_proctrl.
-        APPEND INITIAL LINE TO lt_proctrl ASSIGNING FIELD-SYMBOL(<ls_proctrl>).
-        MOVE-CORRESPONDING <ls_cbli> TO <ls_proctrl>.
-        <ls_proctrl>-process = 'ADH'.  "Adhoc
-        /esrcc/cl_calculate_chargeout=>create_processlogs(
-          iv_action = '13'
-          it_keys   = lt_proctrl
-        ).
-
-        DATA(lv_ccuuid) = keys[ 1 ]-CcUuid.
-        IF keys IS NOT INITIAL.
-          SELECT * FROM /esrcc/rec_chg FOR ALL ENTRIES IN @keys WHERE cc_uuid = @keys-CcUuid INTO TABLE @DATA(lt_receievers).
-
-          IF lt_receievers IS NOT INITIAL.
-            SELECT * FROM /esrcc/alocshare FOR ALL ENTRIES IN @lt_receievers WHERE parentuuid = @lt_receievers-rec_uuid INTO TABLE @DATA(lt_alocshare).
-            IF lt_alocshare IS NOT INITIAL.
-              SELECT * FROM /esrcc/alcvalues FOR ALL ENTRIES IN @lt_alocshare WHERE parentuuid = @lt_alocshare-uuid INTO TABLE @DATA(lt_alcvalues).
-            ENDIF.
-          ENDIF.
-        ENDIF.
-        DELETE /esrcc/alocshare FROM TABLE @lt_alocshare.
-        DELETE /esrcc/alcvalues FROM TABLE @lt_alcvalues.
-        DELETE FROM /esrcc/rec_chg WHERE cc_uuid = @lv_ccuuid.
-        DELETE FROM /esrcc/srv_share WHERE cc_uuid = @lv_ccuuid.
-        DELETE FROM /esrcc/cb_stw WHERE cc_uuid = @lv_ccuuid.
+        DATA(id) = keys[ 1 ]-CcUuid.
+        CALL BADI lo_badi->delete_adhoc_chargeout
+          EXPORTING
+            id = id.
 
       ENDIF.
+
     ENDIF.
+
   ENDMETHOD.
 
   METHOD get_instance_features.

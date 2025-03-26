@@ -261,7 +261,7 @@ CLASS lhc_/esrcc/i_stewrdshp_s IMPLEMENTATION.
     result-%action-edit = is_authorized.
   ENDMETHOD.
   METHOD precheck_cba_stewardship.
-    TYPES ts_stewardship TYPE STRUCTURE FOR READ RESULT /esrcc/i_stewrdshp_s\\stewardship.
+    TYPES ts_stewardship TYPE STRUCTURE FOR CREATE /esrcc/i_stewrdshp_s\\stewardshipall\_stewardship.
 
     DATA(lo_stewardship) = /esrcc/cl_config_util=>create(
       EXPORTING
@@ -272,9 +272,28 @@ CLASS lhc_/esrcc/i_stewrdshp_s IMPLEMENTATION.
         reported_entity    = reported-stewardship
         failed_entity      = failed-stewardship
     ).
+
+    DATA(lo_auth) = /esrcc/cl_authorization=>create(
+      EXPORTING
+        paths              = VALUE #( ( path = 'StewardshipAll' ) )
+        source_entity_name = '/ESRCC/C_STEWRDSHP'
+      CHANGING
+        reported_entity    = reported-stewardship
+        failed_entity      = failed-stewardship
+    ).
+
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_stewardship ).
 
     DATA(target_entities) = VALUE #( entities[ 1 ]-%target ).
+
+*   TEMPORARY VALIDATION: Since auto-populate using additionalBinding annotation is not working in ABAP Version 7.58 SP00,
+*   the below validation is implemented that can be removed if issue is addressed or works in higher version
+    SELECT db~*
+        FROM /esrcc/cst_objct AS db
+        INNER JOIN @target_entities AS tent
+            ON tent~costobjectuuid = db~cost_object_uuid
+        INTO TABLE @DATA(db_entries).
+
     SELECT DISTINCT
            stw~sysid,
            stw~legalentity,
@@ -300,14 +319,36 @@ CLASS lhc_/esrcc/i_stewrdshp_s IMPLEMENTATION.
                                                          validfrom   = entity-validfrom
                                                          size        = GROUP SIZE )
         ASCENDING REFERENCE INTO DATA(group_ref).
-      CHECK lo_stewardship->check_authorization(
+
+      READ TABLE target_entities INDEX sy-tabix INTO DATA(t_entity).
+
+      CHECK lo_auth->check_authorization(
         EXPORTING
-          entity       = CORRESPONDING ts_stewardship( group_ref->* )
-          legal_entity = group_ref->legalentity
-          cost_object  = group_ref->costobject
-          cost_number  = group_ref->costcenter
-          activity     = /esrcc/cl_config_util=>c_authorization_activity-create
+          entity     = t_entity
+          auth_value = CORRESPONDING #( group_ref->* MAPPING legal_entity = legalentity cost_object = costobject cost_number = costcenter )
+          activity   = /esrcc/cl_authorization=>c_authorization_activity-create
       ) = abap_true.
+
+*     START: TEMPORARY VALIDATION
+      DATA(db_entry) = VALUE #( db_entries[ cost_object_uuid = t_entity-costobjectuuid ] OPTIONAL ).
+      DATA(sysid)   = COND abap_boolean( WHEN t_entity-sysid       <> db_entry-sysid        THEN abap_true ELSE abap_false ).
+      DATA(le)      = COND abap_boolean( WHEN t_entity-legalentity <> db_entry-legal_entity THEN abap_true ELSE abap_false ).
+      DATA(ccode)   = COND abap_boolean( WHEN t_entity-companycode <> db_entry-company_code THEN abap_true ELSE abap_false ).
+      DATA(cobj)    = COND abap_boolean( WHEN t_entity-costobject  <> db_entry-cost_object  THEN abap_true ELSE abap_false ).
+      DATA(ccenter) = COND abap_boolean( WHEN t_entity-costcenter  <> db_entry-cost_center  THEN abap_true ELSE abap_false ).
+
+      IF sysid = abap_true OR le = abap_true OR ccode = abap_true OR cobj = abap_true OR ccenter = abap_true.
+        lo_stewardship->set_state_message(
+            entity     = entity
+            msg        = new_message(
+                               id       = /esrcc/cl_config_util=>c_config_msg
+                               number   = '029'
+                               severity = if_abap_behv_message=>severity-error
+                             )
+            state_area = CONV #( /esrcc/cl_config_util=>invalid_data )
+          ).
+      ENDIF.
+*     END: TEMPORARY VALIDATION
 
       lo_validation->validate_stewardship(
         entity  = CORRESPONDING #( group_ref->* )
@@ -319,22 +360,22 @@ CLASS lhc_/esrcc/i_stewrdshp_s IMPLEMENTATION.
                                           companycode = group_ref->companycode
                                           costobject  = group_ref->costobject
                                           costcenter  = group_ref->costcenter ] ) OR group_ref->size > 1.
-        lo_stewardship->set_duplicate_error( entity = CORRESPONDING ts_stewardship( group_ref->* ) ).
+        lo_stewardship->set_duplicate_error( entity = t_entity ).
       ENDIF.
     ENDLOOP.
   ENDMETHOD.
 
   METHOD edit.
-    DATA(lo_util) = /esrcc/cl_config_util=>create_for_authorization( ).
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( ).
     SELECT DISTINCT legalentity FROM /esrcc/i_stewrdshp INTO TABLE @DATA(legal_entities). "#EC CI_NOWHERE
 
     LOOP AT legal_entities INTO DATA(entity).
-      DATA(is_unauthorized) = lo_util->is_unauthorized(
+      DATA(is_unauthorized) = lo_auth->is_unauthorized(
         EXPORTING
-          legal_entity = entity-legalentity
-          create       = abap_true
-          update       = abap_true
-          delete       = abap_true
+          auth_value = VALUE #( legal_entity = entity-legalentity )
+          create     = abap_true
+          update     = abap_true
+          delete     = abap_true
       ).
 
       IF is_unauthorized = abap_true.
@@ -345,10 +386,9 @@ CLASS lhc_/esrcc/i_stewrdshp_s IMPLEMENTATION.
     IF is_unauthorized = abap_false.
       SELECT DISTINCT costobject, costcenter FROM /esrcc/i_stewrdshp INTO TABLE @DATA(cost_numbers). "#EC CI_NOWHERE
       LOOP AT cost_numbers INTO DATA(cost_number).
-        is_unauthorized = lo_util->is_unauthorized(
+        is_unauthorized = lo_auth->is_unauthorized(
           EXPORTING
-            cost_object = cost_number-costobject
-            cost_number = cost_number-costcenter
+            auth_value = CORRESPONDING #( cost_number MAPPING cost_object = costobject cost_number = costcenter )
             create      = abap_true
             update      = abap_true
             delete      = abap_true
@@ -393,15 +433,19 @@ CLASS lhc_/esrcc/i_stewrdshp DEFINITION INHERITING FROM cl_abap_behavior_handler
   PUBLIC SECTION.
     TYPES: tt_stewardship TYPE TABLE FOR READ RESULT /esrcc/i_stewrdshp_s\\stewardship.
 
-    CLASS-METHODS set_workflow_status_to_draft
-      IMPORTING entities TYPE tt_stewardship.
+    CLASS-METHODS set_workflow_status
+      IMPORTING
+        entities                     TYPE tt_stewardship
+        for_workflow_internal_status TYPE /esrcc/status_de
+        to_workflow_status           TYPE /esrcc/status_de.
+
+    CLASS-METHODS set_workflow_internal_status
+      IMPORTING
+        entities           TYPE tt_stewardship
+        to_workflow_status TYPE /esrcc/status_de.
 
   PRIVATE SECTION.
     METHODS:
-*      get_global_features FOR GLOBAL FEATURES
-*        IMPORTING
-*        REQUEST requested_features FOR Stewardship
-*        RESULT result,
       get_instance_features FOR INSTANCE FEATURES
         IMPORTING keys REQUEST requested_features FOR stewardship RESULT result,
       get_global_authorizations FOR GLOBAL AUTHORIZATION
@@ -411,75 +455,64 @@ CLASS lhc_/esrcc/i_stewrdshp DEFINITION INHERITING FROM cl_abap_behavior_handler
       IMPORTING keys FOR ACTION stewardship~submit RESULT result.
     METHODS finalize FOR MODIFY
       IMPORTING keys FOR ACTION stewardship~finalize RESULT result.
-    METHODS updateworkflowstatus FOR DETERMINE ON MODIFY
+    METHODS updateworkflowstatus FOR DETERMINE ON SAVE
       IMPORTING keys FOR stewardship~updateworkflowstatus.
     METHODS validatedata FOR VALIDATE ON SAVE
       IMPORTING keys FOR stewardship~validatedata.
     METHODS precheck_update FOR PRECHECK
       IMPORTING entities FOR UPDATE stewardship.
-
     METHODS precheck_cba_serviceproduct FOR PRECHECK
       IMPORTING entities FOR CREATE stewardship\_serviceproduct.
-
-    METHODS comments FOR MODIFY
-      IMPORTING keys FOR ACTION stewardship~comments RESULT result.
     METHODS precheck_cba_servicereceiver FOR PRECHECK
       IMPORTING entities FOR CREATE stewardship\_servicereceiver.
     METHODS triggerworkflow FOR DETERMINE ON SAVE
       IMPORTING keys FOR stewardship~triggerworkflow.
+    METHODS updateinternalworkflowstatus FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR stewardship~updateinternalworkflowstatus.
+    METHODS reopen FOR MODIFY
+      IMPORTING keys FOR ACTION stewardship~reopen RESULT result.
+    METHODS updatecomment FOR DETERMINE ON SAVE
+      IMPORTING keys FOR stewardship~updatecomment.
 
 ENDCLASS.
 
 CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
-*  METHOD get_global_features.
-*    DATA edit_flag TYPE abp_behv_flag VALUE if_abap_behv=>fc-o-enabled.
-*    IF cl_bcfg_cd_reuse_api_factory=>get_cust_obj_service_instance(
-*         iv_objectname = '/ESRCC/STEWRDSHP'
-*         iv_objecttype = cl_bcfg_cd_reuse_api_factory=>simple_table )->is_editable( ) = abap_false.
-*      edit_flag = if_abap_behv=>fc-o-disabled.
-*    ENDIF.
-**    result-%update = edit_flag.
-*    result-%delete = edit_flag.
-*  ENDMETHOD.
   METHOD get_instance_features.
+    READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
+          ENTITY stewardship
+          ALL FIELDS WITH CORRESPONDING #( keys )
+          RESULT DATA(entities).
+
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( paths = VALUE #( ( path = '_ServiceProduct' ) ( path = '_ServiceReceiver' ) ) ).
     IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
-      /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
-        EXPORTING
-          keys            = keys
-          update          = abap_true
-          delete          = abap_true
-          create_by_assoc = abap_true
-          field_mapping   = VALUE #( legal_entity = 'LEGALENTITY' cost_object = 'COSTOBJECT' cost_number = 'COSTCENTER' )
-          assoc_path      = VALUE #( ( path = '_ServiceProduct' ) ( path = '_ServiceReceiver' ) )
-        CHANGING
-          result          = result
-      ).
+      LOOP AT keys INTO DATA(key).
+        DATA(entity) = VALUE #( entities[ %tky = key-%tky ] OPTIONAL ).
+        lo_auth->set_authorization_for_instance(
+          EXPORTING
+            key                   = key
+            set_authorization_for = VALUE #( update = abap_true delete = abap_true create_by_assoc = abap_true )
+            auth_value            = VALUE #( legal_entity = entity-legalentity cost_object = entity-costobject cost_number = entity-costcenter )
+          CHANGING
+            result                = result
+        ).
+      ENDLOOP.
       DATA(auth_result) = result.
     ENDIF.
 
-    READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
-        ENTITY stewardship
-        ALL FIELDS WITH CORRESPONDING #( keys )
-        RESULT DATA(entities).
-
     result = VALUE #( FOR wa IN entities
-                      LET submit   = COND #( WHEN ( wa-workflowstatus = '' OR wa-workflowstatus = 'D' ) AND wa-%is_draft = if_abap_behv=>mk-on THEN if_abap_behv=>fc-o-enabled
-                                             ELSE if_abap_behv=>fc-o-disabled )
-                          finalize = COND #( WHEN wa-workflowstatus = 'A' AND wa-%is_draft = if_abap_behv=>mk-on THEN if_abap_behv=>fc-o-enabled
-                                             ELSE if_abap_behv=>fc-o-disabled )
+                      LET submit   = lo_auth->regulate_action_submit( is_draft  = wa-%is_draft wf_status = wa-workflowstatus )
+                          finalize = lo_auth->regulate_action_finalize( is_draft = wa-%is_draft wf_status = wa-workflowstatus )
+                          reopen   = lo_auth->regulate_action_reopen( is_draft = wa-%is_draft wf_status = wa-workflowstatus )
                           update   = COND #( WHEN VALUE #( auth_result[ %tky = wa-%tky ]-%update OPTIONAL ) = if_abap_behv=>fc-o-disabled
                                                 THEN if_abap_behv=>fc-o-disabled
-                                             WHEN wa-workflowstatus = '' OR wa-workflowstatus = 'D' OR wa-workflowstatus = 'R' OR wa-workflowstatus = 'A'
-                                                THEN if_abap_behv=>fc-o-enabled
-                                             ELSE if_abap_behv=>fc-o-disabled )
+                                             ELSE lo_auth->regulate_action_update( is_draft  = wa-%is_draft wf_status = wa-workflowstatus ) )
                           delete   = COND #( WHEN VALUE #( auth_result[ %tky = wa-%tky ]-%delete OPTIONAL ) = if_abap_behv=>fc-o-disabled
                                                 THEN if_abap_behv=>fc-o-disabled
-                                             WHEN wa-workflowstatus = 'F' OR wa-workflowstatus = 'P'
-                                                THEN if_abap_behv=>fc-o-disabled
-                                             ELSE if_abap_behv=>fc-o-enabled )
+                                             ELSE lo_auth->regulate_action_delete( is_draft = wa-%is_draft wf_status = wa-workflowstatus ) )
                       IN ( %tky                    = wa-%tky
                            %action-submit          = submit
                            %action-finalize        = finalize
+                           %action-reopen          = reopen
                            %update                 = update
                            %delete                 = delete
                            %assoc-_serviceproduct  = update
@@ -505,51 +538,70 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(receivers).
 
-    DELETE entities WHERE workflowstatus <> '' AND workflowstatus <> 'D'.
-    IF entities IS INITIAL.
-      RETURN.
-    ENDIF.
-
-    IF products IS INITIAL OR receivers IS INITIAL.
-      /esrcc/cl_config_util=>create(
+*   Validate Products & Receivers
+    IF products IS INITIAL OR receivers IS INITIAL OR NOT line_exists( receivers[ active = abap_true ] ).
+      DATA(lo_config) = /esrcc/cl_config_util=>create(
         EXPORTING
           paths              = VALUE #( ( path = 'StewardshipAll' ) )
           source_entity_name = '/ESRCC/C_STEWRDSHIP'
         CHANGING
           reported_entity    = reported-stewardship
           failed_entity      = failed-stewardship
-      )->set_state_message(
-        entity     = entities[ 1 ]
-        msg        = new_message(
-                       id       = /esrcc/cl_config_util=>c_config_msg
-                       number   = '027'
-                       severity = if_abap_behv_message=>severity-error
-                     )
-        state_area = CONV #( /esrcc/cl_config_util=>child_mandatory )
       ).
+
+      IF products IS INITIAL OR receivers IS INITIAL.
+        lo_config->set_state_message(
+          entity     = entities[ 1 ]
+          msg        = new_message(
+                         id       = /esrcc/cl_config_util=>c_config_msg
+                         number   = '027'
+                         severity = if_abap_behv_message=>severity-error
+                         v1       = COND scx_attrname( WHEN products IS INITIAL AND receivers IS INITIAL THEN TEXT-002
+                                                       WHEN products IS INITIAL THEN TEXT-003
+                                                       ELSE TEXT-004 )
+                       )
+          state_area = CONV #( /esrcc/cl_config_util=>child_mandatory )
+        ).
+      ELSE.
+        lo_config->set_state_message(
+          entity     = entities[ 1 ]
+          msg        = new_message(
+                         id       = /esrcc/cl_config_util=>c_config_msg
+                         number   = '031'
+                         severity = if_abap_behv_message=>severity-error
+                       )
+          state_area = CONV #( /esrcc/cl_config_util=>child_mandatory )
+        ).
+      ENDIF.
 
       RETURN.
     ENDIF.
 
-    MODIFY ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
-        ENTITY stewardship
-        UPDATE FIELDS ( comments workflowid workflowstatus workflowstatuscriticality triggerworkflow )
-        WITH VALUE #( FOR entity IN entities
-                        ( %tky                      = entity-%tky
-                          workflowid                = ''
-                          comments                  = VALUE #( keys[ %tky = entity-%tky ]-%param-comments OPTIONAL )
-                          workflowstatus            = 'P'
-                          workflowstatuscriticality = '2'
-                          triggerworkflow           = abap_true ) )
-        FAILED failed
-        REPORTED reported
-        MAPPED mapped.
-
-
+    DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-in_process ).
+    TRY.
+        MODIFY ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
+            ENTITY stewardship
+            UPDATE FIELDS ( commentid comments workflowid workflowstatus workflowstatuscriticality workflowinternalstatus )
+            WITH VALUE #( FOR entity IN entities
+                            ( %tky                      = entity-%tky
+                              workflowid                = ''
+                              commentid                 = COND #( WHEN entity-commentid IS INITIAL THEN cl_uuid_factory=>create_system_uuid( )->create_uuid_c32( ) ELSE entity-commentid )
+                              comments                  = VALUE #( keys[ %tky = entity-%tky ]-%param-comments OPTIONAL )
+                              workflowstatus            = /esrcc/cl_wf_utility=>wf_status-in_process
+                              workflowstatuscriticality = criticality
+                              workflowinternalstatus    = /esrcc/cl_wf_utility=>wf_status-in_process ) )
+            FAILED failed
+            REPORTED reported
+            MAPPED mapped.
+      CATCH cx_uuid_error.
+        "handle exception
+    ENDTRY.
 
     result = VALUE #( FOR entity IN entities ( %tky = entity-%tky
                                                %is_draft = entity-%is_draft
                                                %param = entity ) ).
+
+    reported-%other = VALUE #( ( /esrcc/cl_config_util=>message_on_action( ) ) ).
   ENDMETHOD.
 
   METHOD finalize.
@@ -558,43 +610,75 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(entities).
 
+    DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-finalize_in_process ).
     MODIFY ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
         ENTITY stewardship
-        UPDATE FIELDS ( workflowstatus workflowstatuscriticality )
-        WITH VALUE #( FOR entity IN entities WHERE ( workflowstatus = 'A' )
+        UPDATE FIELDS ( workflowstatus workflowstatuscriticality workflowinternalstatus )
+        WITH VALUE #( FOR entity IN entities
                         ( %tky                      = entity-%tky
-                          workflowstatus            = 'F'
-                          workflowstatuscriticality = '3' ) )
+                          workflowinternalstatus    = /esrcc/cl_wf_utility=>wf_status-finalize_in_process
+                          workflowstatus            = /esrcc/cl_wf_utility=>wf_status-finalize_in_process
+                          workflowstatuscriticality = criticality ) )
         FAILED failed
         REPORTED reported
         MAPPED mapped.
 
-    result = VALUE #( FOR entity IN entities ( %tky = entity-%tky
-                                               %param = entity ) ).
+    result = VALUE #( FOR entity IN entities ( %tky = entity-%tky %param = entity ) ).
+    reported-%other = VALUE #( ( /esrcc/cl_config_util=>message_on_action( ) ) ).
   ENDMETHOD.
 
   METHOD updateworkflowstatus.
-    CHECK keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
-
     READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
         ENTITY stewardship
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(entities).
 
-    set_workflow_status_to_draft( entities ).
+    " Set workflow status to "Draft"
+    set_workflow_status(
+      entities                     = entities
+      for_workflow_internal_status = /esrcc/cl_wf_utility=>wf_status-draft
+      to_workflow_status           = /esrcc/cl_wf_utility=>wf_status-draft
+    ).
+
+    " Set workflow status to "Finalized"
+    set_workflow_status(
+      entities                     = entities
+      for_workflow_internal_status = /esrcc/cl_wf_utility=>wf_status-finalize_in_process
+      to_workflow_status           = /esrcc/cl_wf_utility=>wf_status-finalized
+    ).
+
+    " Set workflow status to "Approved"
+    set_workflow_status(
+      entities                     = entities
+      for_workflow_internal_status = /esrcc/cl_wf_utility=>wf_status-reopen_in_process
+      to_workflow_status           = /esrcc/cl_wf_utility=>wf_status-approved
+    ).
   ENDMETHOD.
 
-  METHOD set_workflow_status_to_draft.
+  METHOD set_workflow_status.
+    DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = to_workflow_status ).
     MODIFY ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
         ENTITY stewardship
         UPDATE FIELDS ( workflowstatus workflowstatuscriticality )
-        WITH VALUE #( FOR entity IN entities WHERE ( workflowstatus <> 'D' )
+        WITH VALUE #( FOR entity IN entities WHERE ( workflowinternalstatus = for_workflow_internal_status )
                         ( %tky                      = entity-%tky
                           %is_draft                 = entity-%is_draft
-                          workflowstatus            = 'D'
-                          workflowstatuscriticality = '2'
+                          workflowstatus            = to_workflow_status
+                          workflowstatuscriticality = criticality
                           %control                  = VALUE #( workflowstatus            = if_abap_behv=>mk-on
                                                                workflowstatuscriticality = if_abap_behv=>mk-on ) ) ).
+  ENDMETHOD.
+
+
+  METHOD set_workflow_internal_status.
+    MODIFY ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
+          ENTITY stewardship
+          UPDATE FIELDS ( workflowinternalstatus )
+          WITH VALUE #( FOR entity IN entities WHERE ( workflowinternalstatus <> to_workflow_status )
+                          ( %tky                   = entity-%tky
+                            %is_draft              = entity-%is_draft
+                            workflowinternalstatus = to_workflow_status
+                            %control               = VALUE #( workflowinternalstatus = if_abap_behv=>mk-on ) ) ).
   ENDMETHOD.
 
   METHOD validatedata.
@@ -633,7 +717,7 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
     DELETE ADJACENT DUPLICATES FROM overlapping_chain_seqs COMPARING stewardshipuuid.
 
     " Calculate sum of share % for Service Product
-    SELECT share~stewardshipuuid, share~validfrom, share~validto, share~shareofcost
+    SELECT share~stewardshipuuid, share~validfrom, share~validto, share~shareofcost, share~serviceproductuuid
       FROM /esrcc/d_stwd_sp AS share
       INNER JOIN @entities AS ent
         ON  ent~stewardshipuuid = share~stewardshipuuid
@@ -665,20 +749,11 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
         sharecost_sum = DATA(sharecost_sum) ).
 
     LOOP AT entities INTO DATA(entity).
-      lo_validation->validate_stewardship( entity = entity control = VALUE #( chainid       = COND #( WHEN entity-chainsequence IS NOT INITIAL THEN if_abap_behv=>mk-on )
-                                                                              chainsequence = COND #( WHEN entity-chainid IS NOT INITIAL THEN if_abap_behv=>mk-on )
-                                                                              validto       = if_abap_behv=>mk-on
-                                                                              stewardship   = if_abap_behv=>mk-on ) ).
-
-      LOOP AT sharecost_sum TRANSPORTING NO FIELDS WHERE stewardship_uuid = entity-stewardshipuuid
-                                                     AND share_of_cost    <> 100.
-        lo_stewardship->set_state_message(
-          entity     = entity
-          msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg number = '009' severity = if_abap_behv_message=>severity-error v1 = lo_stewardship->get_field_text( fieldname = 'COSTSHARE' data_element = '/ESRCC/COSTSHARE' ) )
-          state_area = CONV #( /esrcc/cl_config_util=>percentage )
-        ).
-        EXIT.
-      ENDLOOP.
+      lo_validation->validate_stewardship( entity  = entity
+                                           control = VALUE #( chainid       = COND #( WHEN entity-chainsequence IS NOT INITIAL THEN if_abap_behv=>mk-on )
+                                                              chainsequence = COND #( WHEN entity-chainid IS NOT INITIAL THEN if_abap_behv=>mk-on )
+                                                              validto       = if_abap_behv=>mk-on
+                                                              stewardship   = if_abap_behv=>mk-on ) ).
 
       " Validate overlapping dates
       LOOP AT overlapping_dates INTO DATA(date) WHERE sysid           = entity-sysid
@@ -695,7 +770,6 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
                                                                  curr_from   = entity-validfrom
                                                                  curr_to     = entity-validto
                                                                  curr_entity = entity ).
-        EXIT.
       ENDLOOP.
 
       " Validate validity of Service Product
@@ -804,21 +878,11 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
       ).
 
       IF line_exists( duplicate_entities[ serviceproduct = group_ref->prod ] ) OR group_ref->size > 1.
-        lo_product->set_duplicate_error( entity = CORRESPONDING ts_product( entity ) ).
+        lo_product->set_duplicate_error( entity = CORRESPONDING ts_product( group_ref->* ) ).
       ENDIF.
     ENDLOOP.
   ENDMETHOD.
 
-  METHOD comments.
-*    READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
-*        ENTITY stewardship
-*        ALL FIELDS WITH CORRESPONDING #( keys )
-*        RESULT DATA(entities).
-*
-*    LOOP AT entities INTO DATA(entity).
-*
-*    ENDLOOP.
-  ENDMETHOD.
 
   METHOD precheck_cba_servicereceiver.
     TYPES ts_receiver TYPE STRUCTURE FOR READ RESULT /esrcc/i_stewrdshp_s\\servicereceiver.
@@ -861,7 +925,7 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
     LOOP AT target_entities INTO DATA(entity) GROUP BY ( prod = entity-serviceproduct costobjectuuid = entity-costobjectuuid size = GROUP SIZE )
         ASCENDING REFERENCE INTO DATA(group_ref).
       IF line_exists( duplicate_entities[ serviceproduct = group_ref->prod costobjectuuid = group_ref->costobjectuuid ] ) OR group_ref->size > 1.
-        lo_receiver->set_duplicate_error( entity = CORRESPONDING ts_receiver( entity ) ).
+        lo_receiver->set_duplicate_error( entity = CORRESPONDING ts_receiver( group_ref->* ) ).
         CONTINUE.
       ENDIF.
 
@@ -879,20 +943,24 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD triggerworkflow.
+    DATA:
+      failed_leading_objects TYPE /esrcc/tt_wf_leadingobject,
+      messages               TYPE /esrcc/tt_message.
+
     READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
         ENTITY stewardship
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(entities).
 
-    DELETE entities WHERE triggerworkflow = abap_false.
+    DELETE entities WHERE workflowinternalstatus <> /esrcc/cl_wf_utility=>wf_status-in_process.
     IF entities IS INITIAL.
       RETURN.
     ENDIF.
 
-    DATA(trigger_workflow) = abap_false.
+    DATA(workflow_internal_status) = ''.
     /esrcc/cl_wf_utility=>is_wf_on(
       EXPORTING
-        iv_apptype   = 'CST'
+        iv_apptype   = /esrcc/cl_wf_utility=>app-bc_stewardship
       IMPORTING
         ev_wf_active = DATA(wf_active)
     ).
@@ -900,35 +968,101 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
     IF wf_active = abap_true.
       CALL FUNCTION '/ESRCC/FM_WF_START'
         EXPORTING
-          it_leading_object = CORRESPONDING /esrcc/tt_wf_leadingobject( entities MAPPING stewardship_uuid = stewardshipuuid EXCEPT * )
-          iv_apptype        = 'CST'.
+          it_leading_object        = CORRESPONDING /esrcc/tt_wf_leadingobject( entities MAPPING stewardship_uuid = stewardshipuuid EXCEPT * )
+          iv_apptype               = /esrcc/cl_wf_utility=>app-bc_stewardship
+        IMPORTING
+          et_failed_leading_object = failed_leading_objects
+          et_message               = messages.
 
-*      DATA(workflow_status) = 'P'.
-*      DATA(workflow_status_crit) = '2'.
+      " Set status to error for failed entities
+      DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-failed ).
+      LOOP AT failed_leading_objects INTO DATA(leading_object).
+        MODIFY entities
+            FROM VALUE #( workflowstatus = /esrcc/cl_wf_utility=>wf_status-failed
+                          workflowstatuscriticality = criticality )
+            TRANSPORTING workflowstatus workflowstatuscriticality
+            WHERE stewardshipuuid = leading_object-stewardship_uuid.
+      ENDLOOP.
+
       MODIFY ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
          ENTITY stewardship
-         UPDATE FIELDS ( triggerworkflow )
+         UPDATE FIELDS ( workflowstatus workflowstatuscriticality workflowinternalstatus )
          WITH VALUE #( FOR entity IN entities
-                         ( %tky            = entity-%tky
-                           triggerworkflow = trigger_workflow ) )
+                         ( %tky                      = entity-%tky
+                           workflowstatus            = entity-workflowstatus
+                           workflowstatuscriticality = entity-workflowstatuscriticality
+                           workflowinternalstatus    = workflow_internal_status ) )
          FAILED DATA(failed_mod)
          MAPPED DATA(mapped_mod).
     ELSE.
-      DATA(workflow_status) = 'A'.
-      DATA(workflow_status_crit) = '3'.
-
-*     TO-DO: Set to in process after workflow is started successfully else set to error
+      criticality = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-approved ).
       MODIFY ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
         ENTITY stewardship
-        UPDATE FIELDS ( workflowstatus workflowstatuscriticality triggerworkflow )
+        UPDATE FIELDS ( workflowstatus workflowstatuscriticality workflowinternalstatus )
         WITH VALUE #( FOR entity IN entities
                         ( %tky                      = entity-%tky
-                          workflowstatus            = workflow_status
-                          workflowstatuscriticality = workflow_status_crit
-                          triggerworkflow           = trigger_workflow ) )
+                          workflowstatus            = /esrcc/cl_wf_utility=>wf_status-approved
+                          workflowstatuscriticality = criticality
+                          workflowinternalstatus    = workflow_internal_status ) )
         FAILED failed_mod
         MAPPED mapped_mod.
     ENDIF.
+  ENDMETHOD.
+
+  METHOD updateinternalworkflowstatus.
+    CHECK keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
+
+    READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
+        ENTITY stewardship
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(entities).
+
+    " Set internal status to "Draft" for modified entries
+    set_workflow_internal_status(
+      entities           = entities
+      to_workflow_status = /esrcc/cl_wf_utility=>wf_status-draft
+    ).
+  ENDMETHOD.
+
+  METHOD reopen.
+    READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
+        ENTITY stewardship
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(entities).
+
+    DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-reopen_in_process ).
+    MODIFY ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
+        ENTITY stewardship
+        UPDATE FIELDS ( comments workflowid workflowstatus workflowstatuscriticality workflowinternalstatus )
+        WITH VALUE #( FOR entity IN entities
+                        ( %tky                      = entity-%tky
+                          workflowid                = ''
+                          workflowstatus            = /esrcc/cl_wf_utility=>wf_status-reopen_in_process
+                          workflowstatuscriticality = criticality
+                          workflowinternalstatus    = /esrcc/cl_wf_utility=>wf_status-reopen_in_process ) )
+        FAILED failed
+        REPORTED reported
+        MAPPED mapped.
+
+    result = VALUE #( FOR entity IN entities ( %tky = entity-%tky
+                                               %is_draft = entity-%is_draft
+                                               %param = entity ) ).
+
+    reported-%other = VALUE #( ( /esrcc/cl_config_util=>message_on_action( ) ) ).
+  ENDMETHOD.
+
+  METHOD updatecomment.
+    READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
+        ENTITY stewardship
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(entities).
+
+    LOOP AT entities INTO DATA(entity) WHERE commentid IS NOT INITIAL.
+      /esrcc/cl_comments_util=>modify_comments(
+        comments    = VALUE #( instanceid = entity-commentid )
+        iv_comments = entity-comments
+      ).
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.
@@ -947,8 +1081,8 @@ CLASS lhc_serviceproduct DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR serviceproduct~validatedata.
     METHODS precheck_delete FOR PRECHECK
       IMPORTING keys FOR DELETE serviceproduct.
-    METHODS updateworkflowstatus FOR DETERMINE ON MODIFY
-      IMPORTING keys FOR serviceproduct~updateworkflowstatus.
+    METHODS updateinternalworkflowstatus FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR serviceproduct~updateinternalworkflowstatus.
 
 ENDCLASS.
 
@@ -960,18 +1094,20 @@ CLASS lhc_serviceproduct IMPLEMENTATION.
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(service_products).
 
-    SELECT SINGLE CASE WHEN stw~workflowstatus = ' ' OR stw~workflowstatus = 'D' OR stw~workflowstatus = 'A' OR workflowstatus = 'R' THEN @if_abap_behv=>fc-o-enabled
-                       ELSE @if_abap_behv=>fc-o-disabled
-                  END AS editability
+    SELECT SINGLE stw~workflowstatus
         FROM /esrcc/i_stewrdshp AS stw
         INNER JOIN @service_products AS srv_prd
             ON srv_prd~stewardshipuuid = stw~stewardshipuuid
-        INTO @DATA(editability).
+        INTO @DATA(wf_status).
+
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( ).
+    DATA(regulate_update) = lo_auth->regulate_action_update( wf_status = wf_status ).
+    DATA(regulate_delete) = lo_auth->regulate_action_delete( wf_status = wf_status ).
 
     result = VALUE #( FOR wa IN service_products
                          ( %tky    = wa-%tky
-                           %update = editability
-                           %delete = editability ) ).
+                           %update = regulate_update
+                           %delete = regulate_delete ) ).
   ENDMETHOD.
 
   METHOD precheck_update.
@@ -996,7 +1132,8 @@ CLASS lhc_serviceproduct IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD validatedata.
-    DATA: draft TYPE STRUCTURE FOR READ RESULT /esrcc/i_stewrdshp_s\\serviceproduct.
+    DATA: draft                    TYPE STRUCTURE FOR READ RESULT /esrcc/i_stewrdshp_s\\serviceproduct,
+          current_stewardship_uuid TYPE sysuuid_x16.
 
     READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
          ENTITY serviceproduct
@@ -1038,6 +1175,7 @@ CLASS lhc_serviceproduct IMPLEMENTATION.
         sharecost_sum = DATA(sharecost_sum)
     ).
 
+    SORT entities BY stewardshipuuid serviceproductuuid validfrom.
     LOOP AT entities INTO DATA(entity).
       lo_validation->validate_service_product(
         entity  = entity
@@ -1045,15 +1183,13 @@ CLASS lhc_serviceproduct IMPLEMENTATION.
       ).
 
       " Validate sum of share cost
-      LOOP AT sharecost_sum TRANSPORTING NO FIELDS WHERE stewardship_uuid = entity-stewardshipuuid
-                                                     AND share_of_cost    <> 100.
-        lo_service_product->set_state_message(
-          entity     = entity
-          msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg number = '009' severity = if_abap_behv_message=>severity-error v1 = lo_service_product->get_field_text( fieldname = 'SHAREOFCOST' data_element = '/ESRCC/COSTSHARE' ) )
-          state_area = CONV #( /esrcc/cl_config_util=>percentage )
+      IF current_stewardship_uuid <> entity-stewardshipuuid.
+        current_stewardship_uuid = entity-stewardshipuuid.
+        lo_service_product->validate_percentage_100(
+          value  = VALUE #( sharecost_sum[ stewardship_uuid = entity-stewardshipuuid ]-share_of_cost OPTIONAL )
+          entity = entity
         ).
-        EXIT.
-      ENDLOOP.
+      ENDIF.
 
       " Validate overlapping dates
       LOOP AT overlapping_dates INTO DATA(date) WHERE serviceproduct     = entity-serviceproduct
@@ -1125,7 +1261,7 @@ CLASS lhc_serviceproduct IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
-  METHOD updateworkflowstatus.
+  METHOD updateinternalworkflowstatus.
     CHECK keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
 
     READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
@@ -1142,7 +1278,10 @@ CLASS lhc_serviceproduct IMPLEMENTATION.
         INTO CORRESPONDING FIELDS OF TABLE @entities.
     ENDIF.
 
-    lhc_/esrcc/i_stewrdshp=>set_workflow_status_to_draft( entities = entities ).
+    lhc_/esrcc/i_stewrdshp=>set_workflow_internal_status(
+      entities           = entities
+      to_workflow_status = /esrcc/cl_wf_utility=>wf_status-draft
+    ).
   ENDMETHOD.
 
 ENDCLASS.
@@ -1158,8 +1297,8 @@ CLASS lhc_servicereceiver DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR servicereceiver~validatedata.
     METHODS precheck_update FOR PRECHECK
       IMPORTING entities FOR UPDATE servicereceiver.
-    METHODS updateworkflowstatus FOR DETERMINE ON MODIFY
-      IMPORTING keys FOR servicereceiver~updateworkflowstatus.
+    METHODS updateinternalworkflowstatus FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR servicereceiver~updateinternalworkflowstatus.
 
 ENDCLASS.
 
@@ -1171,18 +1310,20 @@ CLASS lhc_servicereceiver IMPLEMENTATION.
         ALL FIELDS WITH CORRESPONDING #( keys )
         RESULT DATA(receivers).
 
-    SELECT SINGLE CASE WHEN stw~workflowstatus = ' ' OR stw~workflowstatus = 'D' OR workflowstatus = 'A' OR workflowstatus = 'R' THEN @if_abap_behv=>fc-o-enabled
-                       ELSE @if_abap_behv=>fc-o-disabled
-                  END AS editability
+    SELECT SINGLE stw~workflowstatus
         FROM /esrcc/i_stewrdshp AS stw
         INNER JOIN @receivers AS rec
             ON rec~stewardshipuuid = stw~stewardshipuuid
-        INTO @DATA(editability).
+        INTO @DATA(wf_status).
+
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( ).
+    DATA(regulate_update) = lo_auth->regulate_action_update( wf_status = wf_status ).
+    DATA(regulate_delete) = lo_auth->regulate_action_delete( wf_status = wf_status ).
 
     result = VALUE #( FOR wa IN receivers
                          ( %tky    = wa-%tky
-                           %update = editability
-                           %delete = editability ) ).
+                           %update = regulate_update
+                           %delete = regulate_delete ) ).
   ENDMETHOD.
 
   METHOD validatedata.
@@ -1213,7 +1354,8 @@ CLASS lhc_servicereceiver IMPLEMENTATION.
         control = VALUE #( invoicecurrency = if_abap_behv=>mk-on )
       ).
 
-      IF line_exists( stewardship[ costobjectuuid = entity-costobjectuuid ] ).
+      " Validate if provider and receiver are same
+      IF line_exists( stewardship[ stewardshipuuid = entity-stewardshipuuid costobjectuuid = entity-costobjectuuid ] ).
         lo_config_util->set_state_message(
           entity     = entity
           msg        = new_message(
@@ -1245,7 +1387,7 @@ CLASS lhc_servicereceiver IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
-  METHOD updateworkflowstatus.
+  METHOD updateinternalworkflowstatus.
     CHECK keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
 
     READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
@@ -1262,7 +1404,10 @@ CLASS lhc_servicereceiver IMPLEMENTATION.
         INTO CORRESPONDING FIELDS OF TABLE @entities.
     ENDIF.
 
-    lhc_/esrcc/i_stewrdshp=>set_workflow_status_to_draft( entities = entities ).
+    lhc_/esrcc/i_stewrdshp=>set_workflow_internal_status(
+      entities           = entities
+      to_workflow_status = /esrcc/cl_wf_utility=>wf_status-draft
+    ).
   ENDMETHOD.
 
 ENDCLASS.

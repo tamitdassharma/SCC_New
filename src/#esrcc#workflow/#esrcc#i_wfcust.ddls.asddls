@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @EndUserText.label: 'Workflow mapping of User and Role'
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_WfCust
@@ -8,9 +9,7 @@ define view entity /ESRCC/I_WfCust
   association [0..1] to /ESRCC/I_LegalEntityAll_F4     as _LegalEntityText     on  $projection.Legalentity = _LegalEntityText.Legalentity
   association [0..1] to /ESRCC/I_SystemInformationText as _SystemText          on  $projection.Sysid = _SystemText.SystemId
                                                                                and _SystemText.Spras = $session.system_language
-  association [0..1] to /ESRCC/I_COSCEN_F4             as _CostNumberText      on  $projection.Sysid      = _CostNumberText.Sysid
-                                                                               and $projection.Costobject = _CostNumberText.Costobject
-                                                                               and $projection.Costcenter = _CostNumberText.Costcenter
+  association [0..1] to /ESRCC/I_COSTOBJECTS           as _CostObjectText      on  $projection.Costobject = _CostObjectText.Costobject
   association [0..1] to /ESRCC/I_UserGroup_F4          as _UserGroup           on  _UserGroup.Usergroup = $projection.Usergroup
 {
   key application           as Application,
@@ -37,6 +36,6 @@ define view entity /ESRCC/I_WfCust
       _ApprovalLevelText,
       _LegalEntityText,
       _SystemText,
-      _CostNumberText,
+      _CostObjectText,
       _UserGroup
 }

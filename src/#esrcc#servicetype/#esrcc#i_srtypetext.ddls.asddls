@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @EndUserText.label: 'Service Type Text'
 @AccessControl.authorizationCheck: #CHECK
 @ObjectModel.dataCategory: #TEXT

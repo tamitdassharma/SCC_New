@@ -10,7 +10,7 @@
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>User Group for Workflow</DDTEXT>
+    <DDTEXT>User Group</DDTEXT>
     <REPTEXT>User Group</REPTEXT>
     <SCRTEXT_S>User</SCRTEXT_S>
     <SCRTEXT_M>User Group</SCRTEXT_M>
@@ -25,7 +25,7 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Benutzergruppe für Workflow</DDTEXT>
+     <DDTEXT>Benutzergruppe</DDTEXT>
      <REPTEXT>Benutzergruppe</REPTEXT>
      <SCRTEXT_S>Benutzer</SCRTEXT_S>
      <SCRTEXT_M>Benutzergruppe</SCRTEXT_M>

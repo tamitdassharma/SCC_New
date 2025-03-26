@@ -10,9 +10,9 @@
     <SCRLEN1>01</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Cost Object Number</DDTEXT>
-    <REPTEXT>Cost Object Number (Receiver)</REPTEXT>
-    <SCRTEXT_L>Cost Object Number (Receiver)</SCRTEXT_L>
+    <DDTEXT>Receiver Cost Object Number</DDTEXT>
+    <REPTEXT>Receiver Cost Object Number</REPTEXT>
+    <SCRTEXT_L>Receiver Cost Object Number</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
@@ -23,9 +23,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Kostenträger-Nummer (Quelle)</DDTEXT>
-     <REPTEXT>Kostenträger-Nummer (Quelle)</REPTEXT>
-     <SCRTEXT_L>Kostenträger-Nummer (Quelle)</SCRTEXT_L>
+     <DDTEXT>Empfänger Kostenträger-Nummer</DDTEXT>
+     <REPTEXT>Empfänger Kostenträger-Nummer</REPTEXT>
+     <SCRTEXT_L>Empfänger Kostenträger-Nummer</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

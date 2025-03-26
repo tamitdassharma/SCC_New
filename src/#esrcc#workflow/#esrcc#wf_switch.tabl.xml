@@ -7,11 +7,11 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Switch on/off Workflow based on Application Type</DDTEXT>
+    <DDTEXT>Workflow Activation per Application</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
-    <EXCLASS>1</EXCLASS>
+    <EXCLASS>4</EXCLASS>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD02V>
    <DD09L>
@@ -89,7 +89,7 @@
    <DD02_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Workflow je nach Anwendungstyp ein-/ausschalten</DDTEXT>
+     <DDTEXT>Workflow Aktivierung je Anwendung</DDTEXT>
     </item>
    </DD02_TEXTS>
   </asx:values>

@@ -7,10 +7,11 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>User Group for Workflow</DDTEXT>
+    <DDTEXT>Workflow User Groups</DDTEXT>
+    <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
-    <EXCLASS>1</EXCLASS>
+    <EXCLASS>4</EXCLASS>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD02V>
    <DD09L>
@@ -78,7 +79,7 @@
    <DD02_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Benutzergruppe für Workflow</DDTEXT>
+     <DDTEXT>Workflow Benutzergruppen</DDTEXT>
     </item>
    </DD02_TEXTS>
   </asx:values>

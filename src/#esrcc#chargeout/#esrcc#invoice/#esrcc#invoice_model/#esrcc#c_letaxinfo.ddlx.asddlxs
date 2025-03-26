@@ -1,11 +1,10 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Tax Information',
-    typeNamePlural: 'Tax Information',
+    typeName: 'VAT/Sales Tax Rate',
+    typeNamePlural: 'VAT/Sales Tax Rates',
     title: {
       type: #STANDARD,
-      label: 'Tax Information',
       value: 'LegalEntity'
     }
   }
@@ -45,17 +44,14 @@ annotate view /ESRCC/C_LeTaxInfo with
 
   @UI.identification: [ { position: 2 } ]
   @UI.lineItem: [ { position: 2 } ]
-  @EndUserText.label: 'VAT Number'
   VatNumber;
 
   @UI.identification: [ { position: 3 } ]
   @UI.lineItem: [ { position: 3 } ]
-  @EndUserText.label: 'Tax Number'
   TaxRegistationNumber;
   
   @UI.identification: [ { position: 4 } ]
   @UI.lineItem: [ { position: 4, cssDefault.width: '5.5rem' } ]
-  @EndUserText.label: 'Tax (%)'
   TaxPercentage;
 
   @UI.lineItem: [ { position: 5 } ]

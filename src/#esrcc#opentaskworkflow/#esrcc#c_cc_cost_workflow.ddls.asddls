@@ -1,5 +1,6 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Cost Center Chargeout'
-@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
 define root view entity /ESRCC/C_CC_COST_WORKFLOW 
 provider contract transactional_query

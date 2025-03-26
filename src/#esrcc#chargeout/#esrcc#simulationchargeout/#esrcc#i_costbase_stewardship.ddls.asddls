@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Charge-Out Markup'
 @Metadata.ignorePropagatedAnnotations: true
@@ -21,6 +21,7 @@ define view entity /ESRCC/I_COSTBASE_STEWARDSHIP
     association [0..1] to /esrcc/le_ccode as ccode
     on ccode.sysid  = $projection.Sysid
     and ccode.ccode = $projection.Ccode
+    and ccode.legalentity = $projection.Legalentity
     and ccode.active = 'X'
     
 {

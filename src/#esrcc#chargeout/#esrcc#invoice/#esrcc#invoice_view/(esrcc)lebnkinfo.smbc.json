@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain Bank Information",
+    "description": "Maintain Bank Accounts & Payment Terms Information",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,7 +9,7 @@
     "serviceName": "/ESRCC/UI_LEBNKINFO",
     "serviceVersion": "0001",
     "rootEntitySet": "BankInformationAll",
-    "name": "Maintain Bank Information",
+    "name": "Bank Accounts & Terms Information",
     "configurationGroup": "",
     "skipRootEntity": true
   },

@@ -36,7 +36,7 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
      <MSGNR>004</MSGNR>
-     <TEXT>Receivers for charge-out not found</TEXT>
+     <TEXT>Receivers for service not found</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
@@ -60,7 +60,7 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
      <MSGNR>008</MSGNR>
-     <TEXT>No Authorization to Calculate Chargeout to Receivers</TEXT>
+     <TEXT>No Authorization to Calculate Charge-out to Receivers</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
@@ -96,13 +96,103 @@
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
      <MSGNR>014</MSGNR>
-     <TEXT>No Authorization to Finalize Chargeout to Receivers</TEXT>
+     <TEXT>No Authorization to Finalize Charge-out to Receivers</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
      <MSGNR>015</MSGNR>
-     <TEXT>No Authorization to Re-open Chargeout to Receivers</TEXT>
+     <TEXT>No Authorization to Re-open Charge-out to Receivers</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>016</MSGNR>
+     <TEXT>Please switch off workflow for all Charge-out processes</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>017</MSGNR>
+     <TEXT>Legal entity not active for &amp;1. Please check configuration</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>018</MSGNR>
+     <TEXT>Checks for calculation period: &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>019</MSGNR>
+     <TEXT>Stewardship either not valid or not finalized or do not exist</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>020</MSGNR>
+     <TEXT>Cost base line Items not available</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>021</MSGNR>
+     <TEXT>Total initial cost is zero. Please check cost base line items</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>022</MSGNR>
+     <TEXT>&amp;1 &amp;2 &amp;3 &amp;4</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>023</MSGNR>
+     <TEXT>Charge-out rule for service product &amp;1 is not finalized or not maintained</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>024</MSGNR>
+     <TEXT>No capacity found for service product &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>025</MSGNR>
+     <TEXT>Zero capacity found for service product  &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>026</MSGNR>
+     <TEXT>Please review logs</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>027</MSGNR>
+     <TEXT>No consumption or Indirect key base values found for any receiver.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>028</MSGNR>
+     <TEXT>No consumption found for any receiver</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>029</MSGNR>
+     <TEXT>Indirect key base values not found for any receiver</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>/ESRCC/EXECCOCKPIT</ARBGB>
+     <MSGNR>030</MSGNR>
+     <TEXT>UoM between capacity and consumption of receivers is different</TEXT>
     </T100>
    </T100>
   </asx:values>

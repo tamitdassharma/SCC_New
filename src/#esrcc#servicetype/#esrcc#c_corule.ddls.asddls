@@ -1,4 +1,5 @@
 @EndUserText.label: 'Charge out Rules - Maintain'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
 define view entity /ESRCC/C_CoRule
@@ -15,13 +16,13 @@ define view entity /ESRCC/C_CoRule
       ConsumptionVersion,
       @ObjectModel.text.element: ['KeyVersionDescription']
       KeyVersion,
-      @ObjectModel.text.element: ['UomDescription']
-      Uom,
       @ObjectModel.text.element: ['AllocationKeyDescription']
       AdhocAllocationKey,
       WorkflowId,
       @ObjectModel.text.element: ['WorkflowStatusDescription']
       WorkflowStatus,
+      CommentId,
+      @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/CL_CONFIG_VE_HANDLER'
       Comments,
       WorkflowStatusCriticality,
       CreatedBy,
@@ -35,8 +36,6 @@ define view entity /ESRCC/C_CoRule
 
       @Semantics.text: true
       _ChargeOut.text                             as ChargeoutMethodDescription,
-      @Semantics.text: true
-      _UoM.UnitOfMeasureLongName                  as UomDescription,
       @Semantics.text: true
       _CapacityVersionText.text                   as CapacityVersionDescription,
       @Semantics.text: true
@@ -57,8 +56,6 @@ define view entity /ESRCC/C_CoRule
       HideConsumptionVersion,
       @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/CL_CONFIG_VE_HANDLER'
       HideKeyVersion,
-      @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/CL_CONFIG_VE_HANDLER'
-      HideUom,
       @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/CL_CONFIG_VE_HANDLER'
       HideAdhocAllocationKey,
       @ObjectModel.virtualElementCalculatedBy: 'ABAP:/ESRCC/CL_CONFIG_VE_HANDLER'

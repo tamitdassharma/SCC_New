@@ -1,14 +1,16 @@
 @Metadata.layer: #CORE
 @UI: {
   headerInfo: {
-    typeName: 'Service Cost Share',
-    typeNamePlural: 'Service Cost Shares',
+    typeName: 'Service Product Cost & Receiver Share',
+    typeNamePlural: 'Service Product Cost & Receiver Share',
     title: {
       type: #STANDARD,
       value: 'Serviceproduct'
     },
     description: {type: #STANDARD, value: 'Serviceproductdescription' }
-  }
+  },
+  presentationVariant: [{ sortOrder: [{ by: 'Chargeout' }, 
+                                      { by: 'Serviceproduct' }] }]
 }
 annotate view /ESRCC/C_ServiceProductShare with
 {
@@ -53,14 +55,14 @@ annotate view /ESRCC/C_ServiceProductShare with
   targetQualifier: 'shareofcostabs',
    purpose: #HEADER
   },
-//  {type: #DATAPOINT_REFERENCE,
-//  targetQualifier: 'markup',
-//   purpose: #HEADER
-//  },
-//  {type: #DATAPOINT_REFERENCE,
-//  targetQualifier: 'finalamount',
-//   purpose: #HEADER
-//  },
+  //  {type: #DATAPOINT_REFERENCE,
+  //  targetQualifier: 'markup',
+  //   purpose: #HEADER
+  //  },
+  //  {type: #DATAPOINT_REFERENCE,
+  //  targetQualifier: 'finalamount',
+  //   purpose: #HEADER
+  //  },
   {type: #DATAPOINT_REFERENCE,
    targetQualifier: 'status',
     purpose: #HEADER
@@ -74,11 +76,11 @@ annotate view /ESRCC/C_ServiceProductShare with
   cssDefault:{width: '8em'}
   } ]
   @UI.fieldGroup: [
- {
+  {
    importance: #HIGH,
    position: 5 ,
    qualifier: 'ChgData'
- } ]
+  } ]
   @UI.textArrangement: #TEXT_ONLY
   Chargeout;
   @UI.lineItem: [ {
@@ -110,13 +112,26 @@ annotate view /ESRCC/C_ServiceProductShare with
   cssDefault:{width: '15rem'}
   } ]
   @UI.fieldGroup: [
- {
+  {
    importance: #HIGH,
    position: 90 ,
    qualifier: 'OrgData'
- } ]
+  } ]
   @UI.textArrangement: #TEXT_LAST
   Transactiongroup;
+  @UI.lineItem: [ {
+  position: 35 ,
+  importance: #MEDIUM,
+  label: '',
+  cssDefault:{width: '15rem'}
+  } ]
+  @UI.fieldGroup: [
+  {
+   importance: #HIGH,
+   position: 95 ,
+   qualifier: 'OrgData'
+  } ]
+  ContractId;
   @UI.lineItem: [ {
   position: 40 ,
   importance: #MEDIUM,
@@ -144,11 +159,11 @@ annotate view /ESRCC/C_ServiceProductShare with
   label: ''
   } ]
   @UI.fieldGroup: [
- {
+  {
    importance: #HIGH,
    position: 60 ,
    qualifier: 'ChgData'
- } ]
+  } ]
   @EndUserText.label: 'Thereof Value-Add'
   Valueaddshare;
   @UI.lineItem: [ {
@@ -157,11 +172,11 @@ annotate view /ESRCC/C_ServiceProductShare with
   label: ''
   } ]
   @UI.fieldGroup: [
- {
+  {
    importance: #HIGH,
    position: 70 ,
    qualifier: 'ChgData'
- } ]
+  } ]
   @EndUserText.label: 'Thereof Pass-Through'
   Passthroughshare;
   @UI.lineItem: [ {
@@ -170,11 +185,11 @@ annotate view /ESRCC/C_ServiceProductShare with
   label: ''
   } ]
   @UI.fieldGroup: [
- {
+  {
    importance: #HIGH,
    position: 71 ,
    qualifier: 'ChgData'
- } ]
+  } ]
   @UI.textArrangement: #TEXT_ONLY
   CapacityVersion;
   @UI.lineItem: [ {
@@ -183,12 +198,11 @@ annotate view /ESRCC/C_ServiceProductShare with
   label: ''
   } ]
   @UI.fieldGroup: [
- {
+  {
    importance: #HIGH,
    position: 72 ,
    qualifier: 'ChgData'
- } ]
-  @EndUserText.label: 'Consumption'
+  } ]
   Planning;
   @UI.lineItem: [ {
   position: 599 ,
@@ -197,18 +211,18 @@ annotate view /ESRCC/C_ServiceProductShare with
   } ]
   @EndUserText.label: 'Unit of Measure'
   @UI.textArrangement: #TEXT_LAST
-  Uom;
+  PlanningUom;
   @UI.lineItem: [ {
   position: 74 ,
   importance: #MEDIUM,
   label: ''
   } ]
   @UI.fieldGroup: [
- {
+  {
    importance: #HIGH,
    position: 74 ,
    qualifier: 'ChgData'
- } ]
+  } ]
   @EndUserText.label: 'Cost Base per unit'
   Servicecostperunit;
   @UI.lineItem: [ {
@@ -217,11 +231,11 @@ annotate view /ESRCC/C_ServiceProductShare with
   label: ''
   } ]
   @UI.fieldGroup: [
- {
+  {
    importance: #HIGH,
    position: 75,
    qualifier: 'ChgData'
- } ]
+  } ]
   @EndUserText.label: 'Thereof Value-Add per unit'
   Valueaddcostperunit;
   @UI.lineItem: [ {
@@ -230,11 +244,11 @@ annotate view /ESRCC/C_ServiceProductShare with
   label: ''
   } ]
   @UI.fieldGroup: [
- {
+  {
    importance: #HIGH,
    position: 75 ,
    qualifier: 'ChgData'
- } ]
+  } ]
   @EndUserText.label: 'Thereof Pass-Through per unit'
   Passthrucostperunit;
 
@@ -252,11 +266,11 @@ annotate view /ESRCC/C_ServiceProductShare with
   label: ''
   } ]
   @UI.fieldGroup: [
- {
+  {
    importance: #HIGH,
    position: 170 ,
    qualifier: 'AdminData'
- } ]
+  } ]
   Workflowid;
   @UI.lineItem: [ {
     position: 250 ,
@@ -306,7 +320,7 @@ annotate view /ESRCC/C_ServiceProductShare with
     qualifier: 'AdminData'
   } ]
   LastChangedAt;
-  
+
   @UI.lineItem: [
    {  position: 598 ,
     importance: #MEDIUM,
@@ -335,14 +349,19 @@ annotate view /ESRCC/C_ServiceProductShare with
   @UI.lineItem: [
    {  position: 999 ,
     importance: #LOW,
-    label: ''
+    label: 'ID'
   } ]
   UUID;
   @UI.lineItem: [
    {  position: 999 ,
     importance: #LOW,
-    label: ''
+    label: 'Parent ID'
   } ]
   ParentUUID;
+  @UI.lineItem: [
+   {  position: 999 ,
+    importance: #LOW
+  } ]
+  CommentId;
 
 }

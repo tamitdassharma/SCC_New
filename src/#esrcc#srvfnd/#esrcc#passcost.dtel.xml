@@ -7,8 +7,9 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <HEADLEN>55</HEADLEN>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Intercompany Mark-up on Pass Through Cost (%)</DDTEXT>
-    <REPTEXT>Intercompany Mark-up on Pass Through Cost (%)</REPTEXT>
+    <DDTEXT>Interco. Markup on Pass-thr (%)</DDTEXT>
+    <REPTEXT>Interco. Markup on Pass-thr (%)</REPTEXT>
+    <SCRTEXT_L>Interco. Markup on Pass-thr (%)</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>DEC</DATATYPE>
     <LENG>000005</LENG>
@@ -22,9 +23,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Aufschlag auf Durchlaufkosten (%)</DDTEXT>
-     <REPTEXT>Aufschlag auf Durchlaufkosten (%)</REPTEXT>
-     <SCRTEXT_L>Aufschlag auf Durchlaufkosten (%)</SCRTEXT_L>
+     <DDTEXT>Interco. Aufschlag Durchlauf(%)</DDTEXT>
+     <REPTEXT>Interco. Aufschlag Durchlauf(%)</REPTEXT>
+     <SCRTEXT_L>Interco. Aufschlag Durchlauf(%)</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

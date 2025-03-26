@@ -30,12 +30,6 @@
      <VALPOS>0003</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>R3</DOMVALUE_L>
-     <DDTEXT>Service Reseller</DDTEXT>
-    </DD07V>
-    <DD07V>
-     <VALPOS>0004</VALPOS>
-     <DDLANGUAGE>E</DDLANGUAGE>
-     <DOMVALUE_L>R4</DOMVALUE_L>
      <DDTEXT>Service Provider/Receiver</DDTEXT>
     </DD07V>
    </DD07V_TAB>
@@ -64,12 +58,6 @@
      <VALPOS>0003</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>R3</DOMVALUE_L>
-     <DDTEXT>Service-Wiederverkäufer</DDTEXT>
-    </item>
-    <item>
-     <VALPOS>0004</VALPOS>
-     <DDLANGUAGE>D</DDLANGUAGE>
-     <DOMVALUE_L>R4</DOMVALUE_L>
      <DDTEXT>Service-Erbringer/-Empfänger</DDTEXT>
     </item>
    </DD07_TEXTS>

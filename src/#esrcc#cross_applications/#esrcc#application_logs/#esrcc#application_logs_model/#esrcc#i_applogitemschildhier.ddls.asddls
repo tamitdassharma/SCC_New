@@ -1,6 +1,6 @@
 @AbapCatalog.viewEnhancementCategory: [#NONE]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'App Logs Itms Child  Hierarchy interface'
+@EndUserText.label: 'App Logs Items Child Hierarchy interface'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,
@@ -38,6 +38,7 @@ define view entity /ESRCC/I_AppLogItemsChildHier
       message_v3                     as MessageV3,
       message_v4                     as MessageV4,
       created_at                     as CreatedAt,
+      log_header_uuid                as RootUUID,
       _invalid_records,
       _log_items_header
 }

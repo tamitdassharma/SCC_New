@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Service Charge Out Cube'
 @Metadata.ignorePropagatedAnnotations: true
@@ -54,7 +54,7 @@ define view entity /ESRCC/I_MultiDimension
   key Serviceproduct,
       @ObjectModel.foreignKey.association: '_receivingentity'
   key Receivingentity,  
-      @EndUserText.label: 'System Id (Receiver)'   
+      @EndUserText.label: 'System ID (Receiver)'   
   key ReceiverSysId,
       @EndUserText.label: 'Cost Object Type (Receiver)'
   key ReceiverCostObject,
@@ -64,6 +64,7 @@ define view entity /ESRCC/I_MultiDimension
       Servicetype,
       @ObjectModel.foreignKey.association: '_srvtransactiongroup'
       Transactiongroup,
+      ContractId,
 //      localcurr,
 //      groupcurr, 
       Currency,   
@@ -82,56 +83,56 @@ define view entity /ESRCC/I_MultiDimension
       /** MEASURES **/
       @EndUserText.label: 'Total Cost (Initial)'
       @DefaultAggregation: #SUM
-      RecTotalCost,
+      cast( RecTotalCost as abap.dec(23,2)) as RecTotalCost,
       
       @EndUserText.label: 'Total Included Cost'
       @DefaultAggregation: #SUM
-      RecIncludedCost,
+      cast( RecIncludedCost as abap.dec(23,2)) as RecIncludedCost,
 
       @EndUserText.label: 'Excluded Cost'
       @DefaultAggregation: #SUM
-      RecExcludedCost,
+      cast( RecExcludedCost as abap.dec(23,2)) as RecExcludedCost,
 
       @EndUserText.label: 'Thereof Value-Add'
       @DefaultAggregation: #SUM
-      RecOrigTotalCost,
+      cast( RecOrigTotalCost as abap.dec(23,2)) as RecOrigTotalCost,
 
       @EndUserText.label: 'Thereof Pass-Through'
       @DefaultAggregation: #SUM
-      RecPassTotalCost,
+      cast( RecPassTotalCost as abap.dec(23,2)) as RecPassTotalCost,
       
       @EndUserText.label: 'Total Stewardship'
       @DefaultAggregation: #SUM
-      RecStewardship,      
+      cast( RecStewardship as abap.dec(23,2)) as RecStewardship,      
 
       @EndUserText.label: 'Total Service Cost'
       @DefaultAggregation: #SUM
-      RecCostShare,
+      cast( RecCostShare as abap.dec(23,2)) as RecCostShare,
 
       @EndUserText.label: 'Thereof Value-Add Service Cost'
       @DefaultAggregation: #SUM
-      RecValueadded,
+      cast( RecValueadded as abap.dec(23,2)) as RecValueadded,
 
       @EndUserText.label: 'Thereof Pass-Through Service Cost'
       @DefaultAggregation: #SUM
-      RecPassthrough,
+      cast( RecPassthrough as abap.dec(23,2)) as RecPassthrough,
       
       @EndUserText.label: 'Total Mark-up'
       @DefaultAggregation: #SUM
-      TotalRecMarkup,
+      cast( TotalRecMarkup as abap.dec(23,2)) as TotalRecMarkup,
       
       @EndUserText.label: 'Thereof Value-Add Mark-up'
       @DefaultAggregation: #SUM
-      RecValueaddMarkup,
+      cast( RecValueaddMarkup as abap.dec(23,2)) as RecValueaddMarkup,
 
       @EndUserText.label: 'Thereof Pass-Through Mark-up'
       @DefaultAggregation: #SUM
-      RecPassthroughMarkup,
+      cast( RecPassthroughMarkup as abap.dec(23,2)) as RecPassthroughMarkup,
       
 
       @EndUserText.label: 'Total Charge-Out Amount'
       @DefaultAggregation: #SUM
-      TotalChargeout,
+      cast( TotalChargeout as abap.dec(23,2)) as TotalChargeout,
       
       _ryear,
       _legalentity,

@@ -11,7 +11,7 @@
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
-    <EXCLASS>1</EXCLASS>
+    <EXCLASS>4</EXCLASS>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD02V>
    <DD09L>
@@ -102,7 +102,7 @@
    <DD02_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Konfiguration für Gruppe</DDTEXT>
+     <DDTEXT>Konfiguration Gruppe</DDTEXT>
     </item>
    </DD02_TEXTS>
   </asx:values>

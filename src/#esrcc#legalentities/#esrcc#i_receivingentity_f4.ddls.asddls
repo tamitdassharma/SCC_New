@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Service Receiver'
 
@@ -6,7 +6,10 @@
 define view entity /ESRCC/I_RECEIVINGENTITY_F4
   as select from /ESRCC/I_LegalEntityAll_F4
 {
-  key Legalentity as Receivingentity,
+      @ObjectModel.text.element: ['Description']
+      @UI.textArrangement: #TEXT_LAST
+      @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7, ranking: #HIGH }
+  key cast( Legalentity as /esrcc/receivingntity ) as Receivingentity,
       Entitytype,
       Role,
       LocalCurr,
@@ -26,4 +29,3 @@ define view entity /ESRCC/I_RECEIVINGENTITY_F4
 where
      Role = 'R2'
   or Role = 'R3'
-  or Role = 'R4'

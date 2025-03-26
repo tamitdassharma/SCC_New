@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST,#UNION]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Service Final Charge Out Amount'
 @Metadata.ignorePropagatedAnnotations: true
@@ -29,7 +29,7 @@ define view entity /ESRCC/I_ServiceProductShare
   on method.Chargeout = $projection.Chargeout
   
   association [0..1] to I_UnitOfMeasureText as _UoM
-  on _UoM.UnitOfMeasure_E = srvcost.Uom
+  on _UoM.UnitOfMeasure_E = srvcost.PlanningUom
   and _UoM.Language = $session.system_language 
   
   association [0..1] to /ESRCC/I_CURR as _CurrencyTypeText
@@ -47,12 +47,12 @@ define view entity /ESRCC/I_ServiceProductShare
     srvcost.Transactiongroup as Transactiongroup, 
     CapacityVersion, 
     serviceproduct.OECD, 
-    Costshare,          
+    Costshare,  
+    ContractId,        
     _CostCenterCost.Currency,
     Chargeout,
     Planning,
     PlanningUom,
-    Uom,
     ConsumptionVersion,
     KeyVersion,
 // Cost Share calculations
@@ -63,44 +63,24 @@ define view entity /ESRCC/I_ServiceProductShare
 
 // Cost Share price per unit calculation for direct chargeout case
     cast(case when Chargeout = 'D' and  Planning <> 0 then
-    ( ( Costshare / 100 ) * _CostCenterCost.Remainingcostbase ) / case when Chargeout = 'D' and PlanningUom <> Uom then
-                                    unit_conversion( 
-                                                     client => $session.client,
-                                                     quantity => Planning,
-                                                     source_unit => PlanningUom,
-                                                     target_unit => Uom,
-                                                     error_handling => 'SET_TO_NULL' ) 
-                                    else Planning end   
+     ( ( Costshare / 100 ) * _CostCenterCost.Remainingcostbase ) / Planning                                      
     else
-    0 end as abap.dec(10,5)) as Servicecostperunit,
+    0 end as abap.dec(10,2)) as Servicecostperunit,
     
     cast(case when Chargeout = 'D' and  Planning <> 0 then
-    ( ( ( Costshare / 100 ) * (_CostCenterCost.Origtotalcost - ( ( _CostCenterCost.Stewardship / 100 ) * _CostCenterCost.Origtotalcost )) ) / case when Chargeout = 'D' and PlanningUom <> Uom then
-                                    unit_conversion( 
-                                                     client => $session.client,
-                                                     quantity => Planning,
-                                                     source_unit => PlanningUom,
-                                                     target_unit => Uom,
-                                                     error_handling => 'SET_TO_NULL' )  
-                                    else Planning end  ) 
+    ( ( ( Costshare / 100 ) * (_CostCenterCost.Origtotalcost - ( ( _CostCenterCost.Stewardship / 100 ) * _CostCenterCost.Origtotalcost )) ) / Planning ) 
     else
-    0 end as abap.dec(10,5)) as Valueaddcostperunit,
+    0 end as abap.dec(10,2)) as Valueaddcostperunit,
     
     cast(case when Chargeout = 'D' and  Planning <> 0 then
-    ( ( ( Costshare / 100 ) * (_CostCenterCost.Passtotalcost - ( ( _CostCenterCost.Stewardship / 100 ) * _CostCenterCost.Passtotalcost )) ) / case when Chargeout = 'D' and PlanningUom <> Uom then
-                                    unit_conversion( 
-                                                     client => $session.client,
-                                                     quantity => Planning,
-                                                     source_unit => PlanningUom,
-                                                     target_unit => Uom,
-                                                     error_handling => 'SET_TO_NULL' )  
-                                    else Planning end  ) 
+    ( ( ( Costshare / 100 ) * (_CostCenterCost.Passtotalcost - ( ( _CostCenterCost.Stewardship / 100 ) * _CostCenterCost.Passtotalcost )) ) / Planning ) 
     else
-    0 end as abap.dec(10,5)) as Passthrucostperunit,
+    0 end as abap.dec(10,2)) as Passthrucostperunit,
 
 // Additonal Attributes   
     srvcost.Status,
     Workflowid,
+    CommentId,
     cast(case Chargeout
       when 'D' then 'X' 
       when 'I' then ''

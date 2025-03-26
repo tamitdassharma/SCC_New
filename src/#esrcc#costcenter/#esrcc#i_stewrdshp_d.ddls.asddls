@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Draft Query View'
 
@@ -14,6 +14,7 @@ define view entity /ESRCC/I_Stewrdshp_D
       chainsequence                 as Chainsequence,
       workflowid                    as Workflowid,
       workflowstatus                as Workflowstatus,
+      commentid                     as CommentId,
       comments                      as Comments,
       sysid                         as Sysid,
       legalentity                   as Legalentity,
@@ -27,7 +28,7 @@ define view entity /ESRCC/I_Stewrdshp_D
       locallastchangedat            as Locallastchangedat,
       singletonid                   as Singletonid,
       workflowstatuscriticality     as Workflowstatuscriticality,
-      triggerworkflow               as Triggerworkflow,
+      workflowinternalstatus        as WorkflowInternalStatus,
       draftentitycreationdatetime   as Draftentitycreationdatetime,
       draftentitylastchangedatetime as Draftentitylastchangedatetime,
       draftadministrativedatauuid   as Draftadministrativedatauuid,

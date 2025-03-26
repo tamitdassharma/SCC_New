@@ -1,5 +1,5 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
-@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST, #UNION ]
+@AccessControl.authorizationCheck: #CHECK
 @EndUserText.label: 'Receivers Cost'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{

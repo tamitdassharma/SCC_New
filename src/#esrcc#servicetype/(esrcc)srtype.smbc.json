@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain Service Types",
+    "description": "Maintain Service Types (Level 2)",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_SRTYPE_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "ServiceTypeAll",
-    "name": "Maintain Service Type",
-    "configurationGroup": "/ESRCC/BC_GROUP4",
+    "name": "L2 - Service Types",
+    "configurationGroup": "/ESRCC/BC_GROUP3",
     "skipRootEntity": true
   },
   "appConfiguration": {

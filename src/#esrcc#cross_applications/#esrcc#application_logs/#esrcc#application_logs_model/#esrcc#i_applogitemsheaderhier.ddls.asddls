@@ -9,8 +9,8 @@
 }
 define view entity /ESRCC/I_AppLogItemsHeaderHier
   as select from /esrcc/log_item
-  association to parent /ESRCC/I_ApplicationLogsHier as _log_header on $projection.parent_hid = _log_header.hid
-  composition  [1..*] of /ESRCC/I_AppLogItemsChildHier as _log_items_child
+  association to parent /ESRCC/I_ApplicationLogsHier  as _log_header on $projection.parent_hid = _log_header.hid
+  composition [1..*] of /ESRCC/I_AppLogItemsChildHier as _log_items_child
 {
   key log_uuid                        as hid,
       log_header_uuid                 as parent_hid,
@@ -39,7 +39,9 @@ define view entity /ESRCC/I_AppLogItemsHeaderHier
       message_v4                      as MessageV4,
       created_at                      as CreatedAt,
       is_parent                       as IsParent,
+      log_header_uuid                 as RootUUID,
       _log_items_child,
       _log_header
 }
-where parent_log_uuid is initial
+where
+  parent_log_uuid is initial

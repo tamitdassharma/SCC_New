@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_CORULE_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "RuleAll",
-    "name": "Maintain Standard Charge-out Rules",
-    "configurationGroup": "",
+    "name": "Standard Charge-out Rules",
+    "configurationGroup": "/ESRCC/BC_GROUP5",
     "skipRootEntity": true
   },
   "appConfiguration": {

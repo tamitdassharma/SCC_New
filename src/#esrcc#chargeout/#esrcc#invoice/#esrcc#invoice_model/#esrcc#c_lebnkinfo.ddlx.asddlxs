@@ -1,11 +1,10 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Bank Information',
-    typeNamePlural: 'Bank Information',
+    typeName: 'Bank Account & Terms Information',
+    typeNamePlural: 'Bank Account & Terms Information',
     title: {
       type: #STANDARD,
-      label: 'Bank Information',
       value: 'LegalEntity'
     }
   }
@@ -45,32 +44,27 @@ annotate view /ESRCC/C_LeBnkInfo with
 
   @UI.identification: [ { position: 2 } ]
   @UI.lineItem: [ { position: 2 } ]
-  @EndUserText.label: 'Bank Account Number (IBAN)'
   BankAccountNumber;
 
   @UI.identification: [ { position: 3 } ]
   @UI.lineItem: [ { position: 3 } ]
-  @EndUserText.label: 'BIC Code'
   BicCode;
 
   @UI.identification: [ { position: 4 } ]
   @UI.lineItem: [ { position: 4 } ]
-  @EndUserText.label: 'Payment Term'
   PaymentTerms;
 
   @UI.identification: [ { position: 5 } ]
   @UI.lineItem: [ { position: 5 } ]
-  @EndUserText.label: 'Free Text'
+  @UI.multiLineText: true
   FreeText;
 
   @UI.identification: [ { position: 6 } ]
   @UI.lineItem: [ { position: 6 } ]
-  @EndUserText.label: 'Contact Person'
   ContactPerson;
 
   @UI.identification: [ { position: 7 } ]
   @UI.lineItem: [ { position: 7 } ]
-  @EndUserText.label: 'Agreement ID'
   AgreementId;
 
   @UI.lineItem: [ { position: 8 } ]
@@ -88,7 +82,7 @@ annotate view /ESRCC/C_LeBnkInfo with
   @UI.lineItem: [ { position: 11, cssDefault.width: '9.5rem' } ]
   @UI.fieldGroup: [{ qualifier: 'AdminGroup', position: 4 }]
   LastChangedAt;
-  
+
   @UI.hidden: true
   LegalEntityDescription;
 }
