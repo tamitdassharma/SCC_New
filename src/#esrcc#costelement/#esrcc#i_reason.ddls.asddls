@@ -1,4 +1,5 @@
 @EndUserText.label: 'Cost Exclusion Inclusion Reason'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_Reason
   as select from /esrcc/reason

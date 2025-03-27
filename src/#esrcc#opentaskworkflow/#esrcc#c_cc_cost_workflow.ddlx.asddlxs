@@ -11,7 +11,7 @@
   }
 }
 
-@UI.presentationVariant: [{ groupBy: [ 'Billingperiod' ] }]
+//@UI.presentationVariant: [{ groupBy: [ 'Billingperiod' ] }]
 
 annotate view /ESRCC/C_CC_COST_WORKFLOW with
 {
@@ -258,6 +258,14 @@ annotate view /ESRCC/C_CC_COST_WORKFLOW with
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_PROFITCENTER_F4', element: 'ProfitCenter' }}]
   @UI.textArrangement: #TEXT_LAST
   Profitcenter;
+  @UI.lineItem: [ {
+    position: 91 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '10rem'}
+  } ]
+  @UI.textArrangement: #TEXT_ONLY
+  ProcessType;
 
   @UI.lineItem: [ {
     position: 120 ,
@@ -452,5 +460,14 @@ annotate view /ESRCC/C_CC_COST_WORKFLOW with
   Currency;
   @UI.hidden: true
   countryname;
+<<<<<<< HEAD
+=======
+  @UI.hidden: true
+  UUID;
+  @UI.hidden: true
+  functionalareadescription;
+  @UI.hidden: true
+  ProcessTypedescription;
+>>>>>>> origin/main
 
 }

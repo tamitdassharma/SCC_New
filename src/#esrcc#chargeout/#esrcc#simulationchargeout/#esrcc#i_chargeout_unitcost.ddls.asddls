@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Charge-Out Markup'
 @Metadata.ignorePropagatedAnnotations: true
@@ -65,6 +65,7 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     validon,
     localcurr,
     groupcurr,
+<<<<<<< HEAD
 
 //cost center cost evaluation
     ( origtotalcost_l + passtotalcost_l + excludedtotalcost_l ) as Totalcost_l,
@@ -235,5 +236,13 @@ define view entity /ESRCC/I_CHARGEOUT_UNITCOST
     cast(valueaddshareG * ( srvmkp.origcost / 100 ) as abap.dec(23,5)) as valueaddmarkupabsG,
 
     cast(passthroughshareG * ( srvmkp.passcost / 100 ) as abap.dec(23,5)) as passthrumarkupabsG    
+=======
+    ShareOfCost as costshare,
+    ContractId,   
+    @Semantics.quantity.unitOfMeasure: 'PlanningUoM'
+    dirplan.Planning as planning,
+    dirplan.Uom as PlanningUoM
+//    Uom  
+>>>>>>> origin/main
 
 }

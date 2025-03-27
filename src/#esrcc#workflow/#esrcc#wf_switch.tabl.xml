@@ -7,11 +7,16 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Switch on/off Workflow based on Application Type</DDTEXT>
+    <DDTEXT>Workflow Activation per Application</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
+<<<<<<< HEAD
     <EXCLASS>1</EXCLASS>
+=======
+    <EXCLASS>4</EXCLASS>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
+>>>>>>> origin/main
    </DD02V>
    <DD09L>
     <TABNAME>/ESRCC/WF_SWITCH</TABNAME>
@@ -88,7 +93,7 @@
    <DD02_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Workflow je nach Anwendungstyp ein-/ausschalten</DDTEXT>
+     <DDTEXT>Workflow Aktivierung je Anwendung</DDTEXT>
     </item>
    </DD02_TEXTS>
    <TABL_EXTRAS>

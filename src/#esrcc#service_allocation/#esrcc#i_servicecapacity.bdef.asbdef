@@ -30,9 +30,9 @@ authorization master ( global )
   field ( numbering : managed )
   CapacityUuid;
 
-  create;
-  update;
-  delete;
+  create ( precheck );
+  update ( precheck );
+  delete ( precheck );
 
   mapping for /esrcc/srv_cpcty
   {

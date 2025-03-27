@@ -7,18 +7,10 @@
 annotate view /ESRCC/C_LeOthers_S with
 {
   @UI.facet: [ {
-  //    id: 'Transport',
-  //    purpose: #STANDARD,
-  //    type: #IDENTIFICATION_REFERENCE,
-  //    label: 'Transport',
-  //    position: 1 ,
-  //    hidden: #(HideTransport)
-  //  },
-  //  {
     id: '/ESRCC/I_LeOthers',
     purpose: #STANDARD,
     type: #LINEITEM_REFERENCE,
-    label: 'Maintain Legal Entity Additional Information',
+    label: 'Maintain Additional Information',
     position: 2 ,
     targetElement: '_OtherInformation'
   } ]
@@ -33,11 +25,6 @@ annotate view /ESRCC/C_LeOthers_S with
   @UI.identification: [ {
     position: 2 ,
     importance: #HIGH
-  //  },
-  //  {
-  //    type: #FOR_ACTION,
-  //    dataAction: 'SelectCustomizingTransptReq',
-  //    label: 'Select Transport'
   } ]
   TransportRequestID;
 }

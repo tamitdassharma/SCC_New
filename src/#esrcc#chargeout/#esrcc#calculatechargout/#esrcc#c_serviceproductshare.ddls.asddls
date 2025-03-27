@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST]
 @EndUserText.label: 'Service Cost Share'
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @Metadata.allowExtensions: true
@@ -7,12 +8,14 @@ as projection on /ESRCC/I_ServiceProductShare
     key UUID,
     key ParentUUID,
     @ObjectModel.text.element: [ 'currencytypetext' ]
-    key Currencytype,     
+    key Currencytype, 
+    @ObjectModel.text.element: [ 'Serviceproductdescription' ]    
     Serviceproduct,  
     @ObjectModel.text.element: [ 'Servicetypedescription' ]
     Servicetype,
     @ObjectModel.text.element: [ 'Transactiongroupdescription' ]
     Transactiongroup,
+    ContractId,
     @DefaultAggregation: #SUM
     Costshare,
     @DefaultAggregation: #SUM
@@ -28,10 +31,10 @@ as projection on /ESRCC/I_ServiceProductShare
     Chargeout,
     @ObjectModel.text.element: [ 'capacityversiontext' ]
     CapacityVersion,
-    @Semantics.quantity.unitOfMeasure: 'Uom'
+    @Semantics.quantity.unitOfMeasure: 'PlanningUom'
     Planning,
     @ObjectModel.text.element: [ 'unitname' ]
-    Uom,
+    PlanningUom,
     @Semantics.amount.currencyCode: 'Currency'
     Servicecostperunit,
     @Semantics.amount.currencyCode: 'Currency'
@@ -48,6 +51,7 @@ as projection on /ESRCC/I_ServiceProductShare
     @ObjectModel.text.element: [ 'statusdescription' ]
     Status,
     Workflowid,
+    CommentId,
     CreatedBy,
     CreatedAt,
     LastChangedAt,

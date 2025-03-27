@@ -1,17 +1,22 @@
 {
   "formatVersion": "1",
   "header": {
+<<<<<<< HEAD
     "description": "Maintain Legal Entity Address",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
+=======
+    "description": "Maintain Legal Entity Billing Address",
+    "originalLanguage": "en"
+>>>>>>> origin/main
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_LE_ADDRESS_O4",
     "serviceName": "/ESRCC/UI_LE_ADDRESS_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "LeAddressAll",
-    "name": "Maintain Legal Entity Address",
-    "configurationGroup": "",
+    "name": "Legal Entity Billing Address",
+    "configurationGroup": "/ESRCC/BC_GROUP7",
     "skipRootEntity": true
   },
   "appConfiguration": {

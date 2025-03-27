@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Execution Status'
 define view entity /ESRCC/I_EXECSTATUS 

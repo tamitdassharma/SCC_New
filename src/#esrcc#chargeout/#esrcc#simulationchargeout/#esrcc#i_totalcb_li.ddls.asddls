@@ -1,6 +1,6 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Service cosrt & Share'
+@EndUserText.label: 'Service Cost & Share'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,
@@ -8,6 +8,7 @@
     dataClass: #MIXED
 }
 define view entity /ESRCC/I_TOTALCB_LI 
+<<<<<<< HEAD
    as select from /esrcc/cc_cost as cb_li
 
     association [0..*] to /esrcc/le_cctr as ccsrv
@@ -38,6 +39,20 @@ define view entity /ESRCC/I_TOTALCB_LI
     and ccode.ccode = cb_li.ccode
     and ccode.active = 'X'
  
+=======
+   as select from /esrcc/cb_stw as cc_cost
+      
+    association [0..*] to /ESRCC/I_STW_SERVICEPRODUCT as srvprm
+    on srvprm.LegalEntity = $projection.legalentity
+    and srvprm.Sysid = $projection.sysid
+    and srvprm.CompanyCode = $projection.ccode
+    and srvprm.CostObject = $projection.costobject
+    and srvprm.CostCenter = $projection.costcenter
+    and cc_cost.validon >= srvprm.ValidFrom
+    and cc_cost.validon <= srvprm.Validto
+    and cc_cost.validon >= srvprm.SpValidFrom
+    and cc_cost.validon <= srvprm.SpValidto 
+>>>>>>> origin/main
 {
     key ryear,
     key poper,
@@ -55,6 +70,7 @@ define view entity /ESRCC/I_TOTALCB_LI
     validon,
     localcurr,
     groupcurr,   
+<<<<<<< HEAD
   
     @Semantics.amount.currencyCode: 'Localcurr'
     excludedtotalcost_l,
@@ -95,6 +111,11 @@ define view entity /ESRCC/I_TOTALCB_LI
         ( srvprm.costshare / 100 ) * (passtotalcost_l - ( ( ccsrv.stewardship / 100 ) * passtotalcost_l )) as srvcostshareL,
     ( srvprm.costshare / 100 ) * (origtotalcost_l - ( ( ccsrv.stewardship / 100 ) * origtotalcost_l )) as valueaddshareL,
     ( srvprm.costshare / 100 ) * (passtotalcost_l - ( ( ccsrv.stewardship / 100 ) * passtotalcost_l )) as passthroughshareL,
+=======
+    cc_cost.stewardship,
+    srvprm.ShareOfCost,
+    srvprm.ContractId
+>>>>>>> origin/main
 
     ( srvprm.costshare / 100 ) * (origtotalcost_g - ( ( ccsrv.stewardship / 100 ) * origtotalcost_g )) +
         ( srvprm.costshare / 100 ) * (passtotalcost_g - ( ( ccsrv.stewardship / 100 ) * passtotalcost_g )) as srvcostshareG,

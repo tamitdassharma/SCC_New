@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Allocation Data Mapping'
 @Metadata.ignorePropagatedAnnotations: true
@@ -23,6 +23,7 @@ define view entity /ESRCC/I_TOTALCB_ALLOC
   key ccode,
   key costobject,
   key costcenter,
+<<<<<<< HEAD
   key serviceproduct,
       profitcenter,
       businessdivision,
@@ -53,4 +54,18 @@ define view entity /ESRCC/I_TOTALCB_ALLOC
       srvcostshareG,
       valueaddshareG,
       passthroughshareG
+=======
+  key ServiceProduct,
+      srvalloc.ChargeoutMethod as chargeout,    
+      srvalloc.CapacityVersion as capacity_version,
+      srvalloc.CostVersion as cost_version,
+      srvalloc.ConsumptionVersion as consumption_version,
+      srvalloc.KeyVersion as key_version,
+//      srvalloc.Uom,
+      validon,
+      localcurr,
+      groupcurr,
+      ShareOfCost,
+      ContractId
+>>>>>>> origin/main
 }

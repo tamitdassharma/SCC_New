@@ -1,17 +1,22 @@
 {
   "formatVersion": "1",
   "header": {
+<<<<<<< HEAD
     "description": "Maintain Reason for Cost Exclusion/Inclusion",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
+=======
+    "description": "Maintain Reasons for Cost Inclusion/Exclusion",
+    "originalLanguage": "en"
+>>>>>>> origin/main
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_REASON",
     "serviceName": "/ESRCC/UI_REASON",
     "serviceVersion": "0001",
     "rootEntitySet": "ReasonAll",
-    "name": "Maintain Reason for Cost Exclusion/Inclusion",
-    "configurationGroup": "",
+    "name": "Reason for Cost Inclusion/Exclusion",
+    "configurationGroup": "/ESRCC/BC_GROUP2",
     "skipRootEntity": true
   },
   "appConfiguration": {

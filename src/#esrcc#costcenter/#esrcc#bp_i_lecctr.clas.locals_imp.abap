@@ -183,17 +183,18 @@ ENDCLASS.
 
 CLASS lhc_receiver IMPLEMENTATION.
   METHOD get_instance_features.
-    IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
-      /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
-          EXPORTING
-            keys          = keys
-            update        = abap_true
-            delete        = abap_true
-            field_mapping = VALUE #( legal_entity = 'LEGALENTITY' cost_object = 'COSTOBJECT' cost_number = 'COSTCENTER' )
-          CHANGING
-            result        = result
-        ).
-    ENDIF.
+*    IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
+**      /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
+*      NEW /esrcc/cl_authorization( )->set_instance_authorization(
+*          EXPORTING
+*            keys          = keys
+*            update        = abap_true
+*            delete        = abap_true
+*            field_mapping = VALUE #( legal_entity = 'LEGALENTITY' cost_object = 'COSTOBJECT' cost_number = 'COSTCENTER' )
+*          CHANGING
+*            result        = result
+*        ).
+*    ENDIF.
   ENDMETHOD.
 
 ENDCLASS.
@@ -338,17 +339,18 @@ CLASS lhc_serviceparameter IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_instance_features.
-    IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
-      /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
-        EXPORTING
-          keys          = keys
-          update        = abap_true
-          delete        = abap_true
-          field_mapping = VALUE #( legal_entity = 'LEGALENTITY' cost_object = 'COSTOBJECT' cost_number = 'COSTCENTER' )
-        CHANGING
-          result        = result
-      ).
-    ENDIF.
+*    IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
+**      /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
+*      NEW /esrcc/cl_authorization( )->set_instance_authorization(
+*        EXPORTING
+*          keys          = keys
+*          update        = abap_true
+*          delete        = abap_true
+*          field_mapping = VALUE #( legal_entity = 'LEGALENTITY' cost_object = 'COSTOBJECT' cost_number = 'COSTCENTER' )
+*        CHANGING
+*          result        = result
+*      ).
+*    ENDIF.
   ENDMETHOD.
 
 ENDCLASS.
@@ -536,19 +538,20 @@ CLASS lhc_/esrcc/i_lecctr IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_instance_features.
-    IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
-      /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
-        EXPORTING
-          keys            = keys
-          update          = abap_true
-          delete          = abap_true
-          create_by_assoc = abap_true
-          field_mapping   = VALUE #( legal_entity = 'LEGALENTITY' cost_object = 'COSTOBJECT' cost_number = 'COSTCENTER' )
-          assoc_path      = VALUE #( ( path = '_ServiceParameter' ) ( path = '_ServiceReceiver' ) )
-        CHANGING
-          result          = result
-      ).
-    ENDIF.
+*    IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
+**      /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
+*      NEW /esrcc/cl_authorization( )->set_instance_authorization(
+*        EXPORTING
+*          keys            = keys
+*          update          = abap_true
+*          delete          = abap_true
+*          create_by_assoc = abap_true
+*          field_mapping   = VALUE #( legal_entity = 'LEGALENTITY' cost_object = 'COSTOBJECT' cost_number = 'COSTCENTER' )
+*          assoc_path      = VALUE #( ( path = '_ServiceParameter' ) ( path = '_ServiceReceiver' ) )
+*        CHANGING
+*          result          = result
+*      ).
+*    ENDIF.
   ENDMETHOD.
 
   METHOD precheck_cba_serviceparameter.
@@ -642,24 +645,36 @@ CLASS lhc_/esrcc/i_lecctr_s IMPLEMENTATION.
         failed_entity      = failed-letocostcenter
     ).
 
+    DATA(lo_auth) = /esrcc/cl_authorization=>create(
+      EXPORTING
+        paths              = VALUE #( ( path = 'LeToCostCenterAll' ) )
+        source_entity_name = '/ESRCC/C_LECCTR'
+*        is_transition      = abap_true
+      CHANGING
+        reported_entity    = reported-letocostcenter
+        failed_entity      = failed-letocostcenter
+    ).
+
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_le_cctr ).
 
     DATA(target) = entities[ 1 ]-%target.
-    SELECT * FROM /esrcc/coscen
-        FOR ALL ENTRIES IN @target
-        WHERE sysid      = @target-sysid
-          AND costobject = @target-costobject
-          AND costcenter = @target-costcenter
-        INTO TABLE @DATA(cost_centers).
+*    SELECT * FROM /esrcc/coscen
+*        FOR ALL ENTRIES IN @target
+*        WHERE sysid      = @target-sysid
+*          AND costobject = @target-costobject
+*          AND costcenter = @target-costcenter
+*        INTO TABLE @DATA(cost_centers).
 
     LOOP AT target INTO DATA(entity).
-      CHECK lo_le_cctr->check_authorization(
+*      CHECK lo_le_cctr->check_authorization(
+      CHECK lo_auth->check_authorization(
         EXPORTING
-          entity       = CORRESPONDING ts_le_cctr( entity )
-          legal_entity = entity-legalentity
-          cost_object  = entity-costobject
-          cost_number  = entity-costcenter
-          activity     = /esrcc/cl_config_util=>c_authorization_activity-create
+          entity     = CORRESPONDING ts_le_cctr( entity )
+*          legal_entity = entity-legalentity
+*          cost_object  = entity-costobject
+*          cost_number  = entity-costcenter
+          auth_value = CORRESPONDING #( entity MAPPING legal_entity = legalentity cost_object = costobject cost_number = costcenter )
+          activity   = /esrcc/cl_authorization=>c_authorization_activity-create
       ) = abap_true.
 
       lo_validation->validate_le_cctr(
@@ -668,34 +683,37 @@ CLASS lhc_/esrcc/i_lecctr_s IMPLEMENTATION.
       ).
 
       " Validate System ID against Cost Number
-      IF NOT line_exists( cost_centers[ sysid      = entity-sysid
-                                        costobject = entity-costobject
-                                        costcenter = entity-costcenter ] ).
-        lo_le_cctr->set_state_message(
-          entity     = CORRESPONDING ts_le_cctr( entity )
-          msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg
-                                    number = '008'
-                                    severity = cl_abap_behv=>ms-error
-                                    v1 = lo_le_cctr->get_field_text( fieldname = 'COSTCENTER' data_element = '/ESRCC/COSTCENTER' )
-                                    v2 = entity-costcenter
-                                    v3 = entity-sysid )
-          state_area = CONV #( /esrcc/cl_config_util=>invalid_data )
-        ).
-      ENDIF.
+*      IF NOT line_exists( cost_centers[ sysid      = entity-sysid
+*                                        costobject = entity-costobject
+*                                        costcenter = entity-costcenter ] ).
+*        lo_le_cctr->set_state_message(
+*          entity     = CORRESPONDING ts_le_cctr( entity )
+*          msg        = new_message( id = /esrcc/cl_config_util=>c_config_msg
+*                                    number = '008'
+*                                    severity = cl_abap_behv=>ms-error
+*                                    v1 = lo_le_cctr->get_field_text( fieldname = 'COSTCENTER' data_element = '/ESRCC/COSTCENTER' )
+*                                    v2 = entity-costcenter
+*                                    v3 = entity-sysid )
+*          state_area = CONV #( /esrcc/cl_config_util=>invalid_data )
+*        ).
+*      ENDIF.
     ENDLOOP.
   ENDMETHOD.
 
   METHOD edit.
-    DATA(lo_util) = /esrcc/cl_config_util=>create_for_authorization( ).
-    SELECT DISTINCT legalentity FROM /esrcc/i_lecctr INTO TABLE @DATA(legal_entities).      "#EC CI_NOWHERE
+*    DATA(lo_util) = /esrcc/cl_config_util=>create_for_authorization( ).
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( ).
+    SELECT DISTINCT legalentity FROM /esrcc/i_lecctr INTO TABLE @DATA(legal_entities). "#EC CI_NOWHERE
 
     LOOP AT legal_entities INTO DATA(entity).
-      DATA(is_unauthorized) = lo_util->is_unauthorized(
+*      DATA(is_unauthorized) = lo_util->is_unauthorized(
+      DATA(is_unauthorized) = lo_auth->is_unauthorized(
         EXPORTING
-          legal_entity = entity-legalentity
-          create       = abap_true
-          update       = abap_true
-          delete       = abap_true
+*          legal_entity = entity-legalentity
+          auth_value = VALUE #( legal_entity = entity-legalentity )
+          create     = abap_true
+          update     = abap_true
+          delete     = abap_true
       ).
 
       IF is_unauthorized = abap_true.
@@ -704,12 +722,14 @@ CLASS lhc_/esrcc/i_lecctr_s IMPLEMENTATION.
     ENDLOOP.
 
     IF is_unauthorized = abap_false.
-      SELECT DISTINCT costobject, costcenter FROM /esrcc/i_lecctr INTO TABLE @DATA(cost_numbers).       "#EC CI_NOWHERE
+      SELECT DISTINCT costobject, costcenter FROM /esrcc/i_lecctr INTO TABLE @DATA(cost_numbers). "#EC CI_NOWHERE
       LOOP AT cost_numbers INTO DATA(cost_number).
-        is_unauthorized = lo_util->is_unauthorized(
+*        is_unauthorized = lo_util->is_unauthorized(
+        is_unauthorized = lo_auth->is_unauthorized(
           EXPORTING
-            cost_object = cost_number-costobject
-            cost_number = cost_number-costcenter
+*            cost_object = cost_number-costobject
+*            cost_number = cost_number-costcenter
+            auth_value = CORRESPONDING #( cost_number MAPPING cost_object = costobject cost_number = costcenter )
             create      = abap_true
             update      = abap_true
             delete      = abap_true

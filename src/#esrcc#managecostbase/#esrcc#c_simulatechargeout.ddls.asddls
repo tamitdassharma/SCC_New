@@ -1,3 +1,4 @@
+@AbapCatalog.extensibility.extensible: true
 @EndUserText.label: 'Simulate Adhoc Chargeout'
 define root abstract entity /ESRCC/C_SIMULATECHARGEOUT
 {

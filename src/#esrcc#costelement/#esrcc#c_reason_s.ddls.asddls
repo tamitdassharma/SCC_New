@@ -1,4 +1,4 @@
-@EndUserText.label: 'Cost Exclusion Inclusion Reason Singleto'
+@EndUserText.label: 'Cost Exclusion Inclusion Reason Singleton'
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @Metadata.allowExtensions: true
 @ObjectModel.semanticKey: [ 'SingletonID' ]

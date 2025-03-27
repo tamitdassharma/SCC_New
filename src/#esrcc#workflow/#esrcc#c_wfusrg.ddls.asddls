@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'User Group for Work Flow - Maintain'
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true

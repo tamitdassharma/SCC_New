@@ -1,17 +1,22 @@
 {
   "formatVersion": "1",
   "header": {
+<<<<<<< HEAD
     "description": "Maintain Service Types",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
+=======
+    "description": "Maintain Service Types (Level 2)",
+    "originalLanguage": "en"
+>>>>>>> origin/main
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_SRTYPE_O4",
     "serviceName": "/ESRCC/UI_SRTYPE_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "ServiceTypeAll",
-    "name": "Maintain Service Type",
-    "configurationGroup": "/ESRCC/BC_GROUP4",
+    "name": "L2 - Service Types",
+    "configurationGroup": "/ESRCC/BC_GROUP3",
     "skipRootEntity": true
   },
   "appConfiguration": {

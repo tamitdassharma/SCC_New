@@ -27,7 +27,7 @@ authorization master ( global )
 
 define behavior for /ESRCC/I_CstObjct alias CostObject
 persistent table /esrcc/cst_objct
-draft table /esrcc/d_cstobj
+draft table /esrcc/d_cstobj query /ESRCC/I_CstObj_D
 etag master LocalLastChangedAt
 lock dependent by _CostObjectAll
 authorization dependent by _CostObjectAll
@@ -39,8 +39,11 @@ authorization dependent by _CostObjectAll
   field ( numbering : managed )
   CostObjectUuid;
 
-  field ( mandatory: create )
-  Sysid, LegalEntity, CompanyCode, CostObject, CostCenter, BillingFrequency;
+  field ( mandatory : create )
+  Sysid, LegalEntity, CompanyCode, CostObject, CostCenter;
+
+  field ( mandatory )
+  BillingFrequency;
 
   field ( readonly : update )
   Sysid, LegalEntity, CompanyCode, CostObject, CostCenter;

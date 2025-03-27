@@ -11,7 +11,12 @@
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
+<<<<<<< HEAD
     <EXCLASS>3</EXCLASS>
+=======
+    <EXCLASS>4</EXCLASS>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
+>>>>>>> origin/main
    </DD02V>
    <DD09L>
     <TABNAME>/ESRCC/SYS_INFO</TABNAME>
@@ -124,7 +129,7 @@
    <DD02_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>System-Informationen</DDTEXT>
+     <DDTEXT>Systeminformation</DDTEXT>
     </item>
    </DD02_TEXTS>
    <TABL_EXTRAS>

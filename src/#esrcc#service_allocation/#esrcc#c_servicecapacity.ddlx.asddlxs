@@ -47,10 +47,9 @@ annotate entity /ESRCC/C_ServiceCapacity with
   @UI.hidden: true
   @EndUserText.label: 'Cost Object UUID'
   CostObjectUuid;
-
-  @UI.lineItem: [ { position: 10, importance: #MEDIUM } ]
+  
+  @UI.lineItem: [{ hidden: true }]
   @UI.identification: [ { position: 10 } ]
-  @UI.selectionField: [{ position: 10 }]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'Sysid' },
                                        additionalBinding: [{ localElement: 'LegalEntity', element: 'LegalEntity' },
@@ -113,38 +112,38 @@ annotate entity /ESRCC/C_ServiceCapacity with
                                        useForValidation: true }]
   Costcenter;
 
-  @UI.lineItem: [ { position: 60, importance: #MEDIUM, cssDefault.width: '11.5rem' } ]
+  @UI.lineItem: [ { position: 60, importance: #MEDIUM } ]
   @UI.fieldGroup: [{ position: 10, qualifier: 'CapacityGroup' }]
   @UI.selectionField: [{ position: 60 }]
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CAPACITY_VERSION', element: 'CapacityVersion' },
-                                       useForValidation: true } ]
-  @UI.textArrangement: #TEXT_ONLY
-  Fplv;
-
-  @UI.lineItem: [ { position: 70, importance: #MEDIUM } ]
-  @UI.fieldGroup: [{ position: 20, qualifier: 'CapacityGroup' }]
-  @UI.selectionField: [{ position: 70 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RYEAR', element: 'ryear' },
                                        useForValidation: true }]
   Ryear;
 
-  @UI.lineItem: [ { position: 80, importance: #MEDIUM, cssDefault.width: '4.5rem' } ]
-  @UI.fieldGroup: [{ position: 30, qualifier: 'CapacityGroup' }]
-  @UI.selectionField: [{ position: 80 }]
+  @UI.lineItem: [ { position: 70, importance: #MEDIUM, cssDefault.width: '4.5rem' } ]
+  @UI.fieldGroup: [{ position: 20, qualifier: 'CapacityGroup' }]
+  @UI.selectionField: [{ position: 70 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_POPER', element: 'Poper' },
                                        useForValidation: true }]
   @Consumption.filter.multipleSelections: true
   @UI.textArrangement: #TEXT_ONLY
   Poper;
 
-  @UI.lineItem: [ { position: 90, importance: #MEDIUM } ]
-  @UI.fieldGroup: [{ position: 40, qualifier: 'CapacityGroup' }]
-  @UI.selectionField: [{ position: 90 }]
+  @UI.lineItem: [ { position: 80, importance: #MEDIUM } ]
+  @UI.fieldGroup: [{ position: 30, qualifier: 'CapacityGroup' }]
+  @UI.selectionField: [{ position: 80 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
                                        useForValidation: true }]
   @Consumption.filter.multipleSelections: true
   @UI.textArrangement: #TEXT_LAST
   ServiceProduct;
+
+  @UI.lineItem: [ { position: 90, importance: #MEDIUM, cssDefault.width: '11.5rem' } ]
+  @UI.fieldGroup: [{ position: 40, qualifier: 'CapacityGroup' }]
+  @UI.selectionField: [{ position: 90 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CAPACITY_VERSION', element: 'CapacityVersion' },
+                                       useForValidation: true } ]
+  @UI.textArrangement: #TEXT_ONLY
+  Fplv;
 
   @UI.lineItem: [ { position: 100, importance: #MEDIUM } ]
   @UI.fieldGroup: [{ position: 50, qualifier: 'CapacityGroup' }]

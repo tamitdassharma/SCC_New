@@ -8,6 +8,10 @@
     <DATATYPE>CHAR</DATATYPE>
     <LENG>000020</LENG>
     <OUTPUTLEN>000020</OUTPUTLEN>
+<<<<<<< HEAD
+=======
+    <LOWERCASE>X</LOWERCASE>
+>>>>>>> origin/main
     <DDTEXT>Allocation Keys</DDTEXT>
     <DOMMASTER>E</DOMMASTER>
    </DD01V>

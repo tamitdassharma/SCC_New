@@ -24,31 +24,56 @@
      <DOMNAME>/ESRCC/STATUS</DOMNAME>
      <VALPOS>0002</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>P</DOMVALUE_L>
+     <DDTEXT>In Process</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <VALPOS>0003</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>W</DOMVALUE_L>
      <DDTEXT>Approval Pending</DDTEXT>
     </DD07V>
     <DD07V>
+<<<<<<< HEAD
      <DOMNAME>/ESRCC/STATUS</DOMNAME>
      <VALPOS>0003</VALPOS>
+=======
+     <VALPOS>0004</VALPOS>
+>>>>>>> origin/main
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>A</DOMVALUE_L>
      <DDTEXT>Approved</DDTEXT>
     </DD07V>
     <DD07V>
+<<<<<<< HEAD
      <DOMNAME>/ESRCC/STATUS</DOMNAME>
      <VALPOS>0004</VALPOS>
+=======
+     <VALPOS>0005</VALPOS>
+>>>>>>> origin/main
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>R</DOMVALUE_L>
      <DDTEXT>Rejected</DDTEXT>
     </DD07V>
     <DD07V>
+<<<<<<< HEAD
      <DOMNAME>/ESRCC/STATUS</DOMNAME>
      <VALPOS>0005</VALPOS>
+=======
+     <VALPOS>0006</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>J</DOMVALUE_L>
+     <DDTEXT>Finalize in Process</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <VALPOS>0007</VALPOS>
+>>>>>>> origin/main
      <DDLANGUAGE>E</DDLANGUAGE>
      <DOMVALUE_L>F</DOMVALUE_L>
      <DDTEXT>Finalized</DDTEXT>
     </DD07V>
     <DD07V>
+<<<<<<< HEAD
      <DOMNAME>/ESRCC/STATUS</DOMNAME>
      <VALPOS>0006</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
@@ -64,11 +89,22 @@
     </DD07V>
     <DD07V>
      <DOMNAME>/ESRCC/STATUS</DOMNAME>
+=======
+>>>>>>> origin/main
      <VALPOS>0008</VALPOS>
      <DDLANGUAGE>E</DDLANGUAGE>
-     <DOMVALUE_L>P</DOMVALUE_L>
-     <DDTEXT>In Process</DDTEXT>
+     <DOMVALUE_L>E</DOMVALUE_L>
+     <DDTEXT>Failed</DDTEXT>
     </DD07V>
+<<<<<<< HEAD
+=======
+    <DD07V>
+     <VALPOS>0009</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>L</DOMVALUE_L>
+     <DDTEXT>Re-open in Process</DDTEXT>
+    </DD07V>
+>>>>>>> origin/main
    </DD07V_TAB>
    <I18N_LANGS>
     <LANGU>D</LANGU>
@@ -88,44 +124,54 @@
     <item>
      <VALPOS>0002</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>P</DOMVALUE_L>
+     <DDTEXT>In Arbeit</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0003</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>W</DOMVALUE_L>
      <DDTEXT>Genehmigung ausstehend</DDTEXT>
     </item>
     <item>
-     <VALPOS>0003</VALPOS>
+     <VALPOS>0004</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>A</DOMVALUE_L>
      <DDTEXT>Genehmigt</DDTEXT>
     </item>
     <item>
-     <VALPOS>0004</VALPOS>
+     <VALPOS>0005</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>R</DOMVALUE_L>
      <DDTEXT>Abgelehnt</DDTEXT>
     </item>
     <item>
-     <VALPOS>0005</VALPOS>
+     <VALPOS>0006</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>J</DOMVALUE_L>
+     <DDTEXT>Abschließen in Arbeit</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0007</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>F</DOMVALUE_L>
      <DDTEXT>Finalisiert</DDTEXT>
     </item>
     <item>
-     <VALPOS>0006</VALPOS>
-     <DDLANGUAGE>D</DDLANGUAGE>
-     <DOMVALUE_L>U</DOMVALUE_L>
-     <DDTEXT>Hochgeladen</DDTEXT>
-    </item>
-    <item>
-     <VALPOS>0007</VALPOS>
-     <DDLANGUAGE>D</DDLANGUAGE>
-     <DOMVALUE_L>E</DOMVALUE_L>
-     <DDTEXT>Extrahiert</DDTEXT>
-    </item>
-    <item>
      <VALPOS>0008</VALPOS>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DOMVALUE_L>P</DOMVALUE_L>
+     <DOMVALUE_L>E</DOMVALUE_L>
+     <DDTEXT>Gescheitert</DDTEXT>
     </item>
+<<<<<<< HEAD
+=======
+    <item>
+     <VALPOS>0009</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>L</DOMVALUE_L>
+     <DDTEXT>Erneut öffnen in Arbeit</DDTEXT>
+    </item>
+>>>>>>> origin/main
    </DD07_TEXTS>
   </asx:values>
  </asx:abap>

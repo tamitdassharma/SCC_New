@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST]
 @EndUserText.label: 'Indirect Allocation KPI Share'
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true

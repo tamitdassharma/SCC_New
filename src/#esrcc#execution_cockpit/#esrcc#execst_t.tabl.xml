@@ -7,7 +7,7 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Maintain Execution Cockpit Statuses Text</DDTEXT>
+    <DDTEXT>Execution Cockpit Status Descriptions</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
@@ -165,7 +165,7 @@
    <DD02_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Text Status des Abrechnungscockpits bearbeiten</DDTEXT>
+     <DDTEXT>Status Abrechnungscockpit Bezeichnungen</DDTEXT>
     </item>
    </DD02_TEXTS>
    <TABL_EXTRAS>

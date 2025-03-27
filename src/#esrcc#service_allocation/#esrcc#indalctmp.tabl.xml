@@ -96,8 +96,6 @@
      <ROLLNAME>/ESRCC/ALLOCKEY</ROLLNAME>
      <ADMINFIELD>0</ADMINFIELD>
      <NOTNULL>X</NOTNULL>
-     <VALEXI>X</VALEXI>
-     <SHLPORIGIN>F</SHLPORIGIN>
      <COMPTYPE>E</COMPTYPE>
     </DD03P>
     <DD03P>
@@ -126,6 +124,15 @@
      <COMPTYPE>E</COMPTYPE>
     </DD03P>
    </DD03P_TABLE>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD02_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Indirekt Allokationschlüsselwerte</DDTEXT>
+    </item>
+   </DD02_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -55,6 +55,24 @@
      <DOMVALUE_L>FCD</DOMVALUE_L>
      <DDTEXT>Service Consumption Data (for Direct Charging)</DDTEXT>
     </DD07V>
+    <DD07V>
+     <VALPOS>0007</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>CBS</DOMVALUE_L>
+     <DDTEXT>Cost Base &amp; Stewardship</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <VALPOS>0008</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>SCM</DOMVALUE_L>
+     <DDTEXT>Service Product Costing</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <VALPOS>0009</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>CHR</DOMVALUE_L>
+     <DDTEXT>Mark-up &amp; Final Allocation / Charge-out</DDTEXT>
+    </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>
     <LANGU>D</LANGU>
@@ -62,6 +80,7 @@
    <DD01_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Sub-Applikation</DDTEXT>
     </item>
    </DD01_TEXTS>
    <DD07_TEXTS>
@@ -100,6 +119,24 @@
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>FCD</DOMVALUE_L>
      <DDTEXT>Upload von Serviceverbrauchsdaten (für direkte Verrechnung)</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0007</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>CBS</DOMVALUE_L>
+     <DDTEXT>Kostenbasis &amp; Gesellschafteraufwand</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0008</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>SCM</DOMVALUE_L>
+     <DDTEXT>Kalkulation Serviceprodukt</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0009</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>CHR</DOMVALUE_L>
+     <DDTEXT>Aufschlag &amp; finale Allokation / Verrechnung</DDTEXT>
     </item>
    </DD07_TEXTS>
   </asx:values>

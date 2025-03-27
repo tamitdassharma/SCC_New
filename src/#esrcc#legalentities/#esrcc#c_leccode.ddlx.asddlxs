@@ -64,7 +64,7 @@ annotate view /ESRCC/C_LeCcode with
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_LegalEntityAll_F4', element: 'Legalentity' }, useForValidation: true }]
   @UI.fieldGroup: [{ position: 10, qualifier: 'LeGroup' }]
   Legalentity;
-  
+
   @UI.identification: [ { position: 5 } ]
   @UI.lineItem: [ { position: 5, cssDefault.width: '7.5rem' } ]
   Controllingarea;

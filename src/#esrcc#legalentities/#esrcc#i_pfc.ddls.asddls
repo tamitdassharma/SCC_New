@@ -1,4 +1,5 @@
 @EndUserText.label: 'Profit Center'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_Pfc
   as select from /esrcc/pfc
@@ -6,7 +7,6 @@ define view entity /ESRCC/I_Pfc
   composition [0..*] of /ESRCC/I_PfcText as _PfcText
 {
   key profit_center         as ProfitCenter,
-//      active                as Active,
       @Semantics.user.createdBy: true
       created_by            as CreatedBy,
       @Semantics.systemDateTime.createdAt: true

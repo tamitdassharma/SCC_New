@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_STEWRDSHP_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "StewardshipAll",
-    "name": "Maintain Stewardship, Service Products & Receivers",
-    "configurationGroup": "",
+    "name": "Stewardship, Service Products & Receivers",
+    "configurationGroup": "/ESRCC/BC_GROUP6",
     "skipRootEntity": true
   },
   "appConfiguration": {

@@ -7,12 +7,10 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <DOMNAME>/ESRCC/POSTINGTYPE</DOMNAME>
     <HEADLEN>55</HEADLEN>
-    <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Element Characteristics</DDTEXT>
-    <REPTEXT>Element Characteristics</REPTEXT>
-    <SCRTEXT_M>Element Charact.</SCRTEXT_M>
-    <SCRTEXT_L>Element Characteristics</SCRTEXT_L>
+    <DDTEXT>Cost Element Character</DDTEXT>
+    <REPTEXT>Cost Element Character</REPTEXT>
+    <SCRTEXT_L>Cost Element Character</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
@@ -23,10 +21,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Charakter</DDTEXT>
-     <REPTEXT>Charakter</REPTEXT>
-     <SCRTEXT_M>Charakter</SCRTEXT_M>
-     <SCRTEXT_L>Charakter</SCRTEXT_L>
+     <DDTEXT>Kostenartcharakter</DDTEXT>
+     <REPTEXT>Kostenartcharakter</REPTEXT>
+     <SCRTEXT_L>Kostenartcharakter</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

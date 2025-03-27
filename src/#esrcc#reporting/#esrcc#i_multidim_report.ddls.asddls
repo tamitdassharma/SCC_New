@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Flexible Reporting Utility'
 @Metadata.ignorePropagatedAnnotations: true
@@ -84,11 +84,19 @@ define view entity /ESRCC/I_MULTIDIM_REPORT
       profitcenter,
       @AnalyticsDetails.query.display: #KEY
       @AnalyticsDetails.query.axis: #FREE
+<<<<<<< HEAD
       localcurr,
 //      @AnalyticsDetails.query.display: #KEY
 //      @AnalyticsDetails.query.axis: #FREE
 //      groupcurr,
       
+=======
+      ContractId,
+      @AnalyticsDetails.query.display: #KEY
+      @AnalyticsDetails.query.axis: #FREE
+      Currency,
+     
+>>>>>>> origin/main
       
       //    Measures
       @AnalyticsDetails.query.display: #KEY

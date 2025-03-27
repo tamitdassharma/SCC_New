@@ -1,6 +1,6 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST,#UNION]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Chargeout Details by Service Provider'
+@EndUserText.label: 'Charge-out Details by Service Provider'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,
@@ -25,9 +25,10 @@ association [0..*] to /esrcc/srv_share as services
     costbase.costobject as Costobject,
     costbase.costcenter as Costcenter,
     services.serviceproduct as ServiceProduct,
+    services.contractid as ContractId,
     services.consumption_version,
     services.key_version,
-    services.uom,
+    services.planninguom as PlanningUoM,
     services.chargeout,
     validon
 }

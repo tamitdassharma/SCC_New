@@ -1,4 +1,5 @@
-@EndUserText.label: 'User Group for Work Flow'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
+@EndUserText.label: 'User Group for Workflow'
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_WfUsrG
   as select from /esrcc/wfusrg

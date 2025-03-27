@@ -1,5 +1,0 @@
-@MappingRole: true
-define role /ESRCC/C_CostEle {
-  grant select on /ESRCC/C_CostEle
-  where INHERITING CONDITIONS FROM ENTITY /ESRCC/I_CostEle;
-}

@@ -139,17 +139,30 @@ CLASS lhc_/esrcc/i_leccode IMPLEMENTATION.
 
     MODIFY lt_keys FROM VALUE #( %is_draft = keys[ 1 ]-%is_draft ) TRANSPORTING %is_draft WHERE %is_draft <> keys[ 1 ]-%is_draft.
 
-    /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
+*    /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
+*    NEW /esrcc/cl_authorization( )->set_instance_authorization(
+*        EXPORTING
+*          keys            = lt_keys
+*          update          = abap_true
+*          delete          = abap_true
+*          create_by_assoc = abap_true
+*          field_mapping   = VALUE #( legal_entity = 'LEGALENTITY' )
+*          assoc_path      = VALUE #( ( path = '_CompanyCodeText' ) )
+*        CHANGING
+*          result          = result
+*      ).
+
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( paths = VALUE #( ( path = '_CompanyCodeText' ) ) ).
+    LOOP AT lt_keys INTO DATA(key).
+      lo_auth->set_authorization_for_instance(
         EXPORTING
-          keys            = lt_keys
-          update          = abap_true
-          delete          = abap_true
-          create_by_assoc = abap_true
-          field_mapping   = VALUE #( legal_entity = 'LEGALENTITY' )
-          assoc_path      = VALUE #( ( path = '_CompanyCodeText' ) )
+          key                   = key
+          set_authorization_for = VALUE #( update = abap_true delete = abap_true create_by_assoc = abap_true )
+          auth_value            = VALUE #( legal_entity = key-legalentity )
         CHANGING
-          result          = result
+          result                = result
       ).
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.
@@ -199,15 +212,28 @@ CLASS lhc_/esrcc/i_ccodetext IMPLEMENTATION.
 
     MODIFY lt_keys FROM VALUE #( %is_draft = keys[ 1 ]-%is_draft ) TRANSPORTING %is_draft WHERE %is_draft <> keys[ 1 ]-%is_draft.
 
-    /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
+*    /esrcc/cl_config_util=>create_for_authorization( )->set_instance_authorization(
+*    NEW /esrcc/cl_authorization( )->set_instance_authorization(
+*        EXPORTING
+*          keys            = lt_keys
+*          update          = abap_true
+*          delete          = abap_true
+*          field_mapping   = VALUE #( legal_entity = 'LEGALENTITY' )
+*        CHANGING
+*          result          = result
+*      ).
+
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( ).
+    LOOP AT lt_keys INTO DATA(key).
+      lo_auth->set_authorization_for_instance(
         EXPORTING
-          keys            = lt_keys
-          update          = abap_true
-          delete          = abap_true
-          field_mapping   = VALUE #( legal_entity = 'LEGALENTITY' )
+          key                   = key
+          set_authorization_for = VALUE #( update = abap_true delete = abap_true )
+          auth_value            = VALUE #( legal_entity = key-legalentity )
         CHANGING
-          result          = result
+          result                = result
       ).
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.
@@ -300,15 +326,26 @@ CLASS lhc_/esrcc/i_leccode_s IMPLEMENTATION.
         failed_entity      = failed-letocompanycode
     ).
 
+    DATA(lo_auth) = /esrcc/cl_authorization=>create(
+      EXPORTING
+        paths              = VALUE #( ( path = 'LeToCompanyCodeAll' ) )
+        source_entity_name = '/ESRCC/C_LECCODE'
+      CHANGING
+        reported_entity    = reported-letocompanycode
+        failed_entity      = failed-letocompanycode
+    ).
+
     DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = lo_cost_center ).
 
     LOOP AT entities[ 1 ]-%target INTO DATA(entity).
       IF entity-legalentity IS NOT INITIAL.
-        CHECK lo_cost_center->check_authorization(
+*        CHECK lo_cost_center->check_authorization(
+        CHECK lo_auth->check_authorization(
           EXPORTING
-            entity       = CORRESPONDING ts_legal_entity( entity )
-            legal_entity = entity-legalentity
-            activity     = /esrcc/cl_config_util=>c_authorization_activity-create
+            entity     = CORRESPONDING ts_legal_entity( entity )
+*            legal_entity = entity-legalentity
+            auth_value = VALUE #( legal_entity = entity-legalentity )
+            activity   = /esrcc/cl_authorization=>c_authorization_activity-create
         ) = abap_true.
       ENDIF.
 
@@ -321,16 +358,19 @@ CLASS lhc_/esrcc/i_leccode_s IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD edit.
-    DATA(lo_util) = /esrcc/cl_config_util=>create_for_authorization( ).
-    SELECT DISTINCT legalentity FROM /esrcc/i_leccode INTO TABLE @DATA(legal_entities).     "#EC CI_NOWHERE
+*    DATA(lo_util) = /esrcc/cl_config_util=>create_for_authorization( ).
+    DATA(lo_auth) = NEW /esrcc/cl_authorization( ).
+    SELECT DISTINCT legalentity FROM /esrcc/i_leccode INTO TABLE @DATA(legal_entities). "#EC CI_NOWHERE
 
     LOOP AT legal_entities INTO DATA(entity).
-      DATA(is_unauthorized) = lo_util->is_unauthorized(
+*      DATA(is_unauthorized) = lo_util->is_unauthorized(
+      DATA(is_unauthorized) = lo_auth->is_unauthorized(
         EXPORTING
-          legal_entity = entity-legalentity
-          create       = abap_true
-          update       = abap_true
-          delete       = abap_true
+*          legal_entity = entity-legalentity
+          auth_value = VALUE #( legal_entity = entity-legalentity )
+          create     = abap_true
+          update     = abap_true
+          delete     = abap_true
       ).
 
       IF is_unauthorized = abap_true.

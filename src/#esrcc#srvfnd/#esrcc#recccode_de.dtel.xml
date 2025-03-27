@@ -9,9 +9,9 @@
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Company Code</DDTEXT>
-    <REPTEXT>Company Code (Receiver)</REPTEXT>
-    <SCRTEXT_L>Company Code (Receiver)</SCRTEXT_L>
+    <DDTEXT>Receiver Company Code</DDTEXT>
+    <REPTEXT>Receiver Company Code</REPTEXT>
+    <SCRTEXT_L>Receiver Company Code</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>CHAR</DATATYPE>
     <LENG>000004</LENG>
@@ -24,10 +24,9 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Buchungskreis</DDTEXT>
-     <REPTEXT>Buchungskreis</REPTEXT>
-     <SCRTEXT_M>Buchungskreis</SCRTEXT_M>
-     <SCRTEXT_L>Buchungskreis</SCRTEXT_L>
+     <DDTEXT>Empfänger Buchungskreis</DDTEXT>
+     <REPTEXT>Empfänger Buchungskreis</REPTEXT>
+     <SCRTEXT_L>Empfänger Buchungskreis</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

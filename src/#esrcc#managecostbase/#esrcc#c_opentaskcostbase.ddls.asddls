@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Cost base application for Wf Open Task'
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
@@ -25,6 +26,8 @@ define root view entity /ESRCC/C_OPENTASKCOSTBASE
   Businessdivision,
   @ObjectModel.text.element: [ 'profitcenterdescription' ]
   Profitcenter,
+  @ObjectModel.text.element: [ 'FunctionalAreaDescription' ]
+  Functionalarea,
   @ObjectModel.text.element: [ 'costtypedescription' ]
   Costtype,  
   Hsl,
@@ -40,8 +43,6 @@ define root view entity /ESRCC/C_OPENTASKCOSTBASE
   Usagecal,
   @ObjectModel.text.element: [ 'reasondescription' ]
   ReasonId,
-//  @ObjectModel.text.element: [ 'costdatasetdescription' ]
-//  Costdataset,
   @ObjectModel.text.element: [ 'statusdescription' ]
   Status,
   WorkflowId as Workflowid,
@@ -67,13 +68,16 @@ define root view entity /ESRCC/C_OPENTASKCOSTBASE
   usagecaldescription,
   statusdescription,
   businessdivdescription,
-  profitcenterdescription,
+  @Semantics.text: true
+  ProfitCenterDescription,
+  @Semantics.text: true
+  FunctionalAreaDescription,
   usagecriticallity,
   @Semantics.text: true
   reasondescription, 
   statuscriticallity,
   @ObjectModel.text.element: [ 'legalentitycountryname' ]
-  Country,
+  country,
   _legalCountryText.CountryName as legalentitycountryname  
   
 }

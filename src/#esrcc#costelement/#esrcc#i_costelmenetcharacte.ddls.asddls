@@ -1,4 +1,5 @@
-@EndUserText.label: 'Cost elmenet characteristics'
+@EndUserText.label: 'Cost element characteristics'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_CostElmenetCharacte
   as select from /esrcc/cstelmtch

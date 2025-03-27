@@ -1,4 +1,4 @@
-@EndUserText.label: 'Cost elmenet characteristics Singleton -'
+@EndUserText.label: 'Cost element characteristics Singleton'
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @Metadata.allowExtensions: true
 @ObjectModel.semanticKey: [ 'SingletonID' ]

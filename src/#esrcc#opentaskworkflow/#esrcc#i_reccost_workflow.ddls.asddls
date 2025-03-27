@@ -1,5 +1,5 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
-@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST, #UNION ]
+@AccessControl.authorizationCheck: #CHECK
 @EndUserText.label: 'Receivers Cost'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
@@ -9,11 +9,15 @@
 }
 @Metadata.allowExtensions: true
 define root view entity /ESRCC/I_RECCOST_WORKFLOW 
+<<<<<<< HEAD
             as select from /ESRCC/I_REC_COST as reccost     
             
   association [0..1] to I_CountryText as _legalCountryText
   on _legalCountryText.Country = $projection.legalentitycountry
   and _legalCountryText.Language = $session.system_language                                               
+=======
+            as select from /ESRCC/I_ReceiverChargeout as reccost                                                           
+>>>>>>> origin/main
 
 {
     key Fplv as Fplv,
@@ -38,6 +42,7 @@ define root view entity /ESRCC/I_RECCOST_WORKFLOW
     Valueaddcostperunit,
     Passthrucostperunit,  
         
+<<<<<<< HEAD
     tp_totalsrvmarkupabs,   
     tp_valueaddmarkupabs,    
     tp_passthrumarkupabs,
@@ -47,6 +52,13 @@ define root view entity /ESRCC/I_RECCOST_WORKFLOW
     totaludmarkupabs,
     
     totalcostbaseabs,
+=======
+    TotalRecMarkup,   
+    Valueaddmarkup,    
+    Passthrumarkup,   
+   
+    RecCostShare,
+>>>>>>> origin/main
     
     valuaddabs,
     passthruabs,
@@ -60,10 +72,15 @@ define root view entity /ESRCC/I_RECCOST_WORKFLOW
     LastChangedBy,
     
     Currency,
+<<<<<<< HEAD
     Costshare,
     Stewardship,
     costdatasetdescription,   
     legalentitydescription,
+=======
+    _ServiceCost._CostCenterCost.costdatasetdescription,   
+    _ServiceCost._CostCenterCost.legalentitydescription,
+>>>>>>> origin/main
     ccodedescription,
     costobjectdescription,
     costcenterdescription,
@@ -71,8 +88,14 @@ define root view entity /ESRCC/I_RECCOST_WORKFLOW
     Servicetypedescription,
     statusdescription,
     receivingentitydescription,
+<<<<<<< HEAD
     billingfrequencydescription,
     billingperioddescription,
+=======
+    ccodedescription as Reccodedescription,
+    costobjectdescription as Reccostobjectdescription,
+    costcenterdescription as Reccostcenterdescription,
+>>>>>>> origin/main
     Country as receivingentitycountry,
     legalentitycountry,
     //association

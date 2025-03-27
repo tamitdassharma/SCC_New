@@ -1,17 +1,22 @@
 {
   "formatVersion": "1",
   "header": {
+<<<<<<< HEAD
     "description": "Maintain & Assign Users to Workflow User Groups",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
+=======
+    "description": "Maintain Workflow User Groups",
+    "originalLanguage": "en"
+>>>>>>> origin/main
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_WFUSRG",
     "serviceName": "/ESRCC/UI_WFUSRG",
     "serviceVersion": "0001",
     "rootEntitySet": "UserGroupAll",
-    "name": "Workflow: User Group",
-    "configurationGroup": "/ESRCC/BC_GROUP7",
+    "name": "Workflow User Groups",
+    "configurationGroup": "/ESRCC/BC_GROUP8",
     "skipRootEntity": true
   },
   "appConfiguration": {

@@ -107,11 +107,18 @@ annotate view /ESRCC/C_ApplicationLogsHier with
   CompanyCode;
   @UI.selectionField: [{ position: 110 }]
   @UI.lineItem: [{ position: 110 }]
+  @EndUserText.label: 'Created By'
   CreatedBy;
   @UI.lineItem: [{ hidden: true }]
   @UI.hidden: true
+  @EndUserText.label: 'Message Class'
   MessageId;
   @UI.lineItem: [{ position: 10 }]
+<<<<<<< HEAD
+=======
+  @Consumption.filter.hidden: true
+  @EndUserText.label: 'Message Number'
+>>>>>>> origin/main
   MessageNumber;
   @UI.lineItem: [{ position: 20, criticality: 'MessageTypeCriticality', criticalityRepresentation: #WITH_ICON }]
   MessageType;
@@ -135,6 +142,7 @@ annotate view /ESRCC/C_ApplicationLogsHier with
   MessageText;
   @UI.selectionField: [{ position: 120 }]
   @UI.lineItem: [{ position: 50 }]
+  @EndUserText.label: 'Created On'
   CreatedAt;
   @UI.lineItem: [{ hidden: true }]
   @UI.hidden: true
@@ -181,7 +189,8 @@ annotate view /ESRCC/C_ApplicationLogsHier with
   Costind;
   @UI.lineItem: [{ position: 320 }]
   Usagecal;
-
+  @UI.hidden: true
+  rootuuid;
   @UI.hidden: true
   ApplicationDescription;
   @UI.hidden: true

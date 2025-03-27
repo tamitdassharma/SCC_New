@@ -1,3 +1,4 @@
+@AbapCatalog.extensibility.extensible: true
 @EndUserText.label: 'Assign Cost Data Set'
 define abstract entity /ESRCC/C_COSTDATASET  
 {   

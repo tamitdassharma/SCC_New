@@ -1,17 +1,22 @@
 {
   "formatVersion": "1",
   "header": {
+<<<<<<< HEAD
     "description": "Maintain Configuration for Workflow Approval",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
+=======
+    "description": "Maintain Workflow Approval Configuration",
+    "originalLanguage": "en"
+>>>>>>> origin/main
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_WFCUST_O4",
     "serviceName": "/ESRCC/UI_WFCUST_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "RoleAssignmentAll",
-    "name": "Workflow: Approval Configuration",
-    "configurationGroup": "/ESRCC/BC_GROUP7",
+    "name": "Workflow Approval",
+    "configurationGroup": "/ESRCC/BC_GROUP8",
     "skipRootEntity": true
   },
   "appConfiguration": {

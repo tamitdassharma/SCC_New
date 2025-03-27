@@ -10,8 +10,8 @@
     "serviceName": "/ESRCC/UI_PFC_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "ProfitCenterAll",
-    "name": "Maintain Profit Center",
-    "configurationGroup": "/ESRCC/BC_GROUP2",
+    "name": "Profit Centers",
+    "configurationGroup": "/ESRCC/BC_GROUP1",
     "skipRootEntity": true
   },
   "appConfiguration": {

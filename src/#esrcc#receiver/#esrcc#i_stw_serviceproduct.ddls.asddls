@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Service Products Share'
 
@@ -13,11 +13,13 @@ define view entity /ESRCC/I_STW_SERVICEPRODUCT
       stw.ValidFrom,
       stw.Validto,
       stw.stewardship, 
-      stw.sysid,
+      stw.Sysid,
       stw.CompanyCode,
       stw.LegalEntity,
       stw.CostObject,
       stw.CostCenter,
+      stw.chain_id,
+      stw.chain_sequence,
       stw.ProfitCenter,
       stw.FunctionalArea,
       stw.BusinessDivision,
@@ -35,5 +37,4 @@ define view entity /ESRCC/I_STW_SERVICEPRODUCT
       CostObjectDescription,
       CompanyCodeDescription,
       LegalEntityDescription
-//      stw_sp.
 }

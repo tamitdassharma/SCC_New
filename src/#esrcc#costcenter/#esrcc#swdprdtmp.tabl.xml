@@ -7,7 +7,7 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Stewardship service products &amp; service cost share</DDTEXT>
+    <DDTEXT>Stewardship, service products &amp; service cost share</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>N</MAINFLAG>
     <CONTFLAG>A</CONTFLAG>
@@ -127,6 +127,15 @@
      <COMPTYPE>E</COMPTYPE>
     </DD03P>
    </DD03P_TABLE>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD02_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Gesellschafteraufwand, Serviceprodukte &amp; Servicekostenanteil</DDTEXT>
+    </item>
+   </DD02_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -10,8 +10,8 @@
     "serviceName": "/ESRCC/UI_SRVMKP_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "ServiceMarkupAll",
-    "name": "Maintain Service Product Mark-ups",
-    "configurationGroup": "/ESRCC/BC_GROUP5",
+    "name": "Service Product Mark-ups",
+    "configurationGroup": "/ESRCC/BC_GROUP4",
     "skipRootEntity": true
   },
   "appConfiguration": {

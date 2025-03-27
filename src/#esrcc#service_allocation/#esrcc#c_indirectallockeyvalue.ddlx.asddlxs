@@ -57,7 +57,7 @@ annotate view /ESRCC/C_INDIRECTALLOCKEYVALUE with
                                                            { localElement: 'CostObject', element: 'Costobject' },
                                                            { localElement: 'CostCenter', element: 'Costcenter' },
                                                            { localElement: 'CostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
-                                       useForValidation: true }]
+                                       useForValidation: true }]  
   Sysid;
 
   @UI.identification: [ { position: 20 } ]

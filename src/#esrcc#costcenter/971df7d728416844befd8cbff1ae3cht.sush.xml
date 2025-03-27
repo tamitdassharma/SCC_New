@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_SUSH" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <HEAD>
+    <NAME>971DF7D728416844BEFD8CBFF1AE3C</NAME>
+    <TYPE>HT</TYPE>
+<<<<<<< HEAD:src/#esrcc#costelement/61b5835c502124b7c88e1ba628861eht.sush.xml
+    <DISPLAY_NAME>R3TR G4BA /ESRCC/UI_SRVCELEM</DISPLAY_NAME>
+    <DEVCLASS>/ESRCC/COSTELEMENT</DEVCLASS>
+=======
+    <DISPLAY_NAME>R3TR IWSV /ESRCC/UI_COSCENRECEIVERF4         0001</DISPLAY_NAME>
+>>>>>>> origin/main:src/#esrcc#costcenter/971df7d728416844befd8cbff1ae3cht.sush.xml
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
+   </HEAD>
+   <USOBX>
+    <USOBX>
+     <NAME>971DF7D728416844BEFD8CBFF1AE3C</NAME>
+     <TYPE>HT</TYPE>
+     <OBJECT>S_SERVICE</OBJECT>
+     <OKFLAG>X</OKFLAG>
+    </USOBX>
+   </USOBX>
+   <USOBX_EXT>
+    <item>
+     <OBJECT>S_SERVICE</OBJECT>
+     <TTEXT>Check at Start of External Services</TTEXT>
+     <OCLSS>AAAB</OCLSS>
+     <OKFLAG>X</OKFLAG>
+<<<<<<< HEAD:src/#esrcc#costelement/61b5835c502124b7c88e1ba628861eht.sush.xml
+     <DEVCLASS>S_PROFGEN_START_AUTH</DEVCLASS>
+     <PS_POSID>BC-SEC-AUT-CHK</PS_POSID>
+=======
+     <PS_POSID>BC-SEC-AUT-PFC</PS_POSID>
+>>>>>>> origin/main:src/#esrcc#costcenter/971df7d728416844befd8cbff1ae3cht.sush.xml
+     <CI_TEXT>Check</CI_TEXT>
+     <CH_TEXT>Check</CH_TEXT>
+     <PR_TEXT>No</PR_TEXT>
+     <EXCEP>3</EXCEP>
+     <EXCEP_TX>Okay</EXCEP_TX>
+     <EXCEP_ICON>@08@</EXCEP_ICON>
+    </item>
+   </USOBX_EXT>
+  </asx:values>
+ </asx:abap>
+</abapGit>

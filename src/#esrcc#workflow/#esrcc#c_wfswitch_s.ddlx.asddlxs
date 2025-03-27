@@ -1,33 +1,18 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Workflow Switch'
+    typeName: 'Workflow Activation'
   }
 }
 annotate view /ESRCC/C_WfSwitch_S with
 {
   @UI.facet: [ {
-    id: 'CE',
-    purpose: #STANDARD,
-    type: #COLLECTION,
-    label: 'Control Switch for Workflows'
-  },
-//  {
-//    id: 'Transport',
-//    purpose: #STANDARD,
-//    type: #IDENTIFICATION_REFERENCE,
-////    label: 'Transport',
-//    parentId: 'CE',
-//    position: 1 ,
-//    hidden: #(HideTransport)
-//  },
-  {
     id: '/ESRCC/I_WfSwitch',
     purpose: #STANDARD,
     type: #LINEITEM_REFERENCE,
     position: 2 ,
-    targetElement: '_WorkflowSwitch',
-    parentId: 'CE'
+    label: 'Maintain Workflow Activation per Application',
+    targetElement: '_WorkflowSwitch'
   } ]
   @UI.lineItem: [ {
     position: 1

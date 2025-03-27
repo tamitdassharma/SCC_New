@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 @EndUserText.label: 'Service Charge Out Analytical List'
 @Metadata.ignorePropagatedAnnotations: false
@@ -13,6 +13,12 @@
 define view entity /ESRCC/I_CHARGEOUT_CHARTS
   as select from /ESRCC/I_CHG_ANALYTICS
 {
+      @AnalyticsDetails.query.hidden: true
+  key UUID,
+      @AnalyticsDetails.query.hidden: true
+  key ParentUUID,
+      @AnalyticsDetails.query.hidden: true
+  key RootUUID,
       @AnalyticsDetails.query.display: #KEY
 
       @ObjectModel.text.element: [ 'costdatasetdescription' ]
@@ -69,10 +75,30 @@ define view entity /ESRCC/I_CHARGEOUT_CHARTS
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'receivingentitydescription' ]
   key Receivingentity,
+<<<<<<< HEAD
+=======
+      @AnalyticsDetails.query.display: #KEY
+      @ObjectModel.text.element: [ 'RecCostObjectdescription' ]
+  key ReceiverCostObject,
+      @AnalyticsDetails.query.display: #KEY
+      @ObjectModel.text.element: [ 'RecCostCenterdescription' ]
+  key ReceiverCostCenter, 
+  
+      @AnalyticsDetails.query.display: #KEY
+      @ObjectModel.text.element: [ 'ProcessTypedescription' ]
+      ProcessType,
+      
+      @AnalyticsDetails.query.display: #KEY
+      @ObjectModel.text.element: [ 'functionalareadescription' ]
+      FunctionalArea,
+>>>>>>> origin/main
       
       @AnalyticsDetails.query.display: #KEY
       @ObjectModel.text.element: [ 'businessdescription' ]
       Businessdivision,
+      
+      @AnalyticsDetails.query.display: #KEY
+      ContractId,
 
       @DefaultAggregation: #SUM
       @Semantics.amount.currencyCode: 'Groupcurr'
@@ -153,6 +179,8 @@ define view entity /ESRCC/I_CHARGEOUT_CHARTS
       statusdescription,
       @Semantics.text: true
       oecdDescription,
+      @Semantics.text: true
+      ProcessTypedescription,
       @Semantics.text: true
       _legalCountryText.CountryName as legalcountryname,
       @Semantics.text: true

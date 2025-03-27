@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Maintain Cost Objects & Numbers",
+    "description": "Maintain Cost Object Master Data & Frequency",
     "originalLanguage": "en"
   },
   "serviceConfiguration": {
@@ -9,7 +9,7 @@
     "serviceName": "/ESRCC/UI_CST_OBJCT_V4",
     "serviceVersion": "0001",
     "rootEntitySet": "CostObjectAll",
-    "name": "Maintain Cost Objects & Numbers",
+    "name": "Cost Objects Master Data & Frequency",
     "configurationGroup": "",
     "skipRootEntity": true
   },

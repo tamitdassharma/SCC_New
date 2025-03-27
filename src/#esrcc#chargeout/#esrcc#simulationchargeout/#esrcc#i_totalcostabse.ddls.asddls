@@ -1,6 +1,6 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION, #GROUP_BY ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Service cosrt & Share'
+@EndUserText.label: 'Service Cost & Share'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,
@@ -46,11 +46,19 @@ define view entity /ESRCC/I_TOTALCOSTABSE
     Localcurr,
     Groupcurr,   
     @Semantics.amount.currencyCode: 'Localcurr'
+    sum(virtualcost_l) as virtualtotalcost_l,
+    @Semantics.amount.currencyCode: 'Localcurr'
+    sum(erpcost_l) as erptotalcost_l,
+    @Semantics.amount.currencyCode: 'Localcurr'
     sum(excludedcost_l) as excludedtotalcost_l,
     @Semantics.amount.currencyCode: 'Localcurr'
     sum(origcost_l) as origtotalcost_l,
     @Semantics.amount.currencyCode: 'Localcurr'
     sum(passcost_l) as passtotalcost_l,
+    @Semantics.amount.currencyCode: 'Localcurr'
+    sum(virtualcost_g) as virtualtotalcost_g,
+    @Semantics.amount.currencyCode: 'Localcurr'
+    sum(erpcost_g) as erptotalcost_g,
     @Semantics.amount.currencyCode: 'Groupcurr'
     sum(excludedcost_g) as excludedtotalcost_g,
     @Semantics.amount.currencyCode: 'Groupcurr'

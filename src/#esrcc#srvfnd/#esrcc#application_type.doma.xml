@@ -40,6 +40,24 @@
      <DOMVALUE_L>CHR</DOMVALUE_L>
      <DDTEXT>Charge-out to Receiver</DDTEXT>
     </DD07V>
+    <DD07V>
+     <VALPOS>0005</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>CST</DOMVALUE_L>
+     <DDTEXT>Business Configuration: Stewardship</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <VALPOS>0006</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>CCR</DOMVALUE_L>
+     <DDTEXT>Business Configuration: Charge-out Rules</DDTEXT>
+    </DD07V>
+    <DD07V>
+     <VALPOS>0007</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>CPM</DOMVALUE_L>
+     <DDTEXT>Business Configuration: Service Product Mark-ups</DDTEXT>
+    </DD07V>
    </DD07V_TAB>
    <I18N_LANGS>
     <LANGU>D</LANGU>
@@ -73,6 +91,24 @@
      <DDLANGUAGE>D</DDLANGUAGE>
      <DOMVALUE_L>CHR</DOMVALUE_L>
      <DDTEXT>Verrechnung an Empfänger</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0005</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>CST</DOMVALUE_L>
+     <DDTEXT>Business Konfiguration: Gesellschafteraufwand</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0006</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>CCR</DOMVALUE_L>
+     <DDTEXT>Business Konfiguration: Verrechnungsregeln</DDTEXT>
+    </item>
+    <item>
+     <VALPOS>0007</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>CPM</DOMVALUE_L>
+     <DDTEXT>Business Konfiguration: Serviceprodukt-Aufschläge</DDTEXT>
     </item>
    </DD07_TEXTS>
   </asx:values>

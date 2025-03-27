@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION, #GROUP_BY ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Indirect Allocation'
 @Metadata.ignorePropagatedAnnotations: true
@@ -11,23 +11,36 @@
 define view entity /ESRCC/I_INDALLOC
 as select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
+<<<<<<< HEAD
   association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
                                                           and indwght.ryear           = periodindalloc.ryear
                                                           and indwght.Allockey        = periodindalloc.allocationkey
                                                           and indwght.KeyVersion      = periodindalloc.fplv
                                                           and indwght.poper           >= periodindalloc.poper
+=======
+  association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+            on indwght.ReceiverSysId = periodindalloc.ReceiverSysId
+           and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+           and indwght.ReceivingEntity = periodindalloc.ReceivingEntity
+           and indwght.ReceiverCostObject = periodindalloc.ReceiverCostObject
+           and indwght.ReceiverCostCenter = periodindalloc.ReceiverCostCenter
+           and indwght.Ryear           = periodindalloc.Ryear
+           and indwght.Allockey        = periodindalloc.AllocationKey
+           and indwght.KeyVersion      = periodindalloc.Fplv
+           and indwght.Poper           >= periodindalloc.Poper
+>>>>>>> origin/main
 
                                                                                          
 
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key receivingentity,
   key KeyVersion,
@@ -46,14 +59,14 @@ as select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
 } where AllocationPeriod = '01'  /*YTD*/
 group by
-fplv,
-ryear,
-poper,
-sysid,
-ccode,
-legalentity,
-costobject,
-costcenter,
+Fplv,
+Ryear,
+Poper,
+Sysid,
+Ccode,
+Legalentity,
+Costobject,
+Costcenter,
 serviceproduct,
 receivingentity,
 KeyVersion,
@@ -66,24 +79,37 @@ union
 
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
+<<<<<<< HEAD
   association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
                                                           and indwght.ryear           = periodindalloc.ryear
                                                           and indwght.Allockey        = periodindalloc.allocationkey
                                                           and indwght.KeyVersion      = periodindalloc.fplv
                                                           and indwght.poper           = periodindalloc.poper
+=======
+  association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+        on indwght.ReceiverSysId       = periodindalloc.ReceiverSysId
+       and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+       and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
+       and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
+       and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
+       and indwght.Ryear               = periodindalloc.Ryear
+       and indwght.Allockey            = periodindalloc.AllocationKey
+       and indwght.KeyVersion          = periodindalloc.Fplv
+       and indwght.Poper               = periodindalloc.Poper
+>>>>>>> origin/main
                                                          
                                                           
                                                                                          
 
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key receivingentity,
   key KeyVersion,
@@ -115,22 +141,35 @@ union
 
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
+<<<<<<< HEAD
   association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
                                                           and indwght.ryear           = periodindalloc.ryear
                                                           and indwght.Allockey        = periodindalloc.allocationkey
                                                           and indwght.KeyVersion      = periodindalloc.fplv                                                          
                                                           and indwght.RefPeriod      >= periodindalloc.poper
+=======
+  association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+               on indwght.ReceiverSysId        = periodindalloc.ReceiverSysId
+               and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+               and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
+               and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
+               and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
+               and indwght.Ryear               = periodindalloc.Ryear
+               and indwght.Allockey            = periodindalloc.AllocationKey
+               and indwght.KeyVersion          = periodindalloc.Fplv                                                          
+               and indwght.RefPeriod          >= periodindalloc.Poper
+>>>>>>> origin/main
                                                                                          
 
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key receivingentity,
   key KeyVersion,
@@ -149,14 +188,14 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
 } where AllocationPeriod = '03'  /*No. Of months*/
 group by
-fplv,
-ryear,
-poper,
-sysid,
-ccode,
-legalentity,
-costobject,
-costcenter,
+Fplv,
+Ryear,
+Poper,
+Sysid,
+Ccode,
+Legalentity,
+Costobject,
+Costcenter,
 serviceproduct,
 receivingentity,
 KeyVersion,
@@ -169,21 +208,35 @@ union
 
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
+<<<<<<< HEAD
   association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
                                                           and indwght.ryear           = periodindalloc.ryear
                                                           and indwght.Allockey        = periodindalloc.allocationkey
                                                           and indwght.KeyVersion      = periodindalloc.fplv                                                                                                                                                                   
                                                           and indwght.poper          >= periodindalloc.poper  
                                                           and periodindalloc.poper    > indwght.fromRefperiod                           
+=======
+  association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+            on indwght.ReceiverSysId       = periodindalloc.ReceiverSysId
+           and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+           and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
+           and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
+           and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
+           and indwght.Ryear               = periodindalloc.Ryear
+           and indwght.Allockey            = periodindalloc.AllocationKey
+           and indwght.KeyVersion          = periodindalloc.Fplv                                                                                                                                                                   
+           and indwght.Poper              >= periodindalloc.Poper  
+           and periodindalloc.Poper        > indwght.fromRefperiod                           
+>>>>>>> origin/main
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key receivingentity,
   key KeyVersion,
@@ -203,14 +256,14 @@ select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
 } where AllocationPeriod = '04' /*Last months*/
 group by
-fplv,
-ryear,
-poper,
-sysid,
-ccode,
-legalentity,
-costobject,
-costcenter,
+Fplv,
+Ryear,
+Poper,
+Sysid,
+Ccode,
+Legalentity,
+Costobject,
+Costcenter,
 serviceproduct,
 receivingentity,
 KeyVersion,
@@ -223,24 +276,38 @@ union
 
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
+<<<<<<< HEAD
   association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
                                                           and indwght.ryear           = periodindalloc.ryear
                                                           and indwght.Allockey        = periodindalloc.allocationkey
                                                           and indwght.KeyVersion      = periodindalloc.fplv
                                                           and indwght.poper           > periodindalloc.poper  
                                                           and periodindalloc.poper    >= indwght.fromRefperiod    
+=======
+  association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+                on indwght.ReceiverSysId       = periodindalloc.ReceiverSysId
+               and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+               and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
+               and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
+               and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
+               and indwght.Ryear               = periodindalloc.Ryear
+               and indwght.Allockey            = periodindalloc.AllocationKey
+               and indwght.KeyVersion          = periodindalloc.Fplv
+               and indwght.Poper               > periodindalloc.Poper  
+               and periodindalloc.Poper       >= indwght.fromRefperiod    
+>>>>>>> origin/main
                                                           
                                                                                          
 
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key receivingentity,
   key KeyVersion,
@@ -272,23 +339,36 @@ union
 
 select from /ESRCC/I_CHARGEOUT_INDWGHT as indwght
 
+<<<<<<< HEAD
   association [0..*] to /esrcc/indalloc as periodindalloc on  indwght.receivingentity = periodindalloc.receivingentity
                                                           and indwght.ryear           = periodindalloc.ryear
                                                           and indwght.Allockey        = periodindalloc.allocationkey
                                                           and indwght.KeyVersion      = periodindalloc.fplv
                                                           and indwght.RefPeriod       = periodindalloc.poper
+=======
+  association [0..*] to /ESRCC/I_INDKEYBASEVALUES as periodindalloc 
+               on indwght.ReceiverSysId        = periodindalloc.ReceiverSysId
+               and indwght.ReceiverCompanyCode = periodindalloc.ReceiverCompanyCode           
+               and indwght.ReceivingEntity     = periodindalloc.ReceivingEntity
+               and indwght.ReceiverCostObject  = periodindalloc.ReceiverCostObject
+               and indwght.ReceiverCostCenter  = periodindalloc.ReceiverCostCenter
+               and indwght.Ryear               = periodindalloc.Ryear
+               and indwght.Allockey            = periodindalloc.AllocationKey
+               and indwght.KeyVersion          = periodindalloc.Fplv
+               and indwght.RefPeriod           = periodindalloc.Poper
+>>>>>>> origin/main
                                                           
                                                                                          
 
 {
-  key fplv,
-  key ryear,
-  key poper,
-  key sysid,
-  key ccode,
-  key legalentity,
-  key costobject,
-  key costcenter,
+  key Fplv,
+  key Ryear,
+  key Poper,
+  key Sysid,
+  key Ccode,
+  key Legalentity,
+  key Costobject,
+  key Costcenter,
   key serviceproduct,
   key receivingentity,
   key KeyVersion,

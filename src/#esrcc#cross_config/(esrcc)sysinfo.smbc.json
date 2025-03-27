@@ -1,17 +1,22 @@
 {
   "formatVersion": "1",
   "header": {
+<<<<<<< HEAD
     "description": "Maintain System Information",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
+=======
+    "description": "Maintain (Source) System Information",
+    "originalLanguage": "en"
+>>>>>>> origin/main
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_SYSINFO_O4",
     "serviceName": "/ESRCC/UI_SYSINFO_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "SystemInfoAll",
-    "name": "Maintain System Information",
-    "configurationGroup": "/ESRCC/BC_GROUP1",
+    "name": "System Information",
+    "configurationGroup": "/ESRCC/BC_GROUP9",
     "skipRootEntity": true
   },
   "appConfiguration": {

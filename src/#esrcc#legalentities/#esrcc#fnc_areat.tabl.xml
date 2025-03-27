@@ -7,7 +7,7 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Name of functional areas</DDTEXT>
+    <DDTEXT>Functional Area Descriptions</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
@@ -21,7 +21,6 @@
     <TABART>APPL0</TABART>
     <UEBERSETZ>X</UEBERSETZ>
     <BUFALLOW>N</BUFALLOW>
-    <ROWORCOLST>R</ROWORCOLST>
    </DD09L>
    <DD03P_TABLE>
     <DD03P>
@@ -97,6 +96,15 @@
      <CARDLEFT>1</CARDLEFT>
     </DD08V>
    </DD08V_TABLE>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD02_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Funktionsbereiche Bezeichnungen</DDTEXT>
+    </item>
+   </DD02_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

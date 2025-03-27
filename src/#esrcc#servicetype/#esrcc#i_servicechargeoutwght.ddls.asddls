@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Service Chargeout Information with Allocation Weightage'
 @Metadata.ignorePropagatedAnnotations: true
@@ -21,7 +21,6 @@ define view entity /ESRCC/I_ServiceChargeoutWght
       CapacityVersion,
       ConsumptionVersion,
       KeyVersion,
-      Uom,
 
       _Weightage.allocation_key    as AllocationKey,
       _Weightage.allocation_period as AllocationPeriod,

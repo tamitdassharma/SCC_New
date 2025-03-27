@@ -1,4 +1,5 @@
 @EndUserText.label: 'Functional areas Text'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 @ObjectModel.dataCategory: #TEXT
 define view entity /ESRCC/I_FunctionalAreasText

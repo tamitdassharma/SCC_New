@@ -11,11 +11,12 @@ CLASS /esrcc/cl_comments_util DEFINITION
 
     CLASS-METHODS read_comments
       IMPORTING
-        !workflowid TYPE /esrcc/sww_wiid
-        !taskid     TYPE string OPTIONAL
+        !instanceid  TYPE /esrcc/commentid OPTIONAL
+        !workflowid  TYPE /esrcc/sww_wiid OPTIONAL
+        !taskid      TYPE string OPTIONAL
       EXPORTING
-        !commentext TYPE string
-        !comments   TYPE /esrcc/tt_comment.
+        !commenttext TYPE string
+        !comments    TYPE /esrcc/tt_comment.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -61,11 +62,14 @@ CLASS /ESRCC/CL_COMMENTS_UTIL IMPLEMENTATION.
   METHOD read_comments.
 
     IF taskid IS INITIAL.
-      SELECT * FROM /esrcc/comments WHERE worfklow_id = @workflowid
+      SELECT * FROM /esrcc/comments WHERE instanceid = @instanceid
+                                    ORDER BY created_at DESCENDING
                                     INTO CORRESPONDING FIELDS OF TABLE @comments.
+
     ELSE.
-      SELECT * FROM /esrcc/comments WHERE worfklow_id = @workflowid
+      SELECT * FROM /esrcc/comments WHERE instanceid = @instanceid
                                       AND taskid = @taskid
+                                    ORDER BY created_at DESCENDING
                                     INTO CORRESPONDING FIELDS OF TABLE @comments.
     ENDIF.
 

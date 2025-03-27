@@ -1,17 +1,22 @@
 {
   "formatVersion": "1",
   "header": {
+<<<<<<< HEAD
     "description": "Maintain Transaction Groups",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
+=======
+    "description": "Maintain Transaction Groups (Level 1)",
+    "originalLanguage": "en"
+>>>>>>> origin/main
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_SRVTG_O4",
     "serviceName": "/ESRCC/UI_SRVTG_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "TransactionGrpAll",
-    "name": "Maintain Transaction Group",
-    "configurationGroup": "/ESRCC/BC_GROUP4",
+    "name": "L1 - Transaction Groups",
+    "configurationGroup": "/ESRCC/BC_GROUP3",
     "skipRootEntity": true
   },
   "appConfiguration": {

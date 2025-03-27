@@ -9,9 +9,10 @@ annotate view /ESRCC/C_CostElmenetCharacte_S with
   @UI.facet: [ {
     id: '/ESRCC/I_CostElmenetCharacte', 
     purpose: #STANDARD, 
-    type: #LINEITEM_REFERENCE, 
+    type: #PRESENTATIONVARIANT_REFERENCE,
     label: 'Maintain Cost Element Characteristics', 
-    position: 2 , 
+    position: 2,
+    targetQualifier: 'pVariant',
     targetElement: '_CostElementChar'
   } ]
   @UI.lineItem: [ {

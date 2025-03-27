@@ -9,8 +9,8 @@
     "serviceName": "/ESRCC/UI_COSTELEMENTS_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "CostElementsAll",
-    "name": "Maintain Cost Elements",
-    "configurationGroup": "",
+    "name": "Cost Elements",
+    "configurationGroup": "/ESRCC/BC_GROUP2",
     "skipRootEntity": true
   },
   "appConfiguration": {

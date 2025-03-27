@@ -20,6 +20,10 @@ define behavior for /ESRCC/C_Stewrdshp alias Stewardship
   use update;
   use delete;
 
+  use action Submit;
+  use action Finalize;
+  use action Reopen;
+
   use association _StewardshipAll { with draft; }
   use association _ServiceProduct { create; with draft; }
   use association _ServiceReceiver { create; with draft; }

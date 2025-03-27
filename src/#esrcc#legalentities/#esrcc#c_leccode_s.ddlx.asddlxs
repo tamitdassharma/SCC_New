@@ -7,18 +7,10 @@
 annotate view /ESRCC/C_LeCcode_S with
 {
   @UI.facet: [ {
-//    id: 'Transport', 
-//    purpose: #STANDARD, 
-//    type: #IDENTIFICATION_REFERENCE, 
-//    label: 'Transport', 
-//    position: 1 , 
-//    hidden: #(HideTransport)
-//  }, 
-//  {
     id: '/ESRCC/I_LeCcode', 
     purpose: #STANDARD, 
     type: #LINEITEM_REFERENCE, 
-    label: 'Maintain Company Code & Assign to Legal Entity', 
+    label: 'Maintain & Assign Company Codes', 
     position: 2 , 
     targetElement: '_LeToCompanyCode'
   } ]
@@ -33,11 +25,6 @@ annotate view /ESRCC/C_LeCcode_S with
   @UI.identification: [ {
     position: 2 , 
     importance: #HIGH
-//  }, 
-//  {
-//    type: #FOR_ACTION, 
-//    dataAction: 'SelectCustomizingTransptReq', 
-//    label: 'Select Transport'
   } ]
   TransportRequestID;
 }

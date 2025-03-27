@@ -26,11 +26,11 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Applikation</DDTEXT>
-     <REPTEXT>Applikation</REPTEXT>
+     <DDTEXT>Anwendung</DDTEXT>
+     <REPTEXT>Anwendung</REPTEXT>
      <SCRTEXT_S>App</SCRTEXT_S>
-     <SCRTEXT_M>Applikation</SCRTEXT_M>
-     <SCRTEXT_L>Applikation</SCRTEXT_L>
+     <SCRTEXT_M>Anwendung</SCRTEXT_M>
+     <SCRTEXT_L>Anwendung</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

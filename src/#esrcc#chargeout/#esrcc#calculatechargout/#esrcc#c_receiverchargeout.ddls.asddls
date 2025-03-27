@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST]
 @EndUserText.label: 'Receiver Total Cost'
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @Metadata.allowExtensions: true
@@ -22,10 +23,10 @@ define view entity /ESRCC/C_ReceiverChargeout
       ConsumptionVersion,
       @ObjectModel.text.element: [ 'keyversiontext' ]
       KeyVersion,
-      @Semantics.quantity.unitOfMeasure: 'Uom'
+      @Semantics.quantity.unitOfMeasure: 'ConsumptionUom'
       Reckpi,
       @ObjectModel.text.element: [ 'unitname' ]
-      Uom,
+      ConsumptionUom,
       @DefaultAggregation: #SUM
       Reckpishare,
       @DefaultAggregation: #SUM
@@ -60,6 +61,7 @@ define view entity /ESRCC/C_ReceiverChargeout
       @ObjectModel.text.element: [ 'statusdescription' ]
       Status,
       Workflowid,
+      CommentId,
       Currency,
       @Semantics.text: true
       receivingentitydescription,

@@ -1,8 +1,10 @@
-@EndUserText.label: 'Workflow Comments'
 @ObjectModel.query.implementedBy : 'ABAP:/ESRCC/CL_C_COMMENTS'
+@AbapCatalog.extensibility.extensible: true
+@EndUserText.label: 'Workflow Comments'
 @Metadata.allowExtensions: true
 define custom entity /ESRCC/C_COMMENTS
 {
+  key instanceid    : sysuuid_c32;
   @UI.selectionField: [{ position: 10 }]
   key workflow_id   : /esrcc/workflowid;
   key approverlevel : /esrcc/approvallevel;

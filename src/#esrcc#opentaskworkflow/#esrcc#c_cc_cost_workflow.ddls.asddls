@@ -1,5 +1,6 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Cost Center Chargeout'
-@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true
 define root view entity /ESRCC/C_CC_COST_WORKFLOW 
 provider contract transactional_query
@@ -41,7 +42,9 @@ as projection on /ESRCC/I_CC_COST
 //       
     @ObjectModel.text.element: [ 'billingperioddescription' ]
     Billingperiod,
-    
+    @ObjectModel.text.element: [ 'ProcessTypedescription' ]
+    ProcessType,
+    @Semantics.currencyCode: true
     Currency,
     @DefaultAggregation: #SUM
     @Semantics.amount.currencyCode: 'Currency'
@@ -88,6 +91,8 @@ as projection on /ESRCC/I_CC_COST
     billingperioddescription,
     @Semantics.text: true 
     statusdescription,
+    @Semantics.text: true 
+    ProcessTypedescription,
     @ObjectModel.text.element: [ 'countryname' ]
     Country,
 //    statuscriticallity,

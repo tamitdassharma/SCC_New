@@ -11,8 +11,13 @@ etag master LocalLastChangedAt
   update;
   delete;
 
+<<<<<<< HEAD
   field ( mandatory )
    Comments;
+=======
+//  field ( mandatory )
+//  Comments;
+>>>>>>> origin/main
 
   field (readonly : update)
    WorkflowId, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
@@ -26,6 +31,7 @@ etag master LocalLastChangedAt
 
   mapping for /ESRCC/CB_LI corresponding
   {
+    CommentId     = commentid;
     ReasonId      = reasonid;
     CreatedBy     = created_by;
     CreatedAt     = created_at;

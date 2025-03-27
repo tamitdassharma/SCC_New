@@ -4,6 +4,8 @@ CLASS lcl_custom_validation DEFINITION.
       ts_product TYPE STRUCTURE FOR READ RESULT /esrcc/i_srvpro_s\\serviceproduct,
       BEGIN OF ts_control,
         serviceproduct TYPE if_abap_behv=>t_xflag,
+        servicetype    TYPE if_abap_behv=>t_xflag,
+        oecdtpg        TYPE if_abap_behv=>t_xflag,
       END OF ts_control.
 
     METHODS:
@@ -30,6 +32,8 @@ CLASS lcl_custom_validation IMPLEMENTATION.
     ENDIF.
 
     IF control-serviceproduct = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'SERVICEPRODUCT' ) TO fields. ENDIF.
+    IF control-servicetype = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'SERVICETYPE' ) TO fields. ENDIF.
+    IF control-oecdtpg = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'OECDTPG' ) TO fields. ENDIF.
 
     config_util_ref->validate_initial(
       fields = fields
@@ -180,7 +184,12 @@ CLASS lhc_/esrcc/i_srvpro DEFINITION INHERITING FROM cl_abap_behavior_handler.
       get_global_features FOR GLOBAL FEATURES
         IMPORTING
         REQUEST requested_features FOR serviceproduct
-        RESULT result.
+        RESULT result,
+      precheck_update FOR PRECHECK
+        IMPORTING entities FOR UPDATE serviceproduct.
+
+    METHODS validatedata FOR VALIDATE ON SAVE
+      IMPORTING keys FOR serviceproduct~validatedata.
 ENDCLASS.
 
 CLASS lhc_/esrcc/i_srvpro IMPLEMENTATION.
@@ -205,6 +214,49 @@ CLASS lhc_/esrcc/i_srvpro IMPLEMENTATION.
     result-%update = edit_flag.
     result-%delete = edit_flag.
     result-%assoc-_serviceproducttext = edit_flag.
+  ENDMETHOD.
+
+  METHOD precheck_update.
+    DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
+        EXPORTING
+          paths              = VALUE #( ( path = 'ServiceProductAll' ) )
+          source_entity_name = '/ESRCC/C_SRVPRO'
+        CHANGING
+          reported_entity    = reported-serviceproduct
+          failed_entity      = failed-serviceproduct ) ).
+
+    LOOP AT entities INTO DATA(entity) WHERE %control-servicetype = if_abap_behv=>mk-on
+                                          OR %control-oecdtpg     = if_abap_behv=>mk-on.
+      lo_validation->validate_product(
+        entity  = CORRESPONDING #( entity )
+        control = VALUE #( servicetype = entity-%control-servicetype
+                           oecdtpg     = entity-%control-oecdtpg )
+      ).
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD validatedata.
+    READ ENTITIES OF /esrcc/i_srvpro_s IN LOCAL MODE
+        ENTITY serviceproduct
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(entities).
+
+    DATA(lo_validation) = NEW lcl_custom_validation( config_util_ref = /esrcc/cl_config_util=>create(
+      EXPORTING
+        paths              = VALUE #( ( path = 'ServiceProductAll' ) )
+        source_entity_name = '/ESRCC/C_SRVPRO'
+      CHANGING
+        reported_entity    = reported-serviceproduct
+        failed_entity      = failed-serviceproduct ) ).
+
+    LOOP AT entities ASSIGNING FIELD-SYMBOL(<entity>) WHERE servicetype IS INITIAL
+                                                         OR oecdtpg     IS INITIAL.
+      lo_validation->validate_product(
+        entity  = <entity>
+        control = VALUE #( servicetype = if_abap_behv=>mk-on
+                           oecdtpg     = if_abap_behv=>mk-on )
+      ).
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.

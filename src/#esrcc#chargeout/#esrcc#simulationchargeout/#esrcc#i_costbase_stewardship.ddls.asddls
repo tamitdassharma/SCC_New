@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Charge-Out Markup'
 @Metadata.ignorePropagatedAnnotations: true
@@ -9,6 +9,7 @@
 }
 define view entity /ESRCC/I_COSTBASE_STEWARDSHIP
      as select from /ESRCC/I_TOTALCOSTABSE as totalcb_li
+<<<<<<< HEAD
   
     association [0..*] to /esrcc/le_cctr as cc2le
     on  cc2le.legalentity = totalcb_li.Legalentity
@@ -17,6 +18,23 @@ define view entity /ESRCC/I_COSTBASE_STEWARDSHIP
     and cc2le.costobject = totalcb_li.Costobject
     and cc2le.costcenter = totalcb_li.Costcenter
     and totalcb_li.validon between cc2le.validfrom and cc2le.validto
+=======
+   
+    association [0..1] to /ESRCC/I_Stewardship as cc2le
+    on  cc2le.LegalEntity = totalcb_li.Legalentity
+    and cc2le.Sysid = totalcb_li.Sysid
+    and cc2le.CompanyCode = totalcb_li.Ccode
+    and cc2le.CostObject = totalcb_li.Costobject
+    and cc2le.CostCenter = totalcb_li.Costcenter
+    and totalcb_li.validon between cc2le.ValidFrom and cc2le.Validto
+    
+    association [0..1] to /esrcc/le_ccode as ccode
+    on ccode.sysid  = $projection.Sysid
+    and ccode.ccode = $projection.Ccode
+    and ccode.legalentity = $projection.Legalentity
+    and ccode.active = 'X'
+    
+>>>>>>> origin/main
 {
     key Ryear,
     key Poper,
@@ -35,13 +53,22 @@ define view entity /ESRCC/I_COSTBASE_STEWARDSHIP
     validon,
     Localcurr,
     Groupcurr,
+<<<<<<< HEAD
 
 //cost center cost evaluation
+=======
+    cc2le.stewardship,
+//cost center cost evaluation   
+    virtualtotalcost_l,
+    erptotalcost_l,
+>>>>>>> origin/main
     ( origtotalcost_l + passtotalcost_l + excludedtotalcost_l ) as Totalcost_l,
     excludedtotalcost_l,
     ( origtotalcost_l + passtotalcost_l) as includetotalcost_l, 
     origtotalcost_l,
     passtotalcost_l,
+    virtualtotalcost_g,
+    erptotalcost_g,
     ( origtotalcost_g + passtotalcost_g + excludedtotalcost_g ) as Totalcost_g,
     excludedtotalcost_g,
     ( origtotalcost_g + passtotalcost_g) as includetotalcost_g,    

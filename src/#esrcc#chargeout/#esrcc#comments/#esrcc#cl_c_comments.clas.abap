@@ -83,27 +83,35 @@ CLASS /ESRCC/CL_C_COMMENTS IMPLEMENTATION.
           DATA lt_result TYPE STANDARD TABLE OF /esrcc/c_comments.
           DATA ls_result TYPE /esrcc/c_comments.
           DATA _workflowid  TYPE /esrcc/sww_wiid.
+          DATA _instanceid  TYPE /esrcc/commentid.
 
 *   filters
           LOOP AT lt_filter ASSIGNING FIELD-SYMBOL(<ls_filter>).
 
             CASE <ls_filter>-name.
               WHEN 'WORKFLOW_ID'.
-                IF <ls_filter>-range is NOT INITIAL.
-                _workflowid = <ls_filter>-range[ 1 ]-low.
+                IF <ls_filter>-range IS NOT INITIAL.
+                  _workflowid = <ls_filter>-range[ 1 ]-low.
+                ENDIF.
+              WHEN 'INSTANCEID'.
+                IF <ls_filter>-range IS NOT INITIAL.
+                  _instanceid = <ls_filter>-range[ 1 ]-low.
                 ENDIF.
               WHEN OTHERS.
             ENDCASE.
           ENDLOOP.
 
-          /esrcc/cl_comments_util=>read_comments(
-            EXPORTING
-              workflowid = _workflowid
-            IMPORTING
-              comments   = DATA(lt_comments)
-          ).
+          IF _instanceid IS NOT INITIAL.
+            /esrcc/cl_comments_util=>read_comments(
+              EXPORTING
+                instanceid = _instanceid
+                workflowid = _workflowid
+              IMPORTING
+                comments   = DATA(lt_comments)
+            ).
+          ENDIF.
 
-       lt_result = CORRESPONDING #( lt_comments ).
+          lt_result = CORRESPONDING #( lt_comments ).
 
 *    ***fill response
           io_response->set_data( lt_result ).

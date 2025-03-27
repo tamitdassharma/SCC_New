@@ -10,6 +10,10 @@
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
     <DDTEXT>Comments</DDTEXT>
+    <REPTEXT>Comments</REPTEXT>
+    <SCRTEXT_S>Comments</SCRTEXT_S>
+    <SCRTEXT_M>Comments</SCRTEXT_M>
+    <SCRTEXT_L>Comments</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>CHAR</DATATYPE>
     <LENG>001024</LENG>
@@ -23,6 +27,10 @@
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
      <DDTEXT>Kommentare</DDTEXT>
+     <REPTEXT>Kommentare</REPTEXT>
+     <SCRTEXT_S>Kommentare</SCRTEXT_S>
+     <SCRTEXT_M>Kommentare</SCRTEXT_M>
+     <SCRTEXT_L>Kommentare</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

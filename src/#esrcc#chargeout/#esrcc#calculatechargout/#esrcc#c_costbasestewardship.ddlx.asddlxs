@@ -8,7 +8,14 @@
       value: 'Costcenter'
     },
     description : {type: #STANDARD, value: 'costcenterdescription' }
-  }
+  },
+  presentationVariant: [{ sortOrder: [{ by: 'Fplv' }, 
+                                      { by: 'Ryear' }, 
+                                      { by: 'Sysid' },
+                                      { by: 'Legalentity' },
+                                      { by: 'Ccode' },
+                                      { by: 'Costobject' },
+                                      { by: 'Costcenter' }] }]
 }
 
 annotate view /ESRCC/C_CostBaseStewardship with
@@ -72,9 +79,9 @@ annotate view /ESRCC/C_CostBaseStewardship with
   @UI.lineItem: [
    {  position: 5 ,
     importance: #MEDIUM,
-    label: '',
-    iconUrl: 'xe19c',
-    cssDefault:{width: '5rem'}
+    label: ''
+//    iconUrl: 'xe19c',
+//    cssDefault:{width: '5rem'}
   } ]
   @UI.fieldGroup: [
   {
@@ -226,13 +233,19 @@ annotate view /ESRCC/C_CostBaseStewardship with
   @UI.textArrangement: #TEXT_LAST
   @UI.connectedFields: [{ qualifier: 'title' }]
   Costcenter;
-
+  
+  @UI.lineItem: [ {
+    position: 999 ,
+    importance: #MEDIUM,
+    label: ''
+  } ]
   @UI.selectionField: [{ position: 110 }]
   @Consumption.filter.mandatory: true
   @Consumption.filter.selectionType: #SINGLE
   @EndUserText.label: 'Currency Type'
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CURR', element: 'Currencytype' }}]
   @Consumption.filter.defaultValue: 'L'
+  @UI.textArrangement: #TEXT_LAST
   Currencytype;
   @UI.lineItem: [ {
     position: 80 ,
@@ -281,6 +294,15 @@ annotate view /ESRCC/C_CostBaseStewardship with
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_PROFITCENTER_F4', element: 'ProfitCenter' }}]
   @UI.textArrangement: #TEXT_LAST
   Profitcenter;
+  @UI.lineItem: [ {
+    position: 91 ,
+    importance: #MEDIUM,
+    label: '',
+    cssDefault:{width: '10rem'}
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_PROCESSTYPE', element: 'ProcessType' }}]
+  @UI.textArrangement: #TEXT_ONLY
+  ProcessType;
 
   @UI.lineItem: [ {
     position: 120 ,
@@ -469,16 +491,26 @@ annotate view /ESRCC/C_CostBaseStewardship with
   statusdescription;
   @UI.hidden: true
   Controllingarea;
+  @UI.hidden: true
+  ProcessTypedescription;
   @EndUserText.label: 'Currency'
   @Consumption.valueHelpDefinition: [ { entity: { name: 'I_Currency', element: 'Currency' }} ]
 //  @UI.hidden: true
   Currency;
   @UI.hidden: true
+  CurrencyTypedescription;
+  @UI.hidden: true
   countryname;
   @UI.lineItem: [
    {  position: 999 ,
     importance: #LOW,
-    label: ''
+    label: 'ID'
   } ]
   UUID;
+  @UI.lineItem: [
+   {  position: 999 ,
+    importance: #LOW,
+    label: 'ID'
+  } ]
+  CommentId;
 }

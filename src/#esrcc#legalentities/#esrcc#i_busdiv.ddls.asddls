@@ -1,4 +1,5 @@
 @EndUserText.label: 'Business Division'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_BusDiv
   as select from /esrcc/bus_div

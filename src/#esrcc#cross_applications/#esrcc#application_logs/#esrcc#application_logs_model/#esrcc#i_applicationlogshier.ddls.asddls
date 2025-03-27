@@ -27,5 +27,6 @@ define view entity /ESRCC/I_ApplicationLogsHier
       company_code                   as CompanyCode,
       created_by                     as CreatedBy,
       created_at                     as CreatedAt,
+      log_header_uuid                as RootUUID,
       _log_items
 }

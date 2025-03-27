@@ -1,17 +1,22 @@
 {
   "formatVersion": "1",
   "header": {
+<<<<<<< HEAD
     "description": "Control Switch for Workflows",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
+=======
+    "description": "Maintain Workflow Activation per Application",
+    "originalLanguage": "en"
+>>>>>>> origin/main
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_WFSWITCH_O4",
     "serviceName": "/ESRCC/UI_WFSWITCH_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "WorkflowSwitchAll",
-    "name": "Workflow: Switch Controller",
-    "configurationGroup": "/ESRCC/BC_GROUP7",
+    "name": "Workflow Activation",
+    "configurationGroup": "/ESRCC/BC_GROUP8",
     "skipRootEntity": true
   },
   "appConfiguration": {

@@ -11,7 +11,12 @@
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
+<<<<<<< HEAD
     <EXCLASS>1</EXCLASS>
+=======
+    <EXCLASS>4</EXCLASS>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
+>>>>>>> origin/main
    </DD02V>
    <DD09L>
     <TABNAME>/ESRCC/GROUP</TABNAME>
@@ -101,7 +106,7 @@
    <DD02_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Konfiguration für Gruppe</DDTEXT>
+     <DDTEXT>Konfiguration Gruppe</DDTEXT>
     </item>
    </DD02_TEXTS>
    <TABL_EXTRAS>

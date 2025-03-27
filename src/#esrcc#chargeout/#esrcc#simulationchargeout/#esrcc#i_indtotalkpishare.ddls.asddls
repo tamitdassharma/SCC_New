@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION, #GROUP_BY ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Indirect Allocation Total KPI Share'
 @Metadata.ignorePropagatedAnnotations: true
@@ -19,8 +19,17 @@ as select from /ESRCC/I_CHARGEOUT_INDKPISHARE
     key Legalentity,
     key Costobject,
     key Costcenter,
+<<<<<<< HEAD
     key serviceproduct,
     key receivingentity,
+=======
+    key serviceproduct,    
+    key ReceiverSysId,
+    key ReceiverCompanyCode,
+    key ReceivingEntity,
+    key ReceiverCostObject,
+    key ReceiverCostCenter,
+>>>>>>> origin/main
     sum( reckpishare ) as totalreckpishare
 }
 group by

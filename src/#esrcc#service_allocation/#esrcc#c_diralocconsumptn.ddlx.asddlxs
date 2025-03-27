@@ -13,13 +13,6 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
    type: #COLLECTION,
    label: 'Service Consumption'
   },
-  //  {
-  //   id: 'idIdentification',
-  //   type: #IDENTIFICATION_REFERENCE,
-  //   label: 'General Information',
-  //   parentId: 'CE',
-  //   position: 10
-  //  },
   {
     id: 'Receiver',
     purpose: #STANDARD,
@@ -56,24 +49,7 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
    label: 'Admin Information',
    position: 30
   } ]
-  //  @UI.lineItem: [ {
-  //    position: 10 ,
-  //    importance: #MEDIUM,
-  //    label: '',
-  //    cssDefault.width: '15rem',
-  //    hidden: true
-  //  } ]
-  //  @UI.identification: [ {
-  //    position: 10 ,
-  //    label: '',
-  //    hidden: true
-  //  } ]
-  //  @UI.facet: [ {
-  //    id: 'idIdentification',
-  //    type: #IDENTIFICATION_REFERENCE,
-  //    label: 'DirectAllocationConsumption',
-  //    position: 10
-  //  } ]
+
   @UI.hidden: true
   @EndUserText.label: 'UUID'
   DirectAllocationUuid;
@@ -88,7 +64,8 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
 
   @UI.lineItem: [ { position: 10, importance: #MEDIUM, cssDefault.width: '15rem' } ]
   @UI.fieldGroup: [{ position: 10, qualifier: 'ReceiverGroup' }]
-  @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'Sysid' },
+  @UI.selectionField: [{ position: 10 }]
+  @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_RECEIVER_F4', element: 'Sysid' },
                                        additionalBinding: [{ localElement: 'ReceivingEntity', element: 'LegalEntity' },
                                                            { localElement: 'ReceivingCompany', element: 'CompanyCode' },
                                                            { localElement: 'Costobject', element: 'Costobject' },
@@ -99,9 +76,9 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
 
   @UI.lineItem: [ { position: 20, importance: #MEDIUM } ]
   @UI.fieldGroup: [{ position: 20, qualifier: 'ReceiverGroup' }]
-  @UI.selectionField: [{ position: 10 }]
+  @UI.selectionField: [{ position: 20 }]
   @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'LegalEntity' },
+  @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_RECEIVER_F4', element: 'LegalEntity' },
                                        additionalBinding: [{ localElement: 'Sysid', element: 'Sysid' },
                                                            { localElement: 'ReceivingCompany', element: 'CompanyCode' },
                                                            { localElement: 'Costobject', element: 'Costobject' },
@@ -112,9 +89,9 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
 
   @UI.lineItem: [ { position: 30, importance: #MEDIUM } ]
   @UI.fieldGroup: [{ position: 30, qualifier: 'ReceiverGroup' }]
-  @UI.selectionField: [{ position: 20 }]
+  @UI.selectionField: [{ position: 30 }]
   @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'CompanyCode' },
+  @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_RECEIVER_F4', element: 'CompanyCode' },
                                        additionalBinding: [{ localElement: 'Sysid', element: 'Sysid' },
                                                            { localElement: 'ReceivingEntity', element: 'LegalEntity' },
                                                            { localElement: 'Costobject', element: 'Costobject' },
@@ -125,9 +102,9 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
 
   @UI.lineItem: [ { position: 40, importance: #MEDIUM, cssDefault.width: '11.5rem' } ]
   @UI.fieldGroup: [{ position: 40, qualifier: 'ReceiverGroup' }]
-  @UI.selectionField: [{ position: 30 }]
+  @UI.selectionField: [{ position: 40 }]
   @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'Costobject' },
+  @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_RECEIVER_F4', element: 'Costobject' },
                                        additionalBinding: [{ localElement: 'Sysid', element: 'Sysid' },
                                                            { localElement: 'ReceivingEntity', element: 'LegalEntity' },
                                                            { localElement: 'ReceivingCompany', element: 'CompanyCode' },
@@ -138,9 +115,9 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
 
   @UI.lineItem: [ { position: 50, importance: #MEDIUM } ]
   @UI.fieldGroup: [{ position: 50, qualifier: 'ReceiverGroup' }]
-  @UI.selectionField: [{ position: 40 }]
+  @UI.selectionField: [{ position: 50 }]
   @UI.textArrangement: #TEXT_LAST
-  @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'Costcenter' },
+  @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_RECEIVER_F4', element: 'Costcenter' },
                                        additionalBinding: [{ localElement: 'Sysid', element: 'Sysid' },
                                                            { localElement: 'ReceivingEntity', element: 'LegalEntity' },
                                                            { localElement: 'ReceivingCompany', element: 'CompanyCode' },
@@ -151,6 +128,7 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
 
   @UI.lineItem: [ { position: 60, importance: #MEDIUM, cssDefault.width: '15rem' } ]
   @UI.fieldGroup: [{ position: 10, qualifier: 'ProviderGroup' }]
+  @UI.selectionField: [{ position: 60 }]
   @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'Sysid' },
                                        additionalBinding: [{ localElement: 'ProviderEntity', element: 'LegalEntity' },
                                                            { localElement: 'ProviderCompany', element: 'CompanyCode' },
@@ -158,11 +136,11 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
                                                            { localElement: 'ProviderCostcenter', element: 'Costcenter' },
                                                            { localElement: 'ProviderCostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
                                        useForValidation: true }]
-  @EndUserText.label: 'Provider System ID'
   ProviderSysid;
 
   @UI.lineItem: [ { position: 70, importance: #MEDIUM } ]
   @UI.fieldGroup: [{ position: 20, qualifier: 'ProviderGroup' }]
+  @UI.selectionField: [{ position: 70 }]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'LegalEntity' },
                                        additionalBinding: [{ localElement: 'ProviderSysid', element: 'Sysid' },
@@ -171,11 +149,11 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
                                                            { localElement: 'ProviderCostcenter', element: 'Costcenter' },
                                                            { localElement: 'ProviderCostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
                                        useForValidation: true }]
-  @EndUserText.label: 'Provider Entity'
   ProviderEntity;
 
   @UI.lineItem: [ { position: 80, importance: #MEDIUM } ]
   @UI.fieldGroup: [{ position: 30, qualifier: 'ProviderGroup' }]
+  @UI.selectionField: [{ position: 80 }]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'CompanyCode' },
                                        additionalBinding: [{ localElement: 'ProviderSysid', element: 'Sysid' },
@@ -184,11 +162,11 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
                                                            { localElement: 'ProviderCostcenter', element: 'Costcenter' },
                                                            { localElement: 'ProviderCostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
                                        useForValidation: true }]
-  @EndUserText.label: 'Provider Company Code'
   ProviderCompany;
 
   @UI.lineItem: [ { position: 90, importance: #MEDIUM, cssDefault.width: '11.5rem' } ]
   @UI.fieldGroup: [{ position: 40, qualifier: 'ProviderGroup' }]
+  @UI.selectionField: [{ position: 90 }]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'Costobject' },
                                        additionalBinding: [{ localElement: 'ProviderSysid', element: 'Sysid' },
@@ -197,11 +175,11 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
                                                            { localElement: 'ProviderCostcenter', element: 'Costcenter' },
                                                            { localElement: 'ProviderCostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
                                        useForValidation: true }]
-  @EndUserText.label: 'Provider Cost Object'
   ProviderCostobject;
 
   @UI.lineItem: [ { position: 100, importance: #MEDIUM } ]
   @UI.fieldGroup: [{ position: 50, qualifier: 'ProviderGroup' }]
+  @UI.selectionField: [{ position: 100 }]
   @UI.textArrangement: #TEXT_LAST
   @Consumption.valueHelpDefinition: [{ entity: {  name: '/ESRCC/I_COSCEN_F4', element: 'Costcenter' },
                                        additionalBinding: [{ localElement: 'ProviderSysid', element: 'Sysid' },
@@ -210,12 +188,11 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
                                                            { localElement: 'ProviderCostobject', element: 'Costobject' },
                                                            { localElement: 'ProviderCostObjectUuid', element: 'CostObjectUuid', usage: #RESULT }],
                                        useForValidation: true }]
-  @EndUserText.label: 'Provider Cost Center'
   ProviderCostcenter;
 
   @UI.lineItem: [ { position: 110, importance: #MEDIUM, cssDefault.width: '11.5rem' } ]
   @UI.fieldGroup: [{ position: 10, qualifier: 'ConsumptionGroup' }]
-  @UI.selectionField: [{ position: 50 }]
+  @UI.selectionField: [{ position: 110 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CONSUMPTION_VERSION', element: 'ConsumptionVersion' },
                                        useForValidation: true } ]
   @UI.textArrangement: #TEXT_ONLY
@@ -223,14 +200,14 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
 
   @UI.lineItem: [ { position: 120, importance: #MEDIUM } ]
   @UI.fieldGroup: [{ position: 20, qualifier: 'ConsumptionGroup' }]
-  @UI.selectionField: [{ position: 60 }]
+  @UI.selectionField: [{ position: 120 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RYEAR', element: 'ryear' },
                                        useForValidation: true }]
   Ryear;
 
   @UI.lineItem: [ { position: 130, importance: #MEDIUM, cssDefault.width: '4.5rem' } ]
   @UI.fieldGroup: [{ position: 30, qualifier: 'ConsumptionGroup' }]
-  @UI.selectionField: [{ position: 70 }]
+  @UI.selectionField: [{ position: 130 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_POPER', element: 'Poper' },
                                        useForValidation: true }]
   @Consumption.filter.multipleSelections: true
@@ -239,7 +216,7 @@ annotate view /ESRCC/C_DIRALOCCONSUMPTN with
 
   @UI.lineItem: [ { position: 140, importance: #MEDIUM } ]
   @UI.fieldGroup: [{ position: 40, qualifier: 'ConsumptionGroup' }]
-  @UI.selectionField: [{ position: 80 }]
+  @UI.selectionField: [{ position: 140 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
                                        useForValidation: true }]
   @Consumption.filter.multipleSelections: true

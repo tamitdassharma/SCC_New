@@ -7,11 +7,16 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Maintain Allocation Keys</DDTEXT>
+    <DDTEXT>Allocation Keys</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <MAINFLAG>X</MAINFLAG>
     <CONTFLAG>C</CONTFLAG>
+<<<<<<< HEAD
     <EXCLASS>3</EXCLASS>
+=======
+    <EXCLASS>4</EXCLASS>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
+>>>>>>> origin/main
    </DD02V>
    <DD09L>
     <TABNAME>/ESRCC/ALLOCKEYS</TABNAME>
@@ -77,7 +82,7 @@
    <DD02_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Allokationsschlüssel bearbeiten</DDTEXT>
+     <DDTEXT>Allokationsschlüssel</DDTEXT>
     </item>
    </DD02_TEXTS>
    <TABL_EXTRAS>

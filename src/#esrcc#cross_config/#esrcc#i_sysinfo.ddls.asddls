@@ -1,4 +1,5 @@
 @EndUserText.label: 'System information'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_SysInfo
   as select from /esrcc/sys_info

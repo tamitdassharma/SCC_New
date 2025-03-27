@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Billing Frequency Mapping - Maintain'
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true

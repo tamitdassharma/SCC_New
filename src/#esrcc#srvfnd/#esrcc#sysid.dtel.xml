@@ -9,8 +9,13 @@
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
+<<<<<<< HEAD
     <DDTEXT>System ID (Source)</DDTEXT>
     <REPTEXT>System ID (Source)</REPTEXT>
+=======
+    <DDTEXT>System ID</DDTEXT>
+    <REPTEXT>System ID</REPTEXT>
+>>>>>>> origin/main
     <SCRTEXT_S>System ID</SCRTEXT_S>
     <SCRTEXT_M>System ID (Source)</SCRTEXT_M>
     <SCRTEXT_L>System ID (Source)</SCRTEXT_L>
@@ -26,11 +31,11 @@
    <DD04_TEXTS>
     <item>
      <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>System ID (Quelle)</DDTEXT>
-     <REPTEXT>System ID (Quelle)</REPTEXT>
+     <DDTEXT>System ID</DDTEXT>
+     <REPTEXT>System ID</REPTEXT>
      <SCRTEXT_S>System ID</SCRTEXT_S>
-     <SCRTEXT_M>System ID (Quelle)</SCRTEXT_M>
-     <SCRTEXT_L>System ID (Quelle)</SCRTEXT_L>
+     <SCRTEXT_M>System ID</SCRTEXT_M>
+     <SCRTEXT_L>System ID</SCRTEXT_L>
     </item>
    </DD04_TEXTS>
   </asx:values>

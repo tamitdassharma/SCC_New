@@ -55,8 +55,14 @@ CLASS /ESRCC/BUILD_INVOICE_RETREAT IMPLEMENTATION.
     invoice_data-items               = VALUE #(
         FOR <charge_out> IN chargeouts INDEX INTO chargeout_index
         ( VALUE #( BASE CORRESPONDING #( <charge_out> MAPPING service_product = Serviceproduct description = Serviceproductdescription
+<<<<<<< HEAD
                                        method = chargeoutdescription billing_period = Poper unit_of_measure = Uom quantity = Reckpi
                                        unit_price_per_share = Reckpishare total_amount = Reckpishareabs )
+=======
+                                       method = chargeoutdescription billing_period = Poper "unit_of_measure = Uom
+                                       quantity = Reckpi
+                                       unit_price_per_share = Reckpishare total_amount = TotalChargeout )
+>>>>>>> origin/main
                    tax           = <other_detail>-sender-tax_information-tax_percentage
                    item_position = chargeout_index ) ) ).
     invoice_data-sender              = VALUE #( BASE CORRESPONDING #(

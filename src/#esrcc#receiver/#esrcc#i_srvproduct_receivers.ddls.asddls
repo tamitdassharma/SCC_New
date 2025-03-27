@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Service Product Receivers'
 
@@ -40,5 +40,6 @@ define view entity /ESRCC/I_SRVPRODUCT_RECEIVERS
       sp_rec._CostObject.LegalEntity as ReceivingEntity,
       sp_rec._CostObject.CostObject  as ReceiverCostObject,
       sp_rec._CostObject.CostCenter  as ReceiverCostCenter,
-      sp_rec.Active                  as Active
+      sp_rec.Active                  as Active,
+      sp_rec.InvoiceCurrency         as InvoicingCurrency
 }

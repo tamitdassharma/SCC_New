@@ -21,7 +21,6 @@ authorization master ( global )
   {
     validation ServiceMarkup~ValidateData;
   }
-//  action ( features : instance ) SelectCustomizingTransptReq parameter D_SelectCustomizingTransptReqP result [1] $self;
 
   association _ServiceMarkup { create ( features : instance, precheck ); with draft; }
 }
@@ -42,15 +41,15 @@ authorization dependent by _ServiceMarkupAll
   Validto;
 
   field ( readonly )
+  WorkflowId, WorkflowStatus, Comments,
   SingletonID, CreatedBy, CreatedAt, LastChangedBy, LastChangedAt;
 
   field ( readonly : update )
   Serviceproduct,
   Validfrom;
 
-
-  update ( features : global, precheck );
-  delete ( features : global );
+  update ( features : instance, precheck );
+  delete ( features : instance );
 
   mapping for /ESRCC/SRVMKP
   {
@@ -59,6 +58,9 @@ authorization dependent by _ServiceMarkupAll
     Origcost = ORIGCOST;
     Passcost = PASSCOST;
     Validto = VALIDTO;
+    WorkflowId = WORKFLOW_ID;
+    WorkflowStatus = WORKFLOW_STATUS;
+    CommentId = COMMENT_ID;
     CreatedBy = CREATED_BY;
     CreatedAt = CREATED_AT;
     LastChangedBy = LAST_CHANGED_BY;
@@ -68,6 +70,14 @@ authorization dependent by _ServiceMarkupAll
 
   association _ServiceMarkupAll { with draft; }
 
-//  validation ValidateRecordChanges on save ##NOT_ASSIGNED_TO_DETACT { create; update; delete; }
+  action ( features : instance ) Submit parameter /ESRCC/C_COMMENT result [1] $self;
+  action ( features : instance ) Finalize result [1] $self;
+  action ( features : instance ) Reopen result [1] $self;
+
+  determination UpdateInternalWorkflowStatus on modify { field Origcost, Passcost, IntraOrigcost, IntraPasscost, Validto; }
+  determination UpdateWorkflowStatus on save { field WorkflowInternalStatus; }
+  determination UpdateComment on save { field Comments; }
+  determination TriggerWorkflow on save { field WorkflowStatus; }
+
   validation ValidateData on save ##NOT_ASSIGNED_TO_DETACT { create; update; }
 }

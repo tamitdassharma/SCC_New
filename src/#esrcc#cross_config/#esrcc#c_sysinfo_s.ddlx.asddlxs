@@ -7,22 +7,12 @@
 annotate view /ESRCC/C_SysInfo_S with
 {
   @UI.facet: [ {
-  //    id: 'Transport',
-  //    purpose: #STANDARD,
-  //    type: #IDENTIFICATION_REFERENCE,
-  //  //    label: 'Transport',
-  //    parentId: 'CE',
-  //    position: 1 ,
-  //    hidden: #(HideTransport)
-  //  },
-  //  {
     id: '/ESRCC/I_SysInfo',
     purpose: #STANDARD,
     type: #LINEITEM_REFERENCE,
-    label: 'Maintain System Information',
+    label: 'Maintain (Source) System Information',
     position: 2 ,
     targetElement: '_SystemInfo'
-  //    parentId: 'CE'
   } ]
   @UI.lineItem: [ {
     position: 1
@@ -35,11 +25,6 @@ annotate view /ESRCC/C_SysInfo_S with
   @UI.identification: [ {
     position: 2 ,
     importance: #HIGH
-  //  },
-  //  {
-  //    type: #FOR_ACTION,
-  //    dataAction: 'SelectCustomizingTransptReq',
-  //    label: 'Select Transport'
   } ]
   TransportRequestID;
 }

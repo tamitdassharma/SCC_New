@@ -1,3 +1,4 @@
+@AbapCatalog.extensibility.extensible: true
 @EndUserText.label: 'Execution Cockpit'
 @ObjectModel.query.implementedBy : 'ABAP:/ESRCC/CL_C_EXECUTIONCOCKPIT'
 @Metadata.allowExtensions: true
@@ -180,5 +181,15 @@ define root custom entity /ESRCC/C_EXECUTION_COCKPIT
       messagetypeservice     : abap.char( 1 );
       @UI.hidden             : true
       messagetypechargeout   : abap.char( 1 );
-
+      @UI.hidden             : true
+      chain_id               : /esrcc/chain_id;
+      @UI.hidden             : true
+      chain_sequence         : /esrcc/chain_sequence;
+      @UI.hidden             : true
+      costbaselogid          : sysuuid_c32;
+      @UI.hidden             : true
+      serviceproductlogid    : sysuuid_c32;
+      @UI.hidden             : true
+      chargeoutlogid         : sysuuid_c32;
+      
 }

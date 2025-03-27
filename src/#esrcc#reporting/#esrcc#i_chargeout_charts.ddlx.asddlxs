@@ -2,43 +2,44 @@
 
 //UI Selection Presentation Variant
 @UI.selectionPresentationVariant: [
-{
-    qualifier: 'KPI1ExcludedCost',
-    presentationVariantQualifier: 'KPI1ExcludedCost',
-    selectionVariantQualifier: 'KPI1ExcludedCost'
-},
-{
-    qualifier: 'KPI2IncludedCost',
-    presentationVariantQualifier: 'KPI2IncludedCost',
-    selectionVariantQualifier: 'KPI2IncludedCost'
-},
-
-{
-    qualifier: 'KPI3Stewardship',
-    presentationVariantQualifier: 'KPI3Stewardship',
-    selectionVariantQualifier: 'KPI3Stewardship'
-},
+//{
+//    qualifier: 'KPI1ExcludedCost',
+//    presentationVariantQualifier: 'KPI1ExcludedCost',
+//    selectionVariantQualifier: 'KPI1ExcludedCost'
+//},
+//{
+//    qualifier: 'KPI2IncludedCost',
+//    presentationVariantQualifier: 'KPI2IncludedCost',
+//    selectionVariantQualifier: 'KPI2IncludedCost'
+//},
+//
+//{
+//    qualifier: 'KPI3Stewardship',
+//    presentationVariantQualifier: 'KPI3Stewardship',
+//    selectionVariantQualifier: 'KPI3Stewardship'
+//},
 {
     qualifier: 'Default',
     presentationVariantQualifier: 'Default',
     selectionVariantQualifier: 'Default'
-}]
+}
+]
 
 //UI Selection Variant
 @UI.selectionVariant: [
-{
-    qualifier: 'KPI1ExcludedCost',
-    text: 'Default'
-},
-{
-    qualifier: 'KPI2IncludedCost',
-    text: 'Default'
-},
-
-{
-    qualifier: 'KPI3Stewardship',
-    text: 'Default'
-},
+//{
+//    qualifier: 'KPI1ExcludedCost',
+//    text: 'Default'
+//},
+//{
+//    qualifier: 'KPI2IncludedCost',
+//    text: 'Default'
+//},
+//
+//{
+//    qualifier: 'KPI3Stewardship',
+//    text: 'Default'
+//},
 {
     qualifier: 'Default',
     text: 'Default'
@@ -48,6 +49,7 @@
 //UI Chart Annotation
 @UI.chart: [
 //{
+<<<<<<< HEAD
 //    qualifier: 'ChargeoutsByYear',
 //    chartType: #BAR,
 //    dimensions:  [ 'Ryear' ],
@@ -176,6 +178,12 @@
 //    chartType: #BAR,
 //    dimensions:  [ 'Ryear', 'Fplv' ],
 //    measures:  [ 'Stewardship' ],
+=======
+//    qualifier: 'KPI1ExcludedCost',
+//    chartType: #BAR,
+//    dimensions:  [ 'Ryear', 'Fplv' ],
+//    measures:  [ 'ExcludedTotalCost' , 'IncludedTotalCost'],
+>>>>>>> origin/main
 //    dimensionAttributes: [{
 //        dimension: 'Ryear',
 //        role: #CATEGORY
@@ -185,6 +193,7 @@
 //        role: #CATEGORY
 //    }],
 //    measureAttributes: [{
+<<<<<<< HEAD
 //        measure: 'Stewardship',
 //        role: #AXIS_1
 //    }]
@@ -234,6 +243,39 @@
         role: #AXIS_2
     }]
 },
+=======
+//        measure: 'ExcludedTotalCost',
+//        role: #AXIS_1
+//    },
+//    {
+//        measure: 'IncludedTotalCost',
+//        role: #AXIS_2
+//    }]
+//},
+//
+//{
+//    qualifier: 'KPI2IncludedCost',
+//    chartType: #BAR,
+//    dimensions:  [ 'Ryear', 'Fplv' ],
+//    measures:  [ 'ValueAddMarkup' , 'PassThruMarkup' ],
+//    dimensionAttributes: [{
+//        dimension: 'Ryear',
+//        role: #CATEGORY
+//    },
+//    {
+//        dimension: 'Fplv',
+//        role: #CATEGORY
+//    }],
+//    measureAttributes: [{
+//        measure: 'ValueAddMarkup',
+//        role: #AXIS_1
+//    },
+//    {
+//        measure: 'PassThruMarkup',
+//        role: #AXIS_2
+//    }]
+//},
+>>>>>>> origin/main
 
 
 
@@ -262,10 +304,31 @@
         measure: 'Totalcost_g',
         role: #AXIS_1
     }]
-}]
+}
+
+//{
+//    qualifier: 'StewardShipByLE',
+//    chartType: #BAR,
+//    dimensions:  [ 'Ryear' ],
+//    measures:  [ 'Stewardship' ],
+//    dimensionAttributes: [{
+//        dimension: 'Ryear',
+//        role: #CATEGORY
+//    }],
+////    {
+////        dimension: 'Legalentit',
+////        role: #CATEGORY
+////    }
+//    measureAttributes: [{
+//        measure: 'Stewardship',
+//        role: #AXIS_1
+//    }]
+//}
+]
 
 //UI Presention Annotation
 @UI.presentationVariant: [
+<<<<<<< HEAD
 {
     qualifier: 'KPI1ExcludedCost',
     text: 'Total Cost Base',
@@ -365,6 +428,46 @@
 //        qualifier: 'ChargeoutsByTG'
 //    }]
 //},
+=======
+//{
+//    qualifier: 'KPI1ExcludedCost',
+//    text: 'Total Cost (Initial)',
+//    visualizations: [{
+//        type: #AS_CHART,
+//        qualifier: 'KPI1ExcludedCost'
+//    },{
+//        type: #AS_DATAPOINT,
+//        qualifier: 'TotalCostBase'
+//    }
+//    ]
+//},
+//
+//{
+//    qualifier: 'KPI2IncludedCost',
+//    text: 'Total Mark-Up',
+//    visualizations: [{
+//        type: #AS_CHART,
+//        qualifier: 'KPI2IncludedCost'
+//    },{
+//        type: #AS_DATAPOINT,
+//        qualifier: 'SrvTotalMarkup'
+//    }]
+//},
+//
+//{
+//    qualifier: 'KPI3Stewardship',
+//    text: 'Stewardship',
+//    visualizations: [{
+//        type: #AS_CHART,
+//        qualifier: 'StewardShipByLE'
+//    },{
+//        type: #AS_DATAPOINT,
+//        qualifier: 'Stewardship'
+//    }
+//    ]
+//},
+
+>>>>>>> origin/main
 {
     qualifier: 'Default',
     visualizations: [{
@@ -408,7 +511,10 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
                                        additionalBinding: [ { element: 'Legalentity', localElement: 'Legalentity' } ]}]
   @UI.textArrangement: #TEXT_LAST
   Ccode;
-
+  
+  @UI.lineItem: [{ position: 105 }]
+  ContractId;
+  
   @UI.lineItem: [{ position: 100 }]
   @UI.selectionField: [{position: 80}]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_TRANSACTIONGROUP_F4', element: 'Transactiongroup' } }]
@@ -428,6 +534,11 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   Costobject;
 
   @UI.lineItem: [{ position: 70 }]
+  @UI.textArrangement: #TEXT_ONLY
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_PROCESSTYPE', element: 'ProcessType' } }]
+  ProcessType;
+  
+  @UI.lineItem: [{ position: 75 }]
   @UI.selectionField: [{position: 50 }]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_F4', element: 'Costcenter' },
                                        additionalBinding: [{ element: 'Costobject', localElement: 'Costobject'}]}]
@@ -435,18 +546,19 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   Costcenter;
 
   @UI.lineItem: [{ position: 81 }]
-  @UI.selectionField: [{position: 59}]
+  @UI.selectionField: [{position: 60}]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_OECD', element: 'OECD' }}]
   @UI.textArrangement: #TEXT_LAST
   OECD;
 
   @UI.lineItem: [{ position: 80 }]
-  @UI.selectionField: [{position: 60}]
+  @UI.selectionField: [{position: 70}]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SERVICEPRODUCT_F4', element: 'ServiceProduct' },
                                        additionalBinding: [{ element: 'OECD', localElement: 'OECD' }]}]
   @UI.textArrangement: #TEXT_LAST
   Serviceproduct;
 
+<<<<<<< HEAD
 
   @UI.lineItem: [{ position: 85 } ]
   @UI.selectionField: [{position: 65}]
@@ -454,8 +566,43 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RECEIVINGENTITY_F4', element: 'Receivingentity' } }]
   Receivingentity;
 
+=======
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' } }]
+  @UI.lineItem: [{ position: 81 } ]
+  @UI.textArrangement: #TEXT_LAST
+  ReceiverSysId;
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_REC_F4', element: 'Ccode' },
+                                       additionalBinding: [{ element: 'Legalentity', localElement: 'Receivingentity' }]}]
+  @UI.lineItem: [{ position: 82 } ]
+  @UI.textArrangement: #TEXT_LAST
+  ReceiverCompanyCode;
+  
+  @UI.lineItem: [{ position: 83 } ]
+  @UI.selectionField: [{position: 100}]
+  @UI.textArrangement: #TEXT_LAST
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RECEIVINGENTITY_F4', element: 'Receivingentity' } }]
+  Receivingentity;
+  
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTOBJECTS', element: 'Costobject' }}]
+  @UI.lineItem: [{ position: 84 } ]
+  @UI.textArrangement: #TEXT_LAST
+  ReceiverCostObject;
+  
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_RECEIVER_F4', element: 'Costcenter' },
+                                       additionalBinding: [{ element: 'Costobject', localElement: 'ReceiverCostObject'}]}]
+  @UI.lineItem: [{ position: 85 } ]
+  @UI.textArrangement: #TEXT_LAST
+  ReceiverCostCenter;
+  
   @UI.lineItem: [{ position: 110 } ]
-  @UI.selectionField: [{position: 65}]
+  @UI.selectionField: [{position: 110}]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_FunctionalArea_F4', element: 'FunctionalArea' }}]
+  @UI.textArrangement: #TEXT_LAST
+  FunctionalArea;
+  
+>>>>>>> origin/main
+  @UI.lineItem: [{ position: 110 } ]
+  @UI.selectionField: [{position: 90}]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_BUSINESSDIV_F4', element: 'BusinessDivision' }}]
   @UI.textArrangement: #TEXT_LAST
   Businessdivision;
@@ -504,7 +651,7 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @EndUserText.label: 'Total Mark-up'
   SrvTotalMarkup;
 
-  @UI.selectionField: [{position: 100}]
+  @UI.selectionField: [{position: 120}]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_CHARGEOUTSTATUS', element: 'Status' } }]
   @UI.lineItem: [{ position: 210}]
   @UI.textArrangement: #TEXT_ONLY
@@ -512,8 +659,8 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   status;
 
   @UI.lineItem: [{ position: 999 }]
-  @EndUserText.label: 'Legal Entity Country'
-  @EndUserText.quickInfo: 'Legal Entity Country'
+  @EndUserText.label: 'Provider Country'
+  @EndUserText.quickInfo: 'Provider Country'
   @UI.textArrangement: #TEXT_LAST
   legalentitycountry;
   @UI.lineItem: [{ position: 999 }]
@@ -522,7 +669,12 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   @UI.textArrangement: #TEXT_LAST
   receivingentitycountry;
 
-
+  @UI.lineItem: [{ position: 999, label: 'ID' }] 
+  UUID;
+  @UI.lineItem: [{ position: 999, label: 'Parent ID' }] 
+  ParentUUID;
+  @UI.lineItem: [{ position: 999, label: 'Root ID' }] 
+  RootUUID;
   //hidden fields
   @UI.hidden: true
   ccodedescription;
@@ -554,6 +706,19 @@ annotate view /ESRCC/I_CHARGEOUT_CHARTS with
   statusdescription;
   @UI.hidden: true
   oecdDescription;
+<<<<<<< HEAD
 
+=======
+  @UI.hidden: true
+  RecCcodedescription;
+  @UI.hidden: true
+  RecCostObjectdescription;
+  @UI.hidden: true
+  RecCostCenterdescription;
+  @UI.hidden: true
+  functionalareadescription;
+  @UI.hidden: true
+  ProcessTypedescription;
+>>>>>>> origin/main
 
 }

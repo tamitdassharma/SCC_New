@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Billing Frequency Mapping'
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_BillingFrequency

@@ -1,4 +1,5 @@
 @EndUserText.label: 'Functional Area'
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_FunctionalAreas
   as select from /esrcc/fnc_area

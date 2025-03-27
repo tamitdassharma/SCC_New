@@ -1,6 +1,6 @@
 @AbapCatalog.viewEnhancementCategory: [#NONE]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Heirarchy interface for Invalid Records'
+@EndUserText.label: 'Hierarchy interface for Invalid Records'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,
@@ -46,5 +46,6 @@ define view entity /ESRCC/I_InvalidRecordsHier
       oldusagecal                  as Oldusagecal,
       oldcostdataset               as Oldcostdataset,
       comments                     as Comments,
+      log_header_uuid              as RootUUID,
       _log_items_child
 }

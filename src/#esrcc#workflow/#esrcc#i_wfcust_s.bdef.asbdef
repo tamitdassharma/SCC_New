@@ -34,10 +34,10 @@ authorization dependent by _RoleAssignmentAll
   Application,
   Approvallevel;
   // Design Requirement: The below key fields are not mandatory
-  //  Legalentity,
-  //  Sysid,
-  //  Costobject,
-  //  Costcenter;
+//    Legalentity,
+//    Sysid,
+//    Costobject,
+//    Costcenter;
 
   field ( readonly )
   SingletonID, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;

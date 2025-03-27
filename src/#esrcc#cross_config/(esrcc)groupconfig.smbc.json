@@ -10,8 +10,8 @@
     "serviceName": "/ESRCC/UI_GROUPCONFIG_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "GroupConfigAll",
-    "name": "Maintain Group Configuration",
-    "configurationGroup": "/ESRCC/BC_GROUP1",
+    "name": "Group Configuration",
+    "configurationGroup": "/ESRCC/BC_GROUP9",
     "skipRootEntity": true
   },
   "appConfiguration": {

@@ -11,7 +11,12 @@
     <DDTEXT>/ESRCC/I_LE - Draft</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <CONTFLAG>A</CONTFLAG>
+<<<<<<< HEAD
     <EXCLASS>1</EXCLASS>
+=======
+    <EXCLASS>4</EXCLASS>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
+>>>>>>> origin/main
    </DD02V>
    <DD09L>
     <TABNAME>/ESRCC/D_LE</TABNAME>
@@ -122,12 +127,24 @@
      <GROUPNAME>%ADMIN</GROUPNAME>
     </DD03P>
    </DD03P_TABLE>
+<<<<<<< HEAD
    <TABL_EXTRAS>
     <TDDAT>
      <TABNAME>/ESRCC/D_LE</TABNAME>
      <CCLASS>CUS_DEV_SUP_DA</CCLASS>
     </TDDAT>
    </TABL_EXTRAS>
+=======
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD02_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>/ESRCC/I_LE - Entwurf</DDTEXT>
+    </item>
+   </DD02_TEXTS>
+>>>>>>> origin/main
   </asx:values>
  </asx:abap>
 </abapGit>

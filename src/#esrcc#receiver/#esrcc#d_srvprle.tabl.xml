@@ -163,12 +163,24 @@
      <GROUPNAME>%ADMIN</GROUPNAME>
     </DD03P>
    </DD03P_TABLE>
+<<<<<<< HEAD
    <TABL_EXTRAS>
     <TDDAT>
      <TABNAME>/ESRCC/D_SRVPRLE</TABNAME>
      <CCLASS>CUS_DEV_SUP_DA</CCLASS>
     </TDDAT>
    </TABL_EXTRAS>
+=======
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD02_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Serviceprodukt Abbildung auf Ges.</DDTEXT>
+    </item>
+   </DD02_TEXTS>
+>>>>>>> origin/main
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -1,17 +1,22 @@
 {
   "formatVersion": "1",
   "header": {
+<<<<<<< HEAD
     "description": "Maintain Legal Entity Additional Information",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
+=======
+    "description": "Maintain Additional Information",
+    "originalLanguage": "en"
+>>>>>>> origin/main
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_LEOTHERS",
     "serviceName": "/ESRCC/UI_LEOTHERS",
     "serviceVersion": "0001",
     "rootEntitySet": "OtherInformationAll",
-    "name": "Maintain Legal Entity Additional Information",
-    "configurationGroup": "",
+    "name": "Additional Information",
+    "configurationGroup": "/ESRCC/BC_GROUP7",
     "skipRootEntity": true
   },
   "appConfiguration": {

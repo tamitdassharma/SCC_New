@@ -44,8 +44,6 @@
      <ROLLNAME>/ESRCC/ALLOCKEY</ROLLNAME>
      <ADMINFIELD>0</ADMINFIELD>
      <NOTNULL>X</NOTNULL>
-     <VALEXI>X</VALEXI>
-     <SHLPORIGIN>F</SHLPORIGIN>
      <COMPTYPE>E</COMPTYPE>
     </DD03P>
     <DD03P>
@@ -118,6 +116,15 @@
      <GROUPNAME>%ADMIN</GROUPNAME>
     </DD03P>
    </DD03P_TABLE>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <DD02_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Entwurf Tabelle für Gesellschaft /ESRCC/I_ALLOCWEIGHTAGE</DDTEXT>
+    </item>
+   </DD02_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

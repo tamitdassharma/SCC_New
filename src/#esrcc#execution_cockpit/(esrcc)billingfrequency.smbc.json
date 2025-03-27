@@ -10,8 +10,8 @@
     "serviceName": "/ESRCC/UI_BILLINGFREQUENCY",
     "serviceVersion": "0001",
     "rootEntitySet": "BillingFrequencyAll",
-    "name": "Maintain Billing Frequency",
-    "configurationGroup": "/ESRCC/BC_GROUP6",
+    "name": "Billing Frequencies",
+    "configurationGroup": "/ESRCC/BC_GROUP9",
     "skipRootEntity": true
   },
   "appConfiguration": {

@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Charge-Out for Receivers'
 @Metadata.ignorePropagatedAnnotations: true
@@ -10,6 +10,7 @@
 define view entity /ESRCC/I_CHARGEOUT_RECEIVERS 
 as select from /esrcc/srv_cost as chargeoutcost
 
+<<<<<<< HEAD
 association [0..1] to /esrcc/cc_cost  as _CostCenterCost 
                    on  $projection.fplv        = _CostCenterCost.fplv
                    and $projection.ryear       = _CostCenterCost.ryear
@@ -113,4 +114,38 @@ association [0..*] to /ESRCC/I_ServiceAllocReceiver as srvallocreceivers
     case when chargeout = 'D' then
     ( servicecostperunitg + tp_valueaddmarkupcostperunitg + tp_passthrumarkupcostperunitg )
     else 0 end as transferpriceG
+=======
+association [0..1] to /ESRCC/I_LE as _legalentity
+            on _legalentity.Legalentity = $projection.Legalentity
+{
+    key cc_uuid,
+    key srv_uuid,
+    key Ryear,
+    key Poper,
+    key Fplv,
+    key Sysid,
+    key Legalentity,
+    key Ccode,
+    key Costobject,
+    key Costcenter,
+    key services.ServiceProduct as serviceproduct, 
+    key srvallocreceivers.ReceiverSysId,
+    key srvallocreceivers.ReceiverCompanyCode,
+    key srvallocreceivers.ReceivingEntity,
+    key srvallocreceivers.ReceiverCostObject,
+    key srvallocreceivers.ReceiverCostCenter,
+    services.ContractId,    
+    consumption_version,
+    key_version,
+    PlanningUoM,
+    chargeout, 
+    validon,
+    case when srvallocreceivers.InvoicingCurrency = '' then
+    _legalentity.LocalCurr
+    else
+    srvallocreceivers.InvoicingCurrency 
+    end as InvoicingCurrency
+  
+    
+>>>>>>> origin/main
 }

@@ -146,15 +146,59 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   @UI.lineItem: [ {
   position: 110 ,
   importance: #MEDIUM,
+<<<<<<< HEAD
+=======
+  label: 'Receiver System ID',
+  cssDefault:{width: '10rem'}
+  } ]
+//  @UI.selectionField: [{ position: 69 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_SystemInformation_F4', element: 'SystemId' } }]
+  ReceiverSysId;
+  @UI.lineItem: [ {
+  position: 110 ,
+  importance: #MEDIUM,
+  label: 'Receiver Company Code',
+  cssDefault:{width: '10rem'}
+  } ]
+  @UI.selectionField: [{ position: 71 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COMPANYCODES_REC_F4', element: 'Ccode' },
+                                       additionalBinding: [{ element: 'Legalentity', localElement: 'Receivingentity' }]}]
+  ReceiverCompanyCode;
+  @UI.lineItem: [ {
+  position: 110 ,
+  importance: #MEDIUM,
+>>>>>>> origin/main
   label: '',
   cssDefault:{width: '10rem'}
   } ]
   @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_RECEIVINGENTITY_F4', element: 'Receivingentity' } }]
-  @UI.selectionField: [{ position: 63 }]
+  @UI.selectionField: [{ position: 70 }]
   @EndUserText.label: 'Receiving Entity'
   @UI.textArrangement: #TEXT_LAST
   Receivingentity;
   @UI.lineItem: [ {
+<<<<<<< HEAD
+=======
+  position: 110 ,
+  importance: #MEDIUM,
+  label: 'Receiver Cost Object Type',
+  cssDefault:{width: '10rem'}
+  } ]
+  @UI.selectionField: [{ position: 72 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSTOBJECTS', element: 'Costobject' }}]
+  ReceiverCostObject;
+  @UI.lineItem: [ {
+  position: 110 ,
+  importance: #MEDIUM,
+  label: 'Receiver Cost Object Number',
+  cssDefault:{width: '10rem'}
+  } ]
+  @UI.selectionField: [{ position: 73 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_COSCEN_RECEIVER_F4', element: 'Costcenter' },
+                                       additionalBinding: [{ element: 'Costobject', localElement: 'ReceiverCostObject'}]}]
+  ReceiverCostCenter;
+  @UI.lineItem: [ {
+>>>>>>> origin/main
   position: 130 ,
   importance: #MEDIUM,
   label: '',
@@ -373,7 +417,19 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   @UI.selectionField: [{ position: 100 }]
   @UI.textArrangement: #TEXT_ONLY
   @EndUserText.label: 'Charge-Out Status'
+<<<<<<< HEAD
   status;
+=======
+  Status;
+  @UI.lineItem: [ {
+  position: 420 ,
+  importance: #MEDIUM
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/ESRCC/I_PROCESSTYPE', element: 'ProcessType' } }]
+  @UI.selectionField: [{ position: 110 }]
+  @UI.textArrangement: #TEXT_ONLY
+  ProcessType;
+>>>>>>> origin/main
 
   //hidden fields
   @UI.hidden: true
@@ -402,5 +458,29 @@ annotate view /ESRCC/C_CHG_ANALYTICS with
   statusdescription;
   @UI.hidden: true
   oecdDescription;
+<<<<<<< HEAD
+=======
+  @UI.hidden: true
+  receivingentitydescription;
+  @UI.hidden: true
+  RecCcodedescription;
+  @UI.hidden: true
+  RecCostObjectdescription;
+  @UI.hidden: true
+  RecCostCenterdescription;
+  @UI.hidden: true
+  functionalareadescription;
+  @UI.hidden: true
+  ProcessTypedescription;
+  @UI.hidden: true
+  UUID;
+  @UI.hidden: true
+  ParentUUID;
+  @UI.hidden: true
+  RootUUID;
+  @UI.hidden: true
+  Currencytype;
+  
+>>>>>>> origin/main
 
 }

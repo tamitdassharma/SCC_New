@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Execution Cockpit Status - Maintain'
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true

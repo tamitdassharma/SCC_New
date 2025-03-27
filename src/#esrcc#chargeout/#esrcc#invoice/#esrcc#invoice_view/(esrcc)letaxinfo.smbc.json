@@ -1,17 +1,22 @@
 {
   "formatVersion": "1",
   "header": {
+<<<<<<< HEAD
     "description": "Maintain Tax Information",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
+=======
+    "description": "Maintain VAT/Sales Tax Rate",
+    "originalLanguage": "en"
+>>>>>>> origin/main
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_LETAXINFO_O4",
     "serviceName": "/ESRCC/UI_LETAXINFO_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "TaxInformationAll",
-    "name": "Maintain Tax Information",
-    "configurationGroup": "",
+    "name": "VAT/Sales Tax Rate",
+    "configurationGroup": "/ESRCC/BC_GROUP7",
     "skipRootEntity": true
   },
   "appConfiguration": {

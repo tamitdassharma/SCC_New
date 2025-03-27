@@ -1,6 +1,6 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Value Source'
+@EndUserText.label: 'Data Source'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.resultSet.sizeCategory: #XS
 @ObjectModel.usageType:{

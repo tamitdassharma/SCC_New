@@ -1,39 +1,33 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Adhoc Service Chargeout Details'
+@EndUserText.label: 'Ad-hoc Service Chargeout Details'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,
     sizeCategory: #S,
     dataClass: #MIXED
 }
-define view entity /ESRCC/I_ADHOCSERVICE 
-as select from /ESRCC/I_ADHOCSERVICE_DETAILS as adhoc
-      
-{   
-   
-   key Serviceproduct,
-   key markupvalidfrom,
-   key markupvalidto,
-   key validfrom,
-   key validto,
-   Servicetype,
-   Transactiongroup,
-   IpOwner,
-   Oecdtpg,
-   serviceproductdescription,
-   intra_origcost,
-   intra_passcost,
-   origcost,
-   passcost,
-   chargeoutruleid,
-   chargeout_method,
-   key_version,
-   cost_version,
-   uom,
-   adhoc_allocation_key,
-   ruledescription,
-   /* Associations */
-   allockeys.text as allockeydescription    
-} 
-where chargeout_method = 'A'
+define view entity /ESRCC/I_ADHOCSERVICE
+  as select from /ESRCC/I_SRVPRODUCT_DETAILS as srvpro
+
+  association [0..1] to /ESRCC/I_ALLOCKEYS as allockeys on allockeys.Allockey = $projection.adhoc_allocation_key
+{
+  key Serviceproduct,
+  key validfrom,
+      validto,
+      Servicetype,
+      Transactiongroup,
+      IpOwner,
+      Oecdtpg,
+      serviceproductdescription,
+      chargeout_method,
+      key_version,
+      cost_version,
+      adhoc_allocation_key,
+      @Semantics.text: true
+      ruledescription,
+      chargeoutruleid,
+      allockeys.text as allockeydescription
+
+}
+

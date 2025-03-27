@@ -1,14 +1,9 @@
 CLASS lcl_custom_validation DEFINITION.
   PUBLIC SECTION.
     TYPES:
-      ts_allocvalue TYPE STRUCTURE FOR READ RESULT /esrcc/i_indirectallockeyvalue\\IndirectAllocationKeyValues,
+      ts_allocvalue TYPE STRUCTURE FOR READ RESULT /esrcc/i_indirectallockeyvalue\\indirectallocationkeyvalues,
 
       BEGIN OF ts_control,
-        sysid         TYPE if_abap_behv=>t_xflag,
-        legalentity   TYPE if_abap_behv=>t_xflag,
-        companycode   TYPE if_abap_behv=>t_xflag,
-        costobject    TYPE if_abap_behv=>t_xflag,
-        costcenter    TYPE if_abap_behv=>t_xflag,
         ryear         TYPE if_abap_behv=>t_xflag,
         poper         TYPE if_abap_behv=>t_xflag,
         allocationkey TYPE if_abap_behv=>t_xflag,
@@ -38,11 +33,6 @@ CLASS lcl_custom_validation IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF control-sysid         = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'SYSID' ) TO fields. ENDIF.
-    IF control-legalentity   = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'LEGALENTITY' ) TO fields. ENDIF.
-    IF control-companycode   = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'COMPANYCODE' ) TO fields. ENDIF.
-    IF control-costobject    = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'COSTOBJECT' ) TO fields. ENDIF.
-    IF control-costcenter    = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'COSTCENTER' ) TO fields. ENDIF.
     IF control-ryear         = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'RYEAR' ) TO fields. ENDIF.
     IF control-poper         = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'POPER' ) TO fields. ENDIF.
     IF control-allocationkey = if_abap_behv=>mk-on. APPEND VALUE #( fieldname = 'ALLOCATIONKEY' ) TO fields. ENDIF.
@@ -55,24 +45,32 @@ CLASS lcl_custom_validation IMPLEMENTATION.
   ENDMETHOD.
 ENDCLASS.
 
-CLASS lhc_IndirectAllocationKeyValue DEFINITION INHERITING FROM cl_abap_behavior_handler.
+CLASS lhc_indirectallocationkeyvalue DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
 
     METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
-      IMPORTING REQUEST requested_authorizations FOR IndirectAllocationKeyValues RESULT result.
-    METHODS ValidateData FOR VALIDATE ON SAVE
-      IMPORTING keys FOR IndirectAllocationKeyValues~ValidateData.
+      IMPORTING REQUEST requested_authorizations FOR indirectallocationkeyvalues RESULT result.
+    METHODS validatedata FOR VALIDATE ON SAVE
+      IMPORTING keys FOR indirectallocationkeyvalues~validatedata.
+    METHODS precheck_create FOR PRECHECK
+      IMPORTING entities FOR CREATE indirectallocationkeyvalues.
+
+    METHODS precheck_update FOR PRECHECK
+      IMPORTING entities FOR UPDATE indirectallocationkeyvalues.
+
+    METHODS precheck_delete FOR PRECHECK
+      IMPORTING keys FOR DELETE indirectallocationkeyvalues.
 
 ENDCLASS.
 
-CLASS lhc_IndirectAllocationKeyValue IMPLEMENTATION.
+CLASS lhc_indirectallocationkeyvalue IMPLEMENTATION.
 
   METHOD get_global_authorizations.
   ENDMETHOD.
 
-  METHOD ValidateData.
+  METHOD validatedata.
     READ ENTITIES OF /esrcc/i_indirectallockeyvalue IN LOCAL MODE
-          ENTITY IndirectAllocationKeyValues
+          ENTITY indirectallocationkeyvalues
           ALL FIELDS WITH CORRESPONDING #( keys )
           RESULT DATA(entities).
 
@@ -85,28 +83,108 @@ CLASS lhc_IndirectAllocationKeyValue IMPLEMENTATION.
                                                                            failed_entity      = failed-indirectallocationkeyvalues
                                                                        ) ).
 
-    LOOP AT entities ASSIGNING FIELD-SYMBOL(<entity>) WHERE Sysid IS INITIAL
-                                                         OR LegalEntity IS INITIAL
-                                                         OR CompanyCode IS INITIAL
-                                                         OR CostObject IS INITIAL
-                                                         OR CostCenter IS INITIAL
-                                                         OR Ryear IS INITIAL
-                                                         OR Poper IS INITIAL
-                                                         OR AllocationKey IS INITIAL
-                                                         OR Fplv IS INITIAL.
+    LOOP AT entities ASSIGNING FIELD-SYMBOL(<entity>) WHERE ryear IS INITIAL
+                                                         OR poper IS INITIAL
+                                                         OR allocationkey IS INITIAL
+                                                         OR fplv IS INITIAL.
       lo_validation->validate_allocvalue(
         entity  = <entity>
-        control = VALUE #( sysid         = if_abap_behv=>mk-on
-                           legalentity   = if_abap_behv=>mk-on
-                           companycode   = if_abap_behv=>mk-on
-                           costobject    = if_abap_behv=>mk-on
-                           costcenter    = if_abap_behv=>mk-on
-                           ryear         = if_abap_behv=>mk-on
+        control = VALUE #( ryear         = if_abap_behv=>mk-on
                            poper         = if_abap_behv=>mk-on
                            allocationkey = if_abap_behv=>mk-on
                            fplv          = if_abap_behv=>mk-on )
       ).
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD precheck_create.
+    DATA(entity) = entities[ 1 ].
+
+*   Check Authorization
+    /esrcc/cl_authorization=>create(
+      EXPORTING
+        source_entity_name = '/ESRCC/C_INDIRECTALLOCKEYVALUE'
+      CHANGING
+        reported_entity    = reported-indirectallocationkeyvalues
+        failed_entity      = failed-indirectallocationkeyvalues
+    )->check_authorization(
+      EXPORTING
+        entity     = entity
+        auth_value = CORRESPONDING #( entity MAPPING legal_entity = legalentity cost_object = costobject cost_number = costcenter )
+        activity   = /esrcc/cl_authorization=>c_authorization_activity-create
+    ).
+
+*   Check duplicates
+    SELECT SINGLE @abap_true
+        FROM /esrcc/indtalloc
+        WHERE cost_object_uuid = @entity-costobjectuuid
+          AND allocation_key   = @entity-allocationkey
+          AND fplv             = @entity-fplv
+          AND ryear            = @entity-ryear
+          AND poper            = @entity-poper
+        INTO @DATA(is_duplicate).
+    IF sy-subrc = 0.
+      /esrcc/cl_config_util=>create(
+        EXPORTING
+          source_entity_name = '/ESRCC/C_INDIRECTALLOCKEYVALUE'
+          is_transition      = abap_true
+        CHANGING
+          reported_entity    = reported-indirectallocationkeyvalues
+          failed_entity      = failed-indirectallocationkeyvalues
+      )->set_duplicate_error( entity = entity ).
+    ENDIF.
+
+  ENDMETHOD.
+
+  METHOD precheck_update.
+    READ ENTITIES OF /esrcc/i_indirectallockeyvalue IN LOCAL MODE
+        ENTITY indirectallocationkeyvalues
+        ALL FIELDS WITH CORRESPONDING #( entities )
+        RESULT DATA(indirect).
+
+    DATA(entity) = indirect[ 1 ].
+
+*   Check Authorization
+    /esrcc/cl_authorization=>create(
+      EXPORTING
+        source_entity_name = '/ESRCC/C_INDIRECTALLOCKEYVALUE'
+      CHANGING
+        reported_entity    = reported-indirectallocationkeyvalues
+        failed_entity      = failed-indirectallocationkeyvalues
+    )->check_authorization(
+        EXPORTING
+          entity     = entity
+          auth_value = CORRESPONDING #( entity MAPPING legal_entity = legalentity cost_object = costobject cost_number = costcenter )
+          activity   = /esrcc/cl_authorization=>c_authorization_activity-change
+      ).
+
+  ENDMETHOD.
+
+  METHOD precheck_delete.
+
+    READ ENTITIES OF /esrcc/i_indirectallockeyvalue IN LOCAL MODE
+          ENTITY indirectallocationkeyvalues
+          ALL FIELDS WITH CORRESPONDING #( keys )
+          RESULT DATA(entities).
+
+    DATA(lo_auth) = /esrcc/cl_authorization=>create(
+      EXPORTING
+        source_entity_name = '/ESRCC/C_INDIRECTALLOCKEYVALUE'
+      CHANGING
+        reported_entity    = reported-indirectallocationkeyvalues
+        failed_entity      = failed-indirectallocationkeyvalues
+    ).
+
+*   Check Authorization
+    LOOP AT entities INTO DATA(entity).
+      lo_auth->check_authorization(
+        EXPORTING
+          entity     = entity
+          auth_value = CORRESPONDING #( entity MAPPING legal_entity = legalentity cost_object = costobject cost_number = costcenter )
+          activity   = /esrcc/cl_authorization=>c_authorization_activity-delete
+      ).
+    ENDLOOP.
+
   ENDMETHOD.
 
 ENDCLASS.

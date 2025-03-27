@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>/ESRCC/CL_AUTHORIZATION</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>SCC Authorization Class</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+<<<<<<< HEAD:src/#esrcc#servicetype/#esrcc#bp_i_srvaloc.clas.xml
+    <UNICODE>X</UNICODE>
+    <CLSDEFINT>/ESRCC/I_SRVALOC_S</CLSDEFINT>
+=======
+    <UNICODE>5</UNICODE>
+>>>>>>> origin/main:src/#esrcc#srvfnd/#esrcc#cl_authorization.clas.xml
+   </VSEOCLASS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

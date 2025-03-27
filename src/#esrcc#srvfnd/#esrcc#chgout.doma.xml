@@ -27,6 +27,15 @@
      <DOMVALUE_L>I</DOMVALUE_L>
      <DDTEXT>Indirect</DDTEXT>
     </DD07V>
+<<<<<<< HEAD
+=======
+    <DD07V>
+     <VALPOS>0003</VALPOS>
+     <DDLANGUAGE>E</DDLANGUAGE>
+     <DOMVALUE_L>A</DOMVALUE_L>
+     <DDTEXT>Ad-hoc</DDTEXT>
+    </DD07V>
+>>>>>>> origin/main
    </DD07V_TAB>
    <I18N_LANGS>
     <LANGU>D</LANGU>
@@ -49,6 +58,15 @@
      <DOMVALUE_L>I</DOMVALUE_L>
      <DDTEXT>Indirekt</DDTEXT>
     </item>
+<<<<<<< HEAD
+=======
+    <item>
+     <VALPOS>0003</VALPOS>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DOMVALUE_L>A</DOMVALUE_L>
+     <DDTEXT>Ad-hoc</DDTEXT>
+    </item>
+>>>>>>> origin/main
    </DD07_TEXTS>
   </asx:values>
  </asx:abap>

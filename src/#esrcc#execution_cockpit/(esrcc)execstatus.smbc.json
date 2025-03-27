@@ -1,17 +1,22 @@
 {
   "formatVersion": "1",
   "header": {
+<<<<<<< HEAD
     "description": "Maintain Execution Cockpit Status",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
+=======
+    "description": "Maintain Execution Cockpit Statuses",
+    "originalLanguage": "en"
+>>>>>>> origin/main
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_EXECSTAT_O4",
     "serviceName": "/ESRCC/UI_EXECSTAT_O4",
     "serviceVersion": "0001",
     "rootEntitySet": "ExecutionStatusAll",
-    "name": "Maintain Execution Cockpit Status",
-    "configurationGroup": "/ESRCC/BC_GROUP8",
+    "name": "Execution Cockpit Statuses",
+    "configurationGroup": "/ESRCC/BC_GROUP9",
     "skipRootEntity": true
   },
   "appConfiguration": {

@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST ]
 @EndUserText.label: 'Allocation Key Text - Maintain'
 @AccessControl.authorizationCheck: #CHECK
 @Metadata.allowExtensions: true

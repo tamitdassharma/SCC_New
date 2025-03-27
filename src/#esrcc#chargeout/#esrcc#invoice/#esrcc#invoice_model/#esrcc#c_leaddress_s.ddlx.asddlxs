@@ -1,24 +1,16 @@
 @Metadata.layer: #CUSTOMER
 @UI: {
   headerInfo: {
-    typeName: 'Address'
+    typeName: 'Billing Address'
   }
 }
 annotate view /ESRCC/C_LeAddress_S with
 {
   @UI.facet: [ {
-//    id: 'Transport', 
-//    purpose: #STANDARD, 
-//    type: #IDENTIFICATION_REFERENCE, 
-//    label: 'Transport', 
-//    position: 1 , 
-//    hidden: #(HideTransport)
-//  }, 
-//  {
     id: '/ESRCC/I_LeAddress', 
     purpose: #STANDARD, 
     type: #LINEITEM_REFERENCE, 
-    label: 'Maintain Legal Entity Address', 
+    label: 'Maintain Legal Entity Billing Address', 
     position: 2 , 
     targetElement: '_LeAddress'
   } ]
@@ -33,11 +25,6 @@ annotate view /ESRCC/C_LeAddress_S with
   @UI.identification: [ {
     position: 2 , 
     importance: #HIGH
-//  }, 
-//  {
-//    type: #FOR_ACTION, 
-//    dataAction: 'SelectCustomizingTransptReq', 
-//    label: 'Select Transport'
   } ]
   TransportRequestID;
 }

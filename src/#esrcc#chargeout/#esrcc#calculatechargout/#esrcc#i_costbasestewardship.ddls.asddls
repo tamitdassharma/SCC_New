@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST,#UNION]
 @AccessControl.authorizationCheck: #CHECK
 @EndUserText.label: 'Cost Center Cost'
 @Metadata.ignorePropagatedAnnotations: true
@@ -51,6 +52,12 @@ as select from /ESRCC/I_CostBaseData as cc_cost
   on _legalCountryText.Country = $projection.country
   and _legalCountryText.Language = $session.system_language  
   
+  association [0..1] to /ESRCC/I_PROCESSTYPE as _Processtype
+  on _Processtype.ProcessType = $projection.ProcessType
+  
+  association [0..1] to /ESRCC/I_CURR as _Currencytype
+  on _Currencytype.Currencytype = $projection.Currencytype
+  
 {
     key UUID,
     key Currencytype,
@@ -68,7 +75,10 @@ as select from /ESRCC/I_CostBaseData as cc_cost
     cc_cost.Profitcenter as Profitcenter,
     Controllingarea as Controllingarea,    
     cc_cost.Billingperiod as Billingperiod,
+    ProcessType as ProcessType,
     Currency,
+    VirtualCost,
+    ERPCost,
     Totalcost,
     Excludedtotalcost,
     ( Totalcost - Excludedtotalcost ) as Includetotalcost,
@@ -78,6 +88,7 @@ as select from /ESRCC/I_CostBaseData as cc_cost
     cast((Totalcost -  Excludedtotalcost) * (1 - (Stewardship / 100)) as abap.dec(23,2)) as Remainingcostbase,
     cc_cost.Status,
     Workflowid,
+    CommentId,
     CreatedBy,
     CreatedAt,
     LastChangedBy,
@@ -98,8 +109,10 @@ as select from /ESRCC/I_CostBaseData as cc_cost
     legalentity.Region,
     legalentity.RegionDesc,
     _legalCountryText,
+    _Processtype.text as ProcessTypedescription,
     // Make association public   
-    _ServiceMarkup
+    _ServiceMarkup,
+    _Currencytype
     
 }
 

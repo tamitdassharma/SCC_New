@@ -1,3 +1,4 @@
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @EndUserText.label: 'Workflow Controller'
 @AccessControl.authorizationCheck: #CHECK
 define view entity /ESRCC/I_WfSwitch

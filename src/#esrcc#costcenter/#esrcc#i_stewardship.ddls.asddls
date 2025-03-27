@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [ #PROJECTION_LIST, #UNION ]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Stewardship'
 
@@ -13,7 +13,8 @@ define view entity /ESRCC/I_Stewardship
   key valid_from as ValidFrom,
       valid_to as Validto,
       stewardship,
-      
+      chain_id,
+      chain_sequence,
       co.Sysid,
       co.CompanyCode,
       co.LegalEntity,
@@ -24,7 +25,7 @@ define view entity /ESRCC/I_Stewardship
       co.BusinessDivision,
       co.BillingFrequency,
       @Semantics.text: true
-      co._CostObjectText.Description                as CostCenterDescription,
+      co._CostObjectText[ Spras = $session.system_language ].Description                as CostCenterDescription,
 
       @Semantics.text: true
       co._CcodeText._SystemText.Description    as SysidDescription,
@@ -40,3 +41,5 @@ define view entity /ESRCC/I_Stewardship
       
 
 }
+where stw.workflow_status = 'F'
+ 

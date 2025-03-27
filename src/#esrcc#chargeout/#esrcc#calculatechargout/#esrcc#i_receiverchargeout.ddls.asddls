@@ -1,4 +1,4 @@
-@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST,#UNION]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Receivers Cost'
 @Metadata.ignorePropagatedAnnotations: true
@@ -30,7 +30,7 @@ define view entity /ESRCC/I_ReceiverChargeout
   association [0..1] to I_CountryText                       as _ReceivingCountryText on  _ReceivingCountryText.Country  = $projection.country
                                                                                      and _ReceivingCountryText.Language = $session.system_language
 
-  association [0..1] to I_UnitOfMeasureText                 as _UoM                  on  _UoM.UnitOfMeasure_E = reccost.Uom
+  association [0..1] to I_UnitOfMeasureText                 as _UoM                  on  _UoM.UnitOfMeasure_E = reccost.ConsumptionUom
                                                                                      and _UoM.Language        = $session.system_language
 
   association [0..1] to /ESRCC/I_CONSUMPTION_VERSION        as _ConsumptionVersion   on  _ConsumptionVersion.ConsumptionVersion = $projection.consumptionversion
@@ -50,36 +50,32 @@ define view entity /ESRCC/I_ReceiverChargeout
       ReceiverCostObject,
       ReceiverCostCenter,
       _ServiceCost.Currency,
-
+      InvoicingCurrency,
       Reckpishare,
       Valueaddmarkup,
       Passthrumarkup,
       _ServiceCost.ConsumptionVersion,
       _ServiceCost.KeyVersion,
-
+      _ServiceCost.ContractId,
       // Direct Allocation
       Reckpi,
-      Uom,
+      ConsumptionUom,
+//      Uom,
       case when _ServiceCost.Chargeout = 'D' then
       cast((_ServiceCost.Servicecostperunit + ( Valueaddmarkup / 100) * _ServiceCost.Valueaddcostperunit ) +
       ( _ServiceCost.Passthrucostperunit * (Passthrumarkup / 100) ) as abap.dec(10,2)) else 0 end        as TransferPrice,
 
       case when _ServiceCost.Chargeout = 'D' then
-      cast(( ( Valueaddmarkup / 100 ) * _ServiceCost.Valueaddcostperunit ) as abap.dec(10,2)) else 0 end as TpValueaddmarkupCostperunit,
+      cast(( _ServiceCost.Valueaddcostperunit + ( Valueaddmarkup / 100 ) * _ServiceCost.Valueaddcostperunit ) as abap.dec(10,2)) else 0 end as TpValueaddmarkupCostperunit,
 
       case when _ServiceCost.Chargeout = 'D' then
-      cast(( (Passthrumarkup / 100 ) * _ServiceCost.Passthrucostperunit ) as abap.dec(10,2)) else 0 end  as TpPassthrumarkupCostperunit,
+      cast(( _ServiceCost.Passthrucostperunit + (Passthrumarkup / 100 ) * _ServiceCost.Passthrucostperunit ) as abap.dec(10,2)) else 0 end  as TpPassthrumarkupCostperunit,
 
       case when _ServiceCost.Chargeout = 'I' or _ServiceCost.Chargeout = 'A' then
       cast( ( (Reckpishare / 100)   * _ServiceCost.Srvcostshare )  as abap.dec(23,2))
       else
-      cast( _ServiceCost.Servicecostperunit * (cast(case when ConsumptionUom <> _ServiceCost.Uom then
-                              unit_conversion(
-                                             client => $session.client,
-                                             quantity => Reckpi,
-                                             source_unit => ConsumptionUom,
-                                             target_unit => _ServiceCost.Uom,
-                                             error_handling => 'SET_TO_NULL' )
+      cast( _ServiceCost.Servicecostperunit * (cast(case when ConsumptionUom <> _ServiceCost.PlanningUom then
+                                    0
                                   else
                                   Reckpi end as abap.dec(23,2))  ) as abap.dec(23,2))
       end                                                                                                as RecCostShare,
@@ -87,13 +83,8 @@ define view entity /ESRCC/I_ReceiverChargeout
       case when _ServiceCost.Chargeout = 'I' or _ServiceCost.Chargeout = 'A' then
       cast( ( (Reckpishare / 100)   * _ServiceCost.Valueaddshare )  as abap.dec(23,2))
       else
-      cast( _ServiceCost.Valueaddcostperunit * (cast(case when ConsumptionUom <> _ServiceCost.Uom then
-                              unit_conversion(
-                                             client => $session.client,
-                                             quantity => Reckpi,
-                                             source_unit => ConsumptionUom,
-                                             target_unit => _ServiceCost.Uom,
-                                             error_handling => 'SET_TO_NULL' )
+      cast( _ServiceCost.Valueaddcostperunit * (cast(case when ConsumptionUom <> _ServiceCost.PlanningUom then
+                                    0
                                   else
                                   Reckpi end as abap.dec(23,2))  ) as abap.dec(23,2))
       end                                                                                                as RecValueadded,
@@ -101,13 +92,8 @@ define view entity /ESRCC/I_ReceiverChargeout
       case when _ServiceCost.Chargeout = 'I' or _ServiceCost.Chargeout = 'A' then
       cast( ( (Reckpishare / 100) * _ServiceCost.Passthroughshare )  as abap.dec(23,2))
       else
-      cast( _ServiceCost.Passthrucostperunit * (cast(case when ConsumptionUom <> _ServiceCost.Uom then
-                              unit_conversion(
-                                             client => $session.client,
-                                             quantity => Reckpi,
-                                             source_unit => ConsumptionUom,
-                                             target_unit => _ServiceCost.Uom,
-                                             error_handling => 'SET_TO_NULL' )
+      cast( _ServiceCost.Passthrucostperunit * (cast(case when ConsumptionUom <> _ServiceCost.PlanningUom then
+                                    0
                                   else
                                   Reckpi end as abap.dec(23,2))  ) as abap.dec(23,2))
       end                                                                                                as RecPassthrough,
@@ -117,13 +103,8 @@ define view entity /ESRCC/I_ReceiverChargeout
              ( (Reckpishare / 100) * _ServiceCost.Passthroughshare * (Passthrumarkup / 100) ) ) as abap.dec(23,2))
       else
       cast(((Valueaddmarkup / 100) * _ServiceCost.Valueaddcostperunit +
-            (Passthrumarkup / 100) * _ServiceCost.Passthrucostperunit ) * (cast(case when ConsumptionUom <> _ServiceCost.Uom then
-                              unit_conversion(
-                                             client => $session.client,
-                                             quantity => Reckpi,
-                                             source_unit => ConsumptionUom,
-                                             target_unit => _ServiceCost.Uom,
-                                             error_handling => 'SET_TO_NULL' )
+            (Passthrumarkup / 100) * _ServiceCost.Passthrucostperunit ) * (cast(case when ConsumptionUom <> _ServiceCost.PlanningUom then
+                                    0
                                   else
                                   Reckpi end as abap.dec(23,2))  ) as abap.dec(23,2))
       end                                                                                                as TotalRecMarkup,
@@ -131,13 +112,8 @@ define view entity /ESRCC/I_ReceiverChargeout
       case when _ServiceCost.Chargeout = 'I' or _ServiceCost.Chargeout = 'A' then
       cast(( (Reckpishare / 100) * _ServiceCost.Valueaddshare * (Valueaddmarkup / 100) ) as abap.dec(23,2))
       else
-      cast( ((Valueaddmarkup / 100) * _ServiceCost.Valueaddcostperunit ) * (cast(case when ConsumptionUom <> _ServiceCost.Uom then
-                              unit_conversion(
-                                             client => $session.client,
-                                             quantity => Reckpi,
-                                             source_unit => ConsumptionUom,
-                                             target_unit => _ServiceCost.Uom,
-                                             error_handling => 'SET_TO_NULL' )
+      cast( ((Valueaddmarkup / 100) * _ServiceCost.Valueaddcostperunit ) * (cast(case when ConsumptionUom <> _ServiceCost.PlanningUom then
+                                    0
                                   else
                                   Reckpi end as abap.dec(23,2))  ) as abap.dec(23,2))
       end                                                                                                as RecValueaddMarkup,
@@ -145,13 +121,8 @@ define view entity /ESRCC/I_ReceiverChargeout
       case when _ServiceCost.Chargeout = 'I' or _ServiceCost.Chargeout = 'A' then
       cast(( (Reckpishare / 100) * _ServiceCost.Passthroughshare * (Passthrumarkup / 100) ) as abap.dec(23,2))
       else
-      cast( ( _ServiceCost.Passthrucostperunit * (Passthrumarkup / 100) ) * (cast(case when ConsumptionUom <> _ServiceCost.Uom then
-                              unit_conversion(
-                                             client => $session.client,
-                                             quantity => Reckpi,
-                                             source_unit => ConsumptionUom,
-                                             target_unit => _ServiceCost.Uom,
-                                             error_handling => 'SET_TO_NULL' )
+      cast( ( _ServiceCost.Passthrucostperunit * (Passthrumarkup / 100) ) * (cast(case when ConsumptionUom <> _ServiceCost.PlanningUom then
+                                    0
                                   else
                                   Reckpi end as abap.dec(23,2))  ) as abap.dec(23,2))
       end                                                                                                as RecPassthroughMarkup,
@@ -161,19 +132,15 @@ define view entity /ESRCC/I_ReceiverChargeout
              ( (Reckpishare / 100 ) * _ServiceCost.Passthroughshare * (Passthrumarkup / 100 ) ) )  as abap.dec(23,2))
       else
       cast( (_ServiceCost.Servicecostperunit + ( (Valueaddmarkup / 100) * _ServiceCost.Valueaddcostperunit ) +
-      ( _ServiceCost.Passthrucostperunit * (Passthrumarkup / 100) ) ) * (cast(case when ConsumptionUom <> _ServiceCost.Uom then
-                              unit_conversion(
-                                             client => $session.client,
-                                             quantity => Reckpi,
-                                             source_unit => ConsumptionUom,
-                                             target_unit => _ServiceCost.Uom,
-                                             error_handling => 'SET_TO_NULL' )
+      ( _ServiceCost.Passthrucostperunit * (Passthrumarkup / 100) ) ) * (cast(case when ConsumptionUom <> _ServiceCost.PlanningUom then
+                                    0
                                   else
                                   Reckpi end as abap.dec(23,2))  ) as abap.dec(23,2))
       end                                                                                                as TotalChargeout,
 
       reccost.Status,
       Workflowid,
+      reccost.CommentId,
       Exchdate,
       rcventity.Country,
       rcventity.LocalCurr                                                                                as ReceiverCurrency,

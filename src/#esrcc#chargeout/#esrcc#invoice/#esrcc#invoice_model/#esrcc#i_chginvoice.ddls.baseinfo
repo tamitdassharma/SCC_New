@@ -19,9 +19,21 @@
 "/ESRCC/I_SERVICETYPE_F4"
 ],
 "ASSOCIATED":
+<<<<<<< HEAD
 [],
 "BASE":
 [],
+=======
+[
+"/ESRCC/I_SENDERCURR",
+"/ESRCC/I_SERVICEPRODUCTSHARE",
+"I_COUNTRYTEXT"
+],
+"BASE":
+[
+"/ESRCC/I_RECEIVERCHARGEOUT"
+],
+>>>>>>> origin/main
 "ANNO_REF":
 [],
 "SCALAR_FUNCTION":

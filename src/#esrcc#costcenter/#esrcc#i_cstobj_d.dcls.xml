@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DCLS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DCLS>
+<<<<<<< HEAD:src/#esrcc#costcenter/#esrcc#i_coscen_d.dcls.xml
+    <DCLNAME>/ESRCC/I_COSCEN_D</DCLNAME>
+    <DCL_TYPE>ROLE</DCL_TYPE>
+    <MASTERLANG>E</MASTERLANG>
+    <LANGUAGE>E</LANGUAGE>
+    <SHORT_TEXT>/ESRCC/I_COSCEN_D</SHORT_TEXT>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
+=======
+    <DCLNAME>/ESRCC/I_CSTOBJ_D</DCLNAME>
+    <DCLLANGUAGE>E</DCLLANGUAGE>
+    <DDTEXT>Draft Query View</DDTEXT>
+>>>>>>> origin/main:src/#esrcc#costcenter/#esrcc#i_cstobj_d.dcls.xml
+   </DCLS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

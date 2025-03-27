@@ -103,7 +103,7 @@ define root view entity /ESRCC/C_ApplicationLogsHier
           Postingtype,
           Costind,
           Usagecal,
-
+          RootUUID,
           @Semantics.text: true
           ApplicationDescription,
           @Semantics.text: true

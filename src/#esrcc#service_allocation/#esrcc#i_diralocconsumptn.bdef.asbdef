@@ -1,17 +1,13 @@
 managed implementation in class /ESRCC/BP_I_DirAlocConsumptn unique;
 strict ( 2 );
-//with draft;
 
 define behavior for /ESRCC/I_DIRALOCCONSUMPTN alias DirectAllocationConsumption
 persistent table /esrcc/consumptn
-//draft table /ESRCC/D_CONSUM
-//etag master LocalLastChangedAt
 lock master
-//total etag LastChangedAt
 authorization master ( global )
 
 {
-  field ( mandatory )
+  field ( mandatory : create, readonly : update )
   Sysid,
   ReceivingEntity,
   ReceivingCompany,
@@ -39,15 +35,9 @@ authorization master ( global )
   field ( numbering : managed )
   DirectAllocationUUID;
 
-  create;
+  create ( precheck );
   update ( precheck );
-  delete;
-
-  //  draft action Edit;
-  //  draft action Activate;
-  //  draft action Discard;
-  //  draft action Resume;
-  //  draft determine action Prepare;
+  delete ( precheck );
 
   mapping for /ESRCC/CONSUMPTN
   {
@@ -66,6 +56,4 @@ authorization master ( global )
     LastChangedAt = LAST_CHANGED_AT;
     LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
   }
-
-  validation ValidateData on save { create; update; }
 }
