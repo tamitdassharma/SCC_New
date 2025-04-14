@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Functional Areas",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_FUNCTIONALAREAS_",
@@ -27,9 +28,9 @@
       {
         "entitySet": "FunctionalAreas",
         "tableType": "gridTable",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
         "entitySet": "FunctionalAreasAll"

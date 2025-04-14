@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain & Assign Company Codes",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_LECCODE_O4",
@@ -33,9 +34,9 @@
       {
         "entitySet": "LeToCompanyCode",
         "tableType": "gridTable",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
         "entitySet": "LeToCompanyCodeAll"

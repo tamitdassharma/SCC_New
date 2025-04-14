@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Service Types (Level 2)",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_SRTYPE_O4",
@@ -27,9 +28,9 @@
       {
         "entitySet": "ServiceType",
         "tableType": "gridTable",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
         "entitySet": "ServiceTypeAll",

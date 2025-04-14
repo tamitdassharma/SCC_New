@@ -468,23 +468,74 @@ CLASS lhc_/esrcc/i_srvmkp IMPLEMENTATION.
     ).
 
     IF wf_active = abap_true.
-      CALL FUNCTION '/ESRCC/FM_WF_START'
-        EXPORTING
-          it_leading_object        = CORRESPONDING /esrcc/tt_wf_leadingobject( entities MAPPING serviceproduct = serviceproduct valid_from = validfrom EXCEPT * )
-          iv_apptype               = /esrcc/cl_wf_utility=>app-bc_product_markup
-        IMPORTING
-          et_failed_leading_object = failed_leading_objects
-          et_message               = messages.
-
-      " Set status to error for failed entities
+*      CALL FUNCTION '/ESRCC/FM_WF_START'
+*        EXPORTING
+*          it_leading_object        = CORRESPONDING /esrcc/tt_wf_leadingobject( entities MAPPING serviceproduct = serviceproduct valid_from = validfrom EXCEPT * )
+*          iv_apptype               = /esrcc/cl_wf_utility=>app-bc_product_markup
+*        IMPORTING
+*          et_failed_leading_object = failed_leading_objects
+*          et_message               = messages.
+*
+*      " Set status to error for failed entities
       DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-failed ).
-      LOOP AT failed_leading_objects INTO DATA(leading_object).
-        MODIFY entities
-            FROM VALUE #( workflowstatus = /esrcc/cl_wf_utility=>wf_status-failed
-                          workflowstatuscriticality = criticality )
-            TRANSPORTING workflowstatus workflowstatuscriticality
-            WHERE serviceproduct = leading_object-serviceproduct.
+*      LOOP AT failed_leading_objects INTO DATA(leading_object).
+*        MODIFY entities
+*            FROM VALUE #( workflowstatus = /esrcc/cl_wf_utility=>wf_status-failed
+*                          workflowstatuscriticality = criticality )
+*            TRANSPORTING workflowstatus workflowstatuscriticality
+*            WHERE serviceproduct = leading_object-serviceproduct.
+*      ENDLOOP.
+
+*** Begin of new
+      LOOP AT entities INTO DATA(entity1).
+        TRY.
+            DATA(cp_wf_handle) = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16( ).
+          CATCH cx_uuid_error.
+        ENDTRY.
+
+        MODIFY ENTITIES OF i_cpwf_inst
+             ENTITY CPWFInstance
+             EXECUTE registerWorkflow
+             FROM VALUE #( ( %key-CpWfHandle = cp_wf_handle
+                             %param-RetentionTime = '30'
+                             %param-PaWfDefId = 'eu10.dev-abap-cloud.sccworkflowconfiguration.businessConfigurationReviewProcess'
+                             %param-CallbackClass = '/ESRCC/CL_SWF_CPWF_CALLBACK'
+                             %param-Consumer = 'DEFAULT' ) ).
+
+        TYPES: BEGIN OF ty_context,
+                 rule_id          TYPE /esrcc/chargeout_rule_id,
+                 stewardship_uuid TYPE sysuuid_x16,
+                 service_product  TYPE /esrcc/srvproduct,
+                 valid_from       TYPE /esrcc/validfrom,
+                 application_type TYPE /esrcc/application_type_de,
+               END OF ty_context.
+
+        DATA(wf_context) = VALUE TY_context(
+             service_product  = entity1-serviceproduct
+             valid_from       = entity1-validfrom
+             application_type = 'CPM' ).
+
+        TRY.
+            DATA(cpwf_api_instance) = cl_swf_cpwf_api_factory_a4c=>get_api_instance( ).
+          CATCH cx_swf_cpwf_api.
+        ENDTRY.
+
+        DATA(lo_json) = cpwf_api_instance->get_json_converter(
+                                    iv_camel_case                = abap_true
+                                    iv_capital_letter            = abap_false
+                                    iv_suppress_empty_components = abap_true
+                                    iv_uppercase                 = abap_false
+                                  ).
+
+        DATA(wf_context_json) = lo_json->serialize( wf_context ).
+
+        MODIFY ENTITIES OF i_cpwf_inst
+             ENTITY CPWFInstance
+             EXECUTE setPayload
+             FROM VALUE #( ( %key-CpWfHandle = cp_wf_handle
+                             %param-context = wf_context_json ) ).
       ENDLOOP.
+*** End of new
 
       MODIFY ENTITIES OF /esrcc/i_srvmkp_s IN LOCAL MODE
           ENTITY servicemarkup

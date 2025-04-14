@@ -478,26 +478,26 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
 
       FINAL(service_product) = VALUE #( products[ serviceproduct = <consumption>-service_product ]-serviceproduct OPTIONAL ).
       IF cost_object_uuid IS INITIAL.
-        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
-                                                           message_type   = 'E'
-                                                           message_number = 020 )
-                                 invalid_record = <consumption> ).
+*        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
+*                                                           message_type   = 'E'
+*                                                           message_number = 020 )
+*                                 invalid_record = <consumption> ).
 
       ELSEIF provider_cost_object_uuid IS INITIAL.
-        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
-                                                           message_type   = 'E'
-                                                           message_number = 019 )
-                                 invalid_record = <consumption> ).
+*        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
+*                                                           message_type   = 'E'
+*                                                           message_number = 019 )
+*                                 invalid_record = <consumption> ).
       ELSEIF <consumption>-uom IS INITIAL.
-        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
-                                                           message_type   = 'E'
-                                                           message_number = 023 )
-                                 invalid_record = <consumption> ).
+*        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
+*                                                           message_type   = 'E'
+*                                                           message_number = 023 )
+*                                 invalid_record = <consumption> ).
       ELSEIF service_product IS INITIAL.
-        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
-                                                           message_type   = 'E'
-                                                           message_number = 024 )
-                                 invalid_record = <consumption> ).
+*        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
+*                                                           message_type   = 'E'
+*                                                           message_number = 024 )
+*                                 invalid_record = <consumption> ).
       ELSE.
         TRY.
             APPEND VALUE #( BASE CORRESPONDING #( <consumption> )
@@ -1228,16 +1228,16 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
                                                        cost_object  = <allocation>-cost_object
                                                        cost_center  = <allocation>-cost_center ]-cost_object_uuid OPTIONAL ).
       IF cost_object_uuid IS INITIAL.
-        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
-                                                           message_type   = 'E'
-                                                           message_number = 018 )
-                                 invalid_record = <allocation> ).
+*        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
+*                                                           message_type   = 'E'
+*                                                           message_number = 018 )
+*                                 invalid_record = <allocation> ).
 
       ELSEIF <allocation>-currency IS INITIAL.
-        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
-                                                           message_type   = 'E'
-                                                           message_number = 021 )
-                                 invalid_record = <allocation> ).
+*        app_logger->add_message( log_message    = VALUE #( message_id     = /esrcc/if_file_upload_handler=>message_class
+*                                                           message_type   = 'E'
+*                                                           message_number = 021 )
+*                                 invalid_record = <allocation> ).
       ELSE.
         /esrcc/cl_utility_core=>curr_external_to_internal( EXPORTING currency        = <allocation>-currency
                                                                      amount_external = <allocation>-value

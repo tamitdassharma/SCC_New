@@ -117,10 +117,10 @@ CLASS /ESRCC/CL_APPLICATION_LOGS IMPLEMENTATION.
                                         created_at      = timestamp ) TO _logs-items.
         ELSE.
           " Long Text
-          CALL FUNCTION '/ESRCC/STRING_TO_TABLE'
-            EXPORTING long_text           = log_message_text
-                      length_of_each_line = 38
-            TABLES    table_of_texts      = texts.
+*          CALL FUNCTION '/ESRCC/STRING_TO_TABLE'
+*            EXPORTING long_text           = log_message_text
+*                      length_of_each_line = 38
+*            TABLES    table_of_texts      = texts.
           FINAL(number_of_lines) = lines( texts ).
           LOOP AT texts ASSIGNING FIELD-SYMBOL(<text>).
             FINAL(table_index) = sy-tabix.

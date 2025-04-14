@@ -19,8 +19,8 @@ define root view entity /ESRCC/I_INDIRECTALLOCKEYVALUE
       _CostCenter.Sysid,
       _CostCenter.LegalEntity,
       _CostCenter.CompanyCode,
-      _CostCenter.CostObject,
-      _CostCenter.CostCenter,
+      _CostCenter.Costobject,
+      _CostCenter.Costcenter,
       @Semantics.user.createdBy: true
       created_by               as CreatedBy,
       @Semantics.systemDateTime.createdAt: true

@@ -11,7 +11,6 @@
     <MASTERLANG>E</MASTERLANG>
     <CONTFLAG>A</CONTFLAG>
     <EXCLASS>4</EXCLASS>
-    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD02V>
    <DD09L>
     <TABNAME>/ESRCC/REC_CHG</TABNAME>
@@ -228,6 +227,12 @@
      <DDTEXT>Verrechnete Kosten nach Empfänger</DDTEXT>
     </item>
    </DD02_TEXTS>
+   <TABL_EXTRAS>
+    <TDDAT>
+     <TABNAME>/ESRCC/REC_CHG</TABNAME>
+     <CCLASS>CUS_DEV_SUP_DA</CCLASS>
+    </TDDAT>
+   </TABL_EXTRAS>
   </asx:values>
  </asx:abap>
 </abapGit>

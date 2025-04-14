@@ -11,7 +11,6 @@
     <MASTERLANG>E</MASTERLANG>
     <CONTFLAG>A</CONTFLAG>
     <EXCLASS>4</EXCLASS>
-    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD02V>
    <DD09L>
     <TABNAME>/ESRCC/PROCLOGS</TABNAME>
@@ -175,6 +174,12 @@
      <DDTEXT>Prozess-Steuerung</DDTEXT>
     </item>
    </DD02_TEXTS>
+   <TABL_EXTRAS>
+    <TDDAT>
+     <TABNAME>/ESRCC/PROCLOGS</TABNAME>
+     <CCLASS>CUS_DEV_SUP_DA</CCLASS>
+    </TDDAT>
+   </TABL_EXTRAS>
   </asx:values>
  </asx:abap>
 </abapGit>

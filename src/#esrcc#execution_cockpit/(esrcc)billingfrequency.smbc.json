@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Billing Frequencies",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_BILLINGFREQUENCY",
@@ -24,9 +25,9 @@
       {
         "entitySet": "BillingFrequency",
         "tableType": "gridTable",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
         "entitySet": "BillingFrequencyAll",

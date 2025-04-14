@@ -2,7 +2,8 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Standard Charge-out Rules",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_CORULE_O4",
@@ -30,8 +31,8 @@
       {
         "entitySet": "Rule",
         "tableType": "gridTable",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "rowCountMode": "auto",
+        "enableFullScreen": true
       },
       {
         "entitySet": "RuleAll"

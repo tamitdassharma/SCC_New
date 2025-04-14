@@ -2,11 +2,12 @@
   "formatVersion": "1",
   "header": {
     "description": "Maintain Workflow Activation per Application",
-    "originalLanguage": "en"
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
   },
   "serviceConfiguration": {
     "serviceBinding": "/ESRCC/UI_WFSWITCH_O4",
-    "serviceName": "/ESRCC/UI_WFSWITCH_O4",
+    "serviceName": "/ESRCC/UI_WFSWITCH",
     "serviceVersion": "0001",
     "rootEntitySet": "WorkflowSwitchAll",
     "name": "Workflow Activation",
@@ -24,12 +25,14 @@
       {
         "entitySet": "WorkflowSwitch",
         "tableType": "gridTable",
+        "selectionMode": "auto",
+        "rowCountMode": "auto",
         "creationModeName": "creationRow",
-        "enableFullScreen": true,
-        "rowCountMode": "auto"
+        "enableFullScreen": true
       },
       {
-        "entitySet": "WorkflowSwitchAll"
+        "entitySet": "WorkflowSwitchAll",
+        "selectionMode": "auto"
       }
     ]
   }

@@ -10,7 +10,7 @@
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
-    <UNICODE>5</UNICODE>
+    <UNICODE>X</UNICODE>
     <CLSDEFINT>/ESRCC/I_STEWRDSHP_S</CLSDEFINT>
    </VSEOCLASS>
    <TPOOL>
@@ -70,6 +70,11 @@
      </TEXTPOOL>
     </item>
    </I18N_TPOOL>
+   <I18N_LINES>
+    <item>
+     <LANGUAGE>D</LANGUAGE>
+    </item>
+   </I18N_LINES>
   </asx:values>
  </asx:abap>
 </abapGit>
