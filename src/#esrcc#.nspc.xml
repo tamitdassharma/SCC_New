@@ -8,9 +8,20 @@
    </NSPC>
    <NSPC_TEXT>
     <SPRAS>E</SPRAS>
-    <DESCRIPTN>EXA Service Cross Charging solution</DESCRIPTN>
+    <DESCRIPTN>ESRCC</DESCRIPTN>
     <OWNER>EXA AG</OWNER>
    </NSPC_TEXT>
+   <CVERS>
+    <COMPONENT>ESRCC</COMPONENT>
+    <RELEASE>2503</RELEASE>
+    <EXTRELEASE>0000000000</EXTRELEASE>
+    <COMP_TYPE>K</COMP_TYPE>
+   </CVERS>
+   <CVERS_REF>
+    <COMPONENT>ESRCC</COMPONENT>
+    <LANGU>E</LANGU>
+    <DESC_TEXT>EXA Service Cross Charging Release 2503</DESC_TEXT>
+   </CVERS_REF>
   </asx:values>
  </asx:abap>
 </abapGit>
