@@ -6,6 +6,7 @@
     <DCLNAME>/ESRCC/I_COSCEN_F4</DCLNAME>
     <DCLLANGUAGE>E</DCLLANGUAGE>
     <DDTEXT>Acces Control for Cost Number</DDTEXT>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DCLS>
   </asx:values>
  </asx:abap>

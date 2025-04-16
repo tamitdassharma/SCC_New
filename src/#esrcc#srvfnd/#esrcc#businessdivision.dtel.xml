@@ -19,18 +19,6 @@
     <OUTPUTLEN>000010</OUTPUTLEN>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
-   <I18N_LANGS>
-    <LANGU>D</LANGU>
-   </I18N_LANGS>
-   <DD04_TEXTS>
-    <item>
-     <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Geschäftsbereich</DDTEXT>
-     <REPTEXT>Geschäftsbereich</REPTEXT>
-     <SCRTEXT_M>Geschäftsbereich</SCRTEXT_M>
-     <SCRTEXT_L>Geschäftsbereich</SCRTEXT_L>
-    </item>
-   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

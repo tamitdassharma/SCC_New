@@ -187,16 +187,89 @@ ENDCLASS.
 CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
 
 
-  METHOD extract_field_label.
-    DATA(field) = VALUE ts_field( fieldname = fieldname
-                                  fieldtext = go_abap_dictionary->derive_field_label(
-                                                EXPORTING
-                                                  iv_data_element = data_element
-                                                  iv_field_name   = fieldname
-                                              ) ).
+  METHOD config_bc_group.
+    bc_groups = VALUE #(
+*                        GROUP 1
+                         ( tech_id = '/ESRCC/BUS_DIV'             bc_group = '/ESRCC/BC_GROUP1' db_tab = VALUE #( ( '/ESRCC/BUS_DIV' )
+                                                                                                                  ( '/ESRCC/BUS_DIVT' ) ) )
+                         ( tech_id = '/ESRCC/FUNCTIONALAREAS'     bc_group = '/ESRCC/BC_GROUP1' db_tab = VALUE #( ( '/ESRCC/FNC_AREA' )
+                                                                                                                  ( '/ESRCC/FNC_AREAT' ) ) )
+                         ( tech_id = '/ESRCC/LE'                  bc_group = '/ESRCC/BC_GROUP1' db_tab = VALUE #( ( '/ESRCC/LE' )
+                                                                                                                  ( '/ESRCC/LE_T' ) ) )
+                         ( tech_id = '/ESRCC/LECCODE'             bc_group = '/ESRCC/BC_GROUP1' db_tab = VALUE #( ( '/ESRCC/LE_CCODE' )
+                                                                                                                  ( '/ESRCC/CCODET' ) ) )
+                         ( tech_id = '/ESRCC/PFC'                 bc_group = '/ESRCC/BC_GROUP1' db_tab = VALUE #( ( '/ESRCC/PFC' )
+                                                                                                                  ( '/ESRCC/PFCT' ) ) )
 
-    text = field-fieldtext.
-    INSERT field INTO TABLE gt_fields.
+*                        GROUP 2
+                         ( tech_id = '/ESRCC/COSTELEMENTS'        bc_group = '/ESRCC/BC_GROUP2' db_tab = VALUE #( ( '/ESRCC/CST_ELMNT' )
+                                                                                                                  ( '/ESRCC/CST_ELMTT' ) ) )
+                         ( tech_id = '/ESRCC/COSTELMENETCHARACTE' bc_group = '/ESRCC/BC_GROUP2' db_tab = VALUE #( ( '/ESRCC/CSTELMTCH' ) ) )
+                         ( tech_id = '/ESRCC/REASON'              bc_group = '/ESRCC/BC_GROUP2' db_tab = VALUE #( ( '/ESRCC/REASON' )
+                                                                                                                  ( '/ESRCC/REASONT' ) ) )
+
+*                        GROUP 3
+                         ( tech_id = '/ESRCC/SRTYPE'              bc_group = '/ESRCC/BC_GROUP3' db_tab = VALUE #( ( '/ESRCC/SRTYPE' )
+                                                                                                                  ( '/ESRCC/SRVTYPET' ) ) )
+                         ( tech_id = '/ESRCC/SRVPRO'              bc_group = '/ESRCC/BC_GROUP3' db_tab = VALUE #( ( '/ESRCC/SRVPRO' )
+                                                                                                                  ( '/ESRCC/SRVPROT' ) ) )
+                         ( tech_id = '/ESRCC/SRVTG'               bc_group = '/ESRCC/BC_GROUP3' db_tab = VALUE #( ( '/ESRCC/SRVTG' )
+                                                                                                                  ( '/ESRCC/TGT' ) ) )
+
+*                        GROUP 4
+                         ( tech_id = '/ESRCC/SRVMKP'              bc_group = '/ESRCC/BC_GROUP4' db_tab = VALUE #( ( '/ESRCC/SRVMKP' ) ) )
+                         ( tech_id = '/ESRCC/ALLOCKEYS'           bc_group = '/ESRCC/BC_GROUP4' db_tab = VALUE #( ( '/ESRCC/ALLOCKEYS' )
+                                                                                                                  ( '/ESRCC/ALLOCKEYT' ) ) )
+
+*                        GROUP 5
+                         ( tech_id = '/ESRCC/CHARGEOUT'           bc_group = '/ESRCC/BC_GROUP5' db_tab = VALUE #( ( '/ESRCC/CHARGEOUT' ) ) )
+                         ( tech_id = '/ESRCC/CORULE'              bc_group = '/ESRCC/BC_GROUP5' db_tab = VALUE #( ( '/ESRCC/CO_RULE' )
+                                                                                                                  ( '/ESRCC/CO_RULET' )
+                                                                                                                  ( '/ESRCC/ALOC_WGT' ) ) )
+
+*                        GROUP 6
+                         ( tech_id = '/ESRCC/CST_OBJCT'           bc_group = '/ESRCC/BC_GROUP6' db_tab = VALUE #( ( '/ESRCC/CST_OBJCT' )
+                                                                                                                  ( '/ESRCC/CST_OBJTT' ) ) )
+                         ( tech_id = '/ESRCC/STEWRDSHP'           bc_group = '/ESRCC/BC_GROUP6' db_tab = VALUE #( ( '/ESRCC/STEWRDSHP' )
+                                                                                                                  ( '/ESRCC/STWDSP' )
+                                                                                                                  ( '/ESRCC/STWDSPREC' ) ) )
+
+*                        GROUP 7
+                         ( tech_id = '/ESRCC/LEBNKINFO'           bc_group = '/ESRCC/BC_GROUP7' db_tab = VALUE #( ( '/ESRCC/LEBNKINFO' ) ) )
+                         ( tech_id = '/ESRCC/LETAXINFO'           bc_group = '/ESRCC/BC_GROUP7' db_tab = VALUE #( ( '/ESRCC/LETAXINFO' ) ) )
+                         ( tech_id = '/ESRCC/LE_ADDRESS'          bc_group = '/ESRCC/BC_GROUP7' db_tab = VALUE #( ( '/ESRCC/LE_ADDRES' ) ) )
+                         ( tech_id = '/ESRCC/LE_OTHERS'           bc_group = '/ESRCC/BC_GROUP7' db_tab = VALUE #( ( '/ESRCC/LE_OTHERS' ) ) )
+
+*                        GROUP 8
+                         ( tech_id = '/ESRCC/WFCUST'              bc_group = '/ESRCC/BC_GROUP8' db_tab = VALUE #( ( '/ESRCC/WFCUST' ) ) )
+                         ( tech_id = '/ESRCC/WFSWITCH'            bc_group = '/ESRCC/BC_GROUP8' db_tab = VALUE #( ( '/ESRCC/WFSWITCH' ) ) )
+                         ( tech_id = '/ESRCC/WFUSRG'              bc_group = '/ESRCC/BC_GROUP8' db_tab = VALUE #( ( '/ESRCC/WFUSRG' )
+                                                                                                                  ( '/ESRCC/WFUSRM' ) ) )
+
+*                        GROUP 9
+                         ( tech_id = '/ESRCC/BILLINGFREQUENCY'    bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/BILLFREQ' ) ) )
+                         ( tech_id = '/ESRCC/EXECSTATUS'          bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/EXEC_ST' )
+                                                                                                                  ( '/ESRCC/EXECST_T' ) ) )
+                         ( tech_id = '/ESRCC/EXTCONFIG'           bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/EXTCONFIG' ) ) )
+                         ( tech_id = '/ESRCC/EXT_OBJ'             bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/EXT_OBJCT' )
+                                                                                                                  ( '/ESRCC/EXTOBJCTT' ) ) )
+                         ( tech_id = '/ESRCC/GROUPCONFIG'         bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/GROUP' ) ) )
+                         ( tech_id = '/ESRCC/SYSINFO'             bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/SYS_INFO' )
+                                                                                                                  ( '/ESRCC/SYS_INFOT' ) ) )
+                         ( tech_id = '/ESRCC/PACKAGECODE'         bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/PKG_CODE' )
+                                                                                                                  ( '/ESRCC/PKG_CODET' ) ) ) ).
+  ENDMETHOD.
+
+
+  METHOD constructor.
+    super->constructor(
+      paths         = paths
+      assoc_paths   = assoc_paths
+      is_transition = is_transition
+    ).
+
+    gv_source_entity_name = source_entity_name.
+    go_abap_dictionary = NEW /esrcc/cl_abap_dictionary( iv_entity_name = source_entity_name ).
   ENDMETHOD.
 
 
@@ -216,205 +289,16 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD validate_percentage.
-    set_state_area( state_area = CONV #( percentage ) ).
-    set_first_flag( ).
+  METHOD extract_field_label.
+    DATA(field) = VALUE ts_field( fieldname = fieldname
+                                  fieldtext = go_abap_dictionary->derive_field_label(
+                                                EXPORTING
+                                                  iv_data_element = data_element
+                                                  iv_field_name   = fieldname
+                                              ) ).
 
-    LOOP AT fields INTO gs_active_field.
-      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE entity TO FIELD-SYMBOL(<value>).
-      IF sy-subrc <> 0.
-        CONTINUE.
-      ENDIF.
-
-      IF <value> NOT BETWEEN 0 AND 100.
-        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
-        set_message_for_field(
-          EXPORTING
-            entity = entity
-            field  = gs_active_field
-            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '005' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
-      ENDIF.
-    ENDLOOP.
-  ENDMETHOD.
-
-
-  METHOD validate_start_end_of_month.
-    set_state_area( state_area = CONV #( start_end_of_month ) ).
-    set_first_flag( ).
-
-    IF start_date IS NOT INITIAL AND start_date+6(2) <> '01'.
-      gs_active_field-fieldname = 'VALIDFROM'.
-      start_date+6(2) = '01'.
-
-      gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = start_date ).
-
-      set_message_for_field(
-        EXPORTING
-          entity = entity
-          field  = gs_active_field
-          msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '006' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
-    ENDIF.
-
-    IF end_date IS NOT INITIAL.
-      DATA(lv_date) = /esrcc/cl_utility_core=>get_last_day_of_month( EXPORTING date = end_date ).
-      IF end_date <> lv_date.
-        gs_active_field-fieldname = 'VALIDTO'.
-        end_date = lv_date.
-        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = end_date ).
-
-        set_message_for_field(
-          EXPORTING
-            entity = entity
-            field  = gs_active_field
-            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '007' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
-      ENDIF.
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD validate_validity.
-    set_state_area( state_area = CONV #( validity ) ).
-    set_first_flag( ).
-
-    IF from IS NOT INITIAL AND to IS NOT INITIAL AND from > to.
-      DATA(invalid) = abap_true.
-      gs_active_field-fieldname = 'VALIDTO'.
-    ELSE.
-      CLEAR gs_active_field.
-    ENDIF.
-
-    set_message_for_field(
-      EXPORTING
-        entity = entity
-        field  = gs_active_field
-        msg    = COND #( WHEN invalid = abap_true
-                         THEN NEW cl_abap_behv( )->new_message( id = c_config_msg number = '002' severity = cl_abap_behv=>ms-error ) ) ).
-  ENDMETHOD.
-
-
-  METHOD set_state_message.
-    set_state_area( state_area = state_area ).
-    set_first_flag( ).
-
-    set_message_for_field(
-      entity = entity
-      field  = VALUE #( fieldname = fieldname )
-      msg    = msg
-    ).
-  ENDMETHOD.
-
-
-  METHOD get_field_text.
-    DATA(lv_fieldname) = COND #( WHEN fieldname IS NOT INITIAL THEN fieldname ELSE gs_active_field-fieldname ).
-
-    text = COND #( WHEN gs_active_field-fieldtext IS NOT INITIAL THEN gs_active_field-fieldtext
-                   ELSE VALUE #( gt_fields[ fieldname = lv_fieldname ]-fieldtext OPTIONAL ) ).
-
-    IF text IS INITIAL.
-      text = extract_field_label( fieldname = lv_fieldname data_element = COND #( WHEN data_element IS NOT INITIAL THEN data_element ELSE gv_data_element ) ).
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD validate_initial.
-    set_state_area( state_area = CONV #( mandatory ) ).
-    set_first_flag( ).
-
-    LOOP AT fields INTO gs_active_field.
-      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE entity TO FIELD-SYMBOL(<value>).
-      IF sy-subrc <> 0.
-        CONTINUE.
-      ENDIF.
-
-      IF <value> IS INITIAL.
-        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
-        set_message_for_field(
-          EXPORTING
-            entity = entity
-            field  = gs_active_field
-            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = message_no severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
-      ENDIF.
-    ENDLOOP.
-  ENDMETHOD.
-
-
-  METHOD validate_non_mandatory.
-    set_state_area( state_area = CONV #( non_mandatory ) ).
-    set_first_flag( ).
-
-    LOOP AT fields INTO gs_active_field.
-      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE entity TO FIELD-SYMBOL(<value>).
-      IF sy-subrc <> 0.
-        CONTINUE.
-      ENDIF.
-
-      IF <value> IS NOT INITIAL.
-        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
-        set_message_for_field(
-          EXPORTING
-            entity = entity
-            field  = gs_active_field
-            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '014' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
-      ENDIF.
-    ENDLOOP.
-  ENDMETHOD.
-
-
-  METHOD validate_overlapping_validity.
-    set_state_area( state_area = CONV #( overlapping_validity ) ).
-    set_first_flag( ).
-
-    IF curr_from BETWEEN src_from AND src_to OR curr_to BETWEEN src_from AND src_to
-    OR src_from BETWEEN curr_from AND curr_to OR src_to BETWEEN curr_from AND curr_to.
-      DATA(msg) = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '003' severity = cl_abap_behv=>ms-error ).
-    ENDIF.
-
-*   Entity 1
-    set_message_for_field(
-      EXPORTING
-        entity = src_entity
-        msg    = msg ).
-
-*   Entity 2
-    set_first_flag( ).    " Reset previous error on this entity
-    set_message_for_field(
-      EXPORTING
-        entity = curr_entity
-        msg    = msg ).
-  ENDMETHOD.
-
-
-  METHOD validate_poper.
-    set_state_area( state_area = CONV #( period ) ).
-    set_first_flag( ).
-
-    LOOP AT fields INTO gs_active_field.
-      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE entity TO FIELD-SYMBOL(<value>).
-      IF sy-subrc <> 0.
-        RETURN.
-      ENDIF.
-
-      IF <value> NOT BETWEEN '001' AND '012'.
-        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
-        set_message_for_field(
-          EXPORTING
-            entity = entity
-            field  = gs_active_field
-            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '004' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
-      ENDIF.
-    ENDLOOP.
-  ENDMETHOD.
-
-
-  METHOD constructor.
-    super->constructor(
-      paths         = paths
-      assoc_paths   = assoc_paths
-      is_transition = is_transition
-    ).
-
-    gv_source_entity_name = source_entity_name.
-    go_abap_dictionary = NEW /esrcc/cl_abap_dictionary( iv_entity_name = source_entity_name ).
+    text = field-fieldtext.
+    INSERT field INTO TABLE gt_fields.
   ENDMETHOD.
 
 
@@ -541,6 +425,26 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD get_field_text.
+    DATA(lv_fieldname) = COND #( WHEN fieldname IS NOT INITIAL THEN fieldname ELSE gs_active_field-fieldname ).
+
+    text = COND #( WHEN gs_active_field-fieldtext IS NOT INITIAL THEN gs_active_field-fieldtext
+                   ELSE VALUE #( gt_fields[ fieldname = lv_fieldname ]-fieldtext OPTIONAL ) ).
+
+    IF text IS INITIAL.
+      text = extract_field_label( fieldname = lv_fieldname data_element = COND #( WHEN data_element IS NOT INITIAL THEN data_element ELSE gv_data_element ) ).
+    ENDIF.
+  ENDMETHOD.
+
+
+  METHOD message_on_action.
+    msg = NEW cl_abap_behv( )->new_message(
+                              id       = /esrcc/cl_config_util=>c_config_msg
+                              number   = '028'
+                              severity = if_abap_behv_message=>severity-success ).
+  ENDMETHOD.
+
+
   METHOD set_duplicate_error.
     set_state_message(
       entity     = entity
@@ -551,6 +455,108 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
                        )
       state_area = CONV #( /esrcc/cl_config_util=>duplicate )
     ).
+  ENDMETHOD.
+
+
+  METHOD set_state_message.
+    set_state_area( state_area = state_area ).
+    set_first_flag( ).
+
+    set_message_for_field(
+      entity = entity
+      field  = VALUE #( fieldname = fieldname )
+      msg    = msg
+    ).
+  ENDMETHOD.
+
+
+  METHOD validate_initial.
+    set_state_area( state_area = CONV #( mandatory ) ).
+    set_first_flag( ).
+
+    LOOP AT fields INTO gs_active_field.
+      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE entity TO FIELD-SYMBOL(<value>).
+      IF sy-subrc <> 0.
+        CONTINUE.
+      ENDIF.
+
+      IF <value> IS INITIAL.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
+        set_message_for_field(
+          EXPORTING
+            entity = entity
+            field  = gs_active_field
+            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = message_no severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
+
+  METHOD validate_non_mandatory.
+    set_state_area( state_area = CONV #( non_mandatory ) ).
+    set_first_flag( ).
+
+    LOOP AT fields INTO gs_active_field.
+      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE entity TO FIELD-SYMBOL(<value>).
+      IF sy-subrc <> 0.
+        CONTINUE.
+      ENDIF.
+
+      IF <value> IS NOT INITIAL.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
+        set_message_for_field(
+          EXPORTING
+            entity = entity
+            field  = gs_active_field
+            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '014' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
+
+  METHOD validate_overlapping_validity.
+    set_state_area( state_area = CONV #( overlapping_validity ) ).
+    set_first_flag( ).
+
+    IF curr_from BETWEEN src_from AND src_to OR curr_to BETWEEN src_from AND src_to
+    OR src_from BETWEEN curr_from AND curr_to OR src_to BETWEEN curr_from AND curr_to.
+      DATA(msg) = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '003' severity = cl_abap_behv=>ms-error ).
+    ENDIF.
+
+*   Entity 1
+    set_message_for_field(
+      EXPORTING
+        entity = src_entity
+        msg    = msg ).
+
+*   Entity 2
+    set_first_flag( ).    " Reset previous error on this entity
+    set_message_for_field(
+      EXPORTING
+        entity = curr_entity
+        msg    = msg ).
+  ENDMETHOD.
+
+
+  METHOD validate_percentage.
+    set_state_area( state_area = CONV #( percentage ) ).
+    set_first_flag( ).
+
+    LOOP AT fields INTO gs_active_field.
+      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE entity TO FIELD-SYMBOL(<value>).
+      IF sy-subrc <> 0.
+        CONTINUE.
+      ENDIF.
+
+      IF <value> NOT BETWEEN 0 AND 100.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
+        set_message_for_field(
+          EXPORTING
+            entity = entity
+            field  = gs_active_field
+            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '005' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
+      ENDIF.
+    ENDLOOP.
   ENDMETHOD.
 
 
@@ -571,84 +577,78 @@ CLASS /ESRCC/CL_CONFIG_UTIL IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD message_on_action.
-    msg = NEW cl_abap_behv( )->new_message(
-                              id       = /esrcc/cl_config_util=>c_config_msg
-                              number   = '028'
-                              severity = if_abap_behv_message=>severity-success ).
+  METHOD validate_poper.
+    set_state_area( state_area = CONV #( period ) ).
+    set_first_flag( ).
+
+    LOOP AT fields INTO gs_active_field.
+      ASSIGN COMPONENT gs_active_field-fieldname OF STRUCTURE entity TO FIELD-SYMBOL(<value>).
+      IF sy-subrc <> 0.
+        RETURN.
+      ENDIF.
+
+      IF <value> NOT BETWEEN '001' AND '012'.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = <value> ).
+        set_message_for_field(
+          EXPORTING
+            entity = entity
+            field  = gs_active_field
+            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '004' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
+      ENDIF.
+    ENDLOOP.
   ENDMETHOD.
 
 
-  METHOD config_bc_group.
-    bc_groups = VALUE #(
-*                        GROUP 1
-                         ( tech_id = '/ESRCC/BUS_DIV'             bc_group = '/ESRCC/BC_GROUP1' db_tab = VALUE #( ( '/ESRCC/BUS_DIV' )
-                                                                                                                  ( '/ESRCC/BUS_DIVT' ) ) )
-                         ( tech_id = '/ESRCC/FUNCTIONALAREAS'     bc_group = '/ESRCC/BC_GROUP1' db_tab = VALUE #( ( '/ESRCC/FNC_AREA' )
-                                                                                                                  ( '/ESRCC/FNC_AREAT' ) ) )
-                         ( tech_id = '/ESRCC/LE'                  bc_group = '/ESRCC/BC_GROUP1' db_tab = VALUE #( ( '/ESRCC/LE' )
-                                                                                                                  ( '/ESRCC/LE_T' ) ) )
-                         ( tech_id = '/ESRCC/LECCODE'             bc_group = '/ESRCC/BC_GROUP1' db_tab = VALUE #( ( '/ESRCC/LE_CCODE' )
-                                                                                                                  ( '/ESRCC/CCODET' ) ) )
-                         ( tech_id = '/ESRCC/PFC'                 bc_group = '/ESRCC/BC_GROUP1' db_tab = VALUE #( ( '/ESRCC/PFC' )
-                                                                                                                  ( '/ESRCC/PFCT' ) ) )
+  METHOD validate_start_end_of_month.
+    set_state_area( state_area = CONV #( start_end_of_month ) ).
+    set_first_flag( ).
 
-*                        GROUP 2
-                         ( tech_id = '/ESRCC/COSTELEMENTS'        bc_group = '/ESRCC/BC_GROUP2' db_tab = VALUE #( ( '/ESRCC/CST_ELMNT' )
-                                                                                                                  ( '/ESRCC/CST_ELMTT' ) ) )
-                         ( tech_id = '/ESRCC/COSTELMENETCHARACTE' bc_group = '/ESRCC/BC_GROUP2' db_tab = VALUE #( ( '/ESRCC/CSTELMTCH' ) ) )
-                         ( tech_id = '/ESRCC/REASON'              bc_group = '/ESRCC/BC_GROUP2' db_tab = VALUE #( ( '/ESRCC/REASON' )
-                                                                                                                  ( '/ESRCC/REASONT' ) ) )
+    IF start_date IS NOT INITIAL AND start_date+6(2) <> '01'.
+      gs_active_field-fieldname = 'VALIDFROM'.
+      start_date+6(2) = '01'.
 
-*                        GROUP 3
-                         ( tech_id = '/ESRCC/SRTYPE'              bc_group = '/ESRCC/BC_GROUP3' db_tab = VALUE #( ( '/ESRCC/SRTYPE' )
-                                                                                                                  ( '/ESRCC/SRVTYPET' ) ) )
-                         ( tech_id = '/ESRCC/SRVPRO'              bc_group = '/ESRCC/BC_GROUP3' db_tab = VALUE #( ( '/ESRCC/SRVPRO' )
-                                                                                                                  ( '/ESRCC/SRVPROT' ) ) )
-                         ( tech_id = '/ESRCC/SRVTG'               bc_group = '/ESRCC/BC_GROUP3' db_tab = VALUE #( ( '/ESRCC/SRVTG' )
-                                                                                                                  ( '/ESRCC/TGT' ) ) )
+      gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = start_date ).
 
-*                        GROUP 4
-                         ( tech_id = '/ESRCC/SRVMKP'              bc_group = '/ESRCC/BC_GROUP4' db_tab = VALUE #( ( '/ESRCC/SRVMKP' ) ) )
-                         ( tech_id = '/ESRCC/ALLOCKEYS'           bc_group = '/ESRCC/BC_GROUP4' db_tab = VALUE #( ( '/ESRCC/ALLOCKEYS' )
-                                                                                                                  ( '/ESRCC/ALLOCKEYT' ) ) )
+      set_message_for_field(
+        EXPORTING
+          entity = entity
+          field  = gs_active_field
+          msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '006' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
+    ENDIF.
 
-*                        GROUP 5
-                         ( tech_id = '/ESRCC/CHARGEOUT'           bc_group = '/ESRCC/BC_GROUP5' db_tab = VALUE #( ( '/ESRCC/CHARGEOUT' ) ) )
-                         ( tech_id = '/ESRCC/CORULE'              bc_group = '/ESRCC/BC_GROUP5' db_tab = VALUE #( ( '/ESRCC/CO_RULE' )
-                                                                                                                  ( '/ESRCC/CO_RULET' )
-                                                                                                                  ( '/ESRCC/ALOC_WGT' ) ) )
+    IF end_date IS NOT INITIAL.
+      DATA(lv_date) = /esrcc/cl_utility_core=>get_last_day_of_month( EXPORTING date = end_date ).
+      IF end_date <> lv_date.
+        gs_active_field-fieldname = 'VALIDTO'.
+        end_date = lv_date.
+        gv_data_element = /esrcc/cl_abap_dictionary=>get_data_element_by_value( EXPORTING iv_value = end_date ).
 
-*                        GROUP 6
-                         ( tech_id = '/ESRCC/CST_OBJCT'           bc_group = '/ESRCC/BC_GROUP6' db_tab = VALUE #( ( '/ESRCC/CST_OBJCT' )
-                                                                                                                  ( '/ESRCC/CST_OBJTT' ) ) )
-                         ( tech_id = '/ESRCC/STEWRDSHP'           bc_group = '/ESRCC/BC_GROUP6' db_tab = VALUE #( ( '/ESRCC/STEWRDSHP' )
-                                                                                                                  ( '/ESRCC/STWDSP' )
-                                                                                                                  ( '/ESRCC/STWDSPREC' ) ) )
+        set_message_for_field(
+          EXPORTING
+            entity = entity
+            field  = gs_active_field
+            msg    = NEW cl_abap_behv( )->new_message( id = c_config_msg number = '007' severity = cl_abap_behv=>ms-error v1 = get_field_text( ) ) ).
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.
 
-*                        GROUP 7
-                         ( tech_id = '/ESRCC/LEBNKINFO'           bc_group = '/ESRCC/BC_GROUP7' db_tab = VALUE #( ( '/ESRCC/LEBNKINFO' ) ) )
-                         ( tech_id = '/ESRCC/LETAXINFO'           bc_group = '/ESRCC/BC_GROUP7' db_tab = VALUE #( ( '/ESRCC/LETAXINFO' ) ) )
-                         ( tech_id = '/ESRCC/LE_ADDRESS'          bc_group = '/ESRCC/BC_GROUP7' db_tab = VALUE #( ( '/ESRCC/LE_ADDRES' ) ) )
-                         ( tech_id = '/ESRCC/LE_OTHERS'           bc_group = '/ESRCC/BC_GROUP7' db_tab = VALUE #( ( '/ESRCC/LE_OTHERS' ) ) )
 
-*                        GROUP 8
-                         ( tech_id = '/ESRCC/WFCUST'              bc_group = '/ESRCC/BC_GROUP8' db_tab = VALUE #( ( '/ESRCC/WFCUST' ) ) )
-                         ( tech_id = '/ESRCC/WFSWITCH'            bc_group = '/ESRCC/BC_GROUP8' db_tab = VALUE #( ( '/ESRCC/WFSWITCH' ) ) )
-                         ( tech_id = '/ESRCC/WFUSRG'              bc_group = '/ESRCC/BC_GROUP8' db_tab = VALUE #( ( '/ESRCC/WFUSRG' )
-                                                                                                                  ( '/ESRCC/WFUSRM' ) ) )
+  METHOD validate_validity.
+    set_state_area( state_area = CONV #( validity ) ).
+    set_first_flag( ).
 
-*                        GROUP 9
-                         ( tech_id = '/ESRCC/BILLINGFREQUENCY'    bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/BILLFREQ' ) ) )
-                         ( tech_id = '/ESRCC/EXECSTATUS'          bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/EXEC_ST' )
-                                                                                                                  ( '/ESRCC/EXECST_T' ) ) )
-                         ( tech_id = '/ESRCC/EXTCONFIG'           bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/EXTCONFIG' ) ) )
-                         ( tech_id = '/ESRCC/EXT_OBJ'             bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/EXT_OBJCT' )
-                                                                                                                  ( '/ESRCC/EXTOBJCTT' ) ) )
-                         ( tech_id = '/ESRCC/GROUPCONFIG'         bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/GROUP' ) ) )
-                         ( tech_id = '/ESRCC/SYSINFO'             bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/SYS_INFO' )
-                                                                                                                  ( '/ESRCC/SYS_INFOT' ) ) )
-                         ( tech_id = '/ESRCC/PACKAGECODE'         bc_group = '/ESRCC/BC_GROUP9' db_tab = VALUE #( ( '/ESRCC/PKG_CODE' )
-                                                                                                                  ( '/ESRCC/PKG_CODET' ) ) ) ).
+    IF from IS NOT INITIAL AND to IS NOT INITIAL AND from > to.
+      DATA(invalid) = abap_true.
+      gs_active_field-fieldname = 'VALIDTO'.
+    ELSE.
+      CLEAR gs_active_field.
+    ENDIF.
+
+    set_message_for_field(
+      EXPORTING
+        entity = entity
+        field  = gs_active_field
+        msg    = COND #( WHEN invalid = abap_true
+                         THEN NEW cl_abap_behv( )->new_message( id = c_config_msg number = '002' severity = cl_abap_behv=>ms-error ) ) ).
   ENDMETHOD.
 ENDCLASS.

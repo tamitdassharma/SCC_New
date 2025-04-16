@@ -6,6 +6,7 @@
     <DCLNAME>/ESRCC/C_CC_COST_WORKFLOW</DCLNAME>
     <DCLLANGUAGE>E</DCLLANGUAGE>
     <DDTEXT>Access Control for Cost Chargeout</DDTEXT>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DCLS>
   </asx:values>
  </asx:abap>

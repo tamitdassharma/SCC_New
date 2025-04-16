@@ -486,7 +486,7 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
     DATA(lo_auth) = NEW /esrcc/cl_authorization( paths = VALUE #( ( path = '_ServiceProduct' ) ( path = '_ServiceReceiver' ) ) ).
     IF keys[ 1 ]-%is_draft = if_abap_behv=>mk-on.
       LOOP AT keys INTO DATA(key).
-        DATA(entity) = VALUE #( entities[ %tky = key-%tky ] OPTIONAL ).
+        DATA(entity) = VALUE #( entities[ KEY draft %tky = key-%tky ] OPTIONAL ).
         lo_auth->set_authorization_for_instance(
           EXPORTING
             key                   = key
@@ -503,10 +503,10 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
                       LET submit   = lo_auth->regulate_action_submit( is_draft  = wa-%is_draft wf_status = wa-workflowstatus )
                           finalize = lo_auth->regulate_action_finalize( is_draft = wa-%is_draft wf_status = wa-workflowstatus )
                           reopen   = lo_auth->regulate_action_reopen( is_draft = wa-%is_draft wf_status = wa-workflowstatus )
-                          update   = COND #( WHEN VALUE #( auth_result[ %tky = wa-%tky ]-%update OPTIONAL ) = if_abap_behv=>fc-o-disabled
+                          update   = COND #( WHEN VALUE #( auth_result[ KEY draft %tky = wa-%tky ]-%update OPTIONAL ) = if_abap_behv=>fc-o-disabled
                                                 THEN if_abap_behv=>fc-o-disabled
                                              ELSE lo_auth->regulate_action_update( is_draft  = wa-%is_draft wf_status = wa-workflowstatus ) )
-                          delete   = COND #( WHEN VALUE #( auth_result[ %tky = wa-%tky ]-%delete OPTIONAL ) = if_abap_behv=>fc-o-disabled
+                          delete   = COND #( WHEN VALUE #( auth_result[ KEY draft %tky = wa-%tky ]-%delete OPTIONAL ) = if_abap_behv=>fc-o-disabled
                                                 THEN if_abap_behv=>fc-o-disabled
                                              ELSE lo_auth->regulate_action_delete( is_draft = wa-%is_draft wf_status = wa-workflowstatus ) )
                       IN ( %tky                    = wa-%tky
@@ -586,7 +586,7 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
                             ( %tky                      = entity-%tky
                               workflowid                = ''
                               commentid                 = COND #( WHEN entity-commentid IS INITIAL THEN cl_uuid_factory=>create_system_uuid( )->create_uuid_c32( ) ELSE entity-commentid )
-                              comments                  = VALUE #( keys[ %tky = entity-%tky ]-%param-comments OPTIONAL )
+                              comments                  = VALUE #( keys[ KEY draft %tky = entity-%tky ]-%param-comments OPTIONAL )
                               workflowstatus            = /esrcc/cl_wf_utility=>wf_status-in_process
                               workflowstatuscriticality = criticality
                               workflowinternalstatus    = /esrcc/cl_wf_utility=>wf_status-in_process ) )
@@ -824,11 +824,11 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
                                           OR %control-stewardship   = if_abap_behv=>mk-on
                                           OR %control-validto       = if_abap_behv=>mk-on.
       IF entity-%control-chainid = if_abap_behv=>mk-on AND entity-%control-chainsequence = if_abap_behv=>mk-off.
-        entity-chainsequence = stewardships[ %tky = entity-%tky ]-chainsequence.
+        entity-chainsequence = stewardships[ KEY draft %tky = entity-%tky ]-chainsequence.
       ENDIF.
 
       IF entity-%control-chainid = if_abap_behv=>mk-off AND entity-%control-chainsequence = if_abap_behv=>mk-on.
-        entity-chainid = stewardships[ %tky = entity-%tky ]-chainid.
+        entity-chainid = stewardships[ KEY draft %tky = entity-%tky ]-chainid.
       ENDIF.
 
       lo_validation->validate_stewardship(
@@ -978,6 +978,7 @@ CLASS lhc_/esrcc/i_stewrdshp IMPLEMENTATION.
       DATA(criticality) = /esrcc/cl_wf_utility=>wf_status_criticality( status = /esrcc/cl_wf_utility=>wf_status-failed ).
       LOOP AT failed_leading_objects INTO DATA(leading_object).
         MODIFY entities
+            USING KEY entity
             FROM VALUE #( workflowstatus = /esrcc/cl_wf_utility=>wf_status-failed
                           workflowstatuscriticality = criticality )
             TRANSPORTING workflowstatus workflowstatuscriticality
@@ -1208,7 +1209,7 @@ CLASS lhc_serviceproduct IMPLEMENTATION.
       ENDLOOP.
 
       " Validate dates overflow with Cost Object Type validity
-      DATA(stw) = VALUE #( stewardships[ stewardshipuuid = entity-stewardshipuuid ] OPTIONAL ).
+      DATA(stw) = VALUE #( stewardships[ KEY entity stewardshipuuid = entity-stewardshipuuid ] OPTIONAL ).
       IF     stw IS NOT INITIAL
          AND (    entity-validfrom NOT BETWEEN stw-validfrom AND stw-validto
                OR entity-validto NOT BETWEEN stw-validfrom AND stw-validto ).
@@ -1246,8 +1247,19 @@ CLASS lhc_serviceproduct IMPLEMENTATION.
         WHERE rec~draftentityoperationcode NOT IN ( 'D', 'L' )
         INTO TABLE @DATA(receivers).
 
+    READ ENTITIES OF /esrcc/i_stewrdshp_s IN LOCAL MODE
+        ENTITY Stewardship
+        BY \_ServiceProduct
+        ALL FIELDS WITH CORRESPONDING #( products )
+        RESULT DATA(all_products).
+
     LOOP AT products INTO DATA(product).
-      IF line_exists( receivers[ serviceproduct = product-serviceproduct ] ).
+      LOOP AT all_products TRANSPORTING NO FIELDS WHERE ServiceProduct = product-ServiceProduct AND ServiceProductUuid <> product-ServiceProductUuid.
+        DATA(product_exists) = abap_true.   " At least one product should exists to delete
+        EXIT.
+      ENDLOOP.
+
+      IF line_exists( receivers[ serviceproduct = product-serviceproduct ] ) AND product_exists = abap_false.
         lo_service_product->set_state_message(
               entity     = product
               msg        = new_message(
@@ -1258,6 +1270,8 @@ CLASS lhc_serviceproduct IMPLEMENTATION.
                            )
               state_area = CONV #( /esrcc/cl_config_util=>not_exists ) ).
       ENDIF.
+
+      CLEAR product_exists.
     ENDLOOP.
   ENDMETHOD.
 
@@ -1355,7 +1369,7 @@ CLASS lhc_servicereceiver IMPLEMENTATION.
       ).
 
       " Validate if provider and receiver are same
-      IF line_exists( stewardship[ stewardshipuuid = entity-stewardshipuuid costobjectuuid = entity-costobjectuuid ] ).
+      IF line_exists( stewardship[ KEY entity stewardshipuuid = entity-stewardshipuuid costobjectuuid = entity-costobjectuuid ] ).
         lo_config_util->set_state_message(
           entity     = entity
           msg        = new_message(

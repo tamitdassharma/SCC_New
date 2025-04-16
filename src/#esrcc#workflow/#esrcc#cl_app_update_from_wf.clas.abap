@@ -183,6 +183,35 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD update_co_rule_config.
+    DATA lr_rule_id TYPE RANGE OF /esrcc/chargeout_rule_id.
+
+    CHECK it_leading_data IS NOT INITIAL.
+    lr_rule_id = VALUE #( FOR rule IN it_leading_data ( sign = 'I' option = 'EQ' low = rule-rule_id ) ).
+
+    UPDATE /esrcc/co_rule SET workflow_id     = @iv_wi_id,
+                              workflow_status = @iv_status,
+                              last_changed_by = @iv_user
+*                            last_changed_at = @sy-timlo
+      WHERE rule_id IN @lr_rule_id.
+
+    IF sy-subrc = 0 AND iv_comment IS NOT INITIAL.
+      SELECT DISTINCT rule~comment_id AS comment_id
+        FROM /esrcc/co_rule AS rule
+        INNER JOIN @it_leading_data AS lobj
+          ON  lobj~rule_id = rule~rule_id
+        INTO TABLE @DATA(lt_comment).
+
+      LOOP AT lt_comment INTO DATA(ls_comment).
+        /esrcc/cl_comments_util=>modify_comments(
+          comments    = VALUE #( instanceid = ls_comment-comment_id worfklow_id = iv_wi_id created_by = iv_user last_changed_by = iv_user status = iv_status )
+          iv_comments = iv_comment
+        ).
+      ENDLOOP.
+    ENDIF.
+  ENDMETHOD.
+
+
   METHOD update_rec_cost.
 
     DATA ls_comment TYPE /esrcc/comments.
@@ -296,6 +325,37 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD update_service_markup_config.
+    DATA lt_markup TYPE TABLE OF /esrcc/srvmkp.
+
+    CHECK it_leading_data IS NOT INITIAL.
+
+    SELECT mkp~*
+      FROM /esrcc/srvmkp AS mkp
+      INNER JOIN @it_leading_data AS lobj
+        ON  lobj~serviceproduct = mkp~serviceproduct
+        AND lobj~valid_from     = mkp~validfrom
+      INTO CORRESPONDING FIELDS OF TABLE @lt_markup.
+
+    MODIFY lt_markup FROM VALUE #( workflow_id = iv_wi_id workflow_status = iv_status last_changed_by = iv_user )
+      TRANSPORTING workflow_id workflow_status last_changed_by
+      WHERE serviceproduct IS NOT INITIAL.
+
+    UPDATE /esrcc/srvmkp FROM TABLE @lt_markup.
+
+    IF sy-subrc = 0 AND iv_comment IS NOT INITIAL.
+      SORT lt_markup BY comment_id.
+      DELETE ADJACENT DUPLICATES FROM lt_markup COMPARING comment_id.
+      LOOP AT lt_markup INTO DATA(markup) GROUP BY ( comment_id = markup-comment_id ) INTO DATA(comment_id).
+        /esrcc/cl_comments_util=>modify_comments(
+          comments    = VALUE #( instanceid = comment_id-comment_id worfklow_id = iv_wi_id created_by = iv_user last_changed_by = iv_user status = iv_status )
+          iv_comments = iv_comment
+        ).
+      ENDLOOP.
+    ENDIF.
+  ENDMETHOD.
+
+
   METHOD update_srv_cost.
 
     DATA ls_comment TYPE /esrcc/comments.
@@ -397,35 +457,6 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD update_co_rule_config.
-    DATA lr_rule_id TYPE RANGE OF /esrcc/chargeout_rule_id.
-
-    CHECK it_leading_data IS NOT INITIAL.
-    lr_rule_id = VALUE #( FOR rule IN it_leading_data ( sign = 'I' option = 'EQ' low = rule-rule_id ) ).
-
-    UPDATE /esrcc/co_rule SET workflow_id     = @iv_wi_id,
-                              workflow_status = @iv_status,
-                              last_changed_by = @iv_user
-*                            last_changed_at = @sy-timlo
-      WHERE rule_id IN @lr_rule_id.
-
-    IF sy-subrc = 0 AND iv_comment IS NOT INITIAL.
-      SELECT DISTINCT rule~comment_id AS comment_id
-        FROM /esrcc/co_rule AS rule
-        INNER JOIN @it_leading_data AS lobj
-          ON  lobj~rule_id = rule~rule_id
-        INTO TABLE @DATA(lt_comment).
-
-      LOOP AT lt_comment INTO DATA(ls_comment).
-        /esrcc/cl_comments_util=>modify_comments(
-          comments    = VALUE #( instanceid = ls_comment-comment_id worfklow_id = iv_wi_id created_by = iv_user last_changed_by = iv_user status = iv_status )
-          iv_comments = iv_comment
-        ).
-      ENDLOOP.
-    ENDIF.
-  ENDMETHOD.
-
-
   METHOD update_stewardship_config.
     DATA lr_stewardship_uuid TYPE RANGE OF sysuuid_x16.
 
@@ -448,37 +479,6 @@ CLASS /ESRCC/CL_APP_UPDATE_FROM_WF IMPLEMENTATION.
       LOOP AT lt_comment INTO DATA(ls_comment).
         /esrcc/cl_comments_util=>modify_comments(
           comments    = VALUE #( instanceid = ls_comment-comment_id worfklow_id = iv_wi_id created_by = iv_user last_changed_by = iv_user status = iv_status )
-          iv_comments = iv_comment
-        ).
-      ENDLOOP.
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD update_service_markup_config.
-    DATA lt_markup TYPE TABLE OF /esrcc/srvmkp.
-
-    CHECK it_leading_data IS NOT INITIAL.
-
-    SELECT mkp~*
-      FROM /esrcc/srvmkp AS mkp
-      INNER JOIN @it_leading_data AS lobj
-        ON  lobj~serviceproduct = mkp~serviceproduct
-        AND lobj~valid_from     = mkp~validfrom
-      INTO CORRESPONDING FIELDS OF TABLE @lt_markup.
-
-    MODIFY lt_markup FROM VALUE #( workflow_id = iv_wi_id workflow_status = iv_status last_changed_by = iv_user )
-      TRANSPORTING workflow_id workflow_status last_changed_by
-      WHERE serviceproduct IS NOT INITIAL.
-
-    UPDATE /esrcc/srvmkp FROM TABLE @lt_markup.
-
-    IF sy-subrc = 0 AND iv_comment IS NOT INITIAL.
-      SORT lt_markup BY comment_id.
-      DELETE ADJACENT DUPLICATES FROM lt_markup COMPARING comment_id.
-      LOOP AT lt_markup INTO DATA(markup) GROUP BY ( comment_id = markup-comment_id ) INTO DATA(comment_id).
-        /esrcc/cl_comments_util=>modify_comments(
-          comments    = VALUE #( instanceid = comment_id-comment_id worfklow_id = iv_wi_id created_by = iv_user last_changed_by = iv_user status = iv_status )
           iv_comments = iv_comment
         ).
       ENDLOOP.

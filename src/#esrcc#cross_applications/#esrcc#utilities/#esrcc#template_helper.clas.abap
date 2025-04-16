@@ -102,6 +102,23 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD _extract_table_components.
+    DATA:
+      structure_descriptor TYPE REF TO cl_abap_typedescr.
+
+    cl_abap_structdescr=>describe_by_name( EXPORTING  p_name         = table_name
+                                           RECEIVING  p_descr_ref    = structure_descriptor
+                                           EXCEPTIONS type_not_found = 1
+                                                      OTHERS         = 2 ).
+    IF sy-subrc <> 0.
+      RETURN.
+    ENDIF.
+
+    components = CAST cl_abap_structdescr( structure_descriptor )->get_components( ).
+    DELETE components WHERE name IS INITIAL.
+  ENDMETHOD.
+
+
   METHOD _register_tables_metadata.
     TYPES:
       tables_metadata_type TYPE STANDARD TABLE OF /esrcc/if_template_helper~table_metadata WITH EMPTY KEY.
@@ -189,6 +206,103 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
                                                   parents = VALUE #( ( ) )
                                                   method  = '_UPLOAD_SERVICE_MARKUP' ) )
            TO tables_metadata.
+  ENDMETHOD.
+
+
+  METHOD _upload_alloc_keys_weight.
+    TYPES:
+      alloc_keyw_wgt_db_type TYPE STANDARD TABLE OF /esrcc/aloc_wgt WITH DEFAULT KEY.
+
+    DATA:
+      line                   TYPE /esrcc/alcwgttmp,
+      alloc_key_wgt_template TYPE STANDARD TABLE OF /esrcc/alcwgttmp WITH DEFAULT KEY.
+
+    FIELD-SYMBOLS:
+      <excel_structured_data> TYPE STANDARD TABLE,
+      <row>                   TYPE any.
+
+    ASSIGN _excel_structured_data->* TO <excel_structured_data>.
+
+    " TODO: variable is assigned but never used (ABAP cleaner)
+    DATA(row_index) = 1.
+    LOOP AT <excel_structured_data> ASSIGNING <row> FROM 2.
+      row_index += 1.
+
+      DATA(column_index) = 0.
+      DO.
+        column_index += 1.
+
+        ASSIGN COMPONENT column_index OF STRUCTURE <row> TO FIELD-SYMBOL(<sheet_cell_value>).
+        IF <sheet_cell_value> IS NOT ASSIGNED.
+          EXIT.
+        ENDIF.
+
+        ASSIGN COMPONENT column_index + 1 OF STRUCTURE line TO FIELD-SYMBOL(<line_cell_value>).
+        IF <line_cell_value> IS NOT ASSIGNED.
+          UNASSIGN:
+             <sheet_cell_value>,
+             <line_cell_value>.
+          CONTINUE.
+        ENDIF.
+
+        <line_cell_value> = <sheet_cell_value>.
+
+        UNASSIGN:
+              <sheet_cell_value>,
+              <line_cell_value>.
+      ENDDO.
+      APPEND line TO alloc_key_wgt_template.
+    ENDLOOP.
+
+    IF lines( alloc_key_wgt_template ) = 0.
+      RETURN.
+    ENDIF.
+
+    SELECT
+      FROM /esrcc/co_rule AS rule
+             LEFT JOIN
+               /esrcc/aloc_wgt AS weightage ON weightage~rule_id = rule~rule_id
+                 INNER JOIN
+                   @alloc_key_wgt_template AS template ON  rule~rule_id             = template~rule_id
+                                                       AND weightage~allocation_key = template~allocation_key
+      FIELDS rule~rule_id,
+             weightage~allocation_key,
+             rule~workflow_status,
+             weightage~created_by,
+             weightage~created_at
+      INTO TABLE @FINAL(weightages).
+
+    SELECT
+      FROM /esrcc/co_rule AS rule
+             INNER JOIN
+               @alloc_key_wgt_template AS template ON rule~rule_id = template~rule_id
+      FIELDS DISTINCT rule~rule_id,
+                      rule~workflow_status
+      INTO TABLE @FINAL(rules).
+
+    /esrcc/cl_utility_core=>get_utc_date_time_ts( IMPORTING time_stamp = FINAL(timestamp) ).
+
+    DATA(weightage_db) = VALUE alloc_keyw_wgt_db_type(
+        FOR <weightage> IN alloc_key_wgt_template
+        LET weightage = VALUE #( weightages[ rule_id        = <weightage>-rule_id
+                                             allocation_key = <weightage>-allocation_key ] OPTIONAL )
+            rule      = VALUE #( rules[ rule_id = <weightage>-rule_id ] OPTIONAL ) IN
+        ( VALUE #( BASE CORRESPONDING #( <weightage> )
+                   client          = COND #( WHEN rule-workflow_status = 'A' THEN sy-mandt )
+                   created_by      = COND #( WHEN weightage-created_by IS INITIAL
+                                             THEN cl_abap_context_info=>get_user_technical_name( )
+                                             ELSE weightage-created_by )
+                   created_at      = COND #( WHEN weightage-created_at IS INITIAL
+                                             THEN timestamp
+                                             ELSE weightage-created_at )
+                   last_changed_by = cl_abap_context_info=>get_user_technical_name( )
+                   last_changed_at = timestamp                                     ) ) ).
+
+    DELETE weightage_db WHERE client IS INITIAL OR rule_id IS INITIAL OR allocation_key IS INITIAL.
+    MODIFY /esrcc/aloc_wgt FROM TABLE @weightage_db.
+    IF sy-subrc = 0.
+      records = sy-dbcnt.
+    ENDIF.
   ENDMETHOD.
 
 
@@ -304,6 +418,170 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
       CATCH cx_uuid_error.
         " handle exception
     ENDTRY.
+  ENDMETHOD.
+
+
+  METHOD _upload_charge_out_rule.
+    TYPES:
+      co_rule_db_type TYPE STANDARD TABLE OF /esrcc/co_rule WITH DEFAULT KEY.
+
+    DATA:
+      line             TYPE /esrcc/coruletmp,
+      co_rule_template TYPE STANDARD TABLE OF /esrcc/coruletmp WITH DEFAULT KEY.
+
+    FIELD-SYMBOLS:
+      <excel_structured_data> TYPE STANDARD TABLE,
+      <row>                   TYPE any.
+
+    ASSIGN _excel_structured_data->* TO <excel_structured_data>.
+
+    " TODO: variable is assigned but never used (ABAP cleaner)
+    DATA(row_index) = 1.
+    LOOP AT <excel_structured_data> ASSIGNING <row> FROM 2.
+      row_index += 1.
+
+      DATA(column_index) = 0.
+      DO.
+        column_index += 1.
+
+        ASSIGN COMPONENT column_index OF STRUCTURE <row> TO FIELD-SYMBOL(<sheet_cell_value>).
+        IF <sheet_cell_value> IS NOT ASSIGNED.
+          EXIT.
+        ENDIF.
+
+        ASSIGN COMPONENT column_index + 1 OF STRUCTURE line TO FIELD-SYMBOL(<line_cell_value>).
+        IF <line_cell_value> IS NOT ASSIGNED.
+          UNASSIGN:
+             <sheet_cell_value>,
+             <line_cell_value>.
+          CONTINUE.
+        ENDIF.
+
+        <line_cell_value> = <sheet_cell_value>.
+
+        UNASSIGN:
+              <sheet_cell_value>,
+              <line_cell_value>.
+      ENDDO.
+      APPEND line TO co_rule_template.
+    ENDLOOP.
+
+    IF lines( co_rule_template ) = 0.
+      RETURN.
+    ENDIF.
+
+    SELECT
+      FROM /esrcc/co_rule AS charge_out_rule
+             INNER JOIN
+               @co_rule_template AS template ON template~rule_id = charge_out_rule~rule_id
+      FIELDS charge_out_rule~rule_id,
+             charge_out_rule~workflow_status,
+             created_by,
+             created_at
+      INTO TABLE @FINAL(co_rules).
+
+    /esrcc/cl_utility_core=>get_utc_date_time_ts( IMPORTING time_stamp = FINAL(timestamp) ).
+
+    DATA(co_rule_db) = VALUE co_rule_db_type(
+        FOR <co_rule> IN co_rule_template
+        LET co_rule = VALUE #( co_rules[ rule_id = <co_rule>-rule_id ] OPTIONAL ) IN
+        ( VALUE #( BASE CORRESPONDING #( <co_rule> )
+                   client          = COND #( WHEN co_rule-workflow_status = 'A' THEN sy-mandt )
+                   rule_id         = COND #( WHEN co_rule-rule_id IS INITIAL
+                                             THEN <co_rule>-rule_id
+                                             ELSE co_rule-rule_id )
+                   workflow_status = COND #( WHEN co_rule-workflow_status IS INITIAL
+                                             THEN 'A'
+                                             ELSE co_rule-workflow_status )
+                   created_by      = COND #( WHEN co_rule-created_by IS INITIAL
+                                             THEN cl_abap_context_info=>get_user_technical_name( )
+                                             ELSE co_rule-created_by )
+                   created_at      = COND #( WHEN co_rule-created_at IS INITIAL
+                                             THEN timestamp
+                                             ELSE co_rule-created_at )
+                   last_changed_by = cl_abap_context_info=>get_user_technical_name( )
+                   last_changed_at = timestamp                                           ) ) ).
+
+    DELETE co_rule_db WHERE workflow_status <> 'A'.
+    MODIFY /esrcc/co_rule FROM TABLE @co_rule_db.
+    IF sy-subrc = 0.
+      records = sy-dbcnt.
+    ENDIF.
+  ENDMETHOD.
+
+
+  METHOD _upload_charge_out_rule_desc.
+    TYPES:
+      co_rule_desc_db_type TYPE STANDARD TABLE OF /esrcc/co_rulet WITH DEFAULT KEY.
+
+    DATA:
+      line                  TYPE /esrcc/corulttmp,
+      co_rule_desc_template TYPE STANDARD TABLE OF /esrcc/corulttmp WITH DEFAULT KEY.
+
+    FIELD-SYMBOLS:
+      <excel_structured_data> TYPE STANDARD TABLE,
+      <row>                   TYPE any.
+
+    ASSIGN _excel_structured_data->* TO <excel_structured_data>.
+
+    " TODO: variable is assigned but never used (ABAP cleaner)
+    DATA(row_index) = 1.
+    LOOP AT <excel_structured_data> ASSIGNING <row> FROM 2.
+      row_index += 1.
+
+      DATA(column_index) = 0.
+      DO.
+        column_index += 1.
+
+        ASSIGN COMPONENT column_index OF STRUCTURE <row> TO FIELD-SYMBOL(<sheet_cell_value>).
+        IF <sheet_cell_value> IS NOT ASSIGNED.
+          EXIT.
+        ENDIF.
+
+        ASSIGN COMPONENT column_index + 1 OF STRUCTURE line TO FIELD-SYMBOL(<line_cell_value>).
+        IF <line_cell_value> IS NOT ASSIGNED.
+          UNASSIGN:
+             <sheet_cell_value>,
+             <line_cell_value>.
+          CONTINUE.
+        ENDIF.
+
+        <line_cell_value> = <sheet_cell_value>.
+
+        UNASSIGN:
+              <sheet_cell_value>,
+              <line_cell_value>.
+      ENDDO.
+      APPEND line TO co_rule_desc_template.
+    ENDLOOP.
+
+    IF lines( co_rule_desc_template ) = 0.
+      RETURN.
+    ENDIF.
+
+    SELECT
+      FROM /esrcc/co_rule AS rule " ON description~rule_id = rule~rule_id
+             INNER JOIN
+               @co_rule_desc_template AS template ON rule~rule_id = template~rule_id
+      FIELDS DISTINCT rule~rule_id,
+                      workflow_status
+*             description~spras
+      INTO TABLE @FINAL(descriptions).
+
+    DATA(co_rule_desc_db) = VALUE co_rule_desc_db_type(
+        FOR <co_rule_desc> IN co_rule_desc_template
+        LET co_rule_desc = VALUE #( descriptions[ rule_id = <co_rule_desc>-rule_id ] OPTIONAL ) IN
+        ( VALUE #( BASE CORRESPONDING #( <co_rule_desc> )
+                   client  = COND #( WHEN co_rule_desc-workflow_status = 'A' THEN sy-mandt )
+                   rule_id = COND #( WHEN co_rule_desc-rule_id IS INITIAL
+                                     THEN <co_rule_desc>-rule_id
+                                     ELSE co_rule_desc-rule_id )  ) ) ).
+
+    DELETE co_rule_desc_db WHERE client IS INITIAL.
+    MODIFY /esrcc/co_rulet FROM TABLE @co_rule_desc_db.
+    IF sy-subrc = 0.
+      records = sy-dbcnt.
+    ENDIF.
   ENDMETHOD.
 
 
@@ -1459,6 +1737,115 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD _upload_service_markup.
+    TYPES:
+      service_markup_type TYPE STANDARD TABLE OF /esrcc/srvmkp WITH DEFAULT KEY.
+
+    DATA:
+      line                    TYPE /esrcc/srvmkptmp,
+      service_markup_template TYPE STANDARD TABLE OF /esrcc/srvmkptmp WITH DEFAULT KEY.
+
+    FIELD-SYMBOLS:
+      <excel_structured_data> TYPE STANDARD TABLE,
+      <row>                   TYPE any.
+
+    ASSIGN _excel_structured_data->* TO <excel_structured_data>.
+
+    FINAL(components) = _extract_table_components( '/ESRCC/SRVMKPTMP' ).
+
+    " TODO: variable is assigned but never used (ABAP cleaner)
+    DATA(row_index) = 1.
+    LOOP AT <excel_structured_data> ASSIGNING <row> FROM 2.
+      row_index += 1.
+
+      DATA(column_index) = 0.
+      DO.
+        column_index += 1.
+
+        ASSIGN COMPONENT column_index OF STRUCTURE <row> TO FIELD-SYMBOL(<sheet_cell_value>).
+        IF <sheet_cell_value> IS NOT ASSIGNED.
+          EXIT.
+        ENDIF.
+
+        ASSIGN COMPONENT column_index + 1 OF STRUCTURE line TO FIELD-SYMBOL(<line_cell_value>).
+        IF <line_cell_value> IS NOT ASSIGNED.
+          UNASSIGN:
+             <sheet_cell_value>,
+             <line_cell_value>.
+          CONTINUE.
+        ENDIF.
+
+        TRY.
+            FINAL(component) = VALUE #( components[ column_index + 1 ] OPTIONAL ).
+            DATA(text) = VALUE string( ).
+            FINAL(dec_notation) = VALUE xsdboolean( ).
+            FINAL(date_frmt) = VALUE xsdboolean( ).
+            CALL BADI _enrichment_exit->convert_standard_data_type
+              EXPORTING component        = component
+                        decimal_notation = dec_notation
+                        date_format      = date_frmt
+              CHANGING  cell_value       = <sheet_cell_value>
+                        message          = text.
+            IF text IS NOT INITIAL.
+              CLEAR: line.
+              EXIT.
+            ENDIF.
+          CATCH cx_root INTO FINAL(exception). " TODO: variable is assigned but never used (ABAP cleaner)
+        ENDTRY.
+
+        <line_cell_value> = <sheet_cell_value>.
+
+        UNASSIGN:
+              <sheet_cell_value>,
+              <line_cell_value>.
+      ENDDO.
+      APPEND line TO service_markup_template.
+    ENDLOOP.
+
+    IF lines( service_markup_template ) = 0.
+      RETURN.
+    ENDIF.
+
+    SELECT
+      FROM /esrcc/srvmkp AS service_markup
+             INNER JOIN
+               @service_markup_template AS template ON  template~serviceproduct = service_markup~serviceproduct
+                                                    AND template~validfrom      = service_markup~validfrom
+      FIELDS service_markup~serviceproduct,
+             service_markup~validfrom,
+             workflow_status,
+             created_by,
+             created_at
+      INTO TABLE @FINAL(service_markups).
+
+    /esrcc/cl_utility_core=>get_utc_date_time_ts( IMPORTING time_stamp = FINAL(timestamp) ).
+
+    DATA(markup_db) = VALUE service_markup_type(
+        FOR <markup> IN service_markup_template
+        LET markup = VALUE #( service_markups[ serviceproduct = <markup>-serviceproduct
+                                               validfrom      = <markup>-validfrom ] OPTIONAL ) IN
+        ( VALUE #( BASE CORRESPONDING #( <markup> )
+                   client          = sy-mandt
+                   workflow_status = COND #( WHEN markup-workflow_status IS INITIAL OR markup-workflow_status = 'A'
+                                             THEN 'A'
+                                             ELSE markup-workflow_status )
+                   created_by      = COND #( WHEN markup-created_by IS INITIAL
+                                             THEN cl_abap_context_info=>get_user_technical_name( )
+                                             ELSE markup-created_by )
+                   created_at      = COND #( WHEN markup-created_at IS INITIAL
+                                             THEN timestamp
+                                             ELSE markup-created_at )
+                   last_changed_by = cl_abap_context_info=>get_user_technical_name( )
+                   last_changed_at = timestamp                                     ) ) ).
+
+    DELETE markup_db WHERE workflow_status <> 'A'.
+    MODIFY /esrcc/srvmkp FROM TABLE @markup_db.
+    IF sy-subrc = 0.
+      records = sy-dbcnt.
+    ENDIF.
+  ENDMETHOD.
+
+
   METHOD _upload_stewardship.
     TYPES:
       stewardship_db_type TYPE STANDARD TABLE OF /esrcc/stewrdshp WITH DEFAULT KEY.
@@ -2010,393 +2397,6 @@ CLASS /ESRCC/TEMPLATE_HELPER IMPLEMENTATION.
 
     DELETE receiver_db WHERE stewardship_uuid IS INITIAL OR service_product IS INITIAL OR cost_object_uuid IS INITIAL OR client IS INITIAL.
     MODIFY /esrcc/stwdsprec FROM TABLE @receiver_db.
-    IF sy-subrc = 0.
-      records = sy-dbcnt.
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD _extract_table_components.
-    DATA:
-      structure_descriptor TYPE REF TO cl_abap_typedescr.
-
-    cl_abap_structdescr=>describe_by_name( EXPORTING  p_name         = table_name
-                                           RECEIVING  p_descr_ref    = structure_descriptor
-                                           EXCEPTIONS type_not_found = 1
-                                                      OTHERS         = 2 ).
-    IF sy-subrc <> 0.
-      RETURN.
-    ENDIF.
-
-    components = CAST cl_abap_structdescr( structure_descriptor )->get_components( ).
-    DELETE components WHERE name IS INITIAL.
-  ENDMETHOD.
-
-
-  METHOD _upload_alloc_keys_weight.
-    TYPES:
-      alloc_keyw_wgt_db_type TYPE STANDARD TABLE OF /esrcc/aloc_wgt WITH DEFAULT KEY.
-
-    DATA:
-      line                   TYPE /esrcc/alcwgttmp,
-      alloc_key_wgt_template TYPE STANDARD TABLE OF /esrcc/alcwgttmp WITH DEFAULT KEY.
-
-    FIELD-SYMBOLS:
-      <excel_structured_data> TYPE STANDARD TABLE,
-      <row>                   TYPE any.
-
-    ASSIGN _excel_structured_data->* TO <excel_structured_data>.
-
-    " TODO: variable is assigned but never used (ABAP cleaner)
-    DATA(row_index) = 1.
-    LOOP AT <excel_structured_data> ASSIGNING <row> FROM 2.
-      row_index += 1.
-
-      DATA(column_index) = 0.
-      DO.
-        column_index += 1.
-
-        ASSIGN COMPONENT column_index OF STRUCTURE <row> TO FIELD-SYMBOL(<sheet_cell_value>).
-        IF <sheet_cell_value> IS NOT ASSIGNED.
-          EXIT.
-        ENDIF.
-
-        ASSIGN COMPONENT column_index + 1 OF STRUCTURE line TO FIELD-SYMBOL(<line_cell_value>).
-        IF <line_cell_value> IS NOT ASSIGNED.
-          UNASSIGN:
-             <sheet_cell_value>,
-             <line_cell_value>.
-          CONTINUE.
-        ENDIF.
-
-        <line_cell_value> = <sheet_cell_value>.
-
-        UNASSIGN:
-              <sheet_cell_value>,
-              <line_cell_value>.
-      ENDDO.
-      APPEND line TO alloc_key_wgt_template.
-    ENDLOOP.
-
-    IF lines( alloc_key_wgt_template ) = 0.
-      RETURN.
-    ENDIF.
-
-    SELECT
-      FROM /esrcc/co_rule AS rule
-             LEFT JOIN
-               /esrcc/aloc_wgt AS weightage ON weightage~rule_id = rule~rule_id
-                 INNER JOIN
-                   @alloc_key_wgt_template AS template ON  rule~rule_id             = template~rule_id
-                                                       AND weightage~allocation_key = template~allocation_key
-      FIELDS rule~rule_id,
-             weightage~allocation_key,
-             rule~workflow_status,
-             weightage~created_by,
-             weightage~created_at
-      INTO TABLE @FINAL(weightages).
-
-    SELECT
-      FROM /esrcc/co_rule AS rule
-             INNER JOIN
-               @alloc_key_wgt_template AS template ON rule~rule_id = template~rule_id
-      FIELDS DISTINCT rule~rule_id,
-                      rule~workflow_status
-      INTO TABLE @FINAL(rules).
-
-    /esrcc/cl_utility_core=>get_utc_date_time_ts( IMPORTING time_stamp = FINAL(timestamp) ).
-
-    DATA(weightage_db) = VALUE alloc_keyw_wgt_db_type(
-        FOR <weightage> IN alloc_key_wgt_template
-        LET weightage = VALUE #( weightages[ rule_id        = <weightage>-rule_id
-                                             allocation_key = <weightage>-allocation_key ] OPTIONAL )
-            rule      = VALUE #( rules[ rule_id = <weightage>-rule_id ] OPTIONAL ) IN
-        ( VALUE #( BASE CORRESPONDING #( <weightage> )
-                   client          = COND #( WHEN rule-workflow_status = 'A' THEN sy-mandt )
-                   created_by      = COND #( WHEN weightage-created_by IS INITIAL
-                                             THEN cl_abap_context_info=>get_user_technical_name( )
-                                             ELSE weightage-created_by )
-                   created_at      = COND #( WHEN weightage-created_at IS INITIAL
-                                             THEN timestamp
-                                             ELSE weightage-created_at )
-                   last_changed_by = cl_abap_context_info=>get_user_technical_name( )
-                   last_changed_at = timestamp                                     ) ) ).
-
-    DELETE weightage_db WHERE client IS INITIAL OR rule_id IS INITIAL OR allocation_key IS INITIAL.
-    MODIFY /esrcc/aloc_wgt FROM TABLE @weightage_db.
-    IF sy-subrc = 0.
-      records = sy-dbcnt.
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD _upload_charge_out_rule.
-    TYPES:
-      co_rule_db_type TYPE STANDARD TABLE OF /esrcc/co_rule WITH DEFAULT KEY.
-
-    DATA:
-      line             TYPE /esrcc/coruletmp,
-      co_rule_template TYPE STANDARD TABLE OF /esrcc/coruletmp WITH DEFAULT KEY.
-
-    FIELD-SYMBOLS:
-      <excel_structured_data> TYPE STANDARD TABLE,
-      <row>                   TYPE any.
-
-    ASSIGN _excel_structured_data->* TO <excel_structured_data>.
-
-    " TODO: variable is assigned but never used (ABAP cleaner)
-    DATA(row_index) = 1.
-    LOOP AT <excel_structured_data> ASSIGNING <row> FROM 2.
-      row_index += 1.
-
-      DATA(column_index) = 0.
-      DO.
-        column_index += 1.
-
-        ASSIGN COMPONENT column_index OF STRUCTURE <row> TO FIELD-SYMBOL(<sheet_cell_value>).
-        IF <sheet_cell_value> IS NOT ASSIGNED.
-          EXIT.
-        ENDIF.
-
-        ASSIGN COMPONENT column_index + 1 OF STRUCTURE line TO FIELD-SYMBOL(<line_cell_value>).
-        IF <line_cell_value> IS NOT ASSIGNED.
-          UNASSIGN:
-             <sheet_cell_value>,
-             <line_cell_value>.
-          CONTINUE.
-        ENDIF.
-
-        <line_cell_value> = <sheet_cell_value>.
-
-        UNASSIGN:
-              <sheet_cell_value>,
-              <line_cell_value>.
-      ENDDO.
-      APPEND line TO co_rule_template.
-    ENDLOOP.
-
-    IF lines( co_rule_template ) = 0.
-      RETURN.
-    ENDIF.
-
-    SELECT
-      FROM /esrcc/co_rule AS charge_out_rule
-             INNER JOIN
-               @co_rule_template AS template ON template~rule_id = charge_out_rule~rule_id
-      FIELDS charge_out_rule~rule_id,
-             charge_out_rule~workflow_status,
-             created_by,
-             created_at
-      INTO TABLE @FINAL(co_rules).
-
-    /esrcc/cl_utility_core=>get_utc_date_time_ts( IMPORTING time_stamp = FINAL(timestamp) ).
-
-    DATA(co_rule_db) = VALUE co_rule_db_type(
-        FOR <co_rule> IN co_rule_template
-        LET co_rule = VALUE #( co_rules[ rule_id = <co_rule>-rule_id ] OPTIONAL ) IN
-        ( VALUE #( BASE CORRESPONDING #( <co_rule> )
-                   client          = COND #( WHEN co_rule-workflow_status = 'A' THEN sy-mandt )
-                   rule_id         = COND #( WHEN co_rule-rule_id IS INITIAL
-                                             THEN <co_rule>-rule_id
-                                             ELSE co_rule-rule_id )
-                   workflow_status = COND #( WHEN co_rule-workflow_status IS INITIAL
-                                             THEN 'A'
-                                             ELSE co_rule-workflow_status )
-                   created_by      = COND #( WHEN co_rule-created_by IS INITIAL
-                                             THEN cl_abap_context_info=>get_user_technical_name( )
-                                             ELSE co_rule-created_by )
-                   created_at      = COND #( WHEN co_rule-created_at IS INITIAL
-                                             THEN timestamp
-                                             ELSE co_rule-created_at )
-                   last_changed_by = cl_abap_context_info=>get_user_technical_name( )
-                   last_changed_at = timestamp                                           ) ) ).
-
-    DELETE co_rule_db WHERE workflow_status <> 'A'.
-    MODIFY /esrcc/co_rule FROM TABLE @co_rule_db.
-    IF sy-subrc = 0.
-      records = sy-dbcnt.
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD _upload_charge_out_rule_desc.
-    TYPES:
-      co_rule_desc_db_type TYPE STANDARD TABLE OF /esrcc/co_rulet WITH DEFAULT KEY.
-
-    DATA:
-      line                  TYPE /esrcc/corulttmp,
-      co_rule_desc_template TYPE STANDARD TABLE OF /esrcc/corulttmp WITH DEFAULT KEY.
-
-    FIELD-SYMBOLS:
-      <excel_structured_data> TYPE STANDARD TABLE,
-      <row>                   TYPE any.
-
-    ASSIGN _excel_structured_data->* TO <excel_structured_data>.
-
-    " TODO: variable is assigned but never used (ABAP cleaner)
-    DATA(row_index) = 1.
-    LOOP AT <excel_structured_data> ASSIGNING <row> FROM 2.
-      row_index += 1.
-
-      DATA(column_index) = 0.
-      DO.
-        column_index += 1.
-
-        ASSIGN COMPONENT column_index OF STRUCTURE <row> TO FIELD-SYMBOL(<sheet_cell_value>).
-        IF <sheet_cell_value> IS NOT ASSIGNED.
-          EXIT.
-        ENDIF.
-
-        ASSIGN COMPONENT column_index + 1 OF STRUCTURE line TO FIELD-SYMBOL(<line_cell_value>).
-        IF <line_cell_value> IS NOT ASSIGNED.
-          UNASSIGN:
-             <sheet_cell_value>,
-             <line_cell_value>.
-          CONTINUE.
-        ENDIF.
-
-        <line_cell_value> = <sheet_cell_value>.
-
-        UNASSIGN:
-              <sheet_cell_value>,
-              <line_cell_value>.
-      ENDDO.
-      APPEND line TO co_rule_desc_template.
-    ENDLOOP.
-
-    IF lines( co_rule_desc_template ) = 0.
-      RETURN.
-    ENDIF.
-
-    SELECT
-      FROM /esrcc/co_rule AS rule " ON description~rule_id = rule~rule_id
-             INNER JOIN
-               @co_rule_desc_template AS template ON rule~rule_id = template~rule_id
-      FIELDS DISTINCT rule~rule_id,
-                      workflow_status
-*             description~spras
-      INTO TABLE @FINAL(descriptions).
-
-    DATA(co_rule_desc_db) = VALUE co_rule_desc_db_type(
-        FOR <co_rule_desc> IN co_rule_desc_template
-        LET co_rule_desc = VALUE #( descriptions[ rule_id = <co_rule_desc>-rule_id ] OPTIONAL ) IN
-        ( VALUE #( BASE CORRESPONDING #( <co_rule_desc> )
-                   client  = COND #( WHEN co_rule_desc-workflow_status = 'A' THEN sy-mandt )
-                   rule_id = COND #( WHEN co_rule_desc-rule_id IS INITIAL
-                                     THEN <co_rule_desc>-rule_id
-                                     ELSE co_rule_desc-rule_id )  ) ) ).
-
-    DELETE co_rule_desc_db WHERE client IS INITIAL.
-    MODIFY /esrcc/co_rulet FROM TABLE @co_rule_desc_db.
-    IF sy-subrc = 0.
-      records = sy-dbcnt.
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD _upload_service_markup.
-    TYPES:
-      service_markup_type TYPE STANDARD TABLE OF /esrcc/srvmkp WITH DEFAULT KEY.
-
-    DATA:
-      line                    TYPE /esrcc/srvmkptmp,
-      service_markup_template TYPE STANDARD TABLE OF /esrcc/srvmkptmp WITH DEFAULT KEY.
-
-    FIELD-SYMBOLS:
-      <excel_structured_data> TYPE STANDARD TABLE,
-      <row>                   TYPE any.
-
-    ASSIGN _excel_structured_data->* TO <excel_structured_data>.
-
-    FINAL(components) = _extract_table_components( '/ESRCC/SRVMKPTMP' ).
-
-    " TODO: variable is assigned but never used (ABAP cleaner)
-    DATA(row_index) = 1.
-    LOOP AT <excel_structured_data> ASSIGNING <row> FROM 2.
-      row_index += 1.
-
-      DATA(column_index) = 0.
-      DO.
-        column_index += 1.
-
-        ASSIGN COMPONENT column_index OF STRUCTURE <row> TO FIELD-SYMBOL(<sheet_cell_value>).
-        IF <sheet_cell_value> IS NOT ASSIGNED.
-          EXIT.
-        ENDIF.
-
-        ASSIGN COMPONENT column_index + 1 OF STRUCTURE line TO FIELD-SYMBOL(<line_cell_value>).
-        IF <line_cell_value> IS NOT ASSIGNED.
-          UNASSIGN:
-             <sheet_cell_value>,
-             <line_cell_value>.
-          CONTINUE.
-        ENDIF.
-
-        TRY.
-            FINAL(component) = VALUE #( components[ column_index + 1 ] OPTIONAL ).
-            DATA(text) = VALUE string( ).
-            FINAL(dec_notation) = VALUE xsdboolean( ).
-            FINAL(date_frmt) = VALUE xsdboolean( ).
-            CALL BADI _enrichment_exit->convert_standard_data_type
-              EXPORTING component        = component
-                        decimal_notation = dec_notation
-                        date_format      = date_frmt
-              CHANGING  cell_value       = <sheet_cell_value>
-                        message          = text.
-            IF text IS NOT INITIAL.
-              CLEAR: line.
-              EXIT.
-            ENDIF.
-          CATCH cx_root INTO FINAL(exception). " TODO: variable is assigned but never used (ABAP cleaner)
-        ENDTRY.
-
-        <line_cell_value> = <sheet_cell_value>.
-
-        UNASSIGN:
-              <sheet_cell_value>,
-              <line_cell_value>.
-      ENDDO.
-      APPEND line TO service_markup_template.
-    ENDLOOP.
-
-    IF lines( service_markup_template ) = 0.
-      RETURN.
-    ENDIF.
-
-    SELECT
-      FROM /esrcc/srvmkp AS service_markup
-             INNER JOIN
-               @service_markup_template AS template ON  template~serviceproduct = service_markup~serviceproduct
-                                                    AND template~validfrom      = service_markup~validfrom
-      FIELDS service_markup~serviceproduct,
-             service_markup~validfrom,
-             workflow_status,
-             created_by,
-             created_at
-      INTO TABLE @FINAL(service_markups).
-
-    /esrcc/cl_utility_core=>get_utc_date_time_ts( IMPORTING time_stamp = FINAL(timestamp) ).
-
-    DATA(markup_db) = VALUE service_markup_type(
-        FOR <markup> IN service_markup_template
-        LET markup = VALUE #( service_markups[ serviceproduct = <markup>-serviceproduct
-                                               validfrom      = <markup>-validfrom ] OPTIONAL ) IN
-        ( VALUE #( BASE CORRESPONDING #( <markup> )
-                   client          = sy-mandt
-                   workflow_status = COND #( WHEN markup-workflow_status IS INITIAL OR markup-workflow_status = 'A'
-                                             THEN 'A'
-                                             ELSE markup-workflow_status )
-                   created_by      = COND #( WHEN markup-created_by IS INITIAL
-                                             THEN cl_abap_context_info=>get_user_technical_name( )
-                                             ELSE markup-created_by )
-                   created_at      = COND #( WHEN markup-created_at IS INITIAL
-                                             THEN timestamp
-                                             ELSE markup-created_at )
-                   last_changed_by = cl_abap_context_info=>get_user_technical_name( )
-                   last_changed_at = timestamp                                     ) ) ).
-
-    DELETE markup_db WHERE workflow_status <> 'A'.
-    MODIFY /esrcc/srvmkp FROM TABLE @markup_db.
     IF sy-subrc = 0.
       records = sy-dbcnt.
     ENDIF.

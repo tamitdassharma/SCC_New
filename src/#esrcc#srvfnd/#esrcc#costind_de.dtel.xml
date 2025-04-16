@@ -19,19 +19,6 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
-   <I18N_LANGS>
-    <LANGU>D</LANGU>
-   </I18N_LANGS>
-   <DD04_TEXTS>
-    <item>
-     <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Kostenindikator</DDTEXT>
-     <REPTEXT>Kostenindikator</REPTEXT>
-     <SCRTEXT_S>Kostenind.</SCRTEXT_S>
-     <SCRTEXT_M>Kostenindikator</SCRTEXT_M>
-     <SCRTEXT_L>Kostenindikator</SCRTEXT_L>
-    </item>
-   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

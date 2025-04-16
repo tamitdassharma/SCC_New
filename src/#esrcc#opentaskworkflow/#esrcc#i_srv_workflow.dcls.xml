@@ -6,6 +6,7 @@
     <DCLNAME>/ESRCC/I_SRV_WORKFLOW</DCLNAME>
     <DCLLANGUAGE>E</DCLLANGUAGE>
     <DDTEXT>Access Control for Service Chargout</DDTEXT>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DCLS>
   </asx:values>
  </asx:abap>

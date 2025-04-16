@@ -6,6 +6,7 @@
     <DCLNAME>/ESRCC/I_LECCODE_D</DCLNAME>
     <DCLLANGUAGE>E</DCLLANGUAGE>
     <DDTEXT>Access Control for /ESRCC/I_LeCcode_D</DDTEXT>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DCLS>
   </asx:values>
  </asx:abap>

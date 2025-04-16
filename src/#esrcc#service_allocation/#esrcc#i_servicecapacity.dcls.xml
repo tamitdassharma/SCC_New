@@ -6,6 +6,7 @@
     <DCLNAME>/ESRCC/I_SERVICECAPACITY</DCLNAME>
     <DCLLANGUAGE>E</DCLLANGUAGE>
     <DDTEXT>Access Control for Capacity Planning</DDTEXT>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DCLS>
   </asx:values>
  </asx:abap>

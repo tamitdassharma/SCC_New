@@ -20,19 +20,6 @@
     <OUTPUTLEN>000032</OUTPUTLEN>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
-   <I18N_LANGS>
-    <LANGU>D</LANGU>
-   </I18N_LANGS>
-   <DD04_TEXTS>
-    <item>
-     <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Eindeutige Einzelbeleg-ID</DDTEXT>
-     <REPTEXT>Einzige Id</REPTEXT>
-     <SCRTEXT_S>Einzige Id</SCRTEXT_S>
-     <SCRTEXT_M>Einzige Id</SCRTEXT_M>
-     <SCRTEXT_L>Einzige Id</SCRTEXT_L>
-    </item>
-   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

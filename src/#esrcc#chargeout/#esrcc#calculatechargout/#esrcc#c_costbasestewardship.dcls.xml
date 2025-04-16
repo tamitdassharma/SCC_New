@@ -6,6 +6,7 @@
     <DCLNAME>/ESRCC/C_COSTBASESTEWARDSHIP</DCLNAME>
     <DCLLANGUAGE>E</DCLLANGUAGE>
     <DDTEXT>Acces Control for Chargeout</DDTEXT>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DCLS>
   </asx:values>
  </asx:abap>

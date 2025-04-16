@@ -169,14 +169,14 @@ annotate view /ESRCC/C_ReceiverChargeout with
   ReceiverCostCenter;
 
   @UI.lineItem: [ {
-  position: 20 ,
+  position: 47 ,
   importance: #HIGH,
   label: ''
   } ]
   @UI.fieldGroup: [
    {
    importance: #HIGH,
-   position: 10 ,
+   position: 47 ,
    qualifier: 'ChgData'
     } ]
   @UI.textArrangement: #TEXT_ONLY
@@ -235,7 +235,7 @@ annotate view /ESRCC/C_ReceiverChargeout with
    position: 50 ,
    qualifier: 'ChgData'
     } ]
-  @EndUserText.label: 'Actual Consumption'
+  @EndUserText.label: 'Consumption'
   Reckpi;
   @UI.lineItem: [ {
   position: 999,

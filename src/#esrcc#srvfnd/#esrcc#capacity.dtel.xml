@@ -20,18 +20,6 @@
     <OUTPUTLEN>000030</OUTPUTLEN>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
-   <I18N_LANGS>
-    <LANGU>D</LANGU>
-   </I18N_LANGS>
-   <DD04_TEXTS>
-    <item>
-     <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Servicekapazität</DDTEXT>
-     <REPTEXT>Servicekapazität</REPTEXT>
-     <SCRTEXT_M>Servicekapazität</SCRTEXT_M>
-     <SCRTEXT_L>Servicekapazität</SCRTEXT_L>
-    </item>
-   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

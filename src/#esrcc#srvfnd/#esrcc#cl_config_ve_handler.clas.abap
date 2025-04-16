@@ -33,46 +33,6 @@ ENDCLASS.
 CLASS /ESRCC/CL_CONFIG_VE_HANDLER IMPLEMENTATION.
 
 
-  METHOD if_sadl_exit_calc_element_read~calculate.
-    CASE gv_entity.
-      WHEN '/ESRCC/C_CORULE'.
-        DATA(lt_co_rule) = CORRESPONDING tt_co_rule( it_original_data ).
-
-        calculate_co_rule(
-          CHANGING
-            ct_co_rule = lt_co_rule
-        ).
-
-        ct_calculated_data = CORRESPONDING #( lt_co_rule ).
-
-      WHEN '/ESRCC/C_SRVMKP'.
-        DATA(lt_markup) = CORRESPONDING tt_markup( it_original_data ).
-
-        markup_update_comment(
-          CHANGING
-            ct_markup = lt_markup
-        ).
-
-        ct_calculated_data = CORRESPONDING #( lt_markup ).
-
-      WHEN '/ESRCC/C_STEWRDSHP'.
-        DATA(lt_stewardship) = CORRESPONDING tt_stewardship( it_original_data ).
-
-        stewardship_update_comment(
-          CHANGING
-            ct_stewardship = lt_stewardship
-        ).
-
-        ct_calculated_data = CORRESPONDING #( lt_stewardship ).
-    ENDCASE.
-  ENDMETHOD.
-
-
-  METHOD if_sadl_exit_calc_element_read~get_calculation_info.
-    gv_entity = iv_entity.
-  ENDMETHOD.
-
-
   METHOD calculate_co_rule.
     DATA(lt_co_rule_relevance) = /esrcc/cl_config_util=>get_co_rule_config( ).
 
@@ -114,6 +74,46 @@ CLASS /ESRCC/CL_CONFIG_VE_HANDLER IMPLEMENTATION.
                              FOR wa IN comments
                              NEXT comment = COND #( WHEN comment IS INITIAL THEN |{ wa-created_by }: { wa-created_at TIMESTAMP = USER }{ cl_abap_char_utilities=>cr_lf }{ wa-wfcommenttext }|
                                                     ELSE |{ comment }{ cl_abap_char_utilities=>cr_lf }{ cl_abap_char_utilities=>cr_lf }{ wa-created_by }: { wa-created_at TIMESTAMP = USER }{ cl_abap_char_utilities=>cr_lf }{ wa-wfcommenttext }| ) ).
+  ENDMETHOD.
+
+
+  METHOD if_sadl_exit_calc_element_read~calculate.
+    CASE gv_entity.
+      WHEN '/ESRCC/C_CORULE'.
+        DATA(lt_co_rule) = CORRESPONDING tt_co_rule( it_original_data ).
+
+        calculate_co_rule(
+          CHANGING
+            ct_co_rule = lt_co_rule
+        ).
+
+        ct_calculated_data = CORRESPONDING #( lt_co_rule ).
+
+      WHEN '/ESRCC/C_SRVMKP'.
+        DATA(lt_markup) = CORRESPONDING tt_markup( it_original_data ).
+
+        markup_update_comment(
+          CHANGING
+            ct_markup = lt_markup
+        ).
+
+        ct_calculated_data = CORRESPONDING #( lt_markup ).
+
+      WHEN '/ESRCC/C_STEWRDSHP'.
+        DATA(lt_stewardship) = CORRESPONDING tt_stewardship( it_original_data ).
+
+        stewardship_update_comment(
+          CHANGING
+            ct_stewardship = lt_stewardship
+        ).
+
+        ct_calculated_data = CORRESPONDING #( lt_stewardship ).
+    ENDCASE.
+  ENDMETHOD.
+
+
+  METHOD if_sadl_exit_calc_element_read~get_calculation_info.
+    gv_entity = iv_entity.
   ENDMETHOD.
 
 

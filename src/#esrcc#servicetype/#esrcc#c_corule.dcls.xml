@@ -6,6 +6,7 @@
     <DCLNAME>/ESRCC/C_CORULE</DCLNAME>
     <DCLLANGUAGE>E</DCLLANGUAGE>
     <DDTEXT>Access Control for /ESRCC/C_CoRule</DDTEXT>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DCLS>
   </asx:values>
  </asx:abap>

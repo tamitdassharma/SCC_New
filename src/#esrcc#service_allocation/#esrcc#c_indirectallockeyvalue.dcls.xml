@@ -6,6 +6,7 @@
     <DCLNAME>/ESRCC/C_INDIRECTALLOCKEYVALUE</DCLNAME>
     <DCLLANGUAGE>E</DCLLANGUAGE>
     <DDTEXT>Indirect Allocation Key Value Access Control</DDTEXT>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DCLS>
   </asx:values>
  </asx:abap>

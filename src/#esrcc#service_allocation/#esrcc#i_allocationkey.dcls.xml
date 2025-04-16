@@ -6,6 +6,7 @@
     <DCLNAME>/ESRCC/I_ALLOCATIONKEY</DCLNAME>
     <DCLLANGUAGE>E</DCLLANGUAGE>
     <DDTEXT>Access Control for /ESRCC/I_AllocationKey</DDTEXT>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DCLS>
   </asx:values>
  </asx:abap>

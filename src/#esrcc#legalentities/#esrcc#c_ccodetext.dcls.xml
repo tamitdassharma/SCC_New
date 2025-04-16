@@ -6,6 +6,7 @@
     <DCLNAME>/ESRCC/C_CCODETEXT</DCLNAME>
     <DCLLANGUAGE>E</DCLLANGUAGE>
     <DDTEXT>Access Control for /ESRCC/C_CcodeText</DDTEXT>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DCLS>
   </asx:values>
  </asx:abap>

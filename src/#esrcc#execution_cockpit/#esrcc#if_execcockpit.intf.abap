@@ -1,9 +1,12 @@
 interface /ESRCC/IF_EXECCOCKPIT
   public .
 
+  INTERFACES: if_badi_interface.
 
-  interfaces IF_BADI_INTERFACE .
-
+  class-methods BACKGROUND_SCHEDULER
+    importing
+      !IT_PARAMETERS TYPE if_apj_rt_exec_object=>tt_templ_val
+    .
   class-methods CALCULATE_COSTBASE
     importing
       !IT_KEYS type /ESRCC/TT_KEYS

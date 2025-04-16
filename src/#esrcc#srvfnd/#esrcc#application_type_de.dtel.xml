@@ -17,18 +17,6 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
-   <I18N_LANGS>
-    <LANGU>D</LANGU>
-   </I18N_LANGS>
-   <DD04_TEXTS>
-    <item>
-     <DDLANGUAGE>D</DDLANGUAGE>
-     <DDTEXT>Anwendungstyp</DDTEXT>
-     <REPTEXT>Anwendungstyp</REPTEXT>
-     <SCRTEXT_M>Anwendungstyp</SCRTEXT_M>
-     <SCRTEXT_L>Anwendungstyp</SCRTEXT_L>
-    </item>
-   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>
